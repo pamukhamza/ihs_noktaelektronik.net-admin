@@ -1,0 +1,40 @@
+[23-Oct-2024 11:41:15 UTC] PHP Warning:  include_once(../../functions/db.php): Failed to open stream: No such file or directory in /home/noktaelektronik/public_html/nokta/admin/functions/functions.php on line 2
+[23-Oct-2024 11:41:15 UTC] PHP Warning:  include_once(): Failed opening '../../functions/db.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/noktaelektronik/public_html/nokta/admin/functions/functions.php on line 2
+[23-Oct-2024 11:41:40 UTC] PHP Warning:  include_once(../../functions/db.php): Failed to open stream: No such file or directory in /home/noktaelektronik/public_html/nokta/admin/functions/functions.php on line 2
+[23-Oct-2024 11:41:40 UTC] PHP Warning:  include_once(): Failed opening '../../functions/db.php' for inclusion (include_path='.:/opt/cpanel/ea-php82/root/usr/share/pear') in /home/noktaelektronik/public_html/nokta/admin/functions/functions.php on line 2
+[24-Oct-2024 08:35:04 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60
+[24-Oct-2024 08:35:34 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60
+[24-Oct-2024 08:38:26 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60
+[24-Oct-2024 08:38:46 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60
+[24-Oct-2024 08:39:09 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60
+[24-Oct-2024 08:42:43 UTC] PHP Fatal error:  Uncaught TypeError: htmlspecialchars(): Argument #1 ($string) must be of type string, array given in /home/noktaelektronik/public_html/nokta/functions/db.php:60
+Stack trace:
+#0 /home/noktaelektronik/public_html/nokta/functions/db.php(60): htmlspecialchars(Array)
+#1 /home/noktaelektronik/public_html/nokta/admin/functions/slider/process_slider.php(26): Database->update('UPDATE slider S...', Array)
+#2 {main}
+  thrown in /home/noktaelektronik/public_html/nokta/functions/db.php on line 60

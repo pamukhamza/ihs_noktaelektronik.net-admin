@@ -1,0 +1,50 @@
+# .htaccess dosyasının başı
+
+# Hata sayfalarını özelleştirme
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+# URL yeniden yazma
+RewriteEngine On
+RewriteBase /
+
+# www'yi olmayan URL'leri www'li hale getirme
+RewriteCond %{HTTP_HOST} !^www\. [NC]
+RewriteRule ^(.*)$ http://www.%{HTTP_HOST}/$1 [L,R=301]
+
+# .php uzantısını kaldırmak için
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L]
+
+# Directory listing'i kapatma
+Options -Indexes
+
+# BEGIN cPanel-generated php ini directives, do not edit
+# Manual editing of this file may result in unexpected behavior.
+# To make changes to this file, use the cPanel MultiPHP INI Editor (Home >> Software >> MultiPHP INI Editor)
+# For more information, read our documentation (https://go.cpanel.net/EA4ModifyINI)
+<IfModule php8_module>
+   php_flag display_errors On
+   php_value max_execution_time 120
+   php_value max_input_time 180
+   php_value max_input_vars 1000
+   php_value memory_limit 256M
+   php_value post_max_size 64M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php74"
+   php_value upload_max_filesize 128M
+   php_flag zlib.output_compression Off
+</IfModule>
+<IfModule lsapi_module>
+   php_flag display_errors On
+   php_value max_execution_time 120
+   php_value max_input_time 180
+   php_value max_input_vars 1000
+   php_value memory_limit 256M
+   php_value post_max_size 64M
+   php_value session.gc_maxlifetime 1440
+   php_value session.save_path "/var/cpanel/php/sessions/ea-php74"
+   php_value upload_max_filesize 128M
+   php_flag zlib.output_compression Off
+</IfModule>
+# END cPanel-generated php ini directives, do not edit

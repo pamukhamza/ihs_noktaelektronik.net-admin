@@ -1,0 +1,2 @@
+[22-Oct-2024 14:01:20 UTC] PHP Warning:  Undefined array key "favicon_img" in /home/noktaelektronik/public_html/nokta/admin/functions/settings/process_settings.php on line 10
+[22-Oct-2024 14:01:20 UTC] PHP Warning:  Trying to access array offset on value of type null in /home/noktaelektronik/public_html/nokta/admin/functions/settings/process_settings.php on line 10
