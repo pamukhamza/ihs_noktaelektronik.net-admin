@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../db.php';
 
 $database = new Database();
 $parentId = isset($_GET['parent_id']) ? intval($_GET['parent_id']) : 0;

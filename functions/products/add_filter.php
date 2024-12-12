@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include_once '../../../functions/db.php';
+include_once '../db.php';
 
 // Create a new Database instance
 $db = new Database();

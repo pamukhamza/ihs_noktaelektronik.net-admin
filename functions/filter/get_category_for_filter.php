@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../db.php';
 $database = new Database();
 
 // AJAX isteğinden gelen filter_title_id değerini alıyoruz

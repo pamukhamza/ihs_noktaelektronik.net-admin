@@ -1,5 +1,5 @@
 <?php
-require '../../../functions/db.php';
+require '../db.php';
 
 $database = new Database();
 

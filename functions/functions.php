@@ -1,6 +1,6 @@
 <?php
 function deleteID($tableName, $id) {
-    require '../../functions/db.php';
+    require 'db.php';
     $database = new Database();
     $query = "DELETE FROM $tableName WHERE id = :id";
     $result = $database->delete($query, ['id' => $id]);
@@ -33,7 +33,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     }
 }elseif (isset($_POST['type']) && $_POST['type'] === 'deleteCat') {
     $id = $_POST['id'];
-    require '../../functions/db.php';
+    require 'db.php';
     $database = new Database();
     if (!empty($id)) {
         // Kategoriyi ve alt kategorilerini sil
@@ -47,7 +47,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     }
 }elseif (isset($_POST['type']) && $_POST['type'] === 'deleteBrand') {
     $id = $_POST['id'];
-    require '../../functions/db.php';
+    require 'db.php';
     $database = new Database();
     if (!empty($id)) {
         $query = "DELETE FROM brands WHERE id = :id";
@@ -57,7 +57,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     }
 }elseif (isset($_POST['type']) && $_POST['type'] === 'deleteFilterTitle') {
     $id = $_POST['id'];
-    require '../../functions/db.php';
+    require 'db.php';
     $database = new Database();
     if (!empty($id)) {
         $query = "DELETE FROM filter_title WHERE id = :id";
@@ -67,7 +67,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     }
 }elseif (isset($_POST['type']) && $_POST['type'] === 'deleteFilter') {
     $id = $_POST['id'];
-    require '../../functions/db.php';
+    require 'db.php';
     $database = new Database();
     if (!empty($id)) {
         $query = "DELETE FROM filter_value WHERE id = :id";

@@ -1,5 +1,5 @@
 <?php
-include_once '../../functions/db.php';
+include_once 'db.php';
 
 // Create a Database instance
 $database = new Database();

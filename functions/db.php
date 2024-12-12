@@ -3,7 +3,7 @@ class Database {
     private $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com';
     private $db_name = 'noktanetdb';
     private $username = 'nokta';
-    private $password = 'Dell28736!';
+    private $password = 'Dell28736.!';
     private $conn;
 
     // Constructor ile veritabanı bağlantısını başlat
@@ -11,6 +11,7 @@ class Database {
         $this->connect();
     }
 
+    
     // Veritabanına bağlan
     private function connect() {
         try {

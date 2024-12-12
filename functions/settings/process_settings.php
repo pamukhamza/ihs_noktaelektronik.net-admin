@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../db.php';
 include_once '../functions.php';
 $database = new Database();
 $action = $_POST['action'];

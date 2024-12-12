@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php'; // Veritabanı bağlantısını include et
+include_once '../db.php'; // Veritabanı bağlantısını include et
 $database = new Database(); // Database nesnesi oluştur
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

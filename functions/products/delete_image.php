@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../db.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $image = $_POST['image'] ?? '';

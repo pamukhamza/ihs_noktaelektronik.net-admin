@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../db.php';
 
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $targetDir = "../../assets/images/products/";
