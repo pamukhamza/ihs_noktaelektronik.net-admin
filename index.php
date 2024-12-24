@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title>Giriş - Lahora</title>
+    <title>Giriş - Nokta Admin</title>
     
     <!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="https://demos.pixinvent.com/vuexy-html-admin-template/assets/img/favicon/favicon.ico" />
@@ -96,8 +96,8 @@
                     // Show success message and redirect
                     Swal.fire({
                         icon: 'success',
-                        title: 'Login Successful',
-                        text: 'You will be redirected shortly!',
+                        title: 'Giriş Başarılı',
+                        text: 'Yönlendiriliyorsunuz!',
                         timer: 2000,
                         showConfirmButton: false
                     }).then(() => {
@@ -107,7 +107,7 @@
                     // Show error message
                     Swal.fire({
                         icon: 'error',
-                        title: 'Login Failed',
+                        title: 'Giriş Başarısız',
                         text: data.message
                     });
                 }
@@ -117,8 +117,8 @@
                 // Show error message
                 Swal.fire({
                     icon: 'error',
-                    title: 'An error occurred',
-                    text: 'Please try again later.'
+                    title: 'Bir hata oluştu',
+                    text: 'Lütfen daha sonra tekrar deneyiniz.'
                 });
                 console.error('Error:', error);
             });

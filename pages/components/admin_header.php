@@ -4,7 +4,7 @@
     <input hidden value="<?= $_SESSION['user_session']['id']; ?>">
     <div class="app-brand demo ">
         <a href="/" class="app-brand-link">
-            <span class="app-brand-logo"><img src="../../assets/images/logo/logo_new.png" width="90%"></span>
+            <span class="app-brand-logo"><img src="../../assets/images/logo_new.png" width="90%"></span>
         </a>
         <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
             <i class="ti menu-toggle-icon d-none d-xl-block align-middle"></i>
