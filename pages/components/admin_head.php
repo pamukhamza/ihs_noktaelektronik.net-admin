@@ -2,7 +2,7 @@
 session_name("user_session");
 session_start();
 if (!isset($_SESSION['user_session']['id'])) {
-    header("Location: https://www.nokta.com.cn/admin");
+    header("Location: 192.168.16.63/noktanet_admin/admin");
     exit();
 }
 ?>

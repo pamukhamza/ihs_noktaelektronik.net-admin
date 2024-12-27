@@ -1,9 +1,9 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $currentPage = 'users';
-$template = new Template('Kullanıcılar - Lahora Admin', $currentPage);
+$template = new Template('Kullanıcılar - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -25,37 +25,34 @@ $template->head();
                         <div class="card">
                             <div class="card-body">
                                 <div class="mb-3">
-                                    <button class="btn btn-primary add_lang" data-bs-toggle="modal" data-bs-target="#editLang">Add New</button>
+                                    <button class="btn btn-primary add_user" data-bs-toggle="modal" data-bs-target="#editUser">Yeni Ekle</button>
+                                </div>
+                                <div class="mb-3">
+                                    <button class="btn btn-primary user_permissions">Tüm Yetkiler</button>
                                 </div>
                                 <table id="lang_table" class="table table-striped">
                                     <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Lang</th>
-                                        <th>Key</th>
-                                        <th>Value</th>
-                                        <th>Actions</th>
-                                    </tr>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Kullanıcı Adı</th>
+                                            <th>E-Posta</th>
+                                            <th>İşlemler</th>
+                                        </tr>
                                     </thead>
                                     <tbody>
-                                    <?php
-                                    $database = new Database();
-                                    $query = "SELECT * FROM translations";
-                                    $results = $database->fetchAll($query);
-                                    foreach ($results as $row) {
+                                        <?php
+                                            $database = new Database();
+                                            $query = "SELECT * FROM users";
+                                            $results = $database->fetchAll($query);
+                                            foreach ($results as $row) {
                                         ?>
                                         <tr>
                                             <td><?= $row['id']; ?></td>
-                                            <td><?= $row['language']; ?></td>
-                                            <td><?= $row['key']; ?></td>
-                                            <td><?= $row['value']; ?></td>
+                                            <td><?= $row['username']; ?></td>
+                                            <td><?= $row['email']; ?></td>
                                             <td>
-                                                <a class="cursor-pointer me-2 edit_lang"
-                                                   data-id="<?= $row['id']; ?>"
-                                                   data-key="<?= $row['key']; ?>"
-                                                   data-value="<?= $row['value']; ?>"
-                                                   data-language="<?= $row['language']; ?>"><i class="ti ti-pencil me-1"></i></a>
-                                                <a class="cursor-pointer delete_lang" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
+                                                <a class="cursor-pointer me-2 edit_user" href="users-detail?id=<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                <a class="cursor-pointer delete_user" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                             </td>
                                         </tr>
                                     <?php } ?>
@@ -67,43 +64,7 @@ $template->head();
                         <!--/ Projects table -->
                     </div>
                 </div>
-                <!-- Edit Lang Modal -->
-                <div class="modal fade" id="editLang" tabindex="-1" aria-hidden="true">
-                    <div class="modal-dialog modal-lg modal-simple modal-edit-lang">
-                        <div class="modal-content">
-                            <div class="modal-body">
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                <div class="text-center mb-6">
-                                    <h4 class="mb-2">Add New Word or Sentence</h4>
-                                </div>
-                                <form id="editLangForm" class="row g-6" onsubmit="return false">
-                                    <div class="col-12">
-                                        <label class="form-label" for="modalEditLangKey">Key</label>
-                                        <input type="text" id="modalEditLangKey" name="modalEditLangKey" class="form-control" placeholder="welcome" />
-                                    </div>
-                                    <div class="col-12">
-                                        <label class="form-label" for="modalEditLangValue">Value</label>
-                                        <input type="text" id="modalEditLangValue" name="modalEditLangValue" class="form-control" placeholder="欢迎" />
-                                    </div>
-                                    <div class="col-12 col-md-6">
-                                        <label class="form-label" for="modalEditLanguage">Language</label>
-                                        <select id="modalEditLanguage" name="modalEditLanguage" class="select2 form-select">
-                                            <option value="cn" selected>Chinese</option>
-                                            <option value="en">English</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 text-center">
-                                        <button type="submit" class="btn btn-primary me-3">Submit</button>
-                                        <button type="reset" class="btn btn-label-secondary" data-bs-dismiss="modal" aria-label="Close">Cancel</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--/ Edit Lang Modal -->
                 <!-- / Content -->
-
                 <div class="content-backdrop fade"></div>
             </div>
             <?php $template->footer(); ?>
@@ -115,7 +76,6 @@ $template->head();
     <div class="layout-overlay layout-menu-toggle"></div>
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
-
 </div>
 <!-- / Layout wrapper -->
 <!-- Core JS -->
@@ -137,68 +97,53 @@ $template->head();
         const table = $('#lang_table').DataTable();
 
         // Open modal for adding new language
-        $(".add_lang").on('click', function () {
-            $("#modalEditLangKey").val('');
-            $("#modalEditLangValue").val('');
-            $("#modalEditLanguage").val(null).trigger("change"); // Reset the select2
-            $("#editLangForm").data("action", "insert"); // Set action to insert
+        $(".add_user").on('click', function () {
+            window.location.href = 'users-detail?id=new';
+        });
+        $(".user_permissions").on('click', function () {
+            window.location.href = 'user_permissions';
         });
 
-        // Open modal for editing language
-        $(".edit_lang").on('click', function () {
-            const key = $(this).data('key');
-            const value = $(this).data('value');
-            const language = $(this).data('language');
-            const id = $(this).data('id');
+        $(document).on('click', '.delete_user', function (e) {
+            e.preventDefault();
+            var langId = $(this).data('id'); // Get the ID from data attribute
 
-            $("#modalEditLangKey").val(key);
-            $("#modalEditLangValue").val(value);
-            $("#modalEditLanguage").val(language).trigger("change"); // Set the selected language
-            $("#editLangForm").data("action", "update").data("id", id); // Set action to update and store ID
-            $('#editLang').modal('show');
-        });
-
-        // Handle form submission
-        $("#editLangForm").on('submit', function (e) {
-            e.preventDefault(); // Default form submission is prevented
-            const action = $(this).data("action");
-            let formData = {
-                key: $("#modalEditLangKey").val(),
-                value: $("#modalEditLangValue").val(),
-                language: $("#modalEditLanguage").val(),
-                action: action, // Specify whether insert or update
-                id: action === "update" ? $(this).data("id") : null // Include ID if updating
-            };
-
-            $.ajax({
-                url: '../functions/language/process_lang.php', // PHP file to handle the request
-                type: 'POST',
-                data: formData,
-                success: function (response) {
-                    $('#editLang').modal('hide');
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: response,
-                        showConfirmButton: false,
-                        timer: 2000 // Auto close after 2 seconds
-                    }).then(function() {
-                        location.reload(); // Reload the page to reflect changes
-                    });
-                },
-                error: function (xhr, status, error) {
-                    $('#editLang').modal('hide');
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error!',
-                        text: "An error occurred: " + error,
-                        showConfirmButton: true
+            Swal.fire({
+                title: 'Emin misiniz?',
+                text: "Bu işlemi geri alamazsınız!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'Hayır, iptal et'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../functions/functions.php', 
+                        type: 'POST',
+                        data: { id: langId, tablename: 'users', type: 'delete' },
+                        success: function (response) {
+                            Swal.fire(
+                                'Silindi!',
+                                response,
+                                'success'
+                            ).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Hata!',
+                                'Dil silinirken bir hata oluştu.',
+                                'error'
+                            );
+                        }
                     });
                 }
             });
         });
     });
 </script>
-
 </body>
 </html>

@@ -2,7 +2,7 @@
 require '../functions/admin_template.php';
 
 $currentPage = 'dashboard';
-$template = new Template('Dashboard - Lahora Admin', $currentPage);
+$template = new Template('Dashboard - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
