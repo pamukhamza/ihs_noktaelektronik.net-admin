@@ -101,7 +101,7 @@ $template->head();
             window.location.href = 'users-detail?id=new';
         });
         $(".user_permissions").on('click', function () {
-            window.location.href = 'user_permissions';
+            window.location.href = 'user-permission';
         });
 
         $(document).on('click', '.delete_user', function (e) {

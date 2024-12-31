@@ -26,12 +26,29 @@ if ($user_id === 'new') {
     $user = $database->fetch($query, ['id' => $user_id]);
 }
 
-// Fetch user permissions
-$query = "SELECT * FROM user_permissions WHERE user_id = :id";
-$permissions = $database->fetchAll($query, ['id' => $user_id]);
+// Fetch all permissions and order by parent_id
+$query = "SELECT * FROM permissions ORDER BY parent_id, id";
+$permissions = $database->fetchAll($query);
+
+// Function to build hierarchical permissions
+function buildPermissionTree($permissions) {
+    $tree = [];
+    foreach ($permissions as $permission) {
+        $tree[$permission['parent_id']][] = $permission;
+    }
+    return $tree;
+}
+
+// Create permission tree based on parent_id
+$permissionTree = buildPermissionTree($permissions);
+// Fetch user's permissions
+$query11 = "SELECT permission_id FROM user_permissions WHERE user_id = $user_id";
+$userPermissions = $database->fetchAll($query11);
+// Extract permission IDs for easier checking
+$activePermissions = array_column($userPermissions, 'permission_id');
+echo $userPermissions;
 ?>
 <body>
-
 <!-- Layout wrapper -->
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
@@ -70,24 +87,41 @@ $permissions = $database->fetchAll($query, ['id' => $user_id]);
                             </div>
                         </div>
                     </div>
-                    
                     <!-- User Permissions Card -->
                     <div class="col-md-6 col-lg-6 mb-4">
                         <div class="card">
                             <h5 class="card-header">Kullanıcı Yetkileri</h5>
                             <div class="card-body">
                                 <ul class="list-group">
-                                    <?php foreach ($permissions as $permission): ?>
-                                        <li class="list-group-item">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="permission_<?php echo $permission['id']; ?>" <?php echo $permission['is_active'] ? 'checked' : ''; ?>>
-                                                <label class="form-check-label" for="permission_<?php echo $permission['id']; ?>">
-                                                    <?php echo $permission['permission_name']; ?>
-                                                </label>
-                                            </div>
-                                        </li>
-                                    <?php endforeach; ?>
+                                    <?php
+                                        function renderPermissions($permissions, $parentId = 0, $activePermissions = []) {
+                                            if (isset($permissions[$parentId])) {
+                                                echo '<ul class="list-group list-group-flush">';
+                                                foreach ($permissions[$parentId] as $permission) {
+                                                    $hasChildren = isset($permissions[$permission['id']]);
+                                                    $toggleClass = $hasChildren ? 'toggle-permission' : '';
+                                                    $plusIcon = $hasChildren ? '<span class="btn btn-sm btn-success plus-icon ms-5">+</span>' : '';
+                                        
+                                                    $isChecked = in_array($permission['id'], $activePermissions) ? 'checked' : '';
+                                        
+                                                    echo '<li class="list-group-item">';
+                                                    echo '<div class="form-check ' . $toggleClass . '">';
+                                                    echo '<input class="form-check-input" type="checkbox" id="permission_' . $permission['id'] . '" ' . $isChecked . '>';
+                                                    echo '<label class="form-check-label" for="permission_' . $permission['id'] . '">' . $permission['name'] . '</label>';
+                                                    echo $plusIcon;
+                                                    echo '</div>';
+                                        
+                                                    // Recursively render child permissions
+                                                    renderPermissions($permissions, $permission['id'], $activePermissions);
+                                                    echo '</li>';
+                                                }
+                                                echo '</ul>';
+                                            }
+                                        }
+                                        renderPermissions($permissionTree);
+                                    ?>
                                 </ul>
+                                <button type="submit" class="btn btn-primary">Güncelle</button>
                             </div>
                         </div>
                     </div>
@@ -107,7 +141,6 @@ $permissions = $database->fetchAll($query, ['id' => $user_id]);
 <div class="drag-target"></div>
 </div>
 <!-- / Layout wrapper -->
-
 <!-- Core JS -->
 <!-- build:js ../assets/vendor/js/core.js -->
 <script src="../assets/vendor/libs/jquery/jquery.js"></script>
@@ -117,85 +150,15 @@ $permissions = $database->fetchAll($query, ['id' => $user_id]);
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
 <!-- Main JS -->
 <script src="../assets/js/main.js"></script>
 
 <script>
 $(document).ready(function() {
-    $('#updateUserForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        $.ajax({
-            url: 'update_user.php',
-            type: 'POST',
-            data: $(this).serialize(),
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı!',
-                        text: 'Kullanıcı bilgileri güncellendi.',
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: 'Kullanıcı bilgileri güncellenirken bir hata oluştu.',
-                    });
-                }
-            },
-            error: function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Hata!',
-                    text: 'Bir hata oluştu. Lütfen tekrar deneyin.',
-                });
-            }
-        });
-    });
-
-    $('.form-check-input').on('change', function() {
-        var permissionId = $(this).attr('id').split('_')[1];
-        var isActive = $(this).is(':checked') ? 1 : 0;
-
-        $.ajax({
-            url: 'update_permission.php',
-            type: 'POST',
-            data: {
-                user_id: <?php echo $user_id; ?>,
-                permission_id: permissionId,
-                is_active: isActive
-            },
-            dataType: 'json',
-            success: function(response) {
-                if (response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı!',
-                        text: 'Kullanıcı yetkisi güncellendi.',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: 'Kullanıcı yetkisi güncellenirken bir hata oluştu.',
-                    });
-                }
-            },
-            error: function() {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Hata!',
-                    text: 'Bir hata oluştu. Lütfen tekrar deneyin.',
-                });
-            }
-        });
+    $(document).on('click', '.plus-icon', function() {
+        var parentLi = $(this).closest('li');
+        parentLi.find('ul').toggle(); // Toggle visibility of child permissions
+        $(this).text($(this).text() === '+' ? '-' : '+'); // Toggle "+" and "-" icon
     });
 });
 </script>

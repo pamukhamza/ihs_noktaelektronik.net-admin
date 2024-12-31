@@ -1,11 +1,11 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
 
 $currentPage = 'slider';
-$template = new Template('Slider, Banner, Poster - Lahora Admin', $currentPage);
+$template = new Template('Slider, Banner, Poster - Nokta Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
