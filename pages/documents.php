@@ -392,7 +392,6 @@ $template->head();
                 contentType: false, // Prevent jQuery from setting the content type
                 success: function (response) {
                     $('#editSlider').modal('hide');
-                    alert(response);
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
