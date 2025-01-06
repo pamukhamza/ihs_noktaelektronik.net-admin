@@ -2,7 +2,7 @@
 include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
-$currentPage = 'user-permissions';
+$currentPage = 'users';
 $template = new Template('Yetkiler - NEBSİS Admin', $currentPage);
 $database = new Database();
 

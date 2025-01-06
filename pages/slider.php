@@ -50,13 +50,13 @@ $template->head();
                                             <div class="table-responsive text-nowrap">
                                                 <table class="table table-hover">
                                                     <thead>
-                                                    <tr>
-                                                        <th>#</th>
-                                                        <th>Link</th>
-                                                        <th>Photo</th>
-                                                        <th>Status</th>
-                                                        <th>Actions</th>
-                                                    </tr>
+                                                        <tr>
+                                                            <th>#</th>
+                                                            <th>Link</th>
+                                                            <th>Photo</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
                                                     <?php

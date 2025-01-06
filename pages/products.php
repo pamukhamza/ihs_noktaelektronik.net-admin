@@ -26,9 +26,8 @@ $db->delete($deleteQuery);
                                         <th>Ürün Adı</th>
                                         <th>Marka</th>
                                         <th>Kategori</th>
-                                        <th>Vitrin Ürün</th>
-                                        <th>Yeni Ürün</th>
-                                        <th>Aktİf</th>
+                                        <th>ÖNE ÇIKANLAR</th>
+                                        <th>WEB SİTELERİ</th>
                                         <th>İşlemler</th>
                                     </tr>
                                     </thead>
@@ -71,35 +70,73 @@ $db->delete($deleteQuery);
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
-                { data: 'Vitrin', render: function(data, type, row) {
-                    return `<label class="switch switch-success">
-                                <input type="checkbox" class="switch-input featured-checkbox" data-id="${row.id}" ${data == 1 ? 'checked' : ''} />
-                                <span class="switch-toggle-slider">
-                                    <span class="switch-on"><i class="ti ti-check"></i></span>
-                                    <span class="switch-off"><i class="ti ti-x"></i></span>
-                                </span>
-                                <span class="switch-label"></span>
-                            </label>`;
+                { data: null, render: function(data, type, row) {
+                    return `<div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Özellikler
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input featured-checkbox" data-id="${row.id}" ${row.Vitrin == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">Vitrin</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.YeniUrun == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">Yeni Ürün</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>`;
                 }},
-                { data: 'YeniUrun', render: function(data, type, row) {
-                    return `<label class="switch switch-success">
-                                <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${data == 1 ? 'checked' : ''} />
-                                <span class="switch-toggle-slider">
-                                    <span class="switch-on"><i class="ti ti-check"></i></span>
-                                    <span class="switch-off"><i class="ti ti-x"></i></span>
-                                </span>
-                                <span class="switch-label"></span>
-                            </label>`;
-                }},
-                { data: 'aktif', render: function(data, type, row) {
-                    return `<label class="switch switch-success">
-                                <input type="checkbox" class="switch-input active-checkbox" data-id="${row.id}" ${data == 1 ? 'checked' : ''} />
-                                <span class="switch-toggle-slider">
-                                    <span class="switch-on"><i class="ti ti-check"></i></span>
-                                    <span class="switch-off"><i class="ti ti-x"></i></span>
-                                </span>
-                                <span class="switch-label"></span>
-                            </label>`;
+                { data: null, render: function(data, type, row) {
+                    return `<div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Siteler
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input featured-checkbox" data-id="${row.id}" ${row.web_net == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.net</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.web_comtr == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.com.tr</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.web_cn == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.com.cn</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>`;
                 }},
                 { data: null, render: function(data, type, row) {
                     return `<a class="cursor-pointer me-2 edit_product" data-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>

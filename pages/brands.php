@@ -1,11 +1,11 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
 
 $currentPage = 'brands';
-$template = new Template('Markalar - Lahora Admin', $currentPage);
+$template = new Template('Markalar - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -30,8 +30,12 @@ $template->head();
                                 <table id="cat_table" class="table table-striped">
                                     <thead>
                                         <tr>
+                                            <th>#</th>
+                                            <th></th>
                                             <th>Marka Adı</th>
                                             <th>Sıralama</th>
+                                            <th>Siteler</th>
+                                            <th>Aktif</th>
                                             <th>İşlemler</th>
                                         </tr>
                                     </thead>

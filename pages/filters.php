@@ -1,11 +1,11 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
 
 $currentPage = 'filters';
-$template = new Template('Filtreler - Lahora Admin', $currentPage);
+$template = new Template('Filtreler - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();

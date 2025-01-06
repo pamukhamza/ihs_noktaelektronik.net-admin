@@ -207,8 +207,6 @@ $template->head();
                 contentType: false, // Prevent jQuery from setting the content type
                 success: function (response) {
                     $('#editCatalog').modal('hide');
-                    alert(response);
-                    console.error(response);
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
@@ -216,6 +214,7 @@ $template->head();
                         showConfirmButton: false,
                         timer: 1000
                     }).then(function() {
+                        location.reload(1000);
                     });
                 },
                 error: function (xhr, status, error) {

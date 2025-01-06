@@ -1,11 +1,11 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
 
 $currentPage = 'settings';
-$template = new Template('Ayarlar - Lahora Admin', $currentPage);
+$template = new Template('Ayarlar - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -35,14 +35,13 @@ $template->head();
                                     </ul>
                                 </div>
                             </div>
-
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <!-- Personal Info -->
                                     <div class="tab-pane fade active show" id="form-tabs-settings" role="tabpanel">
                                         <form method="post" enctype="multipart/form-data">
                                             <?php
-                                            $query = "SELECT * FROM settings";
+                                            $query = "SELECT * FROM settings WHERE id = 1";
                                             $s_result = $database->fetch($query);
                                             ?>
                                             <div class="row g-6">
@@ -50,7 +49,7 @@ $template->head();
                                                     <div class="row">
                                                         <label class="col-sm-3 col-form-label text-sm-end" for="site-title">Site Title</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" id="site-title" class="form-control" value="<?= $s_result["site_title"] ?>" />
+                                                            <input type="text" id="site-title" class="form-control" value="<?= $s_result["company"] ?>" />
                                                         </div>
                                                     </div>
                                                 </div>

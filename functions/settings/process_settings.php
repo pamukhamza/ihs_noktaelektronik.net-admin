@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'settings') {
         $img = validateAndSaveImage($_FILES['favicon_img'], '../../assets/images/site/');
 
         $query = "UPDATE settings SET 
-                 `site_title` = :title, 
+                 `company` = :title, 
                  `favicon` = :favicon
              WHERE id = :id";
         $params = [
@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $action === 'settings') {
         }
     }else {
         $query = "UPDATE settings SET 
-                 `site_title` = :title
+                 `company` = :title
              WHERE id = :id";
         $params = [
             'title' => $title,

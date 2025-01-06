@@ -1,11 +1,11 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
 
 $currentPage = 'brands';
-$template = new Template('Markalar - Lahora Admin', $currentPage);
+$template = new Template('Markalar - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -29,12 +29,12 @@ $template->head();
                                     <tr>
                                         <th>Sürükle</th>
                                         <th>Sıra</th>
-                                        <th>Kategori Adı</th>
+                                        <th>Marka Adı</th>
                                     </tr>
                                     </thead>
                                     <tbody id="sortable">
                                     <?php
-                                        $query = "SELECT * FROM brands ORDER BY order_by";
+                                        $query = "SELECT * FROM nokta_urun_markalar ORDER BY order_by";
                                         $results = $database->fetchAll($query);
 
                                         foreach ($results as $row) {

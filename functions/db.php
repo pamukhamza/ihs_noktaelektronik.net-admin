@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host = 'localhost';
-    private $db_name = 'railway';
+    private $db_name = 'nokta';
     private $username = 'root';
     private $password = '';
     private $conn;

@@ -42,7 +42,7 @@ $template->head();
                                                 <td><?= $row['mail']; ?></td>
                                                 <td><?= $row['date']; ?></td>
                                                 <td>
-                                                    <a class="cursor-pointer me-2" data-id="<?= $row['id']; ?>"><i class="ti ti-eye me-1"></i></a>
+                                                    <a class="cursor-pointer me-2 view-details" data-id="<?= $row['id']; ?>"><i class="ti ti-eye me-1"></i></a>
                                                 </td>
                                             </tr>
                                         <?php } ?>
@@ -55,6 +55,24 @@ $template->head();
                 <div class="content-backdrop fade"></div>
             </div>
             <?php $template->footer(); ?>
+            <!-- Modal Structure -->
+            <div class="modal fade" id="dataModal" tabindex="-1" aria-labelledby="dataModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="dataModalLabel">Details</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- Content will be loaded dynamically -->
+                            <div id="modalContent"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="layout-overlay layout-menu-toggle"></div>
         <div class="drag-target"></div>
@@ -89,5 +107,30 @@ $template->head();
             });
         });
     </script>
+    <script>
+        $(document).ready(function() {
+            // Handle click event for 'view-details' links
+            $(document).on('click', '.view-details', function() {
+                const id = $(this).data('id'); // Get the ID from the data-id attribute
+
+                // Make an AJAX request to fetch data
+                $.ajax({
+                    url: '../functions/web_net/offer/fetch_offer_details.php', // Create this PHP file to handle data retrieval
+                    type: 'GET',
+                    data: { id: id },
+                    success: function(response) {
+                        // Populate the modal content with the response
+                        $('#modalContent').html(response);
+                        // Show the modal
+                        $('#dataModal').modal('show');
+                    },
+                    error: function() {
+                        alert('Failed to fetch data. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+
 </body>
 </html>
