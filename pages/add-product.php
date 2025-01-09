@@ -1,5 +1,5 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 // Gelen ID'yi kontrol ediyoruz, yoksa 0 olarak kabul ediyoruz
@@ -8,7 +8,7 @@ $id = isset($_GET['id']) && !empty($_GET['id']) ? $_GET['id'] : 0;
 $database = new Database();
 if ($id == 0) {
     $insertQuery = "
-        INSERT INTO products (name, name_cn, SKU, barcode, general, general_cn, technical, technical_cn, category)
+        INSERT INTO nokta_urunler (UrunAdiTR, UrunAdiEN, UrunKodu, barkod, OzelliklerTR, OzelliklerEN, BilgiTR, BilgiEN, KategoriID)
         VALUES ('', '', '', '', '', '', '', '', NULL) 
     ";
     $database->insert($insertQuery); // execute() yerine query() kullanıyoruz
@@ -17,33 +17,36 @@ if ($id == 0) {
 }
 
 // ID'ye göre ürünü alıyoruz
-$query = "SELECT * FROM products WHERE id = :id";
+$query = "SELECT * FROM nokta_urunler WHERE id = :id";
 $params = ['id' => $id];
 $product = $database->fetch($query, $params);
 
 // Kategorileri veritabanından çekme fonksiyonu
 function getCategories($parent_id = 0, $categories = [], $level = 0) {
     $database = new Database();
-    $query = "SELECT * FROM categories WHERE parent_id = :parent_id";
+    $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = :parent_id";
     $params = ['parent_id' => $parent_id];
     $results = $database->fetchAll($query, $params);
 
     foreach ($results as $row) {
         // Kategori başına uygun seviyeye göre boşluk ekliyoruz
-        $row['name'] = str_repeat('-', $level * 4) . $row['name'];
+        $row['KategoriAdiTr'] = str_repeat('-', $level * 4) . $row['KategoriAdiTr'];
         $categories[] = $row;
         $categories = getCategories($row['id'], $categories, $level + 1); // Alt kategoriler için recursive
     }
 
     return $categories;
 }
+$marka = $product["MarkaID"];
+$query = "SELECT * FROM nokta_urun_markalar";
+$brands = $database->fetchAll($query);
 
 // Kategorileri çek
 $categories = getCategories();
 
 // Sayfa başlığı ve template ayarları
 $currentPage = 'add-product';
-$template = new Template('Yeni Ürün - Lahora Admin', $currentPage);
+$template = new Template('Yeni Ürün - Nokta Admin', $currentPage);
 
 $template->head();
 ?>
@@ -66,21 +69,21 @@ $template->head();
                                             <input type="hidden" name="id" value="<?= $id; ?>">
                                             <div class="col">
                                                 <label class="form-label" for="name">Ürün Adı</label>
-                                                <input type="text" required class="form-control" id="name" placeholder="Product title" name="name" aria-label="Product title" value="<?= htmlspecialchars($product['name']); ?>">
+                                                <input type="text" required class="form-control" id="name" placeholder="Ürün Adı" name="name" value="<?= $product['UrunAdiTR']; ?>">
                                             </div>
                                             <div class="col">
-                                                <label class="form-label" for="name_cn">Ürün Adı EN</label>
-                                                <input type="text" class="form-control" id="name_cn" placeholder="Product title cn" name="name_cn" aria-label="Product title cn" value="<?= htmlspecialchars($product['name_cn']); ?>">
+                                                <label class="form-label" for="name_en">Ürün Adı EN</label>
+                                                <input type="text" class="form-control" id="name_en" placeholder="Ürün Adı İngilizce" name="name_en" value="<?= $product['UrunAdiEN']; ?>">
                                             </div>
                                         </div>
                                         <div class="row mb-6">
                                             <div class="col">
-                                                <label class="form-label" for="sku">SKU</label>
-                                                <input type="text" required class="form-control" id="sku" placeholder="SKU" name="sku" aria-label="Product SKU" value="<?= htmlspecialchars($product['SKU']); ?>">
+                                                <label class="form-label" for="urun_kodu">Ürün Kodu</label>
+                                                <input type="text" required class="form-control" id="urun_kodu" placeholder="Urun Kodu" name="urun_kodu" value="<?= $product['UrunKodu']; ?>">
                                             </div>
                                             <div class="col">
-                                                <label class="form-label" for="barcode">Barkod</label>
-                                                <input type="text" class="form-control" id="barcode" placeholder="0123-4567" name="barcode" aria-label="Product barcode" value="<?= htmlspecialchars($product['barcode']); ?>">
+                                                <label class="form-label" for="barkod">Barkod</label>
+                                                <input type="text" class="form-control" id="barkod" placeholder="barkod" name="barkod" value="<?= $product['barkod']; ?>">
                                             </div>
                                         </div>
                                         <!-- Kategori Seçimi -->
@@ -88,10 +91,10 @@ $template->head();
                                             <div class="col">
                                                 <label class="form-label" for="category">Kategori</label>
                                                 <select class="form-control" id="category" name="category" required>
-                                                    <option value="">Select Category</option>
+                                                    <option value="">Kategori Seçiniz</option>
                                                     <?php foreach ($categories as $cat): ?>
-                                                        <option value="<?= $cat['id']; ?>" <?= $product['category'] == $cat['id'] ? 'selected' : ''; ?> data-parent-id="<?= $cat['parent_id']; ?>">
-                                                            <?= htmlspecialchars($cat['name']); ?>
+                                                        <option value="<?= $cat['id']; ?>" <?= $product['KategoriID'] == $cat['id'] ? 'selected' : ''; ?> data-parent-id="<?= $cat['parent_id']; ?>">
+                                                            <?= htmlspecialchars($cat['KategoriAdiTr']); ?>
                                                         </option>
                                                     <?php endforeach; ?>
                                                 </select>
@@ -99,9 +102,12 @@ $template->head();
                                             <div class="col">
                                                 <label class="form-label" for="brand">Marka</label>
                                                 <select class="form-control" id="brand" name="brand" required>
-                                                    <option value="">Select Brand</option>
-                                                    <option value="Uptech" <?php echo ($product['brand'] == 'Uptech') ? 'selected' : ''; ?>>Uptech</option>
-                                                    <option value="Edge-Core" <?php echo ($product['brand'] == 'Edge-Core') ? 'selected' : ''; ?>>Edge-Core</option>
+                                                    <option value="">Marka Seçiniz</option>
+                                                    <?php foreach ($brands as $brand): ?>
+                                                        <option value="<?= $brand['id']; ?>" <?= $product['MarkaID'] == $brand['id'] ? 'selected' : ''; ?>>
+                                                            <?= htmlspecialchars($brand['title']); ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
                                                 </select>
                                             </div>
                                         </div>
@@ -115,12 +121,12 @@ $template->head();
                                         <div data-repeater-list="group-a">
                                             <!-- General Features -->
                                             <div data-repeater-item class="mb-6">
-                                                <label class="form-label" for="general">Genel Özellikler</label>
-                                                <textarea id="general" name="general" class="form-control" style="display:none;"><?= $product['general']; ?></textarea>
+                                                <label class="form-label" for="ozellikler">Genel Özellikler</label>
+                                                <textarea id="ozellikler" name="ozellikler" class="form-control" style="display:none;"><?= $product['OzelliklerTR']; ?></textarea>
                                             </div>
                                             <div data-repeater-item class="mb-6">
-                                                <label class="form-label" for="general_cn">Genel Özellikler EN</label>
-                                                <textarea id="general_cn" name="general_cn" class="form-control" style="display:none;"><?= $product['general_cn']; ?></textarea>
+                                                <label class="form-label" for="ozellikler_en">Genel Özellikler EN</label>
+                                                <textarea id="ozellikler_en" name="ozellikler_en" class="form-control" style="display:none;"><?= $product['OzelliklerEN']; ?></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -132,19 +138,19 @@ $template->head();
                                     <div class="card-body">
                                         <div data-repeater-list="group-a">
                                             <div data-repeater-item class="mb-6">
-                                                <label class="form-label" for="technical">Teknik Özellikler</label>
-                                                <textarea id="technical" name="technical" class="form-control" style="display:none;"><?= $product['technical']; ?></textarea>
+                                                <label class="form-label" for="teknik_ozellikler">Teknik Özellikler</label>
+                                                <textarea id="teknik_ozellikler" name="teknik_ozellikler" class="form-control" style="display:none;"><?= $product['BilgiTR']; ?></textarea>
                                             </div>
                                             <div data-repeater-item class="mb-6">
-                                                <label class="form-label" for="technical_cn">Teknik Özellikler EN</label>
-                                                <textarea id="technical_cn" name="technical_cn" class="form-control" style="display:none;"><?= $product['technical_cn']; ?></textarea>
+                                                <label class="form-label" for="teknik_ozellikler_en">Teknik Özellikler EN</label>
+                                                <textarea id="teknik_ozellikler_en" name="teknik_ozellikler_en" class="form-control" style="display:none;"><?= $product['BilgiEN']; ?></textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                                 <!-- /Technical Specifications -->
                                 <div class="mb-6">
-                                    <button class="btn btn-primary" name="product-submit"><i class='ti ti-plus ti-xs me-2'></i>Gönder</button>
+                                    <button class="btn btn-primary" name="product-submit"><i class='ti ti-save ti-xs me-2'></i>Kaydet</button>
                                 </div>
                             </form>
                         </div>
@@ -170,7 +176,7 @@ $template->head();
                                 </div>
                                 <?php
                                 // Fetch images for the specific product
-                                $imagesQuery = "SELECT * FROM product_images WHERE prod_id = :product_id ORDER BY sort_order ASC";
+                                $imagesQuery = "SELECT * FROM nokta_urunler_resimler WHERE UrunID = :product_id ORDER BY Sira ASC";
                                 $imageParams = ['product_id' => $id];
                                 $images = $database->fetchAll($imagesQuery, $imageParams);
 
@@ -188,12 +194,12 @@ $template->head();
                                         <?php if (!empty($images)): ?>
                                             <?php foreach ($images as $image): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($image['sort_order']); ?></td>
+                                                    <td><?= htmlspecialchars($image['Sira']); ?></td>
                                                     <td>
-                                                        <img src="../assets/images/products/<?= htmlspecialchars($image['image']); ?>" alt="Product Image" style="width: 50px; height: auto;">
+                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= htmlspecialchars($image['KResim']); ?>" style="width: 50px; height: auto;">
                                                     </td>
                                                     <td>
-                                                        <button class="btn btn-danger btn-sm delete-image" data-image="<?= htmlspecialchars($image['image']); ?>" data-id="<?= $image['id']; ?>" data-product-id="<?= $id; ?>">Sil</button>
+                                                        <button class="btn btn-danger btn-sm delete-image" data-image="<?= htmlspecialchars($image['KResim']); ?>" data-id="<?= $image['id']; ?>" data-product-id="<?= $id; ?>">Sil</button>
                                                     </td>
                                                 </tr>
                                             <?php endforeach; ?>
@@ -258,9 +264,9 @@ $template->head();
                                         <?php if (!empty($filters)): ?>
                                             <?php foreach ($filters as $filter): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($filter['id']); ?></td>
+                                                    <td><?= $filter['id']; ?></td>
                                                     <td>
-                                                        <?= $filter["value"] ?>
+                                                        <?= $filter["name"] ?>
                                                     </td>
                                                     <td>
                                                         <button class="btn btn-danger btn-sm delete_filter" data-id="<?= $filter['product_filter_rel_id']; ?>">Sil</button>
@@ -316,7 +322,7 @@ $template->head();
             filebrowserUploadUrl: 'ckeditor/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
         });
     }
-    ['general', 'general_cn', 'technical', 'technical_cn',
+    ['ozellikler', 'ozellikler_en', 'teknik_ozellikler', 'teknik_ozellikler_en',
     ].forEach(function(elementId) {
         initializeCKEditor(elementId);
     });
@@ -631,59 +637,6 @@ $template->head();
                 showCloseButton: false
             });
         }
-    });
-</script>
-<script>
-    var quillGeneral = new Quill('#editor-general', {
-        theme: 'snow',
-        placeholder: 'General Features',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        }
-    });
-    var quillGeneralCN = new Quill('#editor-general_cn', {
-        theme: 'snow',
-        placeholder: 'General Features CN',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        }
-    });
-    var quillTechnical = new Quill('#editor-technical', {
-        theme: 'snow',
-        placeholder: 'Technical Specifications',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        }
-    });
-    var quillTechnicalCN = new Quill('#editor-technical_cn', {
-        theme: 'snow',
-        placeholder: 'Technical Specifications CN',
-        modules: {
-            toolbar: [
-                [{ 'header': [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        }
-    });
-    document.querySelector('form').addEventListener('submit', function(e) {
-        // Get the plain text from the editors
-        document.querySelector('textarea[name="general"]').value = quillGeneral.root.innerText;
-        document.querySelector('textarea[name="general_cn"]').value = quillGeneralCN.root.innerText;
-        document.querySelector('textarea[name="technical"]').value = quillTechnical.root.innerText;
-        document.querySelector('textarea[name="technical_cn"]').value = quillTechnicalCN.root.innerText;
     });
 </script>
 <!-- SweetAlert 2 Kütüphanesi -->

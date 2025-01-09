@@ -54,6 +54,11 @@ $db->delete($deleteQuery);
 <script src="../assets/vendor/js/menu.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.3.6/css/buttons.dataTables.min.css">
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.3.6/js/buttons.html5.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
 <!-- Main JS -->
 <script src="../assets/js/main.js"></script>
 <script>
@@ -142,7 +147,31 @@ $db->delete($deleteQuery);
                     return `<a class="cursor-pointer me-2 edit_product" data-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
                             <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
                 }}
-            ]
+            ],
+            dom: 'Bfrtip',
+        buttons: [
+            {
+                text: 'Excel\'e Aktar',
+                className: 'btn btn-success',
+                action: function (e, dt, button, config) {
+                    $.ajax({
+                        url: '../functions/products/get_products.php',
+                        type: 'POST',
+                        data: { allData: true }, // Sunucuya tüm verileri talep ettiğinizi belirtin
+                        success: function (response) {
+                            // Gelen tüm verilerle DataTable oluştur
+                            const allData = JSON.parse(response);
+
+                            // DataTable'daki verileri DataTables'ın Excel butonuna aktarmak
+                            const workbook = XLSX.utils.book_new();
+                            const worksheet = XLSX.utils.json_to_sheet(allData);
+                            XLSX.utils.book_append_sheet(workbook, worksheet, 'Ürünler');
+                            XLSX.writeFile(workbook, 'urunler.xlsx');
+                        }
+                    });
+                }
+            }
+        ]
         });
     });
 </script>

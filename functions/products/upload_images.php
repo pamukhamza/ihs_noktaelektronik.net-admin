@@ -1,8 +1,25 @@
 <?php
 include_once '../db.php';
+require '../../vendor/autoload.php';
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+
+$config = require '../../config/aws-config.php';
+
+if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
+    die('Missing required S3 configuration values.');
+}
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ],
+]);
 
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$targetDir = "../../assets/images/products/";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
     $uploadedFiles = [];
@@ -11,13 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
     $database = new Database();
 
     // Check for existing images and get the max sort_order
-    $maxSortOrderQuery = "SELECT MAX(sort_order) AS max_order FROM product_images WHERE prod_id = :product_id";
+    $maxSortOrderQuery = "SELECT MAX(Sira) AS sira FROM nokta_urunler_resimler WHERE UrunID = :product_id";
     $maxSortOrderParams = ['product_id' => $productId];
     $maxSortOrderResult = $database->fetch($maxSortOrderQuery, $maxSortOrderParams);
-    $newSortOrder = isset($maxSortOrderResult['max_order']) ? $maxSortOrderResult['max_order'] + 1 : 1;
+    $newSortOrder = isset($maxSortOrderResult['sira']) ? $maxSortOrderResult['sira'] + 1 : 1;
 
     foreach ($_FILES['images']['name'] as $key => $name) {
-        $targetFilePath = $targetDir . time() . '_' . basename($name); // Unique filename
+        $fileName = time() . '_' . basename($name); // Unique filename
+        $targetFilePath = 'uploads/images/products/' . $fileName;
 
         // Validate file type and size
         $allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
@@ -33,23 +51,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
             continue; // Skip this file
         }
 
-        // Move the uploaded file
-        if (move_uploaded_file($_FILES['images']['tmp_name'][$key], $targetFilePath)) {
-            $uploadedFiles[] = basename($targetFilePath);
+        // Upload the file to S3
+        try {
+            $result = $s3Client->putObject([
+                'Bucket' => $config['s3']['bucket'],
+                'Key'    => $targetFilePath,
+                'SourceFile' => $_FILES['images']['tmp_name'][$key],
+                'ACL'    => 'public-read', // Optional: make the file publicly accessible
+            ]);
+
+            $uploadedFiles[] = $result['ObjectURL'];
 
             // Insert image name, product ID, and sort_order into the database
-            $sql = "INSERT INTO product_images (prod_id, image, sort_order) VALUES (:product_id, :image_name, :sort_order)";
+            $sql = "INSERT INTO nokta_urunler_resimler (UrunID, KResim, sira) VALUES (:product_id, :image_name, :sort_order)";
             $params = [
                 'product_id' => $productId,
-                'image_name' => basename($targetFilePath),
+                'image_name' => $fileName,
                 'sort_order' => $newSortOrder
             ];
             $database->insert($sql, $params);
 
             // Increment sort_order for the next image
             $newSortOrder++;
-        } else {
-            $errors[] = "Error uploading file: " . $_FILES['images']['error'][$key];
+        } catch (AwsException $e) {
+            $errors[] = "Error uploading file: " . $e->getMessage();
         }
     }
 

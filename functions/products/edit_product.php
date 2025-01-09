@@ -30,36 +30,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Formdan gelen verileri al
     $id = $_POST['id'];
     $name = $_POST['name'];
-    $name_cn = $_POST['name_cn'];
-    $sku = $_POST['sku'];
-    $barcode = $_POST['barcode'];
+    $name_cn = $_POST['name_en'];
+    $urun_kodu = $_POST['urun_kodu'];
+    $barcode = $_POST['barkod'];
     $category = $_POST['category'];
     $brand = $_POST['brand'];
-    $general = $_POST['general'];
-    $general_cn = $_POST['general_cn'];
-    $technical = $_POST['technical'];
-    $technical_cn = $_POST['technical_cn'];
+    $general = $_POST['ozellikler'];
+    $general_cn = $_POST['ozellikler_en'];
+    $technical = $_POST['teknik_ozellikler'];
+    $technical_cn = $_POST['teknik_ozellikler_en'];
     $seolink = generateSeoLink($name, $id);
     // Güncelleme sorgusu ve parametreleri
     try {
         // Tüm alanları güncellemek için sorguları çalıştır
         $updateQueries = [
-            "UPDATE products SET name = :name ,name_cn = :name_cn ,SKU = :sku ,barcode = :barcode ,category = :category ,brand = :brand ,general = :general ,general_cn = :general_cn 
-                ,technical = :technical , technical_cn = :technical_cn, seo_link = :seolink WHERE id = :id"
+            "UPDATE nokta_urunler SET UrunAdiTR = :name ,UrunAdiEN = :name_en , UrunKodu = :UrunKodu ,barkod = :barkod ,
+                KategoriID = :category ,MarkaID = :brand ,OzelliklerTR = :OzelliklerTR ,OzelliklerEN = :OzelliklerEN 
+                ,BilgiTR = :BilgiTR , BilgiEN = :BilgiEN, seo_link = :seolink WHERE id = :id"
         ];
 
         // Parametreleri dizi olarak tanımla
         $params = [
             'name' => $name,
-            'name_cn' => $name_cn,
-            'sku' => $sku,
-            'barcode' => $barcode,
+            'name_en' => $name_cn,
+            'UrunKodu' => $urun_kodu,
+            'barkod' => $barcode,
             'category' => (int)$category,
             'brand' => $brand,
-            'general' => $general,
-            'general_cn' => $general_cn,
-            'technical' => $technical,
-            'technical_cn' => $technical_cn,
+            'OzelliklerTR' => $general,
+            'OzelliklerEN' => $general_cn,
+            'BilgiTR' => $technical,
+            'BilgiEN' => $technical_cn,
             'seolink' => $seolink,
             'id' => $id
         ];

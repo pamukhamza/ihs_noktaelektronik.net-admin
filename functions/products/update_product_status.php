@@ -6,9 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $field = $_POST['field']; // hangi alan: new veya active
     $value = $_POST['value']; // yeni değer: 1 veya 0
 
-    if (in_array($field, ['new', 'active', 'featured'])) { // sadece izin verilen alanları güncelleyebiliriz
+    if (in_array($field, ['Vitrin', 'aktif', 'YeniUrun'])) { // sadece izin verilen alanları güncelleyebiliriz
         $database = new Database();
-        $query = "UPDATE products SET `$field` = :value WHERE id = :id";
+        $query = "UPDATE nokta_urunler SET `$field` = :value WHERE id = :id";
         $params = [
             'value' => $value,
             'id' => $id
