@@ -144,7 +144,7 @@ $db->delete($deleteQuery);
                             </div>`;
                 }},
                 { data: null, render: function(data, type, row) {
-                    return `<a class="cursor-pointer me-2 edit_product" data-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
+                    return `<a class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
                             <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
                 }}
             ],
@@ -175,5 +175,16 @@ $db->delete($deleteQuery);
         });
     });
 </script>
+<script>
+        $(document).on('click', '.edit_product', function() {
+        var id = $(this).data('product-id');
+        console.log('Product ID:', id); // Debugging
+        if (id) {
+            window.location.href = 'add-product.php?id=' + id;
+        } else {
+            console.error('Product ID is undefined.');
+        }
+    });
+    </script>
 </body>
 </html>

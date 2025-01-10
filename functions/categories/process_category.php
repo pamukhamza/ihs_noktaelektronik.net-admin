@@ -1,27 +1,46 @@
 <?php
 include_once '../db.php';
 include_once '../functions.php';
+require '../../vendor/autoload.php';
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+
+$config = require '../../config/aws-config.php';
+
+if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
+    die('Missing required S3 configuration values.');
+}
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ],
+]);
+
 $database = new Database();
 
 function generateSeoLink($string, $id) {
-    // Büyük harfleri küçük harfe çevir
+    // Convert to lowercase
     $string = strtolower($string);
 
-    // Türkçe karakterleri İngilizce karşılıklarına çevir
+    // Replace Turkish characters with English equivalents
     $turkish = ['ç', 'ğ', 'ı', 'ö', 'ş', 'ü', 'Ç', 'Ğ', 'İ', 'Ö', 'Ş', 'Ü'];
     $english = ['c', 'g', 'i', 'o', 's', 'u', 'c', 'g', 'i', 'o', 's', 'u'];
     $string = str_replace($turkish, $english, $string);
 
-    // Özel karakterleri kaldır
+    // Remove special characters
     $string = preg_replace('/[^a-z0-9\s-]/', '', $string);
 
-    // Boşlukları ve alt çizgileri - ile değiştir
+    // Replace spaces and underscores with hyphens
     $string = preg_replace('/[\s]+/', '-', $string);
 
-    // Kenar boşluklarını temizle
+    // Trim hyphens from the ends
     $string = trim($string, '-');
 
-    // ID'yi ekle
+    // Add ID
     return $string . '-' . $id;
 }
 
@@ -41,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'insert') {
         // Use quotes for reserved keyword
-        $query = "INSERT INTO categories (`name`, `name_cn`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `cat_img`" : "") . ") VALUES (:name, :name_cn, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
+        $query = "INSERT INTO nokta_kategoriler (`KategoriAdiTr`, `KategoriAdiEn`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `cat_img`" : "") . ") VALUES (:name, :name_cn, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
         $params = [
             'name' => $name,
             'name_cn' => $name_cn,
@@ -50,8 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($cat_img)) {
-            $img = validateAndSaveImage($_FILES['cat_img'], '../../assets/images/category/');
-            $params['cat_img'] = $img;
+            try {
+                $fileName = time() . '_' . basename($_FILES['cat_img']['name']);
+                $targetFilePath = 'uploads/images/categories/' . $fileName;
+
+                $result = $s3Client->putObject([
+                    'Bucket' => $config['s3']['bucket'],
+                    'Key'    => $targetFilePath,
+                    'SourceFile' => $_FILES['cat_img']['tmp_name'],
+                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
+                ]);
+
+                $params['cat_img'] = $result['ObjectURL'];
+            } catch (AwsException $e) {
+                echo "Error uploading file: " . $e->getMessage();
+                exit;
+            }
         }
 
         if ($database->insert($query, $params)) {
@@ -65,7 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $seolink = generateSeoLink($name, $cat_id);
 
         // Use quotes for reserved keyword
-        $query = "UPDATE categories SET `name` = :name, `name_cn` = :name_cn, `seo_link` = :seo_link, `parent_id` = :parent_id" . (!empty($cat_img) ? ", `cat_img` = :cat_img" : "") . " WHERE id = :id";
+        $query = "UPDATE nokta_kategoriler SET `KategoriAdiTr` = :name, `KategoriAdiEn` = :name_cn, `seo_link` = :seo_link, `parent_id` = :parent_id" . (!empty($cat_img) ? ", `cat_img` = :cat_img" : "") . " WHERE id = :id";
         $params = [
             'name' => $name,
             'name_cn' => $name_cn,
@@ -75,8 +108,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($cat_img)) {
-            $img = validateAndSaveImage($_FILES['cat_img'], '../../assets/images/category/');
-            $params['cat_img'] = $img;
+            try {
+                $fileName = time() . '_' . basename($_FILES['cat_img']['name']);
+                $targetFilePath = 'uploads/images/categories/' . $fileName;
+
+                $result = $s3Client->putObject([
+                    'Bucket' => $config['s3']['bucket'],
+                    'Key'    => $targetFilePath,
+                    'SourceFile' => $_FILES['cat_img']['tmp_name'],
+                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
+                ]);
+
+                $params['cat_img'] = $result['ObjectURL'];
+            } catch (AwsException $e) {
+                echo "Error uploading file: " . $e->getMessage();
+                exit;
+            }
         }
 
         if ($database->update($query, $params)) {

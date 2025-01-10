@@ -3,7 +3,7 @@ include_once '../db.php';
 
 $database = new Database();
 if (isset($_POST['allData']) && $_POST['allData'] == true) {
-    $query = "SELECT p.*, m.*, c.KategoriAdiTR AS category_name
+    $query = "SELECT p.*, m.id AS mid, m.title, c.KategoriAdiTR AS category_name
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID";
@@ -22,7 +22,7 @@ $searchValue = $_POST['search']['value'];
 
 // Build the query
 $query = "
-    SELECT p.*, m.*, c.KategoriAdiTR AS category_name
+    SELECT p.*, m.id AS mid, m.title, c.KategoriAdiTR AS category_name
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
@@ -54,6 +54,7 @@ $results = $database->fetchAll($query);
 $data = [];
 foreach ($results as $row) {
     $data[] = [
+        'id' => $row['id'],
         'UrunKodu' => $row['UrunKodu'],
         'UrunAdiTR' => $row['UrunAdiTR'],
         'title' => $row['title'],

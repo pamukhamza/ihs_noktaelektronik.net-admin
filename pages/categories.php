@@ -5,7 +5,7 @@ require '../functions/admin_template.php';
 $database = new Database();
 
 $currentPage = 'categories';
-$template = new Template('Kategoriler - Lahora Admin', $currentPage);
+$template = new Template('Kategoriler - Nokta Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -61,7 +61,7 @@ $template->head();
                                     </div>
                                     <?php
                                     // Fetch all categories
-                                    $query = "SELECT * FROM categories";
+                                    $query = "SELECT * FROM nokta_kategoriler";
                                     $results = $database->fetchAll($query);
 
                                     // Create an associative array to store categories by their ID
@@ -77,7 +77,7 @@ $template->head();
                                             if ($category['parent_id'] == $parentId) { // Assuming there's a 'parent_id' field
                                                 // Indent based on the level
                                                 $indent = str_repeat('&nbsp;', $level * 4);
-                                                $options .= "<option value=\"{$category['id']}\">{$indent}-{$category['name']}</option>";
+                                                $options .= "<option value=\"{$category['id']}\">{$indent}-{$category['KategoriAdiTr']}</option>";
                                                 // Recursive call for subcategories
                                                 $options .= generateCategoryOptions($categories, $category['id'], $level + 1);
                                             }

@@ -8,7 +8,7 @@ if(isset($_POST['newOrder'])) {
 
     // Loop through the new order and update the database
     foreach($newOrder as $index => $itemId) {
-        $query = "UPDATE categories SET `sort_order` = :sort_order WHERE id = :id";
+        $query = "UPDATE nokta_kategoriler SET `sira` = :sort_order WHERE id = :id";
         $params = [
             "sort_order" => $index + 1,
             "id" => $itemId
