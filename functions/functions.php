@@ -12,14 +12,14 @@ function deleteID($tableName, $id) {
 }
 function deleteCategoryAndChildren($categoryId,$database) {
     // Alt kategorileri bul
-    $query = "SELECT id FROM categories WHERE parent_id = :parent_id";
+    $query = "SELECT id FROM nokta_kategoriler WHERE parent_id = :parent_id";
     $children = $database->fetchAll($query, ['parent_id' => $categoryId]);
     // Eğer alt kategoriler varsa, önce onları sil
     foreach ($children as $child) {
         deleteCategoryAndChildren($child['id'],$database); // Rekürsif olarak alt kategorileri sil
     }
     // Şimdi, ana kategoriyi sil
-    $query = "DELETE FROM categories WHERE id = :id";
+    $query = "DELETE FROM nokta_kategoriler WHERE id = :id";
     return $database->delete($query, ['id' => $categoryId]);
 }
 if (isset($_POST['type']) && $_POST['type'] === 'delete') {
@@ -50,7 +50,17 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     require 'db.php';
     $database = new Database();
     if (!empty($id)) {
-        $query = "DELETE FROM brands WHERE id = :id";
+        $query = "DELETE FROM nokta_urun_markalar WHERE id = :id";
+        return $database->delete($query, ['id' => $id]);
+    } else {
+        echo "ID değeri boş!";
+    }
+}elseif (isset($_POST['type']) && $_POST['type'] === 'deleteProduct') {
+    $id = $_POST['id'];
+    require 'db.php';
+    $database = new Database();
+    if (!empty($id)) {
+        $query = "DELETE FROM nokta_urunler WHERE id = :id";
         return $database->delete($query, ['id' => $id]);
     } else {
         echo "ID değeri boş!";

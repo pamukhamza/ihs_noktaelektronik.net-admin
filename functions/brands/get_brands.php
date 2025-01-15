@@ -5,7 +5,7 @@ $database = new Database();
 
 function displayCategories($database) {
     $output = '';
-    $categories = $database->fetchAll("SELECT * FROM nokta_urun_markalar ORDER BY id");
+    $categories = $database->fetchAll("SELECT * FROM nokta_urun_markalar ORDER BY order_by");
 
     foreach ($categories as $row) {
         $output .= '<tr>';
@@ -21,7 +21,7 @@ function displayCategories($database) {
                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton' . $row['id'] . '">
                     <li>
                         <label class="switch switch-success">
-                            <input type="checkbox" class="switch-input featured-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_net'] == 1 ? 'checked' : '') . ' />
+                            <input type="checkbox" class="switch-input wnet-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_net'] == 1 ? 'checked' : '') . ' />
                             <span class="switch-toggle-slider">
                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -31,7 +31,7 @@ function displayCategories($database) {
                     </li>
                     <li>
                         <label class="switch switch-success">
-                            <input type="checkbox" class="switch-input new-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_comtr'] == 1 ? 'checked' : '') . ' />
+                            <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_comtr'] == 1 ? 'checked' : '') . ' />
                             <span class="switch-toggle-slider">
                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -41,7 +41,7 @@ function displayCategories($database) {
                     </li>
                     <li>
                         <label class="switch switch-success">
-                            <input type="checkbox" class="switch-input new-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_cn'] == 1 ? 'checked' : '') . ' />
+                            <input type="checkbox" class="switch-input wcn-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_cn'] == 1 ? 'checked' : '') . ' />
                             <span class="switch-toggle-slider">
                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -52,7 +52,6 @@ function displayCategories($database) {
                 </ul>
             </div>
         </td>';
-        $output .= '<td>'. $row['is_active'] . '</td>';
         $output .= '<td>
             <a class="cursor-pointer me-2 brand_sort"><i class="ti ti-list me-1"></i></a>
             <a class="cursor-pointer me-2 edit_brand" data-id="' . $row['id'] . '" data-name="' . $row['title'] . '"><i class="ti ti-pencil me-1"></i></a>

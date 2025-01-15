@@ -214,7 +214,7 @@ $template->head();
                             </div>
                             <!-- /Image List -->
                             <!-- Filtre Ekleme -->
-                            <div class="card mb-6" id="filter-section" style="display:none;">
+                            <div class="card mb-6" id="filter-section">
                                 <div class="card-header">
                                     <h5 class="card-title mb-0">Filtre Ekleme</h5>
                                 </div>
@@ -225,7 +225,7 @@ $template->head();
                                             <option value="">Ana Filtre Seç</option>
                                         </select>
                                     </div>
-                                    <div class="my-3" id="filter-values-container" style="display:none;">
+                                    <div class="my-3" id="filter-values-container">
                                         <label for="filter-value">Filtreler</label>
                                         <select class="form-control" id="filter-value" name="filter-value">
                                             <option value="">Filtre Seç</option>
@@ -315,6 +315,8 @@ $template->head();
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- SweetAlert 2 Kütüphanesi -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     function initializeCKEditor(elementId) {
         CKEDITOR.replace(elementId, {
@@ -521,29 +523,28 @@ $template->head();
 </script>
 
 <script>
-    $(document).ready(function() {
-        $('#category').select2({
-            placeholder: "Select a category",
-            allowClear: true
-        });
-    });
-</script>
-<script>
-    document.getElementById('category').addEventListener('change', function() {
-        var categoryId = this.value;
-        var parentId = this.options[this.selectedIndex].getAttribute('data-parent-id');
+    document.addEventListener('DOMContentLoaded', function() {
+    var categorySelect = document.getElementById('category');
+
+    function handleCategoryChange() {
+        var categoryId = categorySelect.value;
+        var parentId = categorySelect.options[categorySelect.selectedIndex].getAttribute('data-parent-id');
         var filterSection = document.getElementById('filter-section');
 
         if (categoryId) {
-            filterSection.style.display = 'block';
             fetchFilters(categoryId);
             if (parentId) {
                 fetchFilters(parentId); // Fetch filters for parent category
             }
-        } else {
-            filterSection.style.display = 'none';
         }
-    });
+    }
+
+    // Run the function on page load
+    handleCategoryChange();
+
+    // Add event listener for change event
+    categorySelect.addEventListener('change', handleCategoryChange);
+});
 
     function fetchFilters(categoryId) {
         // Make an AJAX request to get filter titles based on categoryId
@@ -580,7 +581,7 @@ $template->head();
                 data.forEach(function(value) {
                     var option = document.createElement('option');
                     option.value = value.id;
-                    option.textContent = value.value;
+                    option.textContent = value.name;
                     filterValueSelect.appendChild(option);
                 });
                 document.getElementById('filter-values-container').style.display = 'block';
@@ -639,8 +640,6 @@ $template->head();
         }
     });
 </script>
-<!-- SweetAlert 2 Kütüphanesi -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     // Sayfa yüklendiğinde çalışacak

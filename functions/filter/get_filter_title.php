@@ -13,7 +13,7 @@ function displayFilterTitle($database) {
             ft.title, 
             ft.title_en, 
             cfr.category_id, 
-            c.name AS category_name
+            c.KategoriAdiTr AS category_name
         FROM 
             filter_title ft
         LEFT JOIN 
@@ -21,7 +21,7 @@ function displayFilterTitle($database) {
         ON 
             ft.id = cfr.filter_title_id
         LEFT JOIN 
-            categories c 
+            nokta_kategoriler AS c 
         ON 
             cfr.category_id = c.id
     ";

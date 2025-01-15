@@ -52,6 +52,9 @@ class User {
 
     // Log the user out
     public function logout() {
+        session_name("user_session");
+        session_start();
+
         unset($_SESSION[$this->session_key]);
         session_destroy();
         header("Location:/");

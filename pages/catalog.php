@@ -3,7 +3,6 @@ include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
 $database = new Database();
-
 $currentPage = 'catalog';
 $template = new Template('Catalog - Nokta Admin', $currentPage);
 
@@ -47,7 +46,6 @@ $template->head();
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Title</th>
-                                                        <th>Site</th>
                                                         <th>Status</th>
                                                         <th>Actions</th>
                                                     </tr>
@@ -61,23 +59,51 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td><?= $row["title"] ?></td>
-                                                        <td><?= $row["site"] ?></td>
+                                                        <td><?= htmlspecialchars($row["title"]) ?></td>
                                                         <td>
-                                                            <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-catalog" data-id="<?= $row['id']; ?>" <?= $row['status'] == 1 ? 'checked' : ''; ?> />
-                                                                <span class="switch-toggle-slider">
-                                                                    <span class="switch-on"><i class="ti ti-check"></i></span>
-                                                                    <span class="switch-off"><i class="ti ti-x"></i></span>
-                                                                </span>
-                                                                <span class="switch-label"></span>
-                                                            </label>
+                                                            <div class="dropdown">
+                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton<?= htmlspecialchars($row["id"]) ?>" data-bs-toggle="dropdown" aria-expanded="false">
+                                                                    Siteler
+                                                                </button>
+                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= htmlspecialchars($row["id"]) ?>">
+                                                                    <li>
+                                                                        <label class="switch switch-success">
+                                                                            <input type="checkbox" class="switch-input wnet-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_net'] == 1 ? 'checked' : '' ?> />
+                                                                            <span class="switch-toggle-slider">
+                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                            </span>
+                                                                            <span class="switch-label">.net</span>
+                                                                        </label>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label class="switch switch-success">
+                                                                            <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_comtr'] == 1 ? 'checked' : '' ?> />
+                                                                            <span class="switch-toggle-slider">
+                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                            </span>
+                                                                            <span class="switch-label">.com.tr</span>
+                                                                        </label>
+                                                                    </li>
+                                                                    <li>
+                                                                        <label class="switch switch-success">
+                                                                            <input type="checkbox" class="switch-input wcn-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_cn'] == 1 ? 'checked' : '' ?> />
+                                                                            <span class="switch-toggle-slider">
+                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                            </span>
+                                                                            <span class="switch-label">.com.cn</span>
+                                                                        </label>
+                                                                    </li>
+                                                                </ul>
+                                                            </div>
                                                         </td>
+
                                                         <td>
                                                             <a class="cursor-pointer me-2 edit-catalog"
                                                                data-id="<?= $row["id"] ?>"
                                                                data-catalog_title="<?= $row['title']; ?>"
-                                                               data-catalog_site="<?= $row['site']; ?>"
                                                                data-catalog_file="<?= $row['file']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_catalog" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
@@ -125,15 +151,7 @@ $template->head();
                         <input type="text" id="catalog_title" name="catalog_title" class="form-control"/>
                     </div>
                     <div class="col-6">
-                        <label class="form-label" for="catalog_site">Site</label>
-                        <select id="catalog_site" name="catalog_site[]" class="form-select" multiple>
-                            <option value="net">net</option>
-                            <option value="b2b">b2b</option>
-                            <option value="netcn">netcn</option>
-                        </select>
-                    </div>
-                    <div class="col-6">
-                        <label class="form-label" for="catalog_file">Image</label>
+                        <label class="form-label" for="catalog_file">File</label>
                         <input type="file" class="form-control" id="catalog_file" />
                     </div>
                     <div class="col-12 text-center">
@@ -165,7 +183,6 @@ $template->head();
             $('.catalog-title').html("Katalog Ekle");
             $("#catalog_title").val('');
             $("#catalog_file").val('');
-            $("#catalog_site").val('');
             $("#editCatalogForm").data("action", "insert"); // Set action to insert
         });
 
@@ -174,12 +191,10 @@ $template->head();
             $('.catalog-title').html("Katalog Düzenle");
             const id = $(this).data('id');
             const catalog_title = $(this).data('catalog_title');
-            const catalog_site = $(this).data('catalog_site');
             const catalog_file = $(this).data('catalog_file');
 
             $("#catalog_title").val(catalog_title);
             $("#catalog_file").val(catalog_file);
-            $("#catalog_site").val(catalog_site);
             $("#editCatalogForm").data("action", "update").data("id", id); // Set action to update and store ID
             $('#editCatalog').modal('show');
         });
@@ -194,7 +209,6 @@ $template->head();
             let formData = new FormData();
             formData.append("catalog_file", $("#catalog_file")[0].files[0]);
             formData.append("catalog_title", $("#catalog_title").val());
-            formData.append("catalog_site", $("#catalog_site").val());
             formData.append("action", action);
             formData.append("id", id);
 
@@ -229,77 +243,78 @@ $template->head();
                 }
             });
         });
+        
+        // Delete Catalogs
+        $(".delete_catalog").on('click', function () {
+            const id = $(this).data('id');
+
+            Swal.fire({
+                title: 'Silmek istediğinize emin misiniz?',
+                text: "Bu işlem geri alınamaz!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Evet, sil!',
+                cancelButtonText: 'Hayır, iptal et!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../functions/functions.php',
+                        type: 'POST',
+                        data: { id: id, tablename: 'catalogs', type: 'delete' },  // Type delete olarak gönderiliyor
+                        success: function (response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Silindi!',
+                                text: 'Kayıt başarıyla silindi.',
+                                showConfirmButton: false,
+                                timer: 1500
+                            }).then(() => {
+                                location.reload();  // Sayfayı yeniden yükle
+                            });
+                        },
+                        error: function () {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata!',
+                                text: 'Silme işlemi başarısız oldu.',
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $(document).on('change', '.wnet-checkbox, .wcomtr-checkbox, .wcn-checkbox', function () {
+            const id = $(this).data('id');
+            const field = $(this).hasClass('wnet-checkbox') ? 'web_net' :
+                          $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
+            const value = $(this).is(':checked') ? 1 : 0;
+
+            // AJAX isteği
+            fetch('../functions/catalogs/update_field.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    field: field,
+                    value: value
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {console.log('Güncelleme başarılı:', data.message);} 
+                else {console.error('Güncelleme başarısız:', data.message);}
+            })
+            .catch(error => {
+                console.error('Bir hata oluştu:', error);
+            });
+        });
     });
 
 </script>
-<script>
-    $(".delete_catalog").on('click', function () {
-        const id = $(this).data('id');
-
-        Swal.fire({
-            title: 'Silmek istediğinize emin misiniz?',
-            text: "Bu işlem geri alınamaz!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Evet, sil!',
-            cancelButtonText: 'Hayır, iptal et!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '../functions/functions.php',
-                    type: 'POST',
-                    data: { id: id, tablename: 'documents', type: 'delete' },  // Type delete olarak gönderiliyor
-                    success: function (response) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Silindi!',
-                            text: 'Kayıt başarıyla silindi.',
-                            showConfirmButton: false,
-                            timer: 1500
-                        }).then(() => {
-                            location.reload();  // Sayfayı yeniden yükle
-                        });
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata!',
-                            text: 'Silme işlemi başarısız oldu.',
-                        });
-                    }
-                });
-            }
-        });
-    });
-    $('.active-checkbox-catalog').on('change', function() {
-        var id = $(this).data('id');
-        var activeStatus = $(this).is(':checked') ? 1 : 0;
-
-        $.ajax({
-            url: '../functions/update_status.php',  // PHP dosyanızın ismini yazın
-            type: 'POST',
-            data: {
-                id: id,
-                field: 'status',
-                value: activeStatus,
-                database: 'documents'
-            },
-            success: function(response) {
-                Swal.fire({
-                    icon: 'success',
-                    text: response,
-                    showConfirmButton: false,
-                    timer: 1500
-                });
-            },
-            error: function() {
-                alert('Error while updating');
-            }
-        });
-    });
-</script>
-
 </body>
 </html>

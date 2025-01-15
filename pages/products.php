@@ -25,7 +25,7 @@ $db->delete($deleteQuery);
                                         <th>Ürün Kodu</th>
                                         <th>Ürün Adı</th>
                                         <th>Marka</th>
-                                        <th>Kategori</th>
+                                        <th>KATEGORİ</th>
                                         <th>ÖNE ÇIKANLAR</th>
                                         <th>WEB SİTELERİ</th>
                                         <th>İşlemler</th>
@@ -62,12 +62,12 @@ $db->delete($deleteQuery);
 <!-- Main JS -->
 <script src="../assets/js/main.js"></script>
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         const table = $('#lang_table').DataTable({
             processing: true,
             serverSide: true,
             ajax: {
-                url: '../functions/products/get_products.php', // New PHP file to handle server-side processing
+                url: '../functions/products/get_products.php', // PHP file for server-side processing
                 type: 'POST'
             },
             columns: [
@@ -75,8 +75,11 @@ $db->delete($deleteQuery);
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
-                { data: null, render: function(data, type, row) {
-                    return `<div class="dropdown">
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="dropdown">
                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
                                     Özellikler
                                 </button>
@@ -103,16 +106,20 @@ $db->delete($deleteQuery);
                                     </li>
                                 </ul>
                             </div>`;
-                }},
-                { data: null, render: function(data, type, row) {
-                    return `<div class="dropdown">
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="dropdown">
                                 <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
                                     Siteler
                                 </button>
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
                                     <li>
                                         <label class="switch switch-success">
-                                            <input type="checkbox" class="switch-input featured-checkbox" data-id="${row.id}" ${row.web_net == 1 ? 'checked' : ''} />
+                                            <input type="checkbox" class="switch-input wnet-checkbox" data-id="${row.id}" ${row.web_net == 1 ? 'checked' : ''} />
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -122,7 +129,7 @@ $db->delete($deleteQuery);
                                     </li>
                                     <li>
                                         <label class="switch switch-success">
-                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.web_comtr == 1 ? 'checked' : ''} />
+                                            <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="${row.id}" ${row.web_comtr == 1 ? 'checked' : ''} />
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -132,7 +139,7 @@ $db->delete($deleteQuery);
                                     </li>
                                     <li>
                                         <label class="switch switch-success">
-                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.web_cn == 1 ? 'checked' : ''} />
+                                            <input type="checkbox" class="switch-input wcn-checkbox" data-id="${row.id}" ${row.web_cn == 1 ? 'checked' : ''} />
                                             <span class="switch-toggle-slider">
                                                 <span class="switch-on"><i class="ti ti-check"></i></span>
                                                 <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -142,41 +149,49 @@ $db->delete($deleteQuery);
                                     </li>
                                 </ul>
                             </div>`;
-                }},
-                { data: null, render: function(data, type, row) {
-                    return `<a class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
-                            <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
-                }}
-            ],
-            dom: 'Bfrtip',
-        buttons: [
-            {
-                text: 'Excel\'e Aktar',
-                className: 'btn btn-success',
-                action: function (e, dt, button, config) {
-                    $.ajax({
-                        url: '../functions/products/get_products.php',
-                        type: 'POST',
-                        data: { allData: true }, // Sunucuya tüm verileri talep ettiğinizi belirtin
-                        success: function (response) {
-                            // Gelen tüm verilerle DataTable oluştur
-                            const allData = JSON.parse(response);
-
-                            // DataTable'daki verileri DataTables'ın Excel butonuna aktarmak
-                            const workbook = XLSX.utils.book_new();
-                            const worksheet = XLSX.utils.json_to_sheet(allData);
-                            XLSX.utils.book_append_sheet(workbook, worksheet, 'Ürünler');
-                            XLSX.writeFile(workbook, 'urunler.xlsx');
-                        }
-                    });
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
+                                <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
+                    }
                 }
-            }
-        ]
+            ]
+        });
+
+        // Delegate event listeners for checkboxes
+        $('#lang_table').on('change', '.switch-input', function () {
+            const id = $(this).data('id');
+            const field = $(this).hasClass('featured-checkbox') ? 'Vitrin' :
+                          $(this).hasClass('new-checkbox') ? 'YeniUrun' :
+                          $(this).hasClass('wnet-checkbox') ? 'web_net' :
+                          $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
+            const value = this.checked ? 1 : 0;
+
+            // AJAX request to update the field in the database
+            fetch('../functions/products/update_product_status.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, field, value })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Update successful:', data.message);
+                } else {
+                    console.error('Update failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred:', error);
+            });
         });
     });
 </script>
 <script>
-        $(document).on('click', '.edit_product', function() {
+    $(document).on('click', '.edit_product', function() {
         var id = $(this).data('product-id');
         console.log('Product ID:', id); // Debugging
         if (id) {
@@ -185,6 +200,44 @@ $db->delete($deleteQuery);
             console.error('Product ID is undefined.');
         }
     });
-    </script>
+    $(document).on('click', '.delete_product', function() {
+        const id = $(this).data('id');
+        Swal.fire({
+            title: 'Emin misin?',
+            text: "Geri Alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete!',
+            cancelButtonText: 'Cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../functions/functions.php',
+                    type: 'POST',
+                    data: { id: id, type: 'deleteProduct' },  // Type delete olarak gönderiliyor
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Silindi!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();  // Sayfayı yeniden yükle
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'Failed.',
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>

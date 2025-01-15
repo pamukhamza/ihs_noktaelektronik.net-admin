@@ -1,7 +1,10 @@
 <?php
 require '../db.php';
+
 $database = new Database();
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Gelen JSON verisini al ve ayrıştır
     $data = json_decode(file_get_contents('php://input'), true);
 
     if (isset($data['id'], $data['field'], $data['value'])) {
@@ -10,14 +13,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $value = intval($data['value']);
 
         // Güvenlik: Sadece belirli alanların güncellenmesine izin ver
-        $allowedFields = ['Vitrin', 'aktif', 'YeniUrun', 'web_net', 'web_comtr', 'web_cn'];
+        $allowedFields = ['web_net', 'web_comtr', 'web_cn'];
         if (!in_array($field, $allowedFields)) {
             echo json_encode(['success' => false, 'message' => 'Geçersiz alan']);
             exit;
         }
 
         // Veritabanı sorgusunu çalıştır
-        $query = "UPDATE nokta_urunler SET `$field` = :value WHERE id = :id";
+        $query = "UPDATE catalogs SET `$field` = :value WHERE id = :id";
         $params = [
             'value' => $value,
             'id' => $id

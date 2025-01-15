@@ -1,5 +1,5 @@
 <?php
-include_once '../../functions/db.php';
+include_once '../functions/db.php';
 require '../functions/admin_template.php';
 if(isset($_GET["id"])){
     $id = $_GET["id"];
@@ -8,7 +8,7 @@ if(isset($_GET["id"])){
 $database = new Database();
 
 $currentPage = 'categories';
-$template = new Template('Kategoriler - Lahora Admin', $currentPage);
+$template = new Template('Kategoriler - NEBSİS Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
@@ -39,14 +39,14 @@ $template->head();
                                     <tbody id="sortable">
                                     <?php
                                     // Fetch categories
-                                    $queryParent = "SELECT parent_id FROM categories WHERE id = :id";
+                                    $queryParent = "SELECT parent_id FROM nokta_kategoriler WHERE id = :id";
                                     $paramsParent = ["id" => $id];
                                     $parentResult = $database->fetchAll($queryParent, $paramsParent);
 
                                     if (!empty($parentResult)) {
                                         $parentId = $parentResult[0]['parent_id'];
 
-                                        $query = "SELECT * FROM categories WHERE parent_id = :parent_id ORDER BY sort_order";
+                                        $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = :parent_id ORDER BY sira";
                                         $params = ["parent_id" => $parentId];
                                         $results = $database->fetchAll($query, $params);
 
@@ -54,9 +54,9 @@ $template->head();
                                             ?>
                                             <tr data-id="<?= $row['id']; ?>">
                                                 <td><i class="fa-solid fa-arrows-up-down-left-right"></i></td>
-                                                <td><?= $row['sort_order']; ?></td>
-                                                <td><?= $row['name']; ?></td>
-                                                <td><?= $row['name_cn']; ?></td>
+                                                <td><?= $row['sira']; ?></td>
+                                                <td><?= $row['KategoriAdiTr']; ?></td>
+                                                <td><?= $row['KategoriAdiEn']; ?></td>
                                             </tr>
                                             <?php
                                         }

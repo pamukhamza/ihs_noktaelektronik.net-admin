@@ -5,7 +5,7 @@ $database = new Database();
 $parentId = isset($_GET['parent_id']) ? intval($_GET['parent_id']) : 0;
 
 function displayCategories($parentId, $database) {
-    $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = $parentId";
+    $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = $parentId ORDER BY sira";
     $results = $database->fetchAll($query);
     $output = '';
 

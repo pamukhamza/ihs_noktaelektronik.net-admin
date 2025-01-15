@@ -11,7 +11,6 @@ if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($c
     die('Missing required S3 configuration values.');
 }
 
-
 $database = new Database();
 $action = $_POST['action'];
 
@@ -30,14 +29,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? $_POST['action'] : null;
     $id = isset($_POST['id']) ? $_POST['id'] : null;
     $catalog_title = isset($_POST['catalog_title']) ? $_POST['catalog_title'] : null;
-    $catalog_site = isset($_POST['catalog_site']) ? $_POST['catalog_site'] : null;
 
     if ($action == 'update') {
-        $query = "UPDATE catalogs SET `title` = :catalog_title, `site` = :catalog_site" . (empty($catalog_file) ? "" : ", `file` = :file") . " WHERE id = :id";
+        $query = "UPDATE catalogs SET `title` = :catalog_title " . (empty($catalog_file) ? "" : ", `file` = :file") . " WHERE id = :id";
 
         $params = [
             'catalog_title' => $catalog_title,
-            'catalog_site' => $catalog_site,
             'id' => $id,
         ];
 
@@ -63,11 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Güncelleme sırasında hata oluştu.";
         }
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO catalogs (`title`, `site`" . (empty($catalog_file) ? "" : ", `file`") . ") VALUES (:catalog_title, :catalog_site" . (empty($catalog_file) ? "" : ", :file") . ")";
+        $query = "INSERT INTO catalogs (`title` " . (empty($catalog_file) ? "" : ", `file`") . ") VALUES (:catalog_title " . (empty($catalog_file) ? "" : ", :file") . ")";
 
         $params = [
             'catalog_title' => $catalog_title,
-            'catalog_site' => $catalog_site,
         ];
 
         if (!empty($catalog_file)) {

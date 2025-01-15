@@ -2,13 +2,11 @@
 include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
-$database = new Database();
-
 $currentPage = 'categories';
 $template = new Template('Kategoriler - Nokta Admin', $currentPage);
-
 // head'i çağırıyoruz
 $template->head();
+$database = new Database();
 ?>
 <body>
 <!-- Layout wrapper -->

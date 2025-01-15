@@ -60,7 +60,7 @@ $template->head();
                                         <input type="text" id="modalEditNameEn" name="modalEditNameEn" class="form-control" placeholder="Filtre Başlığı En" />
                                     </div>
                                     <?php
-                                    $query = "SELECT id, name FROM categories WHERE parent_id = 0";
+                                    $query = "SELECT id, KategoriAdiTr FROM nokta_kategoriler WHERE parent_id = 0";
                                     $categories = $database->fetchAll($query);
                                     ?>
                                     <div class="col-12">
@@ -69,7 +69,7 @@ $template->head();
                                             <option value="">Kategori Seçiniz</option> <!-- Default empty option -->
                                             <?php foreach ($categories as $category): ?>
                                                 <option value="<?php echo $category['id']; ?>">
-                                                    <?php echo $category['name']; ?>
+                                                    <?php echo $category['KategoriAdiTr']; ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>

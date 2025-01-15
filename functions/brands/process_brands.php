@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'insert') {
         // Use quotes for reserved keyword
-        $query = "INSERT INTO brands (`title`,`seo_link`" . (!empty($cat_img) ? ", `photo`" : "") . ") VALUES (:name,  :seo_link" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
+        $query = "INSERT INTO nokta_urun_markalar (`title`,`seo_link`" . (!empty($cat_img) ? ", `hover_img`" : "") . ") VALUES (:name,  :seo_link" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
         $params = [
             'name' => $name,
             'seo_link' => $seolink
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $seolink = generateSeoLink($name, $id);
 
         // Use quotes for reserved keyword
-        $query = "UPDATE brands SET `title` = :name, `seo_link` = :seo_link " . (!empty($cat_img) ? ", `photo` = :cat_img" : "") . " WHERE id = :id";
+        $query = "UPDATE nokta_urun_markalar SET `title` = :name, `seo_link` = :seo_link " . (!empty($cat_img) ? ", `hover_img` = :cat_img" : "") . " WHERE id = :id";
         $params = [
             'name' => $name,
             'seo_link' => $seolink,

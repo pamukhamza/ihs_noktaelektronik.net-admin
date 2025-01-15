@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nameEn = $_POST['nameEn'];
     $id = $_POST['id']; // ID
     if ($action === 'insert') {
-        $query = "INSERT INTO filter_value (`value`, `value_en`, `filter_title_id`) VALUES (:name, :nameEn, :filter_title_id)";
+        $query = "INSERT INTO filter_value (`name`, `name_cn`, `filter_title_id`) VALUES (:name, :nameEn, :filter_title_id)";
         $params = [
             'name' => $name,
             'nameEn' => $nameEn,
@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Ekleme sırasında hata oluştu.";
         }
     } elseif ($action === 'update') {
-        $query = "UPDATE filter_value SET `value` = :name, `value_en` = :nameEn WHERE id = :id";
+        $query = "UPDATE filter_value SET `name` = :name, `name_cn` = :nameEn WHERE id = :id";
         $params = [
             'name' => $name,
             'nameEn' => $nameEn,

@@ -35,7 +35,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             </a>
         </li>
         <!-- Products -->
-        <li class="menu-item <?= in_array($currentPage, ['products', 'categories', 'add-product', 'brands']) ? 'active open' : '' ?>">
+        <li class="menu-item <?= in_array($currentPage, ['products', 'categories', 'add-product', 'brands', 'filters']) ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons ti ti-box'></i>
                 <div data-i18n="Ürünler">Ürünler</div>

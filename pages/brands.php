@@ -35,7 +35,6 @@ $template->head();
                                             <th>Marka Adı</th>
                                             <th>Sıralama</th>
                                             <th>Siteler</th>
-                                            <th>Aktif</th>
                                             <th>İşlemler</th>
                                         </tr>
                                     </thead>
@@ -57,7 +56,7 @@ $template->head();
                                 <form id="editCatForm" class="row g-6" onsubmit="return false">
                                     <div class="col-6">
                                         <label class="form-label" for="modalEditName">Marka Adı</label>
-                                        <input type="text" id="modalEditName" name="modalEditName" class="form-control" placeholder="Kategori" />
+                                        <input type="text" id="modalEditName" name="modalEditName" class="form-control" placeholder="Marka" />
                                     </div>
                                     <div class="col-6" id="cat_image_div">
                                         <label class="form-label" for="cat_image">Fotoğraf</label>
@@ -100,7 +99,6 @@ $template->head();
     $(document).ready(function() {
         // Load top-level categories
         loadCategories(0);
-
         // Load categories based on parent ID
         function loadCategories() {
             $.ajax({
@@ -114,11 +112,9 @@ $template->head();
                 }
             });
         }
-
         $(document).on('click', '.brand_sort', function() {
             window.location.href = 'brand-sorting';
         });
-
         // Open modal for adding new category
         $(".add_lang").on('click', function () {
             $('.cat-title').html("Yeni Marka Ekle");
@@ -136,7 +132,6 @@ $template->head();
             $('#editCat').modal('show');
     
         });
-
         // Handle form submission
         $("#editCatForm").on('submit', function (e) {
             e.preventDefault();
@@ -180,7 +175,6 @@ $template->head();
                 }
             });
         });
-
         $(document).on('click', '.delete_brand', function () {
             const id = $(this).data('id');
             Swal.fire({
@@ -219,7 +213,43 @@ $template->head();
                 }
             });
         });
+        
     });
+</script>
+<script>
+  $(document).ready(function () {
+    $(document).on('change', '.wnet-checkbox, .wcomtr-checkbox, .wcn-checkbox', function () {
+        const id = $(this).data('id');
+        const field = $(this).hasClass('wnet-checkbox') ? 'web_net' :
+                      $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
+        const value = $(this).is(':checked') ? 1 : 0;
+
+        // AJAX isteği
+        fetch('../functions/brands/update_field.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                field: field,
+                value: value
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Güncelleme başarılı:', data.message);
+            } else {
+                console.error('Güncelleme başarısız:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Bir hata oluştu:', error);
+        });
+    });
+});
+
 </script>
 </body>
 </html>

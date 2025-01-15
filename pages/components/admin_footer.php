@@ -5,7 +5,7 @@
             <div class="text-body">
                 © <script>
                     document.write(new Date().getFullYear())
-                </script>, made with ❤️ by <a href="https://olieso.com/" target="_blank" class="footer-link">Olieso</a>
+                </script>, made with ❤️ by <a href="https://logsoft.com/" target="_blank" class="footer-link">Logsoft</a>
             </div>
         </div>
     </div>

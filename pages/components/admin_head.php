@@ -1,10 +1,19 @@
 <?php
+// Set the session name before starting the session
 session_name("user_session");
 session_start();
-if (!isset($_SESSION['user_session']['id'])) {
-    header("Location: 192.168.16.63/noktanet_admin/admin");
-    exit();
+
+// Function to check if the user is logged in
+function checkSession() {
+    if (!isset($_SESSION['user_session'])) {
+        // Redirect to the login page if not logged in
+        header("Location: https://www.noktaelektronik.net/admin");
+        exit();
+    }
 }
+
+// Call the function to check the session
+checkSession();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr" data-theme="theme-default" data-assets-path="../assets/" data-template="vertical-menu-template" data-style="light">
