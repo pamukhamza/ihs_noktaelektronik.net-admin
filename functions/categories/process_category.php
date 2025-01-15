@@ -5,7 +5,7 @@ require '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-$config = require '../../config/aws-config.php';
+$config = require '../../aws-config.php';
 
 if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
     die('Missing required S3 configuration values.');
