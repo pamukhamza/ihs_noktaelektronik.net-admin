@@ -69,15 +69,6 @@ $db->delete($deleteQuery);
             ajax: {
                 url: '../functions/products/get_products.php', // PHP file for server-side processing
                 type: 'POST',
-                dataSrc: function(json) {
-                // Display the response in an alert for debugging
-                alert(JSON.stringify(json));
-                return json.data;
-            },
-            error: function(xhr, error, thrown) {
-                // Display the error in an alert for debugging
-                alert('Error: ' + error + '\n' + 'Thrown: ' + thrown + '\n' + 'Response: ' + xhr.responseText);
-            }
             },
             columns: [
                 { data: 'UrunKodu' },
