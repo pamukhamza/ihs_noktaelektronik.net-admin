@@ -18,6 +18,7 @@ $s3Client = new S3Client([
         'key'    => $config['s3']['key'],
         'secret' => $config['s3']['secret'],
     ],
+    // Remove the 'verify' option for EC2
 ]);
 
 $database = new Database();
@@ -77,7 +78,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => $targetFilePath,
                     'SourceFile' => $_FILES['cat_img']['tmp_name'],
-                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
                 ]);
 
                 $params['cat_img'] = $result['ObjectURL'];
@@ -116,7 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => $targetFilePath,
                     'SourceFile' => $_FILES['cat_img']['tmp_name'],
-                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
                 ]);
 
                 $params['cat_img'] = $result['ObjectURL'];

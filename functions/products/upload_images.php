@@ -17,6 +17,9 @@ $s3Client = new S3Client([
         'key'    => $config['s3']['key'],
         'secret' => $config['s3']['secret'],
     ],
+    'http'    => [
+        'verify' => 'C:\wamp64\bin\php\cacert.pem', // Ensure this path is correct
+    ],
 ]);
 
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
@@ -57,13 +60,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
                 'Bucket' => $config['s3']['bucket'],
                 'Key'    => $targetFilePath,
                 'SourceFile' => $_FILES['images']['tmp_name'][$key],
-                'ACL'    => 'public-read', // Optional: make the file publicly accessible
             ]);
 
             $uploadedFiles[] = $result['ObjectURL'];
 
             // Insert image name, product ID, and sort_order into the database
-            $sql = "INSERT INTO nokta_urunler_resimler (UrunID, KResim, sira) VALUES (:product_id, :image_name, :sort_order)";
+            $sql = "INSERT INTO nokta_urunler_resimler (UrunID, KResim, Sira) VALUES (:product_id, :image_name, :sort_order)";
             $params = [
                 'product_id' => $productId,
                 'image_name' => $fileName,
