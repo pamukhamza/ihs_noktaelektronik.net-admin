@@ -16,10 +16,7 @@ $s3Client = new S3Client([
     'credentials' => [
         'key'    => $config['s3']['key'],
         'secret' => $config['s3']['secret'],
-    ],
-    'http'    => [
-        'verify' => 'C:\wamp64\bin\php\cacert.pem', // Ensure this path is correct
-    ],
+    ]
 ]);
 
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;

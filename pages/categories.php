@@ -214,7 +214,6 @@ $database = new Database();
                 contentType: false, // Prevent jQuery from setting the content type
                 success: function (response) {
                     $('#editCat').modal('hide');
-                    alert(response);
                     Swal.fire({
                         icon: 'success',
                         title: 'Başarılı!',
