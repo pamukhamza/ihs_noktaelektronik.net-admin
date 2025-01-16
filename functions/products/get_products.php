@@ -35,14 +35,14 @@ $query = "
 // Add search functionality
 $params = [];
 if (!empty($searchValue)) {
-    $query .= " WHERE p.UrunAdiTR LIKE ? 
-                OR p.UrunKodu LIKE ? 
-                OR m.title LIKE ? 
-                OR c.KategoriAdiTR LIKE ?";
-    $params[] = '%' . $searchValue . '%';
-    $params[] = '%' . $searchValue . '%';
-    $params[] = '%' . $searchValue . '%';
-    $params[] = '%' . $searchValue . '%';
+    $query .= " WHERE p.UrunAdiTR LIKE :search1 
+                OR p.UrunKodu LIKE :search2 
+                OR m.title LIKE :search3 
+                OR c.KategoriAdiTR LIKE :search4";
+    $params['search1'] = '%' . $searchValue . '%';
+    $params['search2'] = '%' . $searchValue . '%';
+    $params['search3'] = '%' . $searchValue . '%';
+    $params['search4'] = '%' . $searchValue . '%';
 }
 
 // Get total records without filtering
@@ -56,9 +56,9 @@ $filteredRecordsResult = $database->fetchAll($filteredRecordsQuery, $params);
 $totalFilteredRecords = count($filteredRecordsResult);
 
 // Add pagination
-$query .= " LIMIT ?, ?";
-$params[] = $start;
-$params[] = $length;
+$query .= " LIMIT :start, :length";
+$params['start'] = $start;
+$params['length'] = $length;
 
 // Debugging: Output the final query and parameters
 error_log('Final query: ' . $query);
