@@ -1,18 +1,21 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include_once '../db.php';
 
 $database = new Database();
+
 if (isset($_POST['allData']) && $_POST['allData'] == true) {
     $query = "SELECT p.*, m.id AS mid, m.title, c.KategoriAdiTR AS category_name
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID";
     $data = $database->fetchAll($query);
-    ob_clean(); // Daha önceki tamponları temizler
+    ob_clean(); // Clear previous output buffers
     echo json_encode($data);
     exit;
 }
-
 
 // Get parameters from DataTables
 $draw = intval($_POST['draw']);
@@ -29,11 +32,13 @@ $query = "
 ";
 
 // Add search functionality
+$params = [];
 if (!empty($searchValue)) {
-    $query .= " WHERE p.UrunAdiTR LIKE '%" . $searchValue . "%' 
-                OR p.UrunKodu LIKE '%" . $searchValue . "%' 
-                OR m.title LIKE '%" . $searchValue . "%' 
-                OR c.KategoriAdiTR LIKE '%" . $searchValue . "%'";
+    $query .= " WHERE p.UrunAdiTR LIKE :searchValue 
+                OR p.UrunKodu LIKE :searchValue 
+                OR m.title LIKE :searchValue 
+                OR c.KategoriAdiTR LIKE :searchValue";
+    $params['searchValue'] = '%' . $searchValue . '%';
 }
 
 // Get total records without filtering
@@ -43,12 +48,14 @@ $totalRecords = $totalRecordsResult[0]['total'];
 
 // Get filtered records
 $filteredRecordsQuery = $query;
-$filteredRecordsResult = $database->fetchAll($filteredRecordsQuery);
+$filteredRecordsResult = $database->fetchAll($filteredRecordsQuery, $params);
 $totalFilteredRecords = count($filteredRecordsResult);
 
 // Add pagination
-$query .= " LIMIT $start, $length";
-$results = $database->fetchAll($query);
+$query .= " LIMIT :start, :length";
+$params['start'] = $start;
+$params['length'] = $length;
+$results = $database->fetchAll($query, $params);
 
 // Prepare data for DataTables
 $data = [];
@@ -62,9 +69,6 @@ foreach ($results as $row) {
         'Vitrin' => $row['Vitrin'],
         'YeniUrun' => $row['YeniUrun'],
         'aktif' => $row['aktif'],
-        'web_net' => $row['web_net'],
-        'web_comtr' => $row['web_comtr'],
-        'web_cn' => $row['web_cn'],
     ];
 }
 
