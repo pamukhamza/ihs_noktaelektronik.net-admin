@@ -17,6 +17,8 @@ class Database {
         try {
             $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8", $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Use native prepared statements
+            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         } catch(PDOException $e) {
             echo "Connection error: " . $e->getMessage();
         }
@@ -35,11 +37,18 @@ class Database {
     // FetchAll tüm satırları döndürme
     public function fetchAll($query, $params = []) {
         $stmt = $this->conn->prepare($query);
-        foreach ($params as $key => $value) {
-            $stmt->bindValue(":$key", htmlspecialchars($value));
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                // Only use htmlspecialchars for string values
+                $stmt->bindValue(
+                    ":$key", 
+                    is_string($value) ? htmlspecialchars($value) : $value,
+                    is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+                );
+            }
         }
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
     // FetchColumn: Sadece bir kolon döndürme
     public function fetchColumn($query, $params = []) {
