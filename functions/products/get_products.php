@@ -56,9 +56,7 @@ $filteredRecordsResult = $database->fetchAll($filteredRecordsQuery, $params);
 $totalFilteredRecords = count($filteredRecordsResult);
 
 // Add pagination
-$query .= " LIMIT :start, :length";
-$params['start'] = $start;
-$params['length'] = $length;
+$query .= " LIMIT " . intval($start) . ", " . intval($length);
 
 // Debugging: Output the final query and parameters
 error_log('Final query: ' . $query);
