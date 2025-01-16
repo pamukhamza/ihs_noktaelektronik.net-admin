@@ -35,11 +35,14 @@ $query = "
 // Add search functionality
 $params = [];
 if (!empty($searchValue)) {
-    $query .= " WHERE p.UrunAdiTR LIKE :searchValue 
-                OR p.UrunKodu LIKE :searchValue 
-                OR m.title LIKE :searchValue 
-                OR c.KategoriAdiTR LIKE :searchValue";
-    $params['searchValue'] = '%' . $searchValue . '%';
+    $query .= " WHERE p.UrunAdiTR LIKE ? 
+                OR p.UrunKodu LIKE ? 
+                OR m.title LIKE ? 
+                OR c.KategoriAdiTR LIKE ?";
+    $params[] = '%' . $searchValue . '%';
+    $params[] = '%' . $searchValue . '%';
+    $params[] = '%' . $searchValue . '%';
+    $params[] = '%' . $searchValue . '%';
 }
 
 // Get total records without filtering
