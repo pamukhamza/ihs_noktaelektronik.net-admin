@@ -56,6 +56,11 @@ $totalFilteredRecords = count($filteredRecordsResult);
 $query .= " LIMIT ?, ?";
 $params[] = $start;
 $params[] = $length;
+
+// Debugging: Output the final query and parameters
+error_log('Final query: ' . $query);
+error_log('Parameters: ' . print_r($params, true));
+
 $results = $database->fetchAll($query, $params);
 
 // Debugging: Output memory usage
