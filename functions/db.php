@@ -15,10 +15,23 @@ class Database {
     // Veritabanına bağlan
     private function connect() {
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8", $this->username, $this->password);
-            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            $this->conn->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // Use native prepared statements
-            $this->conn->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+            // Options for better performance with remote database
+            $options = [
+                PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+                PDO::ATTR_EMULATE_PREPARES => false,
+                PDO::ATTR_PERSISTENT => true, // Use persistent connections
+                PDO::MYSQL_ATTR_COMPRESS => true, // Enable compression
+                PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES utf8mb4", // Proper charset
+                PDO::ATTR_TIMEOUT => 5, // 5 second timeout
+            ];
+            
+            $this->conn = new PDO(
+                "mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4", 
+                $this->username, 
+                $this->password,
+                $options
+            );
         } catch(PDOException $e) {
             echo "Connection error: " . $e->getMessage();
         }

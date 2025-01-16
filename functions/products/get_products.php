@@ -21,18 +21,23 @@ $start = intval($_POST['start']);
 $length = intval($_POST['length']);
 $searchValue = $_POST['search']['value'];
 
-// Build the query with index hints
-$query = "
-    SELECT SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif
+// Combine both counts and data in a single query
+$mainQuery = "
+    SELECT 
+        SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, 
+        m.id AS mid, m.title, 
+        c.KategoriAdiTR AS category_name, 
+        p.Vitrin, p.YeniUrun, p.aktif,
+        (SELECT COUNT(*) FROM nokta_urunler) as total_records
     FROM nokta_urunler p USE INDEX (PRIMARY)
     LEFT JOIN nokta_kategoriler c USE INDEX (PRIMARY) ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m USE INDEX (PRIMARY) ON m.id = p.MarkaID
 ";
 
-// Add search functionality with optimized WHERE clause
+// Add search functionality
 $params = [];
 if (!empty($searchValue)) {
-    $query .= " WHERE (p.UrunAdiTR LIKE :search1 
+    $mainQuery .= " WHERE (p.UrunAdiTR LIKE :search1 
                 OR p.UrunKodu LIKE :search2 
                 OR m.title LIKE :search3 
                 OR c.KategoriAdiTR LIKE :search4)";
@@ -43,29 +48,19 @@ if (!empty($searchValue)) {
     $params['search4'] = $searchParam;
 }
 
-error_log("Before total records query: " . (microtime(true) - $start_time));
-
-// Get total records without filtering - use COUNT(*) with index
-$totalRecordsQuery = "SELECT COUNT(*) as total FROM nokta_urunler p USE INDEX (PRIMARY)";
-$totalRecordsResult = $database->fetchAll($totalRecordsQuery);
-$totalRecords = $totalRecordsResult[0]['total'];
-
-error_log("After total records query: " . (microtime(true) - $start_time));
-
 // Add pagination
-$query .= " LIMIT " . intval($start) . ", " . intval($length);
+$mainQuery .= " LIMIT " . intval($start) . ", " . intval($length);
 
-// Get the results
-error_log("Before main query: " . (microtime(true) - $start_time));
-$results = $database->fetchAll($query, $params);
-error_log("After main query: " . (microtime(true) - $start_time));
+// Execute main query
+$results = $database->fetchAll($mainQuery, $params);
 
-// Get total filtered records
-$filteredRecordsQuery = "SELECT FOUND_ROWS() as total";
-$filteredResult = $database->fetchAll($filteredRecordsQuery);
+// Get total records from the first row
+$totalRecords = $results[0]['total_records'] ?? 0;
+
+// Get filtered count
+$filteredCountQuery = "SELECT FOUND_ROWS() as total";
+$filteredResult = $database->fetchAll($filteredCountQuery);
 $totalFilteredRecords = $filteredResult[0]['total'];
-
-error_log("After filtered count query: " . (microtime(true) - $start_time));
 
 // Prepare data for DataTables
 $data = [];
@@ -82,8 +77,6 @@ foreach ($results as $row) {
     ];
 }
 
-error_log("After data preparation: " . (microtime(true) - $start_time));
-
 // Return JSON response
 $response = [
     'draw' => $draw,
@@ -91,9 +84,6 @@ $response = [
     'recordsFiltered' => $totalFilteredRecords,
     'data' => $data,
 ];
-
-// Debugging: Output memory usage
-error_log('Memory usage after processing results: ' . memory_get_usage());
 
 header('Content-Type: application/json');
 echo json_encode($response);
