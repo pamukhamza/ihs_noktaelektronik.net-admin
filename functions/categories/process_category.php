@@ -17,8 +17,7 @@ $s3Client = new S3Client([
     'credentials' => [
         'key'    => $config['s3']['key'],
         'secret' => $config['s3']['secret'],
-    ],
-    // Remove the 'verify' option for EC2
+    ]
 ]);
 
 $database = new Database();
@@ -61,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'insert') {
         // Use quotes for reserved keyword
-        $query = "INSERT INTO nokta_kategoriler (`KategoriAdiTr`, `KategoriAdiEn`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `cat_img`" : "") . ") VALUES (:name, :name_cn, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
+        $query = "INSERT INTO nokta_kategoriler (`KategoriAdiTr`, `KategoriAdiEn`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `img_path`" : "") . ") VALUES (:name, :name_cn, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
         $params = [
             'name' => $name,
             'name_cn' => $name_cn,
@@ -80,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'SourceFile' => $_FILES['cat_img']['tmp_name'],
                 ]);
 
-                $params['cat_img'] = $result['ObjectURL'];
+                $params['cat_img'] = $fileName;
             } catch (AwsException $e) {
                 echo "Error uploading file: " . $e->getMessage();
                 exit;
@@ -98,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $seolink = generateSeoLink($name, $cat_id);
 
         // Use quotes for reserved keyword
-        $query = "UPDATE nokta_kategoriler SET `KategoriAdiTr` = :name, `KategoriAdiEn` = :name_cn, `seo_link` = :seo_link, `parent_id` = :parent_id" . (!empty($cat_img) ? ", `cat_img` = :cat_img" : "") . " WHERE id = :id";
+        $query = "UPDATE nokta_kategoriler SET `KategoriAdiTr` = :name, `KategoriAdiEn` = :name_cn, `seo_link` = :seo_link, `parent_id` = :parent_id" . (!empty($cat_img) ? ", `img_path` = :cat_img" : "") . " WHERE id = :id";
         $params = [
             'name' => $name,
             'name_cn' => $name_cn,
@@ -118,7 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'SourceFile' => $_FILES['cat_img']['tmp_name'],
                 ]);
 
-                $params['cat_img'] = $result['ObjectURL'];
+                $params['cat_img'] = $fileName;
             } catch (AwsException $e) {
                 echo "Error uploading file: " . $e->getMessage();
                 exit;
