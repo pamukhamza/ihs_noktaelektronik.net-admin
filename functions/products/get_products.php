@@ -47,15 +47,15 @@ $totalRecordsQuery = "SELECT COUNT(*) as total FROM nokta_urunler";
 $totalRecordsResult = $database->fetchAll($totalRecordsQuery);
 $totalRecords = $totalRecordsResult[0]['total'];
 
-// Get filtered records
+// Get filtered records count
 $filteredRecordsQuery = $query;
 $filteredRecordsResult = $database->fetchAll($filteredRecordsQuery, $params);
 $totalFilteredRecords = count($filteredRecordsResult);
 
 // Add pagination
-$query .= " LIMIT :start, :length";
-$params['start'] = $start;
-$params['length'] = $length;
+$query .= " LIMIT ?, ?";
+$params[] = $start;
+$params[] = $length;
 $results = $database->fetchAll($query, $params);
 
 // Debugging: Output memory usage
