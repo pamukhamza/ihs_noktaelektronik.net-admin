@@ -65,16 +65,22 @@ $db->delete($deleteQuery);
     $(document).ready(function () {
         const table = $('#lang_table').DataTable({
             processing: true,
-            deferRender: true,
+            serverSide: true,
+            pageLength: 10,  // Default number of rows per page
+            deferRender: true,  // Improve performance for large datasets
             ajax: {
                 url: '../functions/products/get_products.php',
-                type: 'GET'
+                type: 'POST',
+                data: function(d) {
+                    // Log the request data for debugging
+                    console.log('Request:', d);
+                }
             },
             columns: [
                 { data: 'UrunKodu' },
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
-                { data: 'category_name' },
+                { data: 'category_name', defaultContent: 'Kategori Yok' },
                 {
                     data: null,
                     render: function (data, type, row) {
@@ -94,20 +100,71 @@ $db->delete($deleteQuery);
                                             <span class="switch-label">Vitrin</span>
                                         </label>
                                     </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input new-checkbox" data-id="${row.id}" ${row.YeniUrun == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">Yeni Ürün</span>
+                                        </label>
+                                    </li>
                                 </ul>
-                            </div>
-                        `;
+                            </div>`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Siteler
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input wnet-checkbox" data-id="${row.id}" ${row.web_net == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.net</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="${row.id}" ${row.web_comtr == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.com.tr</span>
+                                        </label>
+                                    </li>
+                                    <li>
+                                        <label class="switch switch-success">
+                                            <input type="checkbox" class="switch-input wcn-checkbox" data-id="${row.id}" ${row.web_cn == 1 ? 'checked' : ''} />
+                                            <span class="switch-toggle-slider">
+                                                <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                <span class="switch-off"><i class="ti ti-x"></i></span>
+                                            </span>
+                                            <span class="switch-label">.com.cn</span>
+                                        </label>
+                                    </li>
+                                </ul>
+                            </div>`;
+                    }
+                },
+                {
+                    data: null,
+                    render: function (data, type, row) {
+                        return `<a class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
+                                <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
                     }
                 }
-            ],
-            pageLength: 25,
-            order: [[0, 'asc']],
-            dom: 'Bfrtip',
-            buttons: ['copy', 'excel'],
-            initComplete: function() {
-                // Hide processing message after initial load
-                $('.dataTables_processing').hide();
-            }
+            ]
         });
 
         // Delegate event listeners for checkboxes
