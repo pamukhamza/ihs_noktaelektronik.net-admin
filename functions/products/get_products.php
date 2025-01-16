@@ -1,8 +1,4 @@
 <?php
-ini_set('memory_limit', '512M'); // Increase memory limit further if needed
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include_once '../db.php';
 
 $database = new Database();
@@ -95,5 +91,5 @@ $response = [
 
 // Debugging: Output the JSON response
 header('Content-Type: application/json');
-echo json_encode($response, JSON_PRETTY_PRINT);
+echo json_encode($response);
 ?>
