@@ -21,17 +21,21 @@ $start = intval($_POST['start']);
 $length = intval($_POST['length']);
 $searchValue = $_POST['search']['value'];
 
-// Combine both counts and data in a single query
+// Get total records count (without filtering)
+$totalRecordsQuery = "SELECT COUNT(*) as total FROM nokta_urunler";
+$totalRecordsResult = $database->fetchAll($totalRecordsQuery);
+$totalRecords = $totalRecordsResult[0]['total'];
+
+// Build main query for data
 $mainQuery = "
-    SELECT 
-        SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, 
+    SELECT SQL_CALC_FOUND_ROWS 
+        p.id, p.UrunKodu, p.UrunAdiTR, 
         m.id AS mid, m.title, 
         c.KategoriAdiTR AS category_name, 
-        p.Vitrin, p.YeniUrun, p.aktif,
-        (SELECT COUNT(*) FROM nokta_urunler) as total_records
-    FROM nokta_urunler p USE INDEX (PRIMARY)
-    LEFT JOIN nokta_kategoriler c USE INDEX (PRIMARY) ON p.KategoriID = c.id
-    LEFT JOIN nokta_urun_markalar AS m USE INDEX (PRIMARY) ON m.id = p.MarkaID
+        p.Vitrin, p.YeniUrun, p.aktif
+    FROM nokta_urunler p
+    LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
+    LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
 ";
 
 // Add search functionality
@@ -48,14 +52,14 @@ if (!empty($searchValue)) {
     $params['search4'] = $searchParam;
 }
 
+// Add sorting
+$mainQuery .= " ORDER BY p.id DESC";
+
 // Add pagination
 $mainQuery .= " LIMIT " . intval($start) . ", " . intval($length);
 
 // Execute main query
 $results = $database->fetchAll($mainQuery, $params);
-
-// Get total records from the first row
-$totalRecords = $results[0]['total_records'] ?? 0;
 
 // Get filtered count
 $filteredCountQuery = "SELECT FOUND_ROWS() as total";
@@ -73,7 +77,7 @@ foreach ($results as $row) {
         'category_name' => $row['category_name'] ?: 'Kategori Yok',
         'Vitrin' => $row['Vitrin'],
         'YeniUrun' => $row['YeniUrun'],
-        'aktif' => $row['aktif'],
+        'aktif' => $row['aktif']
     ];
 }
 
@@ -82,7 +86,7 @@ $response = [
     'draw' => $draw,
     'recordsTotal' => $totalRecords,
     'recordsFiltered' => $totalFilteredRecords,
-    'data' => $data,
+    'data' => $data
 ];
 
 header('Content-Type: application/json');
