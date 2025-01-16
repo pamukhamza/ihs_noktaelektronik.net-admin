@@ -80,5 +80,7 @@ $response = [
     'data' => $data,
 ];
 
-echo json_encode($response);
+// Debugging: Output the JSON response
+header('Content-Type: application/json');
+echo json_encode($response, JSON_PRETTY_PRINT);
 ?>
