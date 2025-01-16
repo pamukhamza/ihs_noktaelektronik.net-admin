@@ -15,6 +15,7 @@ if (isset($_POST['allData']) && $_POST['allData'] == true) {
     exit;
 }
 
+
 // Get parameters from DataTables
 $draw = intval($_POST['draw']);
 $start = intval($_POST['start']);
