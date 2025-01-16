@@ -1,5 +1,5 @@
 <?php
-ini_set('memory_limit', '256M');
+ini_set('memory_limit', '512M'); // Increase memory limit further if needed
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -8,7 +8,7 @@ include_once '../db.php';
 $database = new Database();
 
 if (isset($_POST['allData']) && $_POST['allData'] == true) {
-    $query = "SELECT p.*, m.id AS mid, m.title, c.KategoriAdiTR AS category_name
+    $query = "SELECT p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID";
@@ -26,7 +26,7 @@ $searchValue = $_POST['search']['value'];
 
 // Build the query
 $query = "
-    SELECT p.*, m.id AS mid, m.title, c.KategoriAdiTR AS category_name
+    SELECT p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
@@ -58,6 +58,9 @@ $params['start'] = $start;
 $params['length'] = $length;
 $results = $database->fetchAll($query, $params);
 
+// Debugging: Output memory usage
+error_log('Memory usage before processing results: ' . memory_get_usage());
+
 // Prepare data for DataTables
 $data = [];
 foreach ($results as $row) {
@@ -72,6 +75,9 @@ foreach ($results as $row) {
         'aktif' => $row['aktif'],
     ];
 }
+
+// Debugging: Output memory usage
+error_log('Memory usage after processing results: ' . memory_get_usage());
 
 // Return JSON response
 $response = [
