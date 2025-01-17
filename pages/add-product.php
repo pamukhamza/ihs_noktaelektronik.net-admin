@@ -2,6 +2,12 @@
 include_once '../functions/db.php';
 require '../functions/admin_template.php';
 
+// Sayfa başlığı ve template ayarları
+$currentPage = 'add-product';
+$template = new Template('Yeni Ürün - Nokta Admin', $currentPage);
+
+$template->head();
+
 // Gelen ID'yi kontrol ediyoruz, yoksa 0 olarak kabul ediyoruz
 $id = isset($_GET['id']) && !empty($_GET['id']) ? $_GET['id'] : 0;
 
@@ -44,11 +50,7 @@ $brands = $database->fetchAll($query);
 // Kategorileri çek
 $categories = getCategories();
 
-// Sayfa başlığı ve template ayarları
-$currentPage = 'add-product';
-$template = new Template('Yeni Ürün - Nokta Admin', $currentPage);
 
-$template->head();
 ?>
 
 <body xmlns="http://www.w3.org/1999/html">
