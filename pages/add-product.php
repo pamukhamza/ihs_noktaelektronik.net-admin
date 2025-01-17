@@ -319,6 +319,8 @@ $categories = getCategories();
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- SweetAlert 2 Kütüphanesi -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- CKEditor -->
+<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
     function initializeCKEditor(elementId) {
         CKEDITOR.replace(elementId, {
@@ -326,9 +328,11 @@ $categories = getCategories();
             filebrowserUploadUrl: 'ckeditor/plugins/ckfinder/core/connector/php/connector.php?command=QuickUpload&type=Files'
         });
     }
-    ['ozellikler', 'ozellikler_en', 'teknik_ozellikler', 'teknik_ozellikler_en',
-    ].forEach(function(elementId) {
-        initializeCKEditor(elementId);
+
+    document.addEventListener('DOMContentLoaded', function() {
+        ['ozellikler', 'ozellikler_en', 'teknik_ozellikler', 'teknik_ozellikler_en'].forEach(function(elementId) {
+            initializeCKEditor(elementId);
+        });
     });
 </script>
 <script>
