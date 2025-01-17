@@ -1,11 +1,15 @@
 <?php
+ini_set('memory_limit', '512M'); // Increase memory limit if needed
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 include_once '../db.php';
 
 $database = new Database();
 $start_time = microtime(true);
 
 if (isset($_POST['allData']) && $_POST['allData'] == true) {
-    $query = "SELECT p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif
+    $query = "SELECT p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif, p.web_net, p.web_comtr, p.web_cn
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID";
@@ -14,7 +18,6 @@ if (isset($_POST['allData']) && $_POST['allData'] == true) {
     echo json_encode($data);
     exit;
 }
-
 
 // Get parameters from DataTables
 $draw = intval($_POST['draw']);
@@ -29,11 +32,10 @@ $totalRecords = $totalRecordsResult[0]['total'];
 
 // Build main query for data
 $mainQuery = "
-    SELECT SQL_CALC_FOUND_ROWS 
-        p.id, p.UrunKodu, p.UrunAdiTR, 
-        m.id AS mid, m.title, 
-        c.KategoriAdiTR AS category_name, 
-        p.Vitrin, p.YeniUrun, p.aktif
+    SELECT p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn,
+           m.id AS mid, m.title, 
+           c.KategoriAdiTR AS category_name, 
+           p.Vitrin, p.YeniUrun, p.aktif
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
@@ -42,22 +44,20 @@ $mainQuery = "
 // Add search functionality
 $params = [];
 if (!empty($searchValue)) {
-    $mainQuery .= " WHERE (p.UrunAdiTR LIKE :search1 
-                OR p.UrunKodu LIKE :search2 
-                OR m.title LIKE :search3 
-                OR c.KategoriAdiTR LIKE :search4)";
-    $searchParam = '%' . $searchValue . '%';
-    $params['search1'] = $searchParam;
-    $params['search2'] = $searchParam;
-    $params['search3'] = $searchParam;
-    $params['search4'] = $searchParam;
+    $mainQuery .= " WHERE p.UrunAdiTR LIKE :search 
+                    OR p.UrunKodu LIKE :search 
+                    OR m.title LIKE :search 
+                    OR c.KategoriAdiTR LIKE :search";
+    $params['search'] = '%' . $searchValue . '%';
 }
 
 // Add sorting
 $mainQuery .= " ORDER BY p.id DESC";
 
 // Add pagination
-$mainQuery .= " LIMIT " . intval($start) . ", " . intval($length);
+$mainQuery .= " LIMIT :start, :length";
+$params['start'] = $start;
+$params['length'] = $length;
 
 // Execute main query
 $results = $database->fetchAll($mainQuery, $params);
@@ -78,7 +78,10 @@ foreach ($results as $row) {
         'category_name' => $row['category_name'] ?: 'Kategori Yok',
         'Vitrin' => $row['Vitrin'],
         'YeniUrun' => $row['YeniUrun'],
-        'aktif' => $row['aktif']
+        'aktif' => $row['aktif'],
+        'web_net' => $row['web_net'],
+        'web_comtr' => $row['web_comtr'],
+        'web_cn' => $row['web_cn']
     ];
 }
 
