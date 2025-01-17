@@ -66,15 +66,9 @@ $db->delete($deleteQuery);
         const table = $('#lang_table').DataTable({
             processing: true,
             serverSide: true,
-            pageLength: 10,  // Default number of rows per page
-            deferRender: true,  // Improve performance for large datasets
             ajax: {
                 url: '../functions/products/get_products.php',
-                type: 'POST',
-                data: function(d) {
-                    // Log the request data for debugging
-                    console.log('Request:', d);
-                }
+                type: 'POST'
             },
             columns: [
                 { data: 'UrunKodu' },
