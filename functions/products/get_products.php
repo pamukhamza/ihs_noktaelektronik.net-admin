@@ -8,16 +8,7 @@ include_once '../db.php';
 $database = new Database();
 $start_time = microtime(true);
 
-if (isset($_POST['allData']) && $_POST['allData'] == true) {
-    $query = "SELECT p.id, p.UrunKodu, p.UrunAdiTR, m.id AS mid, m.title, c.KategoriAdiTR AS category_name, p.Vitrin, p.YeniUrun, p.aktif, p.web_net, p.web_comtr, p.web_cn
-    FROM nokta_urunler p
-    LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
-    LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID";
-    $data = $database->fetchAll($query);
-    ob_clean(); // Clear previous output buffers
-    echo json_encode($data);
-    exit;
-}
+
 
 // Get parameters from DataTables
 $draw = intval($_POST['draw']);
