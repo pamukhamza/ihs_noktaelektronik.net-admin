@@ -6,8 +6,6 @@ $template = new Template('Ürünler - Nokta Admin', $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $db = new Database();
-$deleteQuery = "DELETE FROM nokta_urunler WHERE (UrunKodu IS NULL OR UrunKodu = '') AND (UrunAdiTR IS NULL OR UrunAdiTR = '')";
-$db->delete($deleteQuery);
 ?>
 <body>
 <div class="layout-wrapper layout-content-navbar  ">
