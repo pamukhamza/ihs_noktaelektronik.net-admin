@@ -47,7 +47,7 @@ checkSession();
     <link rel="stylesheet" href="../assets/vendor/libs/typeahead-js/typeahead.css" />
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="../assets/vendor/libs/swiper/swiper.css" />
-    <link href="https://cdn.datatables.net/2.2.1/css/dataTables.dataTables.min.css" rel="stylesheet">
+    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
 
     <!-- Page CSS -->
