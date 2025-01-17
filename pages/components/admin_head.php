@@ -47,13 +47,6 @@ checkSession();
     <link rel="stylesheet" href="../assets/vendor/libs/typeahead-js/typeahead.css" />
     <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
     <link rel="stylesheet" href="../assets/vendor/libs/swiper/swiper.css" />
-    <link href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css" rel="stylesheet">
-    <?php if($currentPage === 'add-product'){ ?>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.9.3/min/dropzone.min.css">
-    <link rel="stylesheet" href="../assets/vendor/libs/quill/typography.css">
-    <link rel="stylesheet" href="../assets/vendor/libs/quill/katex.css">
-    <link rel="stylesheet" href="../assets/vendor/libs/quill/editor.css">
-    <?php } ?>
     <link rel="stylesheet" href="../assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css">
 
     <!-- Page CSS -->
