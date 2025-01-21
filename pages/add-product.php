@@ -33,7 +33,7 @@ function getCategories($parent_id = 0, $categories = [], $level = 0) {
     $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = :parent_id";
     $params = ['parent_id' => $parent_id];
     $results = $database->fetchAll($query, $params);
-
+    
     foreach ($results as $row) {
         // Kategori başına uygun seviyeye göre boşluk ekliyoruz
         $row['KategoriAdiTr'] = str_repeat('-', $level * 4) . $row['KategoriAdiTr'];
@@ -49,7 +49,6 @@ $brands = $database->fetchAll($query);
 
 // Kategorileri çek
 $categories = getCategories();
-
 
 ?>
 
