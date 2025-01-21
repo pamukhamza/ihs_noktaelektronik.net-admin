@@ -74,6 +74,12 @@ $db = new Database();
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
                 {
+                    data: 'KResim',
+                    render: function (data, type, row) {
+                        return data ? `<img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/${data}" style="width: 50px; height: auto;">` : 'No Image';
+                    }
+                },
+                {
                     data: null,
                     render: function (data, type, row) {
                         return `

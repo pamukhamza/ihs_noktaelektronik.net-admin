@@ -23,10 +23,12 @@ $mainQuery = "
     SELECT SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn,
            m.id AS mid, m.title, 
            c.KategoriAdiTR AS category_name, 
-           p.Vitrin, p.YeniUrun, p.aktif
+           p.Vitrin, p.YeniUrun, p.aktif,
+           r.KResim
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
+    LEFT JOIN nokta_urunler_resimler r ON p.id = r.UrunID
 ";
 
 // Add search functionality
@@ -69,7 +71,8 @@ foreach ($results as $row) {
         'aktif' => $row['aktif'],
         'web_net' => $row['web_net'],
         'web_comtr' => $row['web_comtr'],
-        'web_cn' => $row['web_cn']
+        'web_cn' => $row['web_cn'],
+        'KResim' => $row['KResim']
     ];
 }
 
