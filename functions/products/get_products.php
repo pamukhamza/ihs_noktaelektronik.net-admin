@@ -9,6 +9,9 @@ $draw = intval($_POST['draw']);
 $start = intval($_POST['start']);
 $length = intval($_POST['length']);
 $searchValue = $_POST['search']['value'];
+$orderColumnIndex = intval($_POST['order'][0]['column']);
+$orderColumnDir = $_POST['order'][0]['dir'];
+$orderColumn = $_POST['columns'][$orderColumnIndex]['data'];
 
 // Get total records count (without filtering)
 $totalRecordsQuery = "SELECT COUNT(*) as total FROM nokta_urunler";
@@ -17,7 +20,7 @@ $totalRecords = $totalRecordsResult[0]['total'];
 
 // Build main query for data
 $mainQuery = "
-    SELECT p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn,
+    SELECT SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn,
            m.id AS mid, m.title, 
            c.KategoriAdiTR AS category_name, 
            p.Vitrin, p.YeniUrun, p.aktif
@@ -36,6 +39,8 @@ if (!empty($searchValue)) {
     $params['search'] = '%' . $searchValue . '%';
 }
 
+// Add sorting
+$mainQuery .= " ORDER BY $orderColumn $orderColumnDir";
 
 // Add pagination
 $mainQuery .= " LIMIT :start, :length";
