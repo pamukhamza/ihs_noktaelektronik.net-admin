@@ -11,8 +11,9 @@ $deleteQuery = "
     WHERE (UrunKodu IS NULL OR UrunKodu = '') 
     AND (UrunAdiTR IS NULL OR UrunAdiTR = '') 
     ORDER BY id DESC
-    LIMIT 100";
+    LIMIT 25";
 $db->delete($deleteQuery);
+
 
 ?>
 <body>
