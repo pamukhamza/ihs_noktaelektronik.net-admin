@@ -319,8 +319,6 @@ $categories = getCategories();
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- SweetAlert 2 Kütüphanesi -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- CKEditor -->
-<script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
 <script>
     function initializeCKEditor(elementId) {
         CKEDITOR.replace(elementId, {
@@ -550,7 +548,7 @@ $categories = getCategories();
 
     // Add event listener for change event
     categorySelect.addEventListener('change', handleCategoryChange);
-});
+    });
 
     function fetchFilters(categoryId) {
         // Make an AJAX request to get filter titles based on categoryId

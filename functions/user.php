@@ -57,7 +57,7 @@ class User {
 
         unset($_SESSION[$this->session_key]);
         session_destroy();
-        header("Location:/");
+        header("Location:https://www.noktaelektronik.net/admin/index");
     }
 }
 ?>

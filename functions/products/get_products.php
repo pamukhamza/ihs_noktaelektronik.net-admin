@@ -1,14 +1,8 @@
 <?php
-ini_set('memory_limit', '512M'); // Increase memory limit if needed
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 include_once '../db.php';
 
 $database = new Database();
 $start_time = microtime(true);
-
-
 
 // Get parameters from DataTables
 $draw = intval($_POST['draw']);
@@ -42,8 +36,6 @@ if (!empty($searchValue)) {
     $params['search'] = '%' . $searchValue . '%';
 }
 
-// Add sorting
-$mainQuery .= " ORDER BY p.id DESC";
 
 // Add pagination
 $mainQuery .= " LIMIT :start, :length";
@@ -86,5 +78,4 @@ $response = [
 
 header('Content-Type: application/json');
 echo json_encode($response);
-error_log("Total execution time: " . (microtime(true) - $start_time));
 ?>
