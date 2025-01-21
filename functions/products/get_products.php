@@ -28,7 +28,7 @@ $mainQuery = "
     FROM nokta_urunler p
     LEFT JOIN nokta_kategoriler c ON p.KategoriID = c.id
     LEFT JOIN nokta_urun_markalar AS m ON m.id = p.MarkaID
-    LEFT JOIN nokta_urunler_resimler r ON p.id = r.UrunID
+    LEFT JOIN nokta_urunler_resimler r ON p.id = r.UrunID WHERE r.Sira = 0
 ";
 
 // Add search functionality
