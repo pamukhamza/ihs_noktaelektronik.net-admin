@@ -87,6 +87,11 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
     }
 }
 function validateAndSaveImage($file, $upload_path) {
+    // Check for upload errors
+    if ($file['error'] !== UPLOAD_ERR_OK) {
+        return false;
+    }
+
     // Dosya Türü Doğrulama
     $allowedTypes = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp');
     if (!in_array($file['type'], $allowedTypes)) {
@@ -99,41 +104,18 @@ function validateAndSaveImage($file, $upload_path) {
         return false;
     }
 
-    // Özel isim oluşturma
-    $unique_filename = uniqid() . '.jpg'; // JPG uzantısı
+    // Get the original file extension
+    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Generate a unique filename with the original extension
+    $unique_filename = uniqid() . '.' . $fileExtension;
     $uploadPath = $upload_path . $unique_filename;
 
-    // Görüntüyü oluştur
-    switch ($file['type']) {
-        case 'image/jpeg':
-        case 'image/jpg':
-            $image = @imagecreatefromjpeg($file['tmp_name']);
-            break;
-        case 'image/png':
-            $image = @imagecreatefrompng($file['tmp_name']);
-            break;
-        case 'image/gif':
-            $image = @imagecreatefromgif($file['tmp_name']);
-            break;
-        case 'image/webp':
-            $image = @imagecreatefromwebp($file['tmp_name']);
-            break;
-        default:
-            return false; // Desteklenmeyen dosya türü
+    // Move the uploaded file to the target directory
+    if (move_uploaded_file($file['tmp_name'], $uploadPath)) {
+        return $unique_filename; // Return the unique filename on success
     }
 
-    if (!$image) {
-        return false; // Görüntü oluşturulamadı
-    }
-
-    // JPG olarak kaydet (kaliteyi ayarlayın, 0-100 arasında bir değer)
-    $quality = 80; // Örneğin, %80 kalite
-    if (imagejpeg($image, $uploadPath, $quality)) {
-        imagedestroy($image); // Temizle
-        return $unique_filename; // Başarılı ise dosya adını döndür
-    }
-
-    imagedestroy($image); // Temizle
-    return false; // Kaydetme başarısız oldu
+    return false; // Return false on failure
 }
 ?>
