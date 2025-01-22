@@ -143,7 +143,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             </li><?php
         }elseif($selectedSite === 'indata'){ ?>
             <li class="menu-item <?= $currentPage === 'projeler' ? 'active' : '' ?>">
-                <a href="projeler" class="menu-link">
+                <a href="projeler?w=indata" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="Projeler">Projeler</div>
                 </a>
