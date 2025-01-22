@@ -13,6 +13,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                         <option value="noktanet" <?= $selectedSite === 'noktanet' ? 'selected' : '' ?>>Nokta Net</option>
                         <option value="noktab2b" <?= $selectedSite === 'noktab2b' ? 'selected' : '' ?>>Nokta B2B</option>
                         <option value="noktacn" <?= $selectedSite === 'noktacn' ? 'selected' : '' ?>>Nokta CN</option>
+                        <option value="indata" <?= $selectedSite === 'indata' ? 'selected' : '' ?>>InData</option>
                     </select>
                 </form>
             </a>
@@ -138,6 +139,13 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                 <a href="cn-offer" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-book"></i>
                     <div data-i18n="Teklifler">Teklifler</div>
+                </a>
+            </li><?php
+        }elseif($selectedSite === 'indata'){ ?>
+            <li class="menu-item <?= $currentPage === 'projeler' ? 'active' : '' ?>">
+                <a href="projeler" class="menu-link">
+                    <i class="menu-icon tf-icons ti ti-mail"></i>
+                    <div data-i18n="Projeler">Projeler</div>
                 </a>
             </li><?php
         }elseif($selectedSite === 'noktab2b'){ ?>
