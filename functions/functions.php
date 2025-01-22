@@ -88,7 +88,7 @@ if (isset($_POST['type']) && $_POST['type'] === 'delete') {
 }
 function validateAndSaveImage($file, $upload_path) {
     // Dosya Türü Doğrulama
-    $allowedTypes = array('image/jpeg', 'image/png', 'image/gif');
+    $allowedTypes = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp');
     if (!in_array($file['type'], $allowedTypes)) {
         return false;
     }
@@ -114,6 +114,9 @@ function validateAndSaveImage($file, $upload_path) {
             break;
         case 'image/gif':
             $image = @imagecreatefromgif($file['tmp_name']);
+            break;
+        case 'image/webp':
+            $image = @imagecreatefromwebp($file['tmp_name']);
             break;
         default:
             return false; // Desteklenmeyen dosya türü

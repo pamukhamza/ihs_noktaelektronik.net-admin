@@ -54,7 +54,6 @@ $template->head();
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
-                                                    $database = new Database();
                                                     $query = "SELECT * FROM indata_projects WHERE aktif = 1";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
@@ -130,7 +129,7 @@ $template->head();
                     </div>
                     <div class="col-6">
                         <label class="form-label" for="slider_photo">Fotoğraf</label>
-                        <input type="file" id="slider_photo" name="slider_photo" class="form-control"/>
+                        <input type="file" id="slider_photo" accept="image/*" class="form-control"/>
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" class="btn btn-primary me-3 submit_slider">Submit</button>
