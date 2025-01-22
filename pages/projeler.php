@@ -245,7 +245,7 @@ $template->head();
                 $.ajax({
                     url: '../functions/functions.php',
                     type: 'POST',
-                    data: { id: id, tablename: 'documents', type: 'delete' },  // Type delete olarak gönderiliyor
+                    data: { id: id, tablename: 'indata_projects', type: 'delete' },  // Type delete olarak gönderiliyor
                     success: function (response) {
                         Swal.fire({
                             icon: 'success',
