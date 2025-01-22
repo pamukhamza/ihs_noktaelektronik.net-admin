@@ -76,8 +76,7 @@ $template->head();
                                                             <a class="cursor-pointer me-2 edit-slider"
                                                                data-id="<?= $row["id"] ?>"
                                                                data-slider_title="<?= $row['p_name']; ?>"
-                                                               data-slider_text="<?= $row['p_desc']; ?>"
-                                                               data-slider_photo="<?= $row['p_image']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                               data-slider_text="<?= $row['p_desc']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_slider" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
                                                     </tr>
@@ -170,7 +169,6 @@ $template->head();
         const id = $(this).data('id');
         const slider_title = $(this).data('slider_title');
         const slider_text = $(this).data('slider_text');
-        const slider_photo = $(this).data('slider_photo');
 
         $("#slider_title").val(slider_title);
         $("#slider_text").val(slider_text);
