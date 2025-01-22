@@ -172,7 +172,6 @@ $template->head();
 
         $("#slider_title").val(slider_title);
         $("#slider_text").val(slider_text);
-        $("#slider_photo").val(slider_photo);
         $("#editSliderForm").data("action", "update").data("id", id); // Set action to update and store ID
         $('#editSlider').modal('show');
     });
