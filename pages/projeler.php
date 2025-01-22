@@ -4,8 +4,8 @@ require '../functions/admin_template.php';
 
 $database = new Database();
 
-$currentPage = 'documents';
-$template = new Template('Documents - Nokta Admin', $currentPage);
+$currentPage = 'projeler';
+$template = new Template('Projeler - InData Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
