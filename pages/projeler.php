@@ -27,7 +27,7 @@ $template->head();
                                 <div class="nav-align-top">
                                     <ul class="nav nav-tabs" role="tablist">
                                         <li class="nav-item">
-                                            <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-kvkk" aria-controls="form-tabs-kvkk" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">KVKK</span></button>
+                                            <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-kvkk" aria-controls="form-tabs-kvkk" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">Projeler</span></button>
                                         </li>
                                     </ul>
                                 </div>
@@ -38,7 +38,7 @@ $template->head();
                                     <!-- proje -->
                                     <div class="tab-pane fade active show" id="form-tabs-kvkk" role="tabpanel">
                                         <div class="mb-3">
-                                            <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Add New</button>
+                                            <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Yeni Ekle</button>
                                         </div>
                                         <form>
                                             <div class="table-responsive text-nowrap">
