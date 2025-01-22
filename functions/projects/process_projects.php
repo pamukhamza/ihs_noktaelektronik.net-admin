@@ -36,7 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $type === 'kvkk') {
             echo "Güncelleme sırasında hata oluştu.";
         }
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO indata_projects (`p_name`, `p_desc`" . (empty($slider_img) ? "" : ", `p_image`") . ") VALUES (:p_name, :p_desc" . (empty($slider_img) ? "" : ", :p_image") . ")";
+        $query = "INSERT INTO indata_projects (`aktif`, `p_name`, `p_desc`" . (empty($slider_img) ? "" : ", `p_image`") . ") VALUES (1, :p_name, :p_desc" . (empty($slider_img) ? "" : ", :p_image") . ")";
 
         $params = [
             'p_name' => $slider_title,
