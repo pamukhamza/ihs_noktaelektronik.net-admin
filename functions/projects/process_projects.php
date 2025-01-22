@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $type === 'kvkk') {
         ];
 
         if (!empty($slider_img)) {
-            $img = validateAndSaveImage($_FILES['slider_photo'], '../../assets/images/');
+            $img = uploadImageToS3($_FILES['slider_photo'], 'uploads/images/indata_projeler/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
                 echo "Image upload failed.";
                 exit;
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $type === 'kvkk') {
             echo "Güncelleme sırasında hata oluştu.";
         }
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO indata_projects (`aktif`, `p_name`, `p_desc`" . (empty($slider_img) ? "" : ", `p_image`") . ") VALUES (1, :p_name, :p_desc" . (empty($slider_img) ? "" : ", :p_image") . ")";
+        $query = "INSERT INTO indata_projects (`p_name`, `p_desc`" . (empty($slider_img) ? "" : ", `p_image`") . ") VALUES (:p_name, :p_desc" . (empty($slider_img) ? "" : ", :p_image") . ")";
 
         $params = [
             'p_name' => $slider_title,
@@ -62,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $type === 'kvkk') {
         ];
 
         if (!empty($slider_img)) {
-            $img = validateAndSaveImage($_FILES['slider_photo'], '../../assets/images/');
+            $img = uploadImageToS3($_FILES['slider_photo'], 'uploads/images/indata_projeler/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
                 echo "Image upload failed.";
                 exit;
@@ -75,6 +75,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $type === 'kvkk') {
         } else {
             echo "Ekleme sırasında hata oluştu.";
         }
+    }
+}
+
+function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
+    // Dosya Türü Doğrulama
+    $allowedTypes = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp');
+    if (!in_array($file['type'], $allowedTypes)) {
+        return false;
+    }
+
+    // Maks. Dosya boyutu
+    $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
+    if ($file["size"] > $max_file_size) {
+        return false;
+    }
+
+    // Get the original file extension
+    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Generate a unique filename with the original extension
+    $unique_filename = uniqid() . '.' . $fileExtension;
+    $uploadPath = $upload_path . $unique_filename;
+
+    try {
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $uploadPath,
+            'SourceFile' => $file['tmp_name']
+        ]);
+        return $unique_filename; // Return the unique filename on success
+    } catch (AwsException $e) {
+        return false; // Return false on failure
     }
 }
 ?>
