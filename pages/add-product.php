@@ -61,6 +61,18 @@ $categories = getCategories();
                 <div class="app-ecommerce">
                     <div class="row">
                         <div class="col-12 col-lg-8">
+                            <div class="card-header px-0 pt-0">
+                                <div class="nav-align-top">
+                                    <ul class="nav nav-tabs" role="tablist">
+                                        <li class="nav-item">
+                                            <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-bilgi" aria-controls="form-tabs-bilgi" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">Ürün Bilgileri</span></button>
+                                        </li>
+                                        <li class="nav-item">
+                                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-indirme" aria-controls="form-tabs-indirme" role="tab" aria-selected="false"><span class="ti ti-phone ti-lg d-sm-none"></span><span class="d-none d-sm-block">İndirmeler</span></button>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
                             <form action="../functions/products/edit_product.php" method="post">
                                 <div class="card mb-6">
                                     <div class="card-header"><h5 class="card-tile mb-0">Ürün Bilgileri</h5></div>

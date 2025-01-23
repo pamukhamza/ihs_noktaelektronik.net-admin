@@ -71,9 +71,10 @@
 
 
 SIRALAMA
-1. B2Bdeki markaların hepsi idlerine göre .nete çekilecek. Ama (Yeni eklenecek markaların idlerini .netin markalar tablosunda var mı yok mu diye kontrol et. Eğer yok ise tüm markaları yükleyeceğiz)
-2.Amazon S3 den fazla olan resimler ve yüklemeleri sil.
-
+1.Amazon S3 den fazla olan resimler ve yüklemeleri sil.
+2.Kategoriler
+3.Ürün detay indirmeleri ekleme/düzenleme yap.
+4.Ürünler hızlı açılsın.
 
 
 
