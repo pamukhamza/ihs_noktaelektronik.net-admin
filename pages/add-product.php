@@ -72,6 +72,7 @@ $categories = getCategories();
                         </div>
                     </div>
                     <div class="row">
+                    <div class="tab-content p-0">
                         <div class="tab-pane fade show active" id="form-tabs-bilgi" role="tabpanel">
                             <div class="row">
                                 <div class="col-12 col-lg-8">
@@ -412,6 +413,7 @@ $categories = getCategories();
                                 </div>
                             </div>
                         </div>
+                    </div>
                     </div>
                 </div>
             </div>
