@@ -59,251 +59,359 @@ $categories = getCategories();
         <div class="content-wrapper">
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="app-ecommerce">
+                    <div class="card-header px-0 pt-0">
+                        <div class="nav-align-top">
+                            <ul class="nav nav-tabs" role="tablist">
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-bilgi" aria-controls="form-tabs-bilgi" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">Ürün Bilgileri</span></button>
+                                </li>
+                                <li class="nav-item">
+                                    <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-indirme" aria-controls="form-tabs-indirme" role="tab" aria-selected="false"><span class="ti ti-phone ti-lg d-sm-none"></span><span class="d-none d-sm-block">İndirmeler</span></button>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                     <div class="row">
-                        <div class="card-header px-0 pt-0">
-                            <div class="nav-align-top">
-                                <ul class="nav nav-tabs" role="tablist">
-                                    <li class="nav-item">
-                                        <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-bilgi" aria-controls="form-tabs-bilgi" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">Ürün Bilgileri</span></button>
-                                    </li>
-                                    <li class="nav-item">
-                                        <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-indirme" aria-controls="form-tabs-indirme" role="tab" aria-selected="false"><span class="ti ti-phone ti-lg d-sm-none"></span><span class="d-none d-sm-block">İndirmeler</span></button>
-                                    </li>
-                                </ul>
+                        <div class="tab-pane fade show active" id="form-tabs-bilgi" role="tabpanel">
+                            <div class="row">
+                                <div class="col-12 col-lg-8">
+                                    <form action="../functions/products/edit_product.php" method="post">
+                                        <div class="card mb-6">
+                                            <div class="card-header"><h5 class="card-tile mb-0">Ürün Bilgileri</h5></div>
+                                            <div class="card-body">
+                                                <p style="color: red">Ürün adı ve sku boş ise ürün otomatik silinir.</p>
+                                                <div class="mb-6 row">
+                                                    <input type="hidden" name="id" value="<?= $id; ?>">
+                                                    <div class="col">
+                                                        <label class="form-label" for="name">Ürün Adı</label>
+                                                        <input type="text" required class="form-control" id="name" placeholder="Ürün Adı" name="name" value="<?= $product['UrunAdiTR']; ?>">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="form-label" for="name_en">Ürün Adı EN</label>
+                                                        <input type="text" class="form-control" id="name_en" placeholder="Ürün Adı İngilizce" name="name_en" value="<?= $product['UrunAdiEN']; ?>">
+                                                    </div>
+                                                </div>
+                                                <div class="row mb-6">
+                                                    <div class="col">
+                                                        <label class="form-label" for="urun_kodu">Ürün Kodu</label>
+                                                        <input type="text" required class="form-control" id="urun_kodu" placeholder="Urun Kodu" name="urun_kodu" value="<?= $product['UrunKodu']; ?>">
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="form-label" for="barkod">Barkod</label>
+                                                        <input type="text" class="form-control" id="barkod" placeholder="barkod" name="barkod" value="<?= $product['barkod']; ?>">
+                                                    </div>
+                                                </div>
+                                                <!-- Kategori Seçimi -->
+                                                <div class="mb-6 row">
+                                                    <div class="col">
+                                                        <label class="form-label" for="category">Kategori</label>
+                                                        <select class="form-control" id="category" name="category" required>
+                                                            <option value="">Kategori Seçiniz</option>
+                                                            <?php foreach ($categories as $cat): ?>
+                                                                <option value="<?= $cat['id']; ?>" <?= $product['KategoriID'] == $cat['id'] ? 'selected' : ''; ?> data-parent-id="<?= $cat['parent_id']; ?>">
+                                                                    <?= htmlspecialchars($cat['KategoriAdiTr']); ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="form-label" for="brand">Marka</label>
+                                                        <select class="form-control" id="brand" name="brand" required>
+                                                            <option value="">Marka Seçiniz</option>
+                                                            <?php foreach ($brands as $brand): ?>
+                                                                <option value="<?= $brand['id']; ?>" <?= $product['MarkaID'] == $brand['id'] ? 'selected' : ''; ?>>
+                                                                    <?= htmlspecialchars($brand['title']); ?>
+                                                                </option>
+                                                            <?php endforeach; ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Product Information -->
+                                        <!-- General Features -->
+                                        <div class="card mb-6">
+                                            <div class="card-header"><h5 class="card-title mb-0">Genel Özellikler</h5></div>
+                                            <div class="card-body">
+                                                <div data-repeater-list="group-a">
+                                                    <!-- General Features -->
+                                                    <div data-repeater-item class="mb-6">
+                                                        <label class="form-label" for="ozellikler">Genel Özellikler</label>
+                                                        <textarea id="ozellikler" name="ozellikler" class="form-control" style="display:none;"><?= $product['OzelliklerTR']; ?></textarea>
+                                                    </div>
+                                                    <div data-repeater-item class="mb-6">
+                                                        <label class="form-label" for="ozellikler_en">Genel Özellikler EN</label>
+                                                        <textarea id="ozellikler_en" name="ozellikler_en" class="form-control" style="display:none;"><?= $product['OzelliklerEN']; ?></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /General Features -->
+                                        <!-- Technical Specifications -->
+                                        <div class="card mb-6">
+                                            <div class="card-header"><h5 class="card-title mb-0">Teknik Özellikler</h5></div>
+                                            <div class="card-body">
+                                                <div data-repeater-list="group-a">
+                                                    <div data-repeater-item class="mb-6">
+                                                        <label class="form-label" for="teknik_ozellikler">Teknik Özellikler</label>
+                                                        <textarea id="teknik_ozellikler" name="teknik_ozellikler" class="form-control" style="display:none;"><?= $product['BilgiTR']; ?></textarea>
+                                                    </div>
+                                                    <div data-repeater-item class="mb-6">
+                                                        <label class="form-label" for="teknik_ozellikler_en">Teknik Özellikler EN</label>
+                                                        <textarea id="teknik_ozellikler_en" name="teknik_ozellikler_en" class="form-control" style="display:none;"><?= $product['BilgiEN']; ?></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-- /Technical Specifications -->
+                                        <div class="mb-6">
+                                            <button class="btn btn-primary" name="product-submit"><i class='ti ti-save ti-xs me-2'></i>Kaydet</button>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="col-12 col-lg-4">
+                                    <!-- Product Images Card -->
+                                    <div class="card mb-6">
+                                        <div class="card-header">
+                                            <h5 class="card-title mb-0">Ürün Fotoğrafları</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <input type="file" class="form-control" accept="image/*" name="images[]" id="imageInput" multiple />
+                                            <div class="my-3">
+                                                <button class="btn btn-primary" id="uploadButton"><i class='ti ti-plus ti-xs me-2'></i>Ekle</button>
+                                            </div>
+                                            <div id="uploadStatus"></div> <!-- For displaying upload status -->
+                                        </div>
+                                    </div>
+                                    <!-- /Product Images Card -->
+                                    <!-- /Image List -->
+                                    <div class="card mb-6">
+                                        <div class="card-header">
+                                            <h5 class="card-title mb-0">Fotoğraf Listesi</h5>
+                                        </div>
+                                        <?php
+                                        // Fetch images for the specific product
+                                        $imagesQuery = "SELECT * FROM nokta_urunler_resimler WHERE UrunID = :product_id ORDER BY Sira ASC";
+                                        $imageParams = ['product_id' => $id];
+                                        $images = $database->fetchAll($imagesQuery, $imageParams);
+
+                                        ?>
+                                        <div class="card-body">
+                                            <table class="table table-responsive">
+                                                <thead>
+                                                <tr>
+                                                    <th>Sıra</th>
+                                                    <th>Fotoğraf</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php if (!empty($images)): ?>
+                                                    <?php foreach ($images as $image): ?>
+                                                        <tr>
+                                                            <td><?= htmlspecialchars($image['Sira']); ?></td>
+                                                            <td>
+                                                                <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= htmlspecialchars($image['KResim']); ?>" style="width: 50px; height: auto;">
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-danger btn-sm delete-image" data-image="<?= htmlspecialchars($image['KResim']); ?>" data-id="<?= $image['id']; ?>" data-product-id="<?= $id; ?>">Sil</button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="3">Yüklenen fotoğraf yok.</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /Image List -->
+                                    <!-- Filtre Ekleme -->
+                                    <div class="card mb-6" id="filter-section">
+                                        <div class="card-header">
+                                            <h5 class="card-title mb-0">Filtre Ekleme</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="my-3">
+                                                <label for="filter-title">Ana Filtre</label>
+                                                <select class="form-control" id="filter-title" name="filter-title">
+                                                    <option value="">Ana Filtre Seç</option>
+                                                </select>
+                                            </div>
+                                            <div class="my-3" id="filter-values-container">
+                                                <label for="filter-value">Filtreler</label>
+                                                <select class="form-control" id="filter-value" name="filter-value">
+                                                    <option value="">Filtre Seç</option>
+                                                </select>
+                                            </div>
+                                            <div class="my-3">
+                                                <button id="save-filter" class="btn btn-primary">Filtre Ekle</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /Filtre Ekleme -->
+                                    <!-- /Filtre Listesi -->
+                                    <div class="card mb-6">
+                                        <div class="card-header">
+                                            <h5 class="card-title mb-0">Eklenmiş Filtreler</h5>
+                                        </div>
+                                        <?php
+                                        // Fetch images for the specific product
+                                        $filterQuery = "SELECT pf.id AS product_filter_rel_id, fv.* FROM products_filter_rel AS pf 
+                                                        LEFT JOIN filter_value AS fv ON fv.id = pf.filter_value_id
+                                                        WHERE pf.product_id = :product_id ORDER BY pf.id ASC";
+                                        $filterParams = ['product_id' => $id];
+                                        $filters = $database->fetchAll($filterQuery, $filterParams);
+
+                                        ?>
+                                        <div class="card-body">
+                                            <table class="table table-responsive">
+                                                <thead>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Filtre</th>
+                                                    <th>İşlemler</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <?php if (!empty($filters)): ?>
+                                                    <?php foreach ($filters as $filter): ?>
+                                                        <tr>
+                                                            <td><?= $filter['id']; ?></td>
+                                                            <td>
+                                                                <?= $filter["name"] ?>
+                                                            </td>
+                                                            <td>
+                                                                <button class="btn btn-danger btn-sm delete_filter" data-id="<?= $filter['product_filter_rel_id']; ?>">Sil</button>
+                                                            </td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <?php else: ?>
+                                                    <tr>
+                                                        <td colspan="3">Eklenmiş filtre yok.</td>
+                                                    </tr>
+                                                <?php endif; ?>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <!-- /Filtre Listesi -->
+                                </div>
                             </div>
                         </div>
-                            <div class="tab-pane fade show active" id="form-tabs-bilgi" role="tabpanel">
+                        <div class="tab-pane fade" id="form-tabs-indirme" role="tabpanel">
+                            <div class="col-12">
                                 <div class="row">
-                                    <div class="col-12 col-lg-8">
-                                        <form action="../functions/products/edit_product.php" method="post">
-                                            <div class="card mb-6">
-                                                <div class="card-header"><h5 class="card-tile mb-0">Ürün Bilgileri</h5></div>
-                                                <div class="card-body">
-                                                    <p style="color: red">Ürün adı ve sku boş ise ürün otomatik silinir.</p>
-                                                    <div class="mb-6 row">
-                                                        <input type="hidden" name="id" value="<?= $id; ?>">
-                                                        <div class="col">
-                                                            <label class="form-label" for="name">Ürün Adı</label>
-                                                            <input type="text" required class="form-control" id="name" placeholder="Ürün Adı" name="name" value="<?= $product['UrunAdiTR']; ?>">
-                                                        </div>
-                                                        <div class="col">
-                                                            <label class="form-label" for="name_en">Ürün Adı EN</label>
-                                                            <input type="text" class="form-control" id="name_en" placeholder="Ürün Adı İngilizce" name="name_en" value="<?= $product['UrunAdiEN']; ?>">
-                                                        </div>
+                                    <div class="col-xl-4 col-lg-4 col-md-12 col-sm-12 col-12">
+                                        <div class="card">
+                                            <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">İndirmeler Ekle</h5>
+                                            <div class="card-body">
+                                                <form action="function.php" method="post" enctype="multipart/form-data">
+                                                    <div class="form-group">
+                                                        <label for="dosya_turu">Dosya Türü Seçiniz</label>
+                                                        <select class="form-control" id="dosya_turu" name="dosya_turu">
+                                                            <?php
+                                                                $query = "SELECT * FROM nokta_yuklemeler";
+                                                                $results = $database->fetchAll($query);
+                                                                foreach( $results as $row ) {
+                                                            ?>
+                                                                <option value='<?php echo  $row['id']; ?>'><?php echo  $row['baslik']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
                                                     </div>
-                                                    <div class="row mb-6">
-                                                        <div class="col">
-                                                            <label class="form-label" for="urun_kodu">Ürün Kodu</label>
-                                                            <input type="text" required class="form-control" id="urun_kodu" placeholder="Urun Kodu" name="urun_kodu" value="<?= $product['UrunKodu']; ?>">
-                                                        </div>
-                                                        <div class="col">
-                                                            <label class="form-label" for="barkod">Barkod</label>
-                                                            <input type="text" class="form-control" id="barkod" placeholder="barkod" name="barkod" value="<?= $product['barkod']; ?>">
-                                                        </div>
+                                                    <div class="form-group">
+                                                        <input id="id" type="text" name="id" style="display: none;" value="<?php echo $product['id'] ?>">
+                                                        <label for="dosya_aciklama">Dosya Açıklama*</label>
+                                                        <input id="dosya_aciklama" type="text" name="dosya_aciklama" class="form-control form-control-sm">
                                                     </div>
-                                                    <!-- Kategori Seçimi -->
-                                                    <div class="mb-6 row">
-                                                        <div class="col">
-                                                            <label class="form-label" for="category">Kategori</label>
-                                                            <select class="form-control" id="category" name="category" required>
-                                                                <option value="">Kategori Seçiniz</option>
-                                                                <?php foreach ($categories as $cat): ?>
-                                                                    <option value="<?= $cat['id']; ?>" <?= $product['KategoriID'] == $cat['id'] ? 'selected' : ''; ?> data-parent-id="<?= $cat['parent_id']; ?>">
-                                                                        <?= htmlspecialchars($cat['KategoriAdiTr']); ?>
-                                                                    </option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col">
-                                                            <label class="form-label" for="brand">Marka</label>
-                                                            <select class="form-control" id="brand" name="brand" required>
-                                                                <option value="">Marka Seçiniz</option>
-                                                                <?php foreach ($brands as $brand): ?>
-                                                                    <option value="<?= $brand['id']; ?>" <?= $product['MarkaID'] == $brand['id'] ? 'selected' : ''; ?>>
-                                                                        <?= htmlspecialchars($brand['title']); ?>
-                                                                    </option>
-                                                                <?php endforeach; ?>
-                                                            </select>
-                                                        </div>
+                                                    <div class="form-group" style="display: none">
+                                                        <label for="dosya_aciklama_EN">Dosya Açıklama İngilizce</label>
+                                                        <input id="dosya_aciklama_EN" name="dosya_aciklama_EN" type="text" class="form-control form-control-sm">
                                                     </div>
-                                                </div>
+                                                    <div class="form-group">
+                                                        <label for="dosya_versiyon">Dosya Versiyon*</label>
+                                                        <input id="dosya_versiyon" name="dosya_versiyon" type="text" class="form-control form-control-sm">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dosya_tarihi">Dosya Tarihi*</label>
+                                                        <input id="dosya_tarihi" name="dosya_tarihi" type="date" value="<?php echo date('Y-m-d'); ?>"  class="form-control form-control-sm">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label for="dosya">Dosya Seç*</label>
+                                                        <input id="dosya" name="dosya" type="file"  class="form-control form-control-sm">
+                                                    </div>
+                                                    <div class="col-sm-12 pl-0">
+                                                        <p class="text-right">
+                                                            <button type="submit" class="btn btn-space btn-primary" name="urun_dosya_ekle">Yeni Ekle</button>
+                                                        </p>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <!-- /Product Information -->
-                                            <!-- General Features -->
-                                            <div class="card mb-6">
-                                                <div class="card-header"><h5 class="card-title mb-0">Genel Özellikler</h5></div>
-                                                <div class="card-body">
-                                                    <div data-repeater-list="group-a">
-                                                        <!-- General Features -->
-                                                        <div data-repeater-item class="mb-6">
-                                                            <label class="form-label" for="ozellikler">Genel Özellikler</label>
-                                                            <textarea id="ozellikler" name="ozellikler" class="form-control" style="display:none;"><?= $product['OzelliklerTR']; ?></textarea>
-                                                        </div>
-                                                        <div data-repeater-item class="mb-6">
-                                                            <label class="form-label" for="ozellikler_en">Genel Özellikler EN</label>
-                                                            <textarea id="ozellikler_en" name="ozellikler_en" class="form-control" style="display:none;"><?= $product['OzelliklerEN']; ?></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /General Features -->
-                                            <!-- Technical Specifications -->
-                                            <div class="card mb-6">
-                                                <div class="card-header"><h5 class="card-title mb-0">Teknik Özellikler</h5></div>
-                                                <div class="card-body">
-                                                    <div data-repeater-list="group-a">
-                                                        <div data-repeater-item class="mb-6">
-                                                            <label class="form-label" for="teknik_ozellikler">Teknik Özellikler</label>
-                                                            <textarea id="teknik_ozellikler" name="teknik_ozellikler" class="form-control" style="display:none;"><?= $product['BilgiTR']; ?></textarea>
-                                                        </div>
-                                                        <div data-repeater-item class="mb-6">
-                                                            <label class="form-label" for="teknik_ozellikler_en">Teknik Özellikler EN</label>
-                                                            <textarea id="teknik_ozellikler_en" name="teknik_ozellikler_en" class="form-control" style="display:none;"><?= $product['BilgiEN']; ?></textarea>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <!-- /Technical Specifications -->
-                                            <div class="mb-6">
-                                                <button class="btn btn-primary" name="product-submit"><i class='ti ti-save ti-xs me-2'></i>Kaydet</button>
-                                            </div>
-                                        </form>
+                                        </div>
                                     </div>
-                                    <div class="col-12 col-lg-4">
-                                        <!-- Product Images Card -->
-                                        <div class="card mb-6">
-                                            <div class="card-header">
-                                                <h5 class="card-title mb-0">Ürün Fotoğrafları</h5>
-                                            </div>
+                                    <div class="col-xl-8 col-lg-8 col-md-12 col-sm-12 col-12">
+                                        <div class="card">
+                                            <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">İndirmeler</h5>
                                             <div class="card-body">
-                                                <input type="file" class="form-control" accept="image/*" name="images[]" id="imageInput" multiple />
-                                                <div class="my-3">
-                                                    <button class="btn btn-primary" id="uploadButton"><i class='ti ti-plus ti-xs me-2'></i>Ekle</button>
-                                                </div>
-                                                <div id="uploadStatus"></div> <!-- For displaying upload status -->
-                                            </div>
-                                        </div>
-                                        <!-- /Product Images Card -->
-                                        <!-- /Image List -->
-                                        <div class="card mb-6">
-                                            <div class="card-header">
-                                                <h5 class="card-title mb-0">Fotoğraf Listesi</h5>
-                                            </div>
-                                            <?php
-                                            // Fetch images for the specific product
-                                            $imagesQuery = "SELECT * FROM nokta_urunler_resimler WHERE UrunID = :product_id ORDER BY Sira ASC";
-                                            $imageParams = ['product_id' => $id];
-                                            $images = $database->fetchAll($imagesQuery, $imageParams);
+                                                <div class="table-responsive" id="employee_table">
+                                                <?php
+                                                    $productID = $product['id'];
+                                                    // Yukleme basliklarini cekmek icin bir sorgu yapabilirsiniz.
+                                                    $query = "SELECT * FROM nokta_yuklemeler WHERE is_active = 1";
+                                                    $yuklemeBasliklari = $database->fetchAll($query);
 
-                                            ?>
-                                            <div class="card-body">
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>Sıra</th>
-                                                        <th>Fotoğraf</th>
-                                                        <th>İşlemler</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php if (!empty($images)): ?>
-                                                        <?php foreach ($images as $image): ?>
-                                                            <tr>
-                                                                <td><?= htmlspecialchars($image['Sira']); ?></td>
-                                                                <td>
-                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= htmlspecialchars($image['KResim']); ?>" style="width: 50px; height: auto;">
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger btn-sm delete-image" data-image="<?= htmlspecialchars($image['KResim']); ?>" data-id="<?= $image['id']; ?>" data-product-id="<?= $id; ?>">Sil</button>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                    <?php else: ?>
-                                                        <tr>
-                                                            <td colspan="3">Yüklenen fotoğraf yok.</td>
-                                                        </tr>
-                                                    <?php endif; ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
-                                        <!-- /Image List -->
-                                        <!-- Filtre Ekleme -->
-                                        <div class="card mb-6" id="filter-section">
-                                            <div class="card-header">
-                                                <h5 class="card-title mb-0">Filtre Ekleme</h5>
-                                            </div>
-                                            <div class="card-body">
-                                                <div class="my-3">
-                                                    <label for="filter-title">Ana Filtre</label>
-                                                    <select class="form-control" id="filter-title" name="filter-title">
-                                                        <option value="">Ana Filtre Seç</option>
-                                                    </select>
-                                                </div>
-                                                <div class="my-3" id="filter-values-container">
-                                                    <label for="filter-value">Filtreler</label>
-                                                    <select class="form-control" id="filter-value" name="filter-value">
-                                                        <option value="">Filtre Seç</option>
-                                                    </select>
-                                                </div>
-                                                <div class="my-3">
-                                                    <button id="save-filter" class="btn btn-primary">Filtre Ekle</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- /Filtre Ekleme -->
-                                        <!-- /Filtre Listesi -->
-                                        <div class="card mb-6">
-                                            <div class="card-header">
-                                                <h5 class="card-title mb-0">Eklenmiş Filtreler</h5>
-                                            </div>
-                                            <?php
-                                            // Fetch images for the specific product
-                                            $filterQuery = "SELECT pf.id AS product_filter_rel_id, fv.* FROM products_filter_rel AS pf 
-                                                            LEFT JOIN filter_value AS fv ON fv.id = pf.filter_value_id
-                                                            WHERE pf.product_id = :product_id ORDER BY pf.id ASC";
-                                            $filterParams = ['product_id' => $id];
-                                            $filters = $database->fetchAll($filterQuery, $filterParams);
+                                                    // Yukleme basliklarini dongude dolasarak tablolari olusturabilirsiniz.
+                                                    foreach ($yuklemeBasliklari as $baslik) {
+                                                        $yuklemeID = $baslik['id'];
+                                                        $baslikAdi = $baslik['baslik'];
 
-                                            ?>
-                                            <div class="card-body">
-                                                <table class="table table-responsive">
-                                                    <thead>
-                                                    <tr>
-                                                        <th>ID</th>
-                                                        <th>Filtre</th>
-                                                        <th>İşlemler</th>
-                                                    </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    <?php if (!empty($filters)): ?>
-                                                        <?php foreach ($filters as $filter): ?>
-                                                            <tr>
-                                                                <td><?= $filter['id']; ?></td>
-                                                                <td>
-                                                                    <?= $filter["name"] ?>
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn btn-danger btn-sm delete_filter" data-id="<?= $filter['product_filter_rel_id']; ?>">Sil</button>
-                                                                </td>
-                                                            </tr>
-                                                        <?php endforeach; ?>
-                                                    <?php else: ?>
-                                                        <tr>
-                                                            <td colspan="3">Eklenmiş filtre yok.</td>
-                                                        </tr>
-                                                    <?php endif; ?>
-                                                    </tbody>
-                                                </table>
+                                                        // Veritabanından yüklemeleri çekmek için sorgu
+                                                        $query = "SELECT * FROM nokta_urunler_yuklemeler WHERE urun_id = $productID AND yukleme_id = $yuklemeID";
+                                                        $yuklemeler = $database->fetchAll($query);
+
+                                                        // Eğer yüklemeler varsa tabloyu oluşturun
+                                                        if (!empty($yuklemeler)) {
+                                                    ?>
+                                                            <table class="table table-striped table-bordered second" style="width:100%">
+                                                                <thead class="bg-light">
+                                                                    <h4 class="text-center "><?php echo $baslikAdi; ?></h4>
+                                                                    <tr class="border-0">
+                                                                        <th class="border-0">ID</th>
+                                                                        <th class="border-0">Tarih</th>
+                                                                        <th class="border-0">Version</th>
+                                                                        <th class="border-0">Açıklama</th>
+                                                                        <th class="border-0">Dosya</th>
+                                                                        <th class="border-0">İşlemler</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <?php
+                                                                    foreach ($yuklemeler as $row) {
+                                                                    ?>
+                                                                        <tr>
+                                                                            <td><?php echo $row['id']; ?></td>
+                                                                            <td><?php echo $row['datetime']; ?></td>
+                                                                            <td><?php echo $row['version']; ?></td>
+                                                                            <td><?php echo $row['aciklama']; ?></td>
+                                                                            <td><a href="assets<?php echo $row["url_path"]; ?>">İndir</a></td>
+                                                                            <td>
+                                                                                <button type="button" class="btn btn-sm btn-outline-light" onclick="indirmeSil(<?php echo $row['id']; ?>,'<?php echo $row['url_path']; ?>', '<?php echo $product['id'] ?>');"><i class="far fa-trash-alt"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                    <?php } ?>
+                                                                </tbody>
+                                                            </table>
+                                                        <?php } // Eğer yüklemeler yoksa tabloyu oluşturma ?>
+                                                    <?php } ?>
+                                                </div>
                                             </div>
                                         </div>
-                                        <!-- /Filtre Listesi -->
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="form-tabs-indirme" role="tabpanel">
-
-                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
