@@ -72,7 +72,7 @@ $categories = getCategories();
                         </div>
                     </div>
                     <div class="row">
-                    <div class="tab-content p-0">
+                    <div class="tab-content">
                         <div class="tab-pane fade show active" id="form-tabs-bilgi" role="tabpanel">
                             <div class="row">
                                 <div class="col-12 col-lg-8">
@@ -396,9 +396,9 @@ $categories = getCategories();
                                                                             <td><?php echo $row['datetime']; ?></td>
                                                                             <td><?php echo $row['version']; ?></td>
                                                                             <td><?php echo $row['aciklama']; ?></td>
-                                                                            <td><a href="assets<?php echo $row["url_path"]; ?>">İndir</a></td>
+                                                                            <td><a href="https://noktanet.s3.eu-central-1.amazonaws.com/<?php echo $row["url_path"]; ?>">İndir</a></td>
                                                                             <td>
-                                                                                <button type="button" class="btn btn-sm btn-outline-light" onclick="indirmeSil(<?php echo $row['id']; ?>,'<?php echo $row['url_path']; ?>', '<?php echo $product['id'] ?>');"><i class="far fa-trash-alt"></i></button>
+                                                                                <button type="button" class="btn btn-sm btn-outline-light delete_download"><i class="far fa-trash-alt"></i></button>
                                                                             </td>
                                                                         </tr>
                                                                     <?php } ?>
@@ -521,7 +521,48 @@ $categories = getCategories();
     });
 
 </script>
+<script>
+    $(".delete_download").on('click', function () {
+        const id = $(this).data('id');
 
+        Swal.fire({
+            title: 'Silmek istediğinize emin misiniz?',
+            text: "Bu işlem geri alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Evet, sil!',
+            cancelButtonText: 'Hayır, iptal et!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '../functions/functions.php',
+                    type: 'POST',
+                    data: { id: id, tablename: 'nokta_urunler_yuklemeler', type: 'delete' },  // Type delete olarak gönderiliyor
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Silindi!',
+                            text: 'Kayıt başarıyla silindi.',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();  // Sayfayı yeniden yükle
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'Silme işlemi başarısız oldu.',
+                        });
+                    }
+                });
+            }
+        });
+    });
+</script>
 <script>
     $(".delete_product").on('click', function () {
         const id = $(this).data('id');
