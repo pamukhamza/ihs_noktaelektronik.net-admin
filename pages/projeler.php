@@ -42,7 +42,7 @@ $template->head();
                                         </div>
                                         <form>
                                             <div class="table-responsive text-nowrap">
-                                                <table class="table table-hover">
+                                                <table id="projectsTable" class="table table-hover">
                                                     <thead>
                                                     <tr>
                                                         <th>#</th>
@@ -151,6 +151,20 @@ $template->head();
 <!-- Main JS -->
 <script src="../assets/js/main.js"></script>
 <script src="../assets/js/form-layouts.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#projectsTable').DataTable({
+            "paging": true,
+            "lengthChange": true,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true
+        });
+    });
+</script>
 
 <script>
     $(document).ready(function() {
