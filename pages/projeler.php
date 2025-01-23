@@ -47,7 +47,6 @@ $template->head();
                                                     <tr>
                                                         <th>#</th>
                                                         <th>Başlık</th>
-                                                        <th>Açıklama</th>
                                                         <th>Durum</th>
                                                         <th>İşlemler</th>
                                                     </tr>
@@ -61,7 +60,6 @@ $template->head();
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
                                                         <td><?= $row["p_name"] ?></td>
-                                                        <td><?= $row["p_desc"] ?></td>
                                                         <td>
                                                             <label class="switch switch-success">
                                                                 <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['aktif'] == 1 ? 'checked' : ''; ?> />
