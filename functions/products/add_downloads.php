@@ -45,7 +45,7 @@ if (isset($_POST["urun_dosya_ekle"])) {
         die("Dosya türü bulunamadı.");
     }
 
-    $dosya_yolu = $result["dosya_yolu"];
+    $dosya_yolu = ltrim($result["dosya_yolu"], '/');
     $fileName = time() . '_' . basename($_FILES['dosya']['name']);
     $targetFilePath = $dosya_yolu . '/' . $fileName;
 
@@ -87,7 +87,7 @@ if (isset($_POST["urun_dosya_ekle"])) {
         ];
 
         if ($database->insert($query, $params)) {
-            header("Location: ../../admin/pages/add-product.php?id=$urun_id");
+            header("Location: ../../pages/add-product.php?id=$urun_id");
             exit;
         } else {
             throw new Exception("Database insert failed");
