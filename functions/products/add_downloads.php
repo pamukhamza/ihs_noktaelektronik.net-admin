@@ -49,6 +49,9 @@ if (isset($_POST["urun_dosya_ekle"])) {
     $fileName = time() . '_' . basename($_FILES['dosya']['name']);
     $targetFilePath = $dosya_yolu . '/' . $fileName;
 
+    $dosya_yolu = $result["dosya_yolu"];
+    $targetFilePathVT = $dosya_yolu . '/' . $fileName;
+
     try {
         // Upload to S3
         $result = $s3Client->putObject([
@@ -76,7 +79,7 @@ if (isset($_POST["urun_dosya_ekle"])) {
         $params = [
             'd1' => $dosya_aciklama,
             'd2' => $dosya_aciklama_EN,
-            'd3' => $targetFilePath,
+            'd3' => $targetFilePathVT,
             'd4' => $dosya_turu,
             'd5' => 1,
             'd6' => $dosya_versiyon,
