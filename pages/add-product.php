@@ -398,7 +398,7 @@ $categories = getCategories();
                                                                             <td><?php echo $row['aciklama']; ?></td>
                                                                             <td><a target="_blank" href="https://noktanet.s3.eu-central-1.amazonaws.com<?php echo $row["url_path"]; ?>">İndir</a></td>
                                                                             <td>
-                                                                                <button type="button" class="btn btn-sm btn-outline-light delete_download"><i class="far fa-trash-alt"></i></button>
+                                                                                <button type="button" class="btn btn-sm btn-outline-light delete_download" data-id="<?= $row['id']; ?>"><i class="far fa-trash-alt"></i></button>
                                                                             </td>
                                                                         </tr>
                                                                     <?php } ?>
