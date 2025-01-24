@@ -63,10 +63,10 @@ $categories = getCategories();
                         <div class="nav-align-top">
                             <ul class="nav nav-tabs" role="tablist">
                                 <li class="nav-item">
-                                    <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-bilgi" aria-controls="form-tabs-bilgi" role="tab" aria-selected="true"><span class="ti ti-user ti-lg d-sm-none"></span><span class="d-none d-sm-block">Ürün Bilgileri</span></button>
+                                    <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-bilgi" aria-controls="form-tabs-bilgi" role="tab" aria-selected="true"><span class="d-sm-none">Ürün Bilgileri</span><span class="d-none d-sm-block">Ürün Bilgileri</span></button>
                                 </li>
                                 <li class="nav-item">
-                                    <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-indirme" aria-controls="form-tabs-indirme" role="tab" aria-selected="false"><span class="ti ti-phone ti-lg d-sm-none"></span><span class="d-none d-sm-block">İndirmeler</span></button>
+                                    <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-indirme" aria-controls="form-tabs-indirme" role="tab" aria-selected="false"><span class="d-sm-none">İndirmeler</span><span class="d-none d-sm-block">İndirmeler</span></button>
                                 </li>
                             </ul>
                         </div>
@@ -309,7 +309,7 @@ $categories = getCategories();
                                         <div class="card">
                                             <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">İndirmeler Ekle</h5>
                                             <div class="card-body">
-                                                <form action="function.php" method="post" enctype="multipart/form-data">
+                                                <form action="../functions/products/add_downloads.php" method="post" enctype="multipart/form-data">
                                                     <div class="form-group">
                                                         <label for="dosya_turu">Dosya Türü Seçiniz</label>
                                                         <select class="form-control" id="dosya_turu" name="dosya_turu">
