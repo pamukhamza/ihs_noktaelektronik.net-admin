@@ -6,14 +6,14 @@ $template = new Template('Ürünler - Nokta Admin', $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $db = new Database();
-$deleteQuery = "
+/*$deleteQuery = "
     DELETE FROM nokta_urunler 
     WHERE (UrunKodu IS NULL OR UrunKodu = '') 
     AND (UrunAdiTR IS NULL OR UrunAdiTR = '') 
     ORDER BY id DESC
     LIMIT 8";
 $db->delete($deleteQuery);
-
+*/
 ?>
 <body>
 <div class="layout-wrapper layout-content-navbar  ">

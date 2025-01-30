@@ -37,117 +37,117 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             </a>
         </li>
         <?php endif; ?>
-        <?php if ($user->hasPermission(10)): ?>
-            <!-- Products -->
-            <?php if ($user->hasPermission(12)): ?>
-            <li class="menu-item <?= in_array($currentPage, ['products', 'categories', 'add-product', 'brands', 'filters']) ? 'active open' : '' ?>">
-                <a href="javascript:void(0);" class="menu-link menu-toggle">
-                    <i class='menu-icon tf-icons ti ti-box'></i>
-                    <div data-i18n="Ürünler">Ürünler</div>
-                </a>
-                <ul class="menu-sub">
-                    <?php if ($user->hasPermission(12)): ?>
-                    <li class="menu-item <?= $currentPage === 'products' ? 'active' : '' ?>">
-                        <a href="products" class="menu-link">
-                            <div data-i18n="Ürün Listesi">Ürün Listesi</div>
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                    
-                    <?php if ($user->hasPermission(12)): ?>
-                    <li class="menu-item <?= $currentPage === 'add-product' ? 'active' : '' ?>">
-                        <a href="add-product" class="menu-link">
-                            <div data-i18n="Yeni Ürün Ekle">Yeni Ürün Ekle</div>
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                    
-                    <?php if ($user->hasPermission(12)): ?>
-                    <li class="menu-item <?= $currentPage === 'categories' ? 'active' : '' ?>">
-                        <a href="categories" class="menu-link" >
-                            <div data-i18n="Kategoriler">Kategoriler</div>
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                    
-                    <?php if ($user->hasPermission(12)): ?>
-                    <li class="menu-item <?= $currentPage === 'brands' ? 'active' : '' ?>">
-                        <a href="brands" class="menu-link" >
-                            <div data-i18n="Markalar">Markalar</div>
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                    
-                    <?php if ($user->hasPermission(12)): ?>
-                    <li class="menu-item <?= $currentPage === 'filters' ? 'active' : '' ?>">
-                        <a href="filters" class="menu-link" >
-                            <div data-i18n="Filtreler">Filtreler</div>
-                        </a>
-                    </li>
-                    <?php endif; ?>
-                </ul>
-            </li>
-            <?php endif; ?>
+        <!-- Products -->
+        <?php if ($user->hasPermission(12)): ?>
+        <li class="menu-item <?= in_array($currentPage, ['products', 'categories', 'add-product', 'brands', 'filters']) ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class='menu-icon tf-icons ti ti-box'></i>
+                <div data-i18n="Ürünler">Ürünler</div>
+            </a>
+            <ul class="menu-sub">
+                <?php if ($user->hasPermission(12)): ?>
+                <li class="menu-item <?= $currentPage === 'products' ? 'active' : '' ?>">
+                    <a href="products" class="menu-link">
+                        <div data-i18n="Ürün Listesi">Ürün Listesi</div>
+                    </a>
+                </li>
+                <?php endif; ?>
+                
+                <?php if ($user->hasPermission(12)): ?>
+                <li class="menu-item <?= $currentPage === 'add-product' ? 'active' : '' ?>">
+                    <a href="add-product" class="menu-link">
+                        <div data-i18n="Yeni Ürün Ekle">Yeni Ürün Ekle</div>
+                    </a>
+                </li>
+                <?php endif; ?>
+                
+                <?php if ($user->hasPermission(12)): ?>
+                <li class="menu-item <?= $currentPage === 'filters' ? 'active' : '' ?>">
+                    <a href="filters" class="menu-link" >
+                        <div data-i18n="Filtreler">Filtreler</div>
+                    </a>
+                </li>
+                <?php endif; ?>
+            </ul>
+        </li>
+        <?php endif; ?>
 
-            <!-- Users -->
-            <?php if ($user->hasPermission(14)): ?>
-            <li class="menu-item <?= $currentPage === 'users' ? 'active' : '' ?>">
-                <a href="users" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-user"></i>
-                    <div data-i18n="Kullanıcılar">Kullanıcılar</div>
+        <!-- Categories -->
+        <?php if ($user->hasPermission(12)): ?>
+            <li class="menu-item <?= $currentPage === 'categories' ? 'active' : '' ?>">
+                <a href="categories" class="menu-link" >
+                    <div data-i18n="Kategoriler">Kategoriler</div>
                 </a>
             </li>
-            <?php endif; ?>
+        <?php endif; ?>
 
-            <!-- Documents -->
-            <?php if ($user->hasPermission(15)): ?>
-            <li class="menu-item <?= $currentPage === 'documents' ? 'active' : '' ?>">
-                <a href="documents" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-folder"></i>
-                    <div data-i18n="Dosyalar">Dosyalar</div>
+        <!-- Brands -->
+        <?php if ($user->hasPermission(12)): ?>
+            <li class="menu-item <?= $currentPage === 'brands' ? 'active' : '' ?>">
+                <a href="brands" class="menu-link" >
+                    <div data-i18n="Markalar">Markalar</div>
                 </a>
             </li>
-            <?php endif; ?>
+        <?php endif; ?>
 
-            <!-- Catalog -->
-            <?php if ($user->hasPermission(16)): ?>
-            <li class="menu-item <?= $currentPage === 'catalog' ? 'active' : '' ?>">
-                <a href="catalog" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-file"></i>
-                    <div data-i18n="Katalog">Katalog</div>
-                </a>
-            </li>
-            <?php endif; ?>
+        <!-- Users -->
+        <?php if ($user->hasPermission(14)): ?>
+        <li class="menu-item <?= $currentPage === 'users' ? 'active' : '' ?>">
+            <a href="users" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-user"></i>
+                <div data-i18n="Kullanıcılar">Kullanıcılar</div>
+            </a>
+        </li>
+        <?php endif; ?>
 
-            <!-- Technical Support -->
-            <?php if ($user->hasPermission(17)): ?>
-            <li class="menu-item <?= $currentPage === 'teknik_destek' ? 'active' : '' ?>">
-                <a href="teknik_destek" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Teknik Destek">Teknik Destek</div>
-                </a>
-            </li>
-            <?php endif; ?>
+        <!-- Documents -->
+        <?php if ($user->hasPermission(15)): ?>
+        <li class="menu-item <?= $currentPage === 'documents' ? 'active' : '' ?>">
+            <a href="documents" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-folder"></i>
+                <div data-i18n="Dosyalar">Dosyalar</div>
+            </a>
+        </li>
+        <?php endif; ?>
 
-            <!-- Slider -->
-            <?php if ($user->hasPermission(18)): ?>
-            <li class="menu-item <?= $currentPage === 'slider' ? 'active' : '' ?>">
-                <a href="slider" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-arrows-horizontal"></i>
-                    <div data-i18n="Slider">Slider</div>
-                </a>
-            </li>
-            <?php endif; ?>
+        <!-- Catalog -->
+        <?php if ($user->hasPermission(16)): ?>
+        <li class="menu-item <?= $currentPage === 'catalog' ? 'active' : '' ?>">
+            <a href="catalog" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-file"></i>
+                <div data-i18n="Katalog">Katalog</div>
+            </a>
+        </li>
+        <?php endif; ?>
 
-            <!-- Settings -->
-            <?php if ($user->hasPermission(19)): ?>
-            <li class="menu-item <?= $currentPage === 'settings' ? 'active' : '' ?>">
-                <a href="settings" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-settings"></i>
-                    <div data-i18n="Genel Ayarlar">Genel Ayarlar</div>
-                </a>
-            </li>
-            <?php endif; ?>
+        <!-- Technical Support -->
+        <?php if ($user->hasPermission(17)): ?>
+        <li class="menu-item <?= $currentPage === 'teknik_destek' ? 'active' : '' ?>">
+            <a href="teknik_destek" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-headset"></i>
+                <div data-i18n="Teknik Destek">Teknik Destek</div>
+            </a>
+        </li>
+        <?php endif; ?>
+
+        <!-- Slider -->
+        <?php if ($user->hasPermission(18)): ?>
+        <li class="menu-item <?= $currentPage === 'slider' ? 'active' : '' ?>">
+            <a href="slider" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-arrows-horizontal"></i>
+                <div data-i18n="Slider">Slider</div>
+            </a>
+        </li>
+        <?php endif; ?>
+
+        <!-- Settings -->
+        <?php if ($user->hasPermission(19)): ?>
+        <li class="menu-item <?= $currentPage === 'settings' ? 'active' : '' ?>">
+            <a href="settings" class="menu-link">
+                <i class="menu-icon tf-icons ti ti-settings"></i>
+                <div data-i18n="Genel Ayarlar">Genel Ayarlar</div>
+            </a>
+        </li>
         <?php endif; ?>
         <!-- Apps & Pages -->
         <?php if ($user->hasPermission(14)): ?>
