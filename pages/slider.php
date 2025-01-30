@@ -61,7 +61,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider";
+                                                    $query = "SELECT * FROM slider WHERE slider_site = 'net'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
@@ -119,7 +119,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider";
+                                                    $query = "SELECT * FROM slider WHERE slider_site = 'b2b'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
@@ -177,7 +177,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider";
+                                                    $query = "SELECT * FROM slider WHERE slider_site = 'b2c'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
