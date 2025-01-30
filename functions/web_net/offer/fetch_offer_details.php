@@ -4,8 +4,9 @@ include_once '../../db.php';
 if (isset($_GET['id'])) {
     $id = intval($_GET['id']); // Sanitize input
     $database = new Database();
-    $query = "SELECT nef.*,nu.id,nu.UrunAdiTR FROM net_offers AS nef WHERE id = $id
+    $query = "SELECT nef.*,nu.id,nu.UrunAdiTR FROM net_offers AS nef
     LEFT JOIN nokta_urunler AS nu ON nef.prod_id = nu.id
+    WHERE nef.id = $id
     ";
     $result = $database->fetch($query);
 
