@@ -100,7 +100,7 @@ $template->head();
                                         </form>
                                     </div>
                                     <!-- B2B -->
-                                    <div class="tab-pane fade active show" id="form-tabs-b2b" role="tabpanel">
+                                    <div class="tab-pane fade" id="form-tabs-b2b" role="tabpanel">
                                         <div class="mb-3">
                                             <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Yeni Ekle</button>
                                         </div>
@@ -158,7 +158,7 @@ $template->head();
                                         </form>
                                     </div>
                                     <!-- B2C -->
-                                    <div class="tab-pane fade active show" id="form-tabs-b2c" role="tabpanel">
+                                    <div class="tab-pane fade" id="form-tabs-b2c" role="tabpanel">
                                         <div class="mb-3">
                                             <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Yeni Ekle</button>
                                         </div>
