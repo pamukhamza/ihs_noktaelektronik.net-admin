@@ -249,7 +249,7 @@ $template->head();
                 <form id="editSliderForm" class="row g-6" onsubmit="return false">
                     <div class="col-6">
                         <label class="form-label" for="slider_link">Link</label>
-                        <input type="text" id="slider_link" name="slider_link" class="form-control" placeholder="category" />
+                        <input type="text" id="slider_link" name="slider_link" class="form-control" placeholder="link" />
                     </div>
                     <div class="col-6">
                         <label class="form-label" for="slider_img">Image</label>
