@@ -17,7 +17,7 @@ if (isset($_GET['id'])) {
         echo '<p><strong>Telefon:</strong> ' . htmlspecialchars($result['phone']) . '</p>';
         echo '<p><strong>E-Posta:</strong> ' . htmlspecialchars($result['mail']) . '</p>';
         echo '<p><strong>Tarih:</strong> ' . htmlspecialchars($result['date']) . '</p>';
-        echo '<p><strong>Tarih:</strong> ' . htmlspecialchars($result['UrunAdiTR']) . '</p>';
+        echo '<p><strong>Ürün:</strong> ' . htmlspecialchars($result['UrunAdiTR']) . '</p>';
         echo '<p><strong>Açıklama:</strong> ' . htmlspecialchars($result['description']) . '</p>';
     } else {
         echo '<p>No data found for this ID.</p>';
