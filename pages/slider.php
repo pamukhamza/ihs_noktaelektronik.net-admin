@@ -61,7 +61,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider WHERE slider_site = 'net'";
+                                                    $query = "SELECT * FROM slider WHERE site = 'net'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
@@ -119,7 +119,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider WHERE slider_site = 'b2b'";
+                                                    $query = "SELECT * FROM slider WHERE site = 'b2b'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
@@ -177,7 +177,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider WHERE slider_site = 'b2c'";
+                                                    $query = "SELECT * FROM slider WHERE site = 'b2c'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
