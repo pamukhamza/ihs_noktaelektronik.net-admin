@@ -39,7 +39,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php endif; ?>
         <!-- Products -->
         <?php if ($user->hasPermission(12)): ?>
-        <li class="menu-item <?= in_array($currentPage, ['products', 'categories', 'add-product', 'brands', 'filters']) ? 'active open' : '' ?>">
+        <li class="menu-item <?= in_array($currentPage, ['products','add-product', 'filters']) ? 'active open' : '' ?>">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons ti ti-box'></i>
                 <div data-i18n="Ürünler">Ürünler</div>
@@ -76,6 +76,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php if ($user->hasPermission(12)): ?>
             <li class="menu-item <?= $currentPage === 'categories' ? 'active' : '' ?>">
                 <a href="categories" class="menu-link" >
+                <i class="menu-icon tf-icons ti ti-list"></i>
                     <div data-i18n="Kategoriler">Kategoriler</div>
                 </a>
             </li>
@@ -85,6 +86,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php if ($user->hasPermission(12)): ?>
             <li class="menu-item <?= $currentPage === 'brands' ? 'active' : '' ?>">
                 <a href="brands" class="menu-link" >
+                <i class="menu-icon tf-icons ti ti-ticket"></i>
                     <div data-i18n="Markalar">Markalar</div>
                 </a>
             </li>
