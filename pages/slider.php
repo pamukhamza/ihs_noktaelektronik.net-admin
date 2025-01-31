@@ -71,13 +71,13 @@ $template->head();
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="../assets/images/index/<?= $row["slider_photo"] ?>" alt="photo" class="rounded-circle">
+                                                                    <img src="../assets/images/index/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
                                                                 </li>
                                                             </ul>
                                                         </td>
                                                         <td>
                                                             <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['status'] == 1 ? 'checked' : ''; ?> />
+                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
                                                                 <span class="switch-toggle-slider">
                                                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                                                     <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -88,8 +88,8 @@ $template->head();
                                                         <td>
                                                             <a class="cursor-pointer me-2 edit-slider"
                                                                data-id="<?= $row["id"] ?>"
-                                                               data-slider_link="<?= $row['slider_link']; ?>"
-                                                               data-slider_photo="<?= $row['slider_photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                               data-slider_link="<?= $row['link']; ?>"
+                                                               data-slider_photo="<?= $row['photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_slider" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
                                                     </tr>
@@ -129,13 +129,13 @@ $template->head();
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="../assets/images/index/<?= $row["slider_photo"] ?>" alt="photo" class="rounded-circle">
+                                                                    <img src="../assets/images/index/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
                                                                 </li>
                                                             </ul>
                                                         </td>
                                                         <td>
                                                             <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['status'] == 1 ? 'checked' : ''; ?> />
+                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
                                                                 <span class="switch-toggle-slider">
                                                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                                                     <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -146,8 +146,8 @@ $template->head();
                                                         <td>
                                                             <a class="cursor-pointer me-2 edit-slider"
                                                                data-id="<?= $row["id"] ?>"
-                                                               data-slider_link="<?= $row['slider_link']; ?>"
-                                                               data-slider_photo="<?= $row['slider_photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                               data-slider_link="<?= $row['link']; ?>"
+                                                               data-slider_photo="<?= $row['photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_slider" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
                                                     </tr>
@@ -187,13 +187,13 @@ $template->head();
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="../assets/images/index/<?= $row["slider_photo"] ?>" alt="photo" class="rounded-circle">
+                                                                    <img src="../assets/images/index/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
                                                                 </li>
                                                             </ul>
                                                         </td>
                                                         <td>
                                                             <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['status'] == 1 ? 'checked' : ''; ?> />
+                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
                                                                 <span class="switch-toggle-slider">
                                                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                                                     <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -204,8 +204,8 @@ $template->head();
                                                         <td>
                                                             <a class="cursor-pointer me-2 edit-slider"
                                                                data-id="<?= $row["id"] ?>"
-                                                               data-slider_link="<?= $row['slider_link']; ?>"
-                                                               data-slider_photo="<?= $row['slider_photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                               data-slider_link="<?= $row['link']; ?>"
+                                                               data-slider_photo="<?= $row['photo']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_slider" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
                                                     </tr>
