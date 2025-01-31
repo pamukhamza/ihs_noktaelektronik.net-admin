@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $slider_img = !empty($_FILES['slider_img']['name']) ? $_FILES['slider_img']['name'] : null;
 
     if($action == 'update'){
-        $query = "UPDATE slider SET `site` = :site, `slider_link` = :slider_link" . (empty($slider_img) ? "" : ", `slider_photo` = :slider_photo") . " WHERE id = :id";
+        $query = "UPDATE slider SET `site` = :site, `link` = :slider_link" . (empty($slider_img) ? "" : ", `photo` = :slider_photo") . " WHERE id = :id";
 
         $params = [
             'site' => $site,
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     }elseif($action == 'insert'){
-        $query = "INSERT INTO slider (`slider_link`, `site`" . (empty($slider_img) ? "" : ", `slider_photo`") . ") VALUES (:slider_link, :site" . (empty($slider_img) ? "" : ", :slider_photo") . ")";
+        $query = "INSERT INTO slider (`link`, `site`" . (empty($slider_img) ? "" : ", `photo`") . ") VALUES (:slider_link, :site" . (empty($slider_img) ? "" : ", :slider_photo") . ")";
 
         $params = [
             'slider_link' => $slider_link,
