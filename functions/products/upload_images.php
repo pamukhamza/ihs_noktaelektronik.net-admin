@@ -51,14 +51,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
             continue; // Skip this file
         }
 
-        // Upload the file to S3
+        // Upload the file to S3 using multipart upload if necessary
         try {
-            $result = $s3Client->putObject([
-                'Bucket' => $config['s3']['bucket'],
-                'Key'    => $targetFilePath,
-                'SourceFile' => $_FILES['images']['tmp_name'][$key],
+            $uploader = new Aws\S3\MultipartUploader($s3Client, $_FILES['images']['tmp_name'][$key], [
+                'bucket' => $config['s3']['bucket'],
+                'key'    => $targetFilePath,
             ]);
 
+            $result = $uploader->upload();
             $uploadedFiles[] = $result['ObjectURL'];
 
             // Insert image name, product ID, and sort_order into the database
