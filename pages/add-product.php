@@ -677,14 +677,15 @@ $categories = getCategories();
                     success: function(response) {
                         $('#uploadStatus').html('<div class="alert alert-success">Başarıyla yüklendi!</div>');
                     },
-                    error: function() {
+                    error: function(response) {
+                        console.log(response);
                         $('#uploadStatus').html('<div class="alert alert-danger">Yükleme başarısız!</div>');
 
                     },
                     complete: function() {
                         // Re-enable the button and reset its text
                         $('#uploadButton').html('<i class="ti ti-plus ti-xs me-2"></i>Ekle').prop('disabled', false);
-                   
+                        location.reload();
                     }
                 });
             } else {
