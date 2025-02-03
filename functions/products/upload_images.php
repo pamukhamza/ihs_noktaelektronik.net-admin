@@ -57,7 +57,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
                 'Bucket' => $config['s3']['bucket'],
                 'Key'    => $targetFilePath,
                 'SourceFile' => $_FILES['images']['tmp_name'][$key],
-                'ACL'    => 'public-read', // Make the file publicly accessible
             ]);
 
             $uploadedFiles[] = $result['ObjectURL'];
