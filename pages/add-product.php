@@ -677,8 +677,7 @@ $categories = getCategories();
                     success: function(response) {
                         $('#uploadStatus').html('<div class="alert alert-success">Başarıyla yüklendi!</div>');
                     },
-                    error: function(response) {
-                        console.log(response);
+                    error: function() {
                         $('#uploadStatus').html('<div class="alert alert-danger">Yükleme başarısız!</div>');
 
                     },

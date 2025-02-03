@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
             continue; // Skip this file
         }
 
-        if ($_FILES['images']['size'][$key] > 2000000) { // 2MB limit
+        if ($_FILES['images']['size'][$key] > 10000000) { // 10MB limit
             $errors[] = "File size exceeds limit: " . $name;
             continue; // Skip this file
         }
