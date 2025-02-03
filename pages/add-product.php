@@ -675,11 +675,10 @@ $categories = getCategories();
                     contentType: false,
                     processData: false,
                     success: function(response) {
-                        const result = JSON.parse(response);
                         $('#uploadStatus').html('<div class="alert alert-success">Başarıyla yüklendi!</div>');
                     },
                     error: function(response) {
-                        alert(result.message);
+                        console.log(response);
                         $('#uploadStatus').html('<div class="alert alert-danger">Yükleme başarısız!</div>');
 
                     },
