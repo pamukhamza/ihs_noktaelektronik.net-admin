@@ -46,19 +46,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['images'])) {
             continue; // Skip this file
         }
 
-        if ($_FILES['images']['size'][$key] > 10000000) { // 10MB limit
+        if ($_FILES['images']['size'][$key] > 2000000) { // 2MB limit
             $errors[] = "File size exceeds limit: " . $name;
             continue; // Skip this file
         }
 
-        // Upload the file to S3 using multipart upload if necessary
+        // Upload the file to S3
         try {
-            $uploader = new Aws\S3\MultipartUploader($s3Client, $_FILES['images']['tmp_name'][$key], [
-                'bucket' => $config['s3']['bucket'],
-                'key'    => $targetFilePath,
+            $result = $s3Client->putObject([
+                'Bucket' => $config['s3']['bucket'],
+                'Key'    => $targetFilePath,
+                'SourceFile' => $_FILES['images']['tmp_name'][$key],
             ]);
 
-            $result = $uploader->upload();
             $uploadedFiles[] = $result['ObjectURL'];
 
             // Insert image name, product ID, and sort_order into the database
