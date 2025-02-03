@@ -685,7 +685,7 @@ $categories = getCategories();
                     complete: function() {
                         // Re-enable the button and reset its text
                         $('#uploadButton').html('<i class="ti ti-plus ti-xs me-2"></i>Ekle').prop('disabled', false);
-                        location.reload();
+                   
                     }
                 });
             } else {
