@@ -183,12 +183,6 @@ $database = new Database();
             $("#modalEditCategory").val(category).trigger("change");
             $("#editCatForm").data("action", "update").data("id", id);
             $('#editCat').modal('show');
-
-            if (category === 0) {
-                $("#cat_image_div").show(); // Assuming you have a wrapping div with this ID
-            } else {
-                $("#cat_image_div").hide(); // Hide the div if category is not 0
-            }
         });
 
         // Handle form submission

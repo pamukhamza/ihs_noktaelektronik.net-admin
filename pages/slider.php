@@ -67,7 +67,7 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td></td>
+                                                        <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
@@ -125,7 +125,7 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td></td>
+                                                        <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
@@ -183,7 +183,7 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td></td>
+                                                        <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
