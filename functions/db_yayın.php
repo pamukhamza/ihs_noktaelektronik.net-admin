@@ -11,7 +11,6 @@ class Database {
         $this->connect();
     }
 
-    
     // Veritabanına bağlan
     private function connect() {
         try {
@@ -35,11 +34,18 @@ class Database {
     // FetchAll tüm satırları döndürme
     public function fetchAll($query, $params = []) {
         $stmt = $this->conn->prepare($query);
-        foreach ($params as $key => $value) {
-            $stmt->bindValue(":$key", htmlspecialchars($value));
+        if (!empty($params)) {
+            foreach ($params as $key => $value) {
+                // Only use htmlspecialchars for string values
+                $stmt->bindValue(
+                    ":$key", 
+                    is_string($value) ? htmlspecialchars($value) : $value,
+                    is_int($value) ? PDO::PARAM_INT : PDO::PARAM_STR
+                );
+            }
         }
         $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
     }
     // FetchColumn: Sadece bir kolon döndürme
     public function fetchColumn($query, $params = []) {

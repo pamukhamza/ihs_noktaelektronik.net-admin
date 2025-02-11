@@ -11,16 +11,16 @@ class Template {
     public function head() {
         $title = $this->title;
         $currentPage = $this->currentPage;
-        include '../pages/components/admin_head.php';
+        include __DIR__ . '/../pages/components/admin_head.php';
     }
 
     public function header() {
         $currentPage = $this->currentPage; // Pass current page to header
-        include '../pages/components/admin_header.php';
+        include  __DIR__ . '/../pages/components/admin_header.php';
     }
 
     public function footer() {
-        include '../pages/components/admin_footer.php';
+        include  __DIR__ . '/../pages/components/admin_footer.php';
     }
 }
 

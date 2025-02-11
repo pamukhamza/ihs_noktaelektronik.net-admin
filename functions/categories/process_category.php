@@ -60,10 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($action === 'insert') {
         // Use quotes for reserved keyword
-        $query = "INSERT INTO nokta_kategoriler (`KategoriAdiTr`, `KategoriAdiEn`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `img_path`" : "") . ") VALUES (:name, :name_cn, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
+        $query = "INSERT INTO nokta_kategoriler (`KategoriAdiTr`, `KategoriAdiEn`, `is_active`, `seo_link`, `parent_id`" . (!empty($cat_img) ? ", `img_path`" : "") . ") VALUES (:name, :name_cn, :aktif, :seo_link, :parent_id" . (!empty($cat_img) ? ", :cat_img" : "") . ")";
         $params = [
             'name' => $name,
             'name_cn' => $name_cn,
+            'aktif' => 1,
             'seo_link' => $seolink,
             'parent_id' => $cat_id
         ];

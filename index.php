@@ -101,7 +101,7 @@
                         timer: 2000,
                         showConfirmButton: false
                     }).then(() => {
-                        window.location.href = 'pages/dashboard'; // Redirect to dashboard
+                        window.location.href = 'pages/genel/dashboard'; // Redirect to dashboard
                     });
                 } else {
                     // Show error message

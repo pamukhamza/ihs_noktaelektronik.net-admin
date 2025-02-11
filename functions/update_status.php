@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $value = $_POST['value']; // yeni değer: 1 veya 0
     $db_name = $_POST['database'];
 
-    if (in_array($field, ['new', 'active', 'status'])) { // sadece izin verilen alanları güncelleyebiliriz
+    if (in_array($field, ['new', 'active', 'status', 'aktif'])) { // sadece izin verilen alanları güncelleyebiliriz
         $database = new Database();
         $query = "UPDATE $db_name SET `$field` = :value WHERE id = :id";
         $params = [
@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $database->update($query, $params);
 
         if ($result) {
-            echo "Update Successful";
+            echo "Güncelleme Başarılı";
         } else {
             echo "Error while updating";
         }

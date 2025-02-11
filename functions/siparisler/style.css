@@ -1,0 +1,73 @@
+/* B2B Orders page styles */
+
+/* Table styles */
+.table {
+    font-size: 0.9em;
+}
+
+.table.dataTable td,
+.table.dataTable th {
+    font-size: 0.9em;
+}
+
+/* Card header styles */
+.card-header.status-header {
+    background-color: #0a78f1;
+    color: white;
+    padding: 0.5rem;
+}
+
+/* Button spacing */
+.action-buttons {
+    margin-bottom: 1rem;
+}
+
+.action-buttons .btn {
+    margin-top: 0.25rem;
+    margin-right: 0.5rem;
+}
+
+/* Child table styles */
+.child-table {
+    width: 100%;
+    margin: 1rem 0;
+}
+
+.child-table img {
+    width: 45px;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* Price display */
+.price-display {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+/* Status navigation */
+.status-nav {
+    margin-bottom: 1rem;
+}
+
+/* Toggle icon styles */
+.toggle-icon {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+tr.shown .toggle-icon {
+    transform: rotate(90deg);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+} 

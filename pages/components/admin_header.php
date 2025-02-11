@@ -1,14 +1,14 @@
 <?php 
-include_once '../functions/user.php';
+include __DIR__ .'/../../functions/user.php';
 $user = new User($database);
 $selectedSite = $_GET['w'] ?? 'noktanet'; 
 ?>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <input hidden value="<?= $_SESSION['user_session']['id']; ?>">
     <div class="app-brand demo ">
-    <a  class="menu-link">
+            <a class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
-                <form method="get" action="dashboard">
+                <form method="get" action="pages/genel/dashboard">
                     <select class="form-select" name="w" onchange="this.form.submit()">
                         <option value="noktanet" <?= $selectedSite === 'noktanet' ? 'selected' : '' ?>>Nokta Net</option>
                         <option value="noktab2b" <?= $selectedSite === 'noktab2b' ? 'selected' : '' ?>>Nokta B2B</option>
@@ -31,7 +31,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Dashboards -->
         <?php if ($user->hasPermission(11)): ?>
         <li class="menu-item <?= $currentPage === 'dashboard' ? 'active' : '' ?>">
-            <a href="dashboard" class="menu-link">
+            <a href="pages/genel/dashboard" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-smart-home"></i>
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
@@ -47,7 +47,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             <ul class="menu-sub">
                 <?php if ($user->hasPermission(12)): ?>
                 <li class="menu-item <?= $currentPage === 'products' ? 'active' : '' ?>">
-                    <a href="products" class="menu-link">
+                    <a href="pages/genel/products" class="menu-link">
                         <div data-i18n="Ürün Listesi">Ürün Listesi</div>
                     </a>
                 </li>
@@ -55,7 +55,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                 
                 <?php if ($user->hasPermission(12)): ?>
                 <li class="menu-item <?= $currentPage === 'add-product' ? 'active' : '' ?>">
-                    <a href="add-product" class="menu-link">
+                    <a href="pages/genel/add-product" class="menu-link">
                         <div data-i18n="Yeni Ürün Ekle">Yeni Ürün Ekle</div>
                     </a>
                 </li>
@@ -63,7 +63,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                 
                 <?php if ($user->hasPermission(12)): ?>
                 <li class="menu-item <?= $currentPage === 'filters' ? 'active' : '' ?>">
-                    <a href="filters" class="menu-link" >
+                    <a href="pages/genel/filters" class="menu-link" >
                         <div data-i18n="Filtreler">Filtreler</div>
                     </a>
                 </li>
@@ -75,7 +75,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Categories -->
         <?php if ($user->hasPermission(12)): ?>
             <li class="menu-item <?= $currentPage === 'categories' ? 'active' : '' ?>">
-                <a href="categories" class="menu-link" >
+                <a href="pages/genel/categories" class="menu-link" >
                 <i class="menu-icon tf-icons ti ti-list"></i>
                     <div data-i18n="Kategoriler">Kategoriler</div>
                 </a>
@@ -85,7 +85,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Brands -->
         <?php if ($user->hasPermission(12)): ?>
             <li class="menu-item <?= $currentPage === 'brands' ? 'active' : '' ?>">
-                <a href="brands" class="menu-link" >
+                <a href="pages/genel/brands" class="menu-link" >
                 <i class="menu-icon tf-icons ti ti-ticket"></i>
                     <div data-i18n="Markalar">Markalar</div>
                 </a>
@@ -95,7 +95,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Users -->
         <?php if ($user->hasPermission(14)): ?>
         <li class="menu-item <?= $currentPage === 'users' ? 'active' : '' ?>">
-            <a href="users" class="menu-link">
+            <a href="pages/genel/users" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-user"></i>
                 <div data-i18n="Kullanıcılar">Kullanıcılar</div>
             </a>
@@ -105,7 +105,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Documents -->
         <?php if ($user->hasPermission(15)): ?>
         <li class="menu-item <?= $currentPage === 'documents' ? 'active' : '' ?>">
-            <a href="documents" class="menu-link">
+            <a href="pages/genel/documents" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-folder"></i>
                 <div data-i18n="Dosyalar">Dosyalar</div>
             </a>
@@ -115,7 +115,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Catalog -->
         <?php if ($user->hasPermission(16)): ?>
         <li class="menu-item <?= $currentPage === 'catalog' ? 'active' : '' ?>">
-            <a href="catalog" class="menu-link">
+            <a href="pages/genel/catalog" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-file"></i>
                 <div data-i18n="Katalog">Katalog</div>
             </a>
@@ -125,7 +125,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Technical Support -->
         <?php if ($user->hasPermission(17)): ?>
         <li class="menu-item <?= $currentPage === 'teknik_destek' ? 'active' : '' ?>">
-            <a href="teknik_destek" class="menu-link">
+            <a href="pages/genel/teknik_destek" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-headset"></i>
                 <div data-i18n="Teknik Destek">Teknik Destek</div>
             </a>
@@ -135,7 +135,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Slider -->
         <?php if ($user->hasPermission(18)): ?>
         <li class="menu-item <?= $currentPage === 'slider' ? 'active' : '' ?>">
-            <a href="slider" class="menu-link">
+            <a href="pages/genel/slider" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-arrows-horizontal"></i>
                 <div data-i18n="Slider">Slider</div>
             </a>
@@ -145,7 +145,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <!-- Settings -->
         <?php if ($user->hasPermission(19)): ?>
         <li class="menu-item <?= $currentPage === 'settings' ? 'active' : '' ?>">
-            <a href="settings" class="menu-link">
+            <a href="pages/genel/settings" class="menu-link">
                 <i class="menu-icon tf-icons ti ti-settings"></i>
                 <div data-i18n="Genel Ayarlar">Genel Ayarlar</div>
             </a>
@@ -160,7 +160,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php if ($selectedSite === 'noktanet'): ?>
             <?php if ($user->hasPermission(15)): ?>
             <li class="menu-item <?= $currentPage === 'net-bulten' ? 'active' : '' ?>">
-                <a href="net-bulten" class="menu-link">
+                <a href="pages/genel/net-bulten" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="E-Bülten">E-Bülten</div>
                 </a>
@@ -169,7 +169,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             
             <?php if ($user->hasPermission(16)): ?>
             <li class="menu-item <?= $currentPage === 'net-offer' ? 'active' : '' ?>">
-                <a href="net-offer" class="menu-link">
+                <a href="pages/genel/net-offer" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-book"></i>
                     <div data-i18n="Teklifler">Teklifler</div>
                 </a>
@@ -179,7 +179,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php elseif($selectedSite === 'noktacn'): ?>
             <?php if ($user->hasPermission(17)): ?>
             <li class="menu-item <?= $currentPage === 'cn-bulten' ? 'active' : '' ?>">
-                <a href="cn-bulten" class="menu-link">
+                <a href="pages/genel/cn-bulten" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="E-Bülten">E-Bülten</div>
                 </a>
@@ -188,7 +188,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             
             <?php if ($user->hasPermission(18)): ?>
             <li class="menu-item <?= $currentPage === 'cn-offer' ? 'active' : '' ?>">
-                <a href="cn-offer" class="menu-link">
+                <a href="pages/genel/cn-offer" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-book"></i>
                     <div data-i18n="Teklifler">Teklifler</div>
                 </a>
@@ -198,7 +198,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php elseif($selectedSite === 'indata'): ?>
             <?php if ($user->hasPermission(19)): ?>
             <li class="menu-item <?= $currentPage === 'projeler' ? 'active' : '' ?>">
-                <a href="projeler?w=indata" class="menu-link">
+                <a href="pages/genel/projeler?w=indata" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="Projeler">Projeler</div>
                 </a>
@@ -209,55 +209,105 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             <?php if ($user->hasPermission(8)): ?>
             <!-- B2B menu items -->
             <li class="menu-item <?= $currentPage === 'eksik-bilgi' ? 'active' : '' ?>">
-                <a href="eksik-bilgi" class="menu-link">
+                <a href="pages/b2b/eksik-bilgi?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-exclamation-circle"></i>
                     <div data-i18n="Eksik Ürün Bilgisi">Eksik Ürün Bilgisi</div>
                 </a>
             </li>
-            <li class="menu-item <?= $currentPage === 'kampanya' ? 'active' : '' ?>">
-                <a href="kampanya" class="menu-link">
+            <li class="menu-item <?= $currentPage === 'b2b-kampanya' ? 'active' : '' ?>">
+                <a href="pages/b2b/b2b-kampanya?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-tag"></i>
                     <div data-i18n="Kampanyalar">Kampanyalar</div>
                 </a>
             </li>
-            <li class="menu-item <?= $currentPage === 'teklifler' ? 'active' : '' ?>">
-                <a href="teklifler" class="menu-link">
+            <li class="menu-item <?= $currentPage === 'b2b-teklif' ? 'active' : '' ?>">
+                <a href="pages/b2b/b2b-teklif?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-basket"></i>
                     <div data-i18n="Teklifler">Teklifler</div>
                 </a>
             </li>
-            <li class="menu-item <?= $currentPage === 'sertifika-olustur' ? 'active' : '' ?>">
-                <a href="sertifika-olustur" class="menu-link">
+            <li class="menu-item <?= $currentPage === 'b2b-sertifika' ? 'active' : '' ?>">
+                <a href="pages/b2b/b2b-sertifika?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-certificate"></i>
                     <div data-i18n="Sertifika Oluşturma">Sertifika Oluşturma</div>
                 </a>
             </li>
-            <li class="menu-item <?= $currentPage === 'newsletter' ? 'active' : '' ?>">
-                <a href="newsletter" class="menu-link">
+            <li class="menu-item <?= $currentPage === 'b2b-bulten' ? 'active' : '' ?>">
+                <a href="pages/b2b/b2b-bulten?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="E-Bülten">E-Bülten</div>
                 </a>
             </li>
-            <li class="menu-item <?= $currentPage === 'siparisler' ? 'active' : '' ?>">
-                <a href="siparisler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-shopping-cart"></i>
+            <li class="menu-item <?= in_array($currentPage, ['b2b-siparisler','b2b-iade', 'b2b-sepetler', 'b2b-promosyon']) ? 'active open' : '' ?>">
+                <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class='menu-icon tf-icons ti ti-box'></i>
                     <div data-i18n="Siparişler">Siparişler</div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item <?= $currentPage === 'b2b-siparisler' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-siparisler?sDurum=0&w=noktab2b" class="menu-link">
+                            <div data-i18n="Sipariş Listesi">Sipariş Listesi</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-iade' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-iadedegisim?w=noktab2b" class="menu-link">
+                            <div data-i18n="İade / Değişim">İade / Değişim</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-sepetler' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-sepetler?w=noktab2b" class="menu-link">
+                            <div data-i18n="Sepetler">Sepetler</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-promosyon' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-promosyon?w=noktab2b" class="menu-link">
+                            <div data-i18n="Promosyon">Promosyon</div>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="menu-item <?= $currentPage === 'muhasebe' ? 'active' : '' ?>">
-                <a href="muhasebe" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-credit-card"></i>
+            <li class="menu-item  <?= in_array($currentPage, ['b2b-doviz-ayarlari','b2b-odemeler', 'b2b-banka-komisyonları', 'b2b-banka-bilgileri', 'b2b-sanal-pos-odeme']) ? 'active open' : '' ?>">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                    <i class='menu-icon tf-icons ti ti-box'></i>
                     <div data-i18n="Muhasebe">Muhasebe</div>
                 </a>
+                <ul class="menu-sub">
+                    <li class="menu-item <?= $currentPage === 'b2b-doviz-ayarlari' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-doviz?w=noktab2b" class="menu-link">
+                            <div data-i18n="Döviz Ayarları">Döviz Ayarları</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-odemeler' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-odeme?w=noktab2b" class="menu-link">
+                            <div data-i18n="Ödemeler">Ödemeler</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-banka-komisyonları' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-komisyon?w=noktab2b" class="menu-link">
+                            <div data-i18n="Banka Komisyonları">Banka Komisyonları</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-banka-bilgileri' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-banka-hesap?w=noktab2b" class="menu-link">
+                            <div data-i18n="Banka Hesap Bilgileri">Banka Hesap Bilgileri</div>
+                        </a>
+                    </li>
+                    <li class="menu-item <?= $currentPage === 'b2b-sanal-pos-odeme' ? 'active' : '' ?>">
+                        <a href="pages/b2b/b2b-sanalpos?w=noktab2b" class="menu-link">
+                            <div data-i18n="Sanal Pos Ödeme">Sanal Pos Ödeme</div>
+                        </a>
+                    </li>
+                </ul>
             </li>
-            <li class="menu-item <?= $currentPage === 'uyeler' ? 'active' : '' ?>">
-                <a href="uyeler" class="menu-link">
+            <li class="menu-item <?= $currentPage === 'b2b-uyeler' ? 'active' : '' ?>">
+                <a href="pages/b2b/b2b-uyeler?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-user"></i>
                     <div data-i18n="Üyeler">Üyeler</div>
                 </a>
             </li>
+
             <li class="menu-item <?= $currentPage === 'kargo-firmalari' ? 'active' : '' ?>">
-                <a href="kargo-firmalari" class="menu-link">
+                <a href="pages/b2b/b2b-kargo-firmalari?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-truck"></i>
                     <div data-i18n="Kargo Firmaları">Kargo Firmaları</div>
                 </a>
@@ -282,7 +332,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                 <li class="nav-item navbar-dropdown dropdown-user dropdown">
                     <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
                         <div class="avatar avatar-online">
-                            <img src="../assets/img/avatars/1.png" alt class="rounded-circle">
+                            <img src="assets/img/avatars/1.png" alt class="rounded-circle">
                         </div>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">
@@ -291,7 +341,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                                 <div class="d-flex align-items-center">
                                     <div class="flex-shrink-0 me-2">
                                         <div class="avatar avatar-online">
-                                            <img src="../assets/img/avatars/1.png" alt class="rounded-circle">
+                                            <img src="assets/img/avatars/1.png" alt class="rounded-circle">
                                         </div>
                                     </div>
                                     <div class="flex-grow-1">
@@ -306,7 +356,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                         </li>
                         <li>
                             <div class="d-grid px-2 pt-2 pb-1">
-                                <a class="btn btn-sm btn-danger d-flex" href="../functions/logout.php" >
+                                <a class="btn btn-sm btn-danger d-flex" href="functions/logout.php" >
                                     <small class="align-middle">Logout</small>
                                     <i class="ti ti-logout ms-2 ti-14px"></i>
                                 </a>
