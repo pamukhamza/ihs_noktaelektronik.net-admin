@@ -16,6 +16,7 @@ function displayCategories($parentId, $database) {
         $output .= '<td>' . (empty($hasSubcategories) ? '' : '<button class="toggle-subcat me-2" data-id="' . $row['id'] . '">+</button>') . $row['KategoriAdiTr'] . '</td>';
         $output .= '<td>' . $row['KategoriAdiEn'] . '</td>';
         $output .= '<td>
+            <a class="cursor-pointer me-2 cat_prod_sort" data-id="' . $row['id'] . '"><i class="ti ti-box me-1"></i></a>
             <a class="cursor-pointer me-2 cat_sort" data-id="' . $row['id'] . '"><i class="ti ti-list me-1"></i></a>
             <a class="cursor-pointer me-2 edit_cat" data-id="' . $row['id'] . '" data-name="' . $row['KategoriAdiTr'] . '" data-name_cn="' . $row['KategoriAdiEn'] . '" data-category="' . $row['parent_id'] . '"><i class="ti ti-pencil me-1"></i></a>
             <a class="cursor-pointer delete_cat" data-id="' . $row['id'] . '"><i class="ti ti-trash me-1"></i></a>

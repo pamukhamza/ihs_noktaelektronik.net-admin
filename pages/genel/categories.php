@@ -147,7 +147,7 @@ $database = new Database();
                 }
             });
         }
-
+        
         // Toggle subcategories
         $(document).on('click', '.toggle-subcat', function() {
             const categoryId = $(this).data('id');
@@ -158,7 +158,11 @@ $database = new Database();
 
         $(document).on('click', '.cat_sort', function() {
             const id = $(this).data('id');
-            window.location.href = 'category-sorting?id=' + id;
+            window.location.href = 'pages/genel/category-sorting?id=' + id;
+        });
+        $(document).on('click', '.cat_prod_sort', function() {
+            const id = $(this).data('id');
+            window.location.href = 'pages/genel/cat_prod_rank?id=' + id;
         });
 
         // Open modal for adding new category

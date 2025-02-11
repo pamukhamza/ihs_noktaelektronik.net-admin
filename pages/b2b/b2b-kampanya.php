@@ -43,7 +43,7 @@ $template->head();
                                         ?>
                                             <tr data-id="<?php echo $row['id']; ?>">
                                                 <td><?php echo  $row['id']; ?></td>
-                                                <td><div class="m-r-10"><img width="45" class="rounded" src="assets/images/kampanyalar/<?php echo $row['foto'];?>"/></div></td>
+                                                <td><div class="m-r-10"><img width="45" class="rounded" src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/campaigns/<?php echo $row['foto'];?>"/></div></td>
                                                 <td><a target="_blank" href="<?php echo  $row['link']; ?>">Link</a></td>
                                                 <td>
                                                     <label class="switch switch-success">
@@ -183,8 +183,9 @@ $template->head();
                         <input type="text" id="editVarId" name="editVarId" hidden>
                         <input type="text" class="form-control" id="editVarAdi" name="editVarAdi" readonly>
                     </div>
+                    <div class="form-group">
                         <label for="editVarUrun">Seçili Ürünler</label>
-                        <select id='editVarUrun' name="urunler[]"  multiple='multiple' class="form-select select2" style="width: 100%;">
+                        <select id='editVarUrun' name="urunler[]"  multiple='multiple' class="select2 form-select" style="width: 100%;">
                             <?php
                             $q = "SELECT UrunKodu,UrunAdiTR,id,filtre,stok FROM nokta_urunler WHERE web_comtr = 1";
                             $urun = $database->fetchAll($q);
@@ -199,6 +200,7 @@ $template->head();
                                 <option value='<?php echo $row['id']; ?>' <?php echo $selected; ?>><?php echo $row['UrunKodu']; ?></option>
                             <?php } ?>
                         </select>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
