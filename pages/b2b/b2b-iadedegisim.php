@@ -189,7 +189,7 @@ $(document).ready(function() {
             var type = 'iadeDuzenle';
             
             $.ajax({
-                url: 'php/edit_info.php',
+                url: 'functions/siparisler/promosyon.php',
                 method: 'post',
                 data: {
                     id : id,

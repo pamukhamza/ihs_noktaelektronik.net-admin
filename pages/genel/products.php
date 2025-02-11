@@ -160,7 +160,7 @@ $db->delete($deleteQuery);
                 {
                     data: null,
                     render: function (data, type, row) {
-                        return `<a href="add-product.php?id=${row.id}" target="_blank" class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
+                        return `<a href="pages/genel/add-product.php?id=${row.id}" target="_blank" class="cursor-pointer me-2 edit_product" data-product-id="${row.id}"><i class="ti ti-pencil me-1"></i></a>
                                 <a class="cursor-pointer delete_product" data-id="${row.id}"><i class="ti ti-trash me-1"></i></a>`;
                     }
                 }

@@ -2,8 +2,7 @@
 $(document).ready(function() {
     // Initialize variables
     const selectedIds = [];
-    const baseUrl = window.location.origin + '/noktanet_admin/';
-    console.log('Base URL:', baseUrl);
+    const baseUrl = window.location.origin + '/admin/';
     
     // Initialize DataTable
     function initializeDataTable() {
