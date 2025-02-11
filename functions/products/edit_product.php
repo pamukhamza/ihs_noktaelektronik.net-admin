@@ -86,10 +86,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $database->insert($insertProductCategory, ['p_id' => $id, 'cat_id' => $category]);
         }
 
-        header("Location: ../../pages/add-product.php?id=" . $id . "&s=1");
+        header("Location: ../../pages/genel/add-product.php?id=" . $id . "&s=1");
         exit;
     } catch (Exception $e) {
-        header("Location: ../../pages/add-product.php?id=" . $id . "&s=2&msg=" . htmlspecialchars($e->getMessage()));
+        header("Location: ../../pages/genel/add-product.php?id=" . $id . "&s=2&msg=" . htmlspecialchars($e->getMessage()));
         exit;
     }
 }
