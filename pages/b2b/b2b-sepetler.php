@@ -109,7 +109,7 @@ $database = new Database();
                             <td><?php echo $row['firmaUnvani']; ?></td>
                             <td><?php echo $row['ad']; ?></td>
                             <td><?php echo $row['soyad']; ?></td>
-                            <td><a href="pages/b2b/b2b-sepetdetay?id=<?php echo $row['id'];?>">Sepete Git</a></td>
+                            <td><a href="pages/b2b/b2b-sepetdetay?w=noktab2b&id=<?php echo $row['id'];?>">Sepete Git</a></td>
                         </tr>
                     <?php } ?>
                     </tbody>

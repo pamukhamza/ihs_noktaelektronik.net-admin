@@ -9,7 +9,7 @@ $template->head();
 $database = new Database();
 
 $uye_id = $_GET['id'];
-$uye = $database->fetch("SELECT * FROM uyeler WHERE id = $uye_id");
+$uye = $database->fetch("SELECT fiyat, firmaUnvani, ad, soyad FROM uyeler WHERE id = $uye_id");
 $uye_fiyat = $uye['fiyat'];
 
 $sepetler = $database->fetchAll(" SELECT s.*, u.UrunKodu, u.UrunAdiTR, u.DSF1, u.DSF{$uye_fiyat}, u.KSF{$uye_fiyat}, u.DOVIZ_BIRIMI, u.kdv,
@@ -26,9 +26,9 @@ if (!empty($sepetler)) {
 $totalKdvliFiyat = 0;
 
 
-$dolar = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 2 ");
+$dolar = $database->fetch("SELECT satis FROM b2b_kurlar WHERE id = 2 ");
 $satis_dolar_kuru = $dolar['satis'];
-$euro = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = 3 ");
+$euro = $database->fetch("SELECT satis FROM b2b_kurlar WHERE id = 3 ");
 $satis_euro_kuru = $euro['satis'];
 
 ?>
@@ -73,11 +73,11 @@ $satis_euro_kuru = $euro['satis'];
                                         <tr>
                                             <?php
                                                 $urun_id = $sepet['urun_id'];
-                                                $urun = $database->fetch("SELECT * FROM nokta_urunler WHERE id =$urun_id");
+                                                $urun = $database->fetch("SELECT BLKODU, seo_link, UrunKodu, UrunAdiTR, DSF1, DSF2, DSF3, DSF4, KSF1, KSF2, KSF3, KSF4, DOVIZ_BIRIMI, kdv FROM nokta_urunler WHERE id =$urun_id");
                                                 $urunBLKODU = $urun['BLKODU'];
                                                 $resim = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = $urunBLKODU LIMIT 1");
                                             ?>
-                                            <td><a target="_blank" href="tr/urunler/<?= $urun['seo_link'] ?>"><img src="../assets/images/urunler/<?= $resim; ?>" style="max-width: 50px; max-height: 50px;"></a></td>
+                                            <td><a target="_blank" href="tr/urun/<?= $urun['seo_link'] ?>"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $resim; ?>" style="max-width: 50px; max-height: 50px;"></a></td>
                                             <td><?= $urun['UrunKodu']; ?></td>
                                             <td><?= $urun['UrunAdiTR']; ?></td>
                                             <td><input type="text" class="form-control adet-input" value="<?= $sepet['adet']; ?>" data-sepet-id="<?= $sepet['id']; ?>"></td>
@@ -207,9 +207,9 @@ $satis_euro_kuru = $euro['satis'];
                         <label for="editUrun">Ürün Seç</label>
                         <select style="width: 100%" class="form-control select1" name="editUrun" id="editUrun">
                             <?php
-                            $urun = $database->fetchAll("SELECT * FROM nokta_urunler WHERE BLKODU != 0 ");
-                            foreach($urun as $row) {
-                                ?>
+                                $uruns = $database->fetchAll("SELECT id, UrunKodu FROM nokta_urunler WHERE BLKODU != 0 ");
+                                foreach($uruns as $row) {
+                            ?>
                                 <option value='<?= $row['id']; ?>'><?= $row['UrunKodu']; ?></option>
                             <?php } ?>
                         </select>

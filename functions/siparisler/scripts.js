@@ -218,17 +218,10 @@ $(document).ready(function() {
 
     // Load child table data via AJAX
     function loadChildTableData(tableId, orderId) {
-        console.log('Loading child table data for order ID:', orderId);
-        console.log('Request URL:', `${baseUrl}functions/siparisler/server_siparis_alt.php`);
         
         const requestData = new FormData();
         requestData.append('id', orderId);
-        
-        console.log('Request data:', {
-            id: orderId,
-            tableId: tableId,
-            url: `${baseUrl}functions/siparisler/server_siparis_alt.php`
-        });
+ 
         
         $.ajax({
             url: `${baseUrl}functions/siparisler/server_siparis_alt.php`,

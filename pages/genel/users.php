@@ -51,7 +51,7 @@ $template->head();
                                             <td><?= $row['username']; ?></td>
                                             <td><?= $row['email']; ?></td>
                                             <td>
-                                                <a class="cursor-pointer me-2 edit_user" href="users-detail?id=<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                <a class="cursor-pointer me-2 edit_user" href="pages/genel/users-detail?id=<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                 <a class="cursor-pointer delete_user" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                             </td>
                                         </tr>
