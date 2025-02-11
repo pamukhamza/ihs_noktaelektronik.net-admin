@@ -114,8 +114,7 @@ $result = $database->fetchAll($q);
 
 <script>
 $(document).ready(function() {
-    const baseUrl = window.location.origin + '/noktanet_admin/';
-    console.log('Base URL:', baseUrl);
+    const baseUrl = window.location.origin + '/admin/';
     var table = $('#deneme').DataTable({
         "language": {
             url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/tr.json',
