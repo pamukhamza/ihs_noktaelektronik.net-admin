@@ -70,8 +70,8 @@ $template->head();
                                                         <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
+                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
+                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" width="150px" class="">
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -135,7 +135,7 @@ $template->head();
                                                         </td>
                                                         <td>
                                                             <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
+                                                                <input type="checkbox" class="switch-input active-checkbox-slider1" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
                                                                 <span class="switch-toggle-slider">
                                                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                                                     <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -193,7 +193,7 @@ $template->head();
                                                         </td>
                                                         <td>
                                                             <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-slider" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
+                                                                <input type="checkbox" class="switch-input active-checkbox-slider2" data-id="<?= $row['id']; ?>" <?= $row['is_active'] == 1 ? 'checked' : ''; ?> />
                                                                 <span class="switch-toggle-slider">
                                                                     <span class="switch-on"><i class="ti ti-check"></i></span>
                                                                     <span class="switch-off"><i class="ti ti-x"></i></span>
@@ -425,7 +425,7 @@ $template->head();
             }
         });
     });
-    $('.active-checkbox-banner').on('change', function() {
+    $('.active-checkbox-slider1').on('change', function() {
         var id = $(this).data('id');
         var activeStatus = $(this).is(':checked') ? 1 : 0;
 
@@ -434,9 +434,35 @@ $template->head();
             type: 'POST',
             data: {
                 id: id,
-                field: 'status',
+                field: 'is_active',
                 value: activeStatus,
-                database: 'banner'
+                database: 'slider'
+            },
+            success: function(response) {
+                Swal.fire({
+                    icon: 'success',
+                    text: response,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            },
+            error: function() {
+                alert('Error while updating');
+            }
+        });
+    });
+    $('.active-checkbox-slider2').on('change', function() {
+        var id = $(this).data('id');
+        var activeStatus = $(this).is(':checked') ? 1 : 0;
+
+        $.ajax({
+            url: 'functions/update_status.php',  // PHP dosyanızın ismini yazın
+            type: 'POST',
+            data: {
+                id: id,
+                field: 'is_active',
+                value: activeStatus,
+                database: 'slider'
             },
             success: function(response) {
                 Swal.fire({
