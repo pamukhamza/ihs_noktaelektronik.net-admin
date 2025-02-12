@@ -20,6 +20,37 @@ function displayCategories($parentId, $database) {
             <a class="cursor-pointer me-2 cat_sort" data-id="' . $row['id'] . '"><i class="ti ti-list me-1"></i></a>
             <a class="cursor-pointer me-2 edit_cat" data-id="' . $row['id'] . '" data-name="' . $row['KategoriAdiTr'] . '" data-name_cn="' . $row['KategoriAdiEn'] . '" data-category="' . $row['parent_id'] . '"><i class="ti ti-pencil me-1"></i></a>
             <a class="cursor-pointer delete_cat" data-id="' . $row['id'] . '"><i class="ti ti-trash me-1"></i></a>
+            
+        </td>';
+        $output .= '<td>
+            <label class="switch switch-success">
+                <input type="checkbox" class="switch-input wnet-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_net'] == 1 ? 'checked' : '') . ' />
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                </span>
+                <span class="switch-label"></span>
+            </label>
+        </td>';
+        $output .= '<td>
+            <label class="switch switch-success">
+                <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_comtr'] == 1 ? 'checked' : '') . ' />
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                </span>
+                <span class="switch-label"></span>
+            </label>
+        </td>';
+        $output .= '<td>
+            <label class="switch switch-success">
+                <input type="checkbox" class="switch-input wcn-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_cn'] == 1 ? 'checked' : '') . ' />
+                <span class="switch-toggle-slider">
+                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                </span>
+                <span class="switch-label"></span>
+            </label>
         </td>';
         $output .= '</tr>';
 

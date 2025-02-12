@@ -160,7 +160,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
         <?php if ($selectedSite === 'noktanet'): ?>
             <?php if ($user->hasPermission(15)): ?>
             <li class="menu-item <?= $currentPage === 'net-bulten' ? 'active' : '' ?>">
-                <a href="pages/genel/net-bulten" class="menu-link">
+                <a href="pages/net/net-bulten" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-mail"></i>
                     <div data-i18n="E-Bülten">E-Bülten</div>
                 </a>
@@ -169,7 +169,7 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
             
             <?php if ($user->hasPermission(16)): ?>
             <li class="menu-item <?= $currentPage === 'net-offer' ? 'active' : '' ?>">
-                <a href="pages/genel/net-offer" class="menu-link">
+                <a href="pages/net/net-offer" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-book"></i>
                     <div data-i18n="Teklifler">Teklifler</div>
                 </a>
@@ -305,7 +305,6 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                     <div data-i18n="Üyeler">Üyeler</div>
                 </a>
             </li>
-
             <li class="menu-item <?= $currentPage === 'kargo-firmalari' ? 'active' : '' ?>">
                 <a href="pages/b2b/b2b-kargo-firmalari?w=noktab2b" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-truck"></i>

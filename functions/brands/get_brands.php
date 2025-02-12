@@ -14,11 +14,8 @@ function displayCategories($database) {
         $output .= '<td>'. $row['title'] . '</td>';
         $output .= '<td>'. $row['order_by'] . '</td>';
         $output .= '<td>
-            <div class="dropdown">
-                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton' . $row['id'] . '" data-bs-toggle="dropdown" aria-expanded="false">
-                    Siteler
-                </button>
-                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton' . $row['id'] . '">
+            
+                <ul >
                     <li>
                         <label class="switch switch-success">
                             <input type="checkbox" class="switch-input wnet-checkbox" data-id="' . $row['id'] . '" ' . ($row['web_net'] == 1 ? 'checked' : '') . ' />
@@ -50,7 +47,6 @@ function displayCategories($database) {
                         </label>
                     </li>
                 </ul>
-            </div>
         </td>';
         $output .= '<td>
             <a class="cursor-pointer me-2 brand_sort"><i class="ti ti-list me-1"></i></a>

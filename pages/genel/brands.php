@@ -113,7 +113,7 @@ $template->head();
             });
         }
         $(document).on('click', '.brand_sort', function() {
-            window.location.href = 'brand-sorting';
+            window.location.href = 'pages/genel/brand-sorting';
         });
         // Open modal for adding new category
         $(".add_lang").on('click', function () {

@@ -33,7 +33,7 @@ $db->delete($deleteQuery);
                                         <th>Marka</th>
                                         <th>KATEGORİ</th>
                                         <th>ÖNE ÇIKANLAR</th>
-                                        <th>WEB SİTELERİ</th>
+                                        <th>WEB SİTELERİ Görünürlük</th>
                                         <th>İşlemler</th>
                                     </tr>
                                     </thead>
@@ -118,11 +118,8 @@ $db->delete($deleteQuery);
                     data: null,
                     render: function (data, type, row) {
                         return `
-                            <div class="dropdown">
-                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton${row.id}" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Siteler
-                                </button>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton${row.id}">
+                            
+                                <ul >
                                     <li>
                                         <label class="switch switch-success">
                                             <input type="checkbox" class="switch-input wnet-checkbox" data-id="${row.id}" ${row.web_net == 1 ? 'checked' : ''} />
@@ -154,7 +151,7 @@ $db->delete($deleteQuery);
                                         </label>
                                     </li>
                                 </ul>
-                            </div>`;
+                            `;
                     }
                 },
                 {

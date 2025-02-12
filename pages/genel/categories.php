@@ -31,6 +31,9 @@ $database = new Database();
                                             <th>Kategorİ Adı</th>
                                             <th>Kategorİ Adı En</th>
                                             <th>İşlemler</th>
+                                            <th>.net</th>
+                                            <th>.com.tr</th>
+                                            <th>.cn</th>
                                         </tr>
                                     </thead>
                                     <tbody id="category-list"></tbody>
@@ -273,6 +276,41 @@ $database = new Database();
             });
         });
     });
+</script>
+<script>
+  $(document).ready(function () {
+    $(document).on('change', '.wnet-checkbox, .wcomtr-checkbox, .wcn-checkbox', function () {
+        const id = $(this).data('id');
+        const field = $(this).hasClass('wnet-checkbox') ? 'web_net' :
+                      $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
+        const value = $(this).is(':checked') ? 1 : 0;
+
+        // AJAX isteği
+        fetch('functions/categories/update_field.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: id,
+                field: field,
+                value: value
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Güncelleme başarılı:', data.message);
+            } else {
+                console.error('Güncelleme başarısız:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Bir hata oluştu:', error);
+        });
+    });
+});
+
 </script>
 </body>
 </html>

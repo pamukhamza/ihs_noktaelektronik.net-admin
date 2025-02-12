@@ -2,8 +2,8 @@
 include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
-$currentPage = 'teknik_destek';
-$template = new Template('Teknik Destek - Nokta Admin', $currentPage);
+$currentPage = 'eksik-bilgi';
+$template = new Template('Eksik Ürün Bilgileri - Nokta Admin', $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $database = new Database();
