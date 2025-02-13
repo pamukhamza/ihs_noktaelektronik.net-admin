@@ -103,53 +103,54 @@ $database = new Database();
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script>
-$(document).ready(function() {
+$(document).ready(function () {
     var table = $('#odemeler').DataTable({
         "processing": true,
         "serverSide": true,
         "ajax": {
             "url": "functions/b2b/muhasebe/server_odemeler.php",
             "type": "POST",
-            "data": function(d) {
+            "data": function (d) {
+                d.minTutar = $('#minTutar').val();
+                d.maxTutar = $('#maxTutar').val();
                 d.minTarih = $('#minTarih').val();
                 d.maxTarih = $('#maxTarih').val();
                 d.basarili = $('#basarili').val();
-                d.minTutar = $('#minTutar').val();
-                d.maxTutar = $('#maxTutar').val();
             }
         },
-        "pageLength": 10,
-        "order": [[4, 'desc']],
         "columns": [
-            { "data": "pos_id", "render": function(data) {
-                if (data == 1) return "Param Pos";
-                else if (data == 2) return "Garanti Pos";
-                else if (data == 3) return "Kuveyt Pos";
-                else if (data == 4) return "Türkiye Finans Pos";
-                else return "Diğer Poslar";
-            }},
+            { "data": "pos_id" },
             { "data": "firmaUnvani" },
             { "data": "muhasebe_kodu" },
             { "data": "islem" },
             { "data": "tarih" },
             { "data": "tutar" },
-            { "data": "basarili", "render": function(data) {
-                return data == 1 ? "İşlem Başarılı" : "İşlem Başarısız";
-            }},
-            { "data": "dekont", "render": function(data, type, row) {
-                return row.islem_turu === 'cari' ? `<a target="_blank" href="assets/uploads/dekontlar/${data}"><i class="far fa-file"></i></a>` : '';
-            }}
+            { "data": "basarili", 
+                "render": function (data) {
+                    return data == 1 ? 'Başarılı' : 'Başarısız';
+                }
+            },
+            {
+                "data": "dekont",
+                "render": function (data) {
+                    return data ? `<a href="${data}" target="_blank" class="btn btn-sm btn-success">Dekont Görüntüle</a>` : 'Yok';
+                }
+            }
         ],
-        "colReorder": true,
-        "initComplete": function() {
-            $('.datepicker').datepicker({ dateFormat: 'yy-mm-dd' });
-
-            $('#filterBtn').on('click', function() {
-                table.ajax.reload();
-            });
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Turkish.json"
         }
+    });
+
+    $('#filterBtn').on('click', function () {
+        table.ajax.reload();
+    });
+
+    $(".datepicker").datepicker({
+        dateFormat: 'yy-mm-dd'
     });
 });
 </script>
+
 </body>
 </html>

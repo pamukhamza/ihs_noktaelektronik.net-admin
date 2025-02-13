@@ -31,7 +31,6 @@ $template->head();
                                     </ul>
                                 </div>
                             </div>
-
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <!-- catalog -->
@@ -39,14 +38,20 @@ $template->head();
                                         <div class="mb-3">
                                             <button class="btn btn-primary add_catalog" data-bs-toggle="modal" data-bs-target="#editCatalog">Add New</button>
                                         </div>
+                                        <div class="mb-3">
+                                            <button class="btn btn-primary sort_catalog">Sıralama</button>
+                                        </div>
                                         <form>
                                             <div class="table-responsive text-nowrap">
                                                 <table class="table table-hover">
                                                     <thead>
                                                     <tr>
-                                                        <th>#</th>
+                                                        <th>Sıralama</th>
                                                         <th>Title</th>
-                                                        <th>Status</th>
+                                                        <th>Title EN</th>
+                                                        <th>.net</th>
+                                                        <th>.com.tr</th>
+                                                        <th>.cn</th>
                                                         <th>Actions</th>
                                                     </tr>
                                                     </thead>
@@ -58,53 +63,44 @@ $template->head();
                                                     foreach ($results as $row) {
                                                     ?>
                                                     <tr>
-                                                        <td><?= $row["id"] ?></td>
-                                                        <td><?= htmlspecialchars($row["title"]) ?></td>
+                                                        <td><?= $row["sira"]; ?></td>
+                                                        <td><?= $row["title"]; ?></td>
+                                                        <td><?= $row["title_en"]; ?></td>
                                                         <td>
-                                                            <div class="dropdown">
-                                                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="dropdownMenuButton<?= htmlspecialchars($row["id"]) ?>" data-bs-toggle="dropdown" aria-expanded="false">
-                                                                    Siteler
-                                                                </button>
-                                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton<?= htmlspecialchars($row["id"]) ?>">
-                                                                    <li>
-                                                                        <label class="switch switch-success">
-                                                                            <input type="checkbox" class="switch-input wnet-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_net'] == 1 ? 'checked' : '' ?> />
-                                                                            <span class="switch-toggle-slider">
-                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
-                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
-                                                                            </span>
-                                                                            <span class="switch-label">.net</span>
-                                                                        </label>
-                                                                    </li>
-                                                                    <li>
-                                                                        <label class="switch switch-success">
-                                                                            <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_comtr'] == 1 ? 'checked' : '' ?> />
-                                                                            <span class="switch-toggle-slider">
-                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
-                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
-                                                                            </span>
-                                                                            <span class="switch-label">.com.tr</span>
-                                                                        </label>
-                                                                    </li>
-                                                                    <li>
-                                                                        <label class="switch switch-success">
-                                                                            <input type="checkbox" class="switch-input wcn-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_cn'] == 1 ? 'checked' : '' ?> />
-                                                                            <span class="switch-toggle-slider">
-                                                                                <span class="switch-on"><i class="ti ti-check"></i></span>
-                                                                                <span class="switch-off"><i class="ti ti-x"></i></span>
-                                                                            </span>
-                                                                            <span class="switch-label">.com.cn</span>
-                                                                        </label>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
+                                                            <label class="switch switch-success">
+                                                                <input type="checkbox" class="switch-input wnet-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_net'] == 1 ? 'checked' : '' ?> />
+                                                                <span class="switch-toggle-slider">
+                                                                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                </span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="switch switch-success">
+                                                                <input type="checkbox" class="switch-input wcomtr-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_comtr'] == 1 ? 'checked' : '' ?> />
+                                                                <span class="switch-toggle-slider">
+                                                                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                </span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="switch switch-success">
+                                                                <input type="checkbox" class="switch-input wcn-checkbox" data-id="<?= htmlspecialchars($row["id"]) ?>" <?= $row['web_cn'] == 1 ? 'checked' : '' ?> />
+                                                                <span class="switch-toggle-slider">
+                                                                    <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                    <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                </span>
+                                                            </label>
                                                         </td>
 
                                                         <td>
                                                             <a class="cursor-pointer me-2 edit-catalog"
                                                                data-id="<?= $row["id"] ?>"
                                                                data-catalog_title="<?= $row['title']; ?>"
-                                                               data-catalog_file="<?= $row['file']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                               data-catalog_title_en="<?= $row['title_en']; ?>"
+                                                               data-catalog_file="<?= $row['file']; ?>"
+                                                               data-catalog_photo="<?= $row['img']; ?>"><i class="ti ti-pencil me-1"></i></a>
                                                             <a class="cursor-pointer delete_catalog" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
                                                         </td>
                                                     </tr>
@@ -120,9 +116,7 @@ $template->head();
                     </div>
                 </div>
                 <!-- / Content -->
-
                 <div class="content-backdrop fade"></div>
-
             </div>
             <?php $template->footer(); ?>
             <!-- Content wrapper -->
@@ -133,7 +127,6 @@ $template->head();
     <div class="layout-overlay layout-menu-toggle"></div>
     <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
-
 </div>
 <!-- / Layout wrapper -->
 <!-- Catalog Modal -->
@@ -151,8 +144,16 @@ $template->head();
                         <input type="text" id="catalog_title" name="catalog_title" class="form-control"/>
                     </div>
                     <div class="col-6">
+                        <label class="form-label" for="catalog_title_en">Title En</label>
+                        <input type="text" id="catalog_title_en" name="catalog_title_en" class="form-control"/>
+                    </div>
+                    <div class="col-6">
                         <label class="form-label" for="catalog_file">File</label>
                         <input type="file" class="form-control" id="catalog_file" />
+                    </div>
+                    <div class="col-6">
+                        <label class="form-label" for="catalog_photo">Photo</label>
+                        <input type="file" class="form-control" id="catalog_photo" />
                     </div>
                     <div class="col-12 text-center">
                         <button type="submit" class="btn btn-primary me-3 submit_catalog">Submit</button>
@@ -164,7 +165,6 @@ $template->head();
     </div>
 </div>
 <!--/ Catalog Modal -->
-
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -182,7 +182,9 @@ $template->head();
         $(".add_catalog").on('click', function () {
             $('.catalog-title').html("Katalog Ekle");
             $("#catalog_title").val('');
+            $("#catalog_title_en").val('');
             $("#catalog_file").val('');
+            $("#catalog_photo").val('');
             $("#editCatalogForm").data("action", "insert"); // Set action to insert
         });
 
@@ -191,10 +193,14 @@ $template->head();
             $('.catalog-title').html("Katalog Düzenle");
             const id = $(this).data('id');
             const catalog_title = $(this).data('catalog_title');
+            const catalog_title_en = $(this).data('catalog_title_en');
             const catalog_file = $(this).data('catalog_file');
+            const catalog_photo = $(this).data('catalog_photo');
 
             $("#catalog_title").val(catalog_title);
+            $("#catalog_title_en").val(catalog_title_en);
             $("#catalog_file").val(catalog_file);
+            $("#catalog_photo").val(catalog_photo);
             $("#editCatalogForm").data("action", "update").data("id", id); // Set action to update and store ID
             $('#editCatalog').modal('show');
         });
@@ -208,7 +214,9 @@ $template->head();
 
             let formData = new FormData();
             formData.append("catalog_file", $("#catalog_file")[0].files[0]);
+            formData.append("catalog_photo", $("#catalog_photo")[0].files[0]);
             formData.append("catalog_title", $("#catalog_title").val());
+            formData.append("catalog_title_en", $("#catalog_title_en").val());
             formData.append("action", action);
             formData.append("id", id);
 
@@ -243,11 +251,9 @@ $template->head();
                 }
             });
         });
-        
         // Delete Catalogs
         $(".delete_catalog").on('click', function () {
             const id = $(this).data('id');
-
             Swal.fire({
                 title: 'Silmek istediğinize emin misiniz?',
                 text: "Bu işlem geri alınamaz!",
@@ -312,6 +318,9 @@ $template->head();
             .catch(error => {
                 console.error('Bir hata oluştu:', error);
             });
+        });
+        $(".sort_catalog").on('click', function () {
+            window.location.href = "pages/genel/catalog_sorting.php"; 
         });
     });
 

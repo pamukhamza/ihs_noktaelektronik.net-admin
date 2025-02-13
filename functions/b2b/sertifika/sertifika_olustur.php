@@ -2,7 +2,7 @@
 include '../../db.php';
 $database = new Database();
 // Fotoğrafın yolu
-$imagePath = 'bos_sertifika.jpg'; // Fotoğrafın yolu
+$imagePath = 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/sertifika/bos_sertifika.jpg'; // Fotoğrafın yolu
 $outputPath = 'output_image.jpg'; // Çıktı fotoğrafının yolu
 
 // Gelen verileri al

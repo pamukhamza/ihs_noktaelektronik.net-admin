@@ -28,17 +28,19 @@ $params = ['id' => $id];
 $product = $database->fetch($query, $params);
 
 // Kategorileri veritabanından çekme fonksiyonu
-function getCategories($parent_id = 0, $categories = [], $level = 0) {
+function getCategories($parent_id = 0, $parent_name = '', $categories = []) {
     $database = new Database();
     $query = "SELECT * FROM nokta_kategoriler WHERE parent_id = :parent_id";
     $params = ['parent_id' => $parent_id];
     $results = $database->fetchAll($query, $params);
-    
+
     foreach ($results as $row) {
-        // Kategori başına uygun seviyeye göre boşluk ekliyoruz
-        $row['KategoriAdiTr'] = str_repeat('-', $level * 4) . $row['KategoriAdiTr'];
+        // Üst kategori adlarını ekle
+        $full_name = $parent_name ? "$parent_name > {$row['KategoriAdiTr']}" : $row['KategoriAdiTr'];
+        $row['KategoriAdiTr'] = $full_name;
         $categories[] = $row;
-        $categories = getCategories($row['id'], $categories, $level + 1); // Alt kategoriler için recursive
+        // Alt kategoriler için recursive çağrı
+        $categories = getCategories($row['id'], $full_name, $categories);
     }
 
     return $categories;
@@ -106,16 +108,17 @@ $categories = getCategories();
                                                 <div class="mb-6 row">
                                                     <div class="col">
                                                         <label class="form-label" for="category">Kategori</label>
-                                                        <select class="form-control" id="category" name="category" required>
+                                                        <select id='category' class="form-control select2" name="category" required>
                                                             <option value="">Kategori Seçiniz</option>
                                                             <?php foreach ($categories as $cat): ?>
-                                                                <option value="<?= $cat['id']; ?>" <?= $product['KategoriID'] == $cat['id'] ? 'selected' : ''; ?> data-parent-id="<?= $cat['parent_id']; ?>">
+                                                                <option value="<?= $cat['id']; ?>" <?= $product['KategoriID'] == $cat['id'] ? 'selected' : ''; ?>>
                                                                     <?= htmlspecialchars($cat['KategoriAdiTr']); ?>
                                                                 </option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
-                                                    <div class="col">
+                                                </div>
+                                                <div class="col">
                                                         <label class="form-label" for="brand">Marka</label>
                                                         <select class="form-control" id="brand" name="brand" required>
                                                             <option value="">Marka Seçiniz</option>
@@ -126,7 +129,6 @@ $categories = getCategories();
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
-                                                </div>
                                             </div>
                                         </div>
                                         <!-- /Product Information -->
@@ -425,6 +427,7 @@ $categories = getCategories();
 <div class="layout-overlay layout-menu-toggle"></div>
 <div class="drag-target"></div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/libs/popper/popper.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
@@ -443,8 +446,9 @@ $categories = getCategories();
 <script src="assets/js/app-ecommerce-product-add.js"></script>
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <!-- SweetAlert 2 Kütüphanesi -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
@@ -695,7 +699,6 @@ $categories = getCategories();
     });
 
 </script>
-
 <script>
     document.addEventListener('DOMContentLoaded', function() {
     var categorySelect = document.getElementById('category');
@@ -814,7 +817,6 @@ $categories = getCategories();
         }
     });
 </script>
-
 <script>
     // Sayfa yüklendiğinde çalışacak
     document.addEventListener('DOMContentLoaded', function () {
@@ -843,7 +845,15 @@ $categories = getCategories();
             });
         }
     });
+    
 </script>
-
+<script>
+    $(document).ready(function() {
+        $('#category').select2({
+            placeholder: 'Kategori Seçiniz',
+            allowClear: true
+        });
+    });
+</script>
 </body>
 </html>

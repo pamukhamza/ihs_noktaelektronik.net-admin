@@ -24,17 +24,23 @@ $s3Client = new S3Client([
 ]);
 
 $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
+$catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $action = isset($_POST['action']) ? $_POST['action'] : null;
     $id = isset($_POST['id']) ? $_POST['id'] : null;
     $catalog_title = isset($_POST['catalog_title']) ? $_POST['catalog_title'] : null;
+    $catalog_title_en = isset($_POST['catalog_title_en']) ? $_POST['catalog_title_en'] : null;
 
     if ($action == 'update') {
-        $query = "UPDATE catalogs SET `title` = :catalog_title " . (empty($catalog_file) ? "" : ", `file` = :file") . " WHERE id = :id";
+        $query = "UPDATE catalogs SET `title` = :catalog_title, `title_en` = :catalog_title_en" .
+            (empty($catalog_file) ? "" : ", `file` = :file") .
+            (empty($catalog_photo) ? "" : ", `img` = :img") .
+            " WHERE id = :id";
 
         $params = [
             'catalog_title' => $catalog_title,
+            'catalog_title_en' => $catalog_title_en,
             'id' => $id,
         ];
 
@@ -44,12 +50,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
                     'SourceFile' => $_FILES['catalog_file']['tmp_name'],
-                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
+                    'ACL'    => 'public-read',
                 ]);
-
                 $params['file'] = $result['ObjectURL'];
             } catch (AwsException $e) {
-                echo "Error uploading file: " . $e->getMessage();
+                echo "Error uploading catalog file: " . $e->getMessage();
+                exit;
+            }
+        }
+
+        if (!empty($catalog_photo)) {
+            try {
+                $result = $s3Client->putObject([
+                    'Bucket' => $config['s3']['bucket'],
+                    'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
+                    'SourceFile' => $_FILES['catalog_photo']['tmp_name'],
+                    'ACL'    => 'public-read',
+                ]);
+                $params['img'] = $result['ObjectURL'];
+            } catch (AwsException $e) {
+                echo "Error uploading catalog photo: " . $e->getMessage();
                 exit;
             }
         }
@@ -59,11 +79,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Güncelleme sırasında hata oluştu.";
         }
+
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO catalogs (`title` " . (empty($catalog_file) ? "" : ", `file`") . ") VALUES (:catalog_title " . (empty($catalog_file) ? "" : ", :file") . ")";
+        $query = "INSERT INTO catalogs (`title`, `title_en" .
+            (empty($catalog_file) ? "" : ", `file`") .
+            (empty($catalog_photo) ? "" : ", `img`") .
+            ") VALUES (:catalog_title, :catalog_title_en" .
+            (empty($catalog_file) ? "" : ", :file") .
+            (empty($catalog_photo) ? "" : ", :img") . ")";
 
         $params = [
             'catalog_title' => $catalog_title,
+            'catalog_title_en' => $catalog_title_en,
         ];
 
         if (!empty($catalog_file)) {
@@ -72,12 +99,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
                     'SourceFile' => $_FILES['catalog_file']['tmp_name'],
-                    'ACL'    => 'public-read', // Optional: make the file publicly accessible
+                    'ACL'    => 'public-read',
                 ]);
-
                 $params['file'] = $result['ObjectURL'];
             } catch (AwsException $e) {
-                echo "Error uploading file: " . $e->getMessage();
+                echo "Error uploading catalog file: " . $e->getMessage();
+                exit;
+            }
+        }
+
+        if (!empty($catalog_photo)) {
+            try {
+                $result = $s3Client->putObject([
+                    'Bucket' => $config['s3']['bucket'],
+                    'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
+                    'SourceFile' => $_FILES['catalog_photo']['tmp_name'],
+                    'ACL'    => 'public-read',
+                ]);
+                $params['img'] = $result['ObjectURL'];
+            } catch (AwsException $e) {
+                echo "Error uploading catalog photo: " . $e->getMessage();
                 exit;
             }
         }

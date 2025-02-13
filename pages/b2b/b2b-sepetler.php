@@ -142,7 +142,7 @@ $database = new Database();
         });
         $(document).on('click', '.edit-sepet', function() {
             var id = $(this).data('sepet-id');
-            window.location.href = 'pages/b2b/b2b-sepetdetay?id=' + id;
+            window.location.href = 'pages/b2b/b2b-sepetdetay?w=noktab2b&id=' + id;
         });
         $(document).on('click', '.edit-yeni-sepet', function() {
             $('#editSepetModal').modal('show');

@@ -16,7 +16,7 @@ if (isset($_POST["kur_guncelle"])) {
     ];
 
     if ($database->update($query, $params)) {
-        header("Location: ../../../pages/b2b/b2b-doviz.php?s=1");
+        header("Location: ../../../pages/b2b/b2b-doviz.php?w=noktab2b&s=1");
         exit;
     } else {
         echo "Güncelleme başarısız!";

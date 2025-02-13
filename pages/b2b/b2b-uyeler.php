@@ -142,7 +142,7 @@ $database = new Database();
                     "data": null, "orderable": false,
                     "render": function (data, type, row) {
                         return `
-                                <button type="button" class="btn btn-sm btn-danger" onclick="dynamicSil('${data.id}', '', 'uye', 'Üye Silindi!', 'admin/kullanicilar/adminUyeler.php');" data-toggle="tooltip" title="Sil"><i class="fa-solid fa-trash-can"></i></button>
+                                <button type="button" class="btn btn-sm btn-danger" onclick="dynamicSil('${data.id}', '', 'uye', 'Üye Silindi!', 'pages/b2b/b2b-uyeler.php');" data-toggle="tooltip" title="Sil"><i class="fa-solid fa-trash-can"></i></button>
                                 <button type="button" name="uyeDuzenle" value="Düzenle" class="btn btn-sm btn-success edit-uyeDuzenle" data-uye-id="${data.id}" data-toggle="tooltip" title="Düzenle"><i class="fa-regular fa-pen-to-square"></i></button>
                                 <a href="mailto:${data.email}" name="uyeMail" value="Mail" class="btn btn-sm btn-info edit-uyeMail" data-uyeMail-id="${data.id}" data-toggle="tooltip" title="Mail Gönder"><i class="fa-solid fa-envelope"></i></a>
                                 <button type="button" name="uyegirisyap" value="Giriş Yap" class="btn btn-sm btn-dark edit-uyegirisyap" data-uyegirisyap-id="${data.id}" data-toggle="tooltip" title="Üye Adına Giriş Yap"><i class="fa-solid fa-arrow-right-to-bracket"></i></button>
@@ -212,6 +212,42 @@ $database = new Database();
             });
         });
     });
+</script>
+<script>
+    function dynamicSil(gid, gel, customType, successMessage, redirectPage) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: 'Bu eylem geri alınamaz!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'functions/uyeler/delete_uye.php',
+                    type: 'POST',
+                    data: {
+                        'gid': gid,
+                        'gel': gel,
+                        type: customType
+                    },
+                    success: function () {
+                        Swal.fire({
+                            position: 'center',
+                            icon: 'success',
+                            title: successMessage /* Ürün Silindi! */,
+                            showConfirmButton: false,
+                            timer: 1000
+                        });
+                        setTimeout(function () {
+                            window.location.href = redirectPage /* adminSlider.php */;
+                        }, 1000);
+                    }
+                });
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -75,9 +75,13 @@ $satis_euro_kuru = $euro['satis'];
                                                 $urun_id = $sepet['urun_id'];
                                                 $urun = $database->fetch("SELECT BLKODU, seo_link, UrunKodu, UrunAdiTR, DSF1, DSF2, DSF3, DSF4, KSF1, KSF2, KSF3, KSF4, DOVIZ_BIRIMI, kdv FROM nokta_urunler WHERE id =$urun_id");
                                                 $urunBLKODU = $urun['BLKODU'];
-                                                $resim = $database->fetch("SELECT KResim FROM nokta_urunler_resimler WHERE UrunID = $urunBLKODU LIMIT 1");
+
+                                                $imagesQuery = "SELECT DISTINCT KResim FROM nokta_urunler_resimler WHERE UrunID = :product_id ORDER BY Sira ASC ";
+                                                $imageParams = ['product_id' => $urun_id];
+                                                $image = $database->fetch($imagesQuery, $imageParams);
+                                                
                                             ?>
-                                            <td><a target="_blank" href="tr/urun/<?= $urun['seo_link'] ?>"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $resim; ?>" style="max-width: 50px; max-height: 50px;"></a></td>
+                                            <td><a target="_blank" href="tr/urun/<?= $urun['seo_link'] ?>"><img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/<?= $image['KResim']; ?>" style="max-width: 50px; max-height: 50px;"></a></td>
                                             <td><?= $urun['UrunKodu']; ?></td>
                                             <td><?= $urun['UrunAdiTR']; ?></td>
                                             <td><input type="text" class="form-control adet-input" value="<?= $sepet['adet']; ?>" data-sepet-id="<?= $sepet['id']; ?>"></td>

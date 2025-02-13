@@ -163,6 +163,20 @@ $zorunlu = "<span style='color: red;'>*</span>"
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/app.js"></script>
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const sParam = urlParams.get('s');
 
+    if (sParam === '1') {
+        Swal.fire({
+            icon: 'success',
+            title: 'Güncelleme Kaydedilmiştir!',
+            toast: true,
+            position: 'bottom-end',
+            timer: 2000,
+            showConfirmButton: false
+        });
+    }
+</script>
 </body>
 </html>

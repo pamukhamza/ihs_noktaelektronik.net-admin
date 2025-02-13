@@ -123,7 +123,7 @@ $template->head();
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-4" id="kampanya-olustur" style="display: none">
+                    <div class="col-12 mt-4" id="kampanya-olustur" style="display: none">
                         <div class="card">
                             <h5 class="card-header"  style="background-color: #0a78f1; color:white;">Kampanya Ekle</h5>
                             <div class="card-body">
@@ -183,7 +183,7 @@ $template->head();
                         <input type="text" id="editVarId" name="editVarId" hidden>
                         <input type="text" class="form-control" id="editVarAdi" name="editVarAdi" readonly>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group katmans">
                         <label for="editVarUrun">Seçili Ürünler</label>
                         <select id='editVarUrun' name="urunler[]"  multiple='multiple' class="select2 form-select" style="width: 100%;">
                             <?php
@@ -205,7 +205,6 @@ $template->head();
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="saveEditKampanya">Kaydet</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>

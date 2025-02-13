@@ -13,7 +13,7 @@ $start_date = $_GET['start_date'] ?? '';
 $end_date = $_GET['end_date'] ?? '';
 
 // Toplam kayıt sayısını al
-$total_records = $database->fetchColumn("SELECT COUNT(*) FROM teknik_destek_urunler");
+$total_records = $database->fetch("SELECT COUNT(*) FROM teknik_destek_urunler");
 
 // Ana sorgu
 $sql = "
@@ -35,14 +35,15 @@ $params = [];
 
 // Arama filtresi
 if (!empty($search_value)) {
-    $sql .= " AND (t.takip_kodu LIKE :search OR u.urun_kodu LIKE :search OR t.musteri LIKE :search OR t.tarih LIKE :search OR t.tel LIKE :search OR u.tekniker LIKE :search)";
-    $params['search'] = "%$search_value%";
+    $sql .= " AND (t.takip_kodu LIKE :search_value OR u.urun_kodu LIKE :search_value OR t.musteri LIKE :search_value OR t.tarih LIKE :search_value 
+    OR t.tel LIKE :search_value OR u.tekniker LIKE :search_value)";
+    $params['search_value'] = "%$search_value%";
 }
 
 // Tekniker filtresi
 if (!empty($filter_technician)) {
-    $sql .= " AND u.tekniker LIKE :technician";
-    $params['technician'] = "%$filter_technician%";
+    $sql .= " AND u.tekniker = :filter_technician";
+    $params['filter_technician'] = $filter_technician;
 }
 
 // Durum filtresi
@@ -52,8 +53,8 @@ if ($filter_status !== '') {
     } elseif ($filter_status == '0') {
         $sql .= " AND u.urun_durumu IN (1, 2, 3)";
     } else {
-        $sql .= " AND u.urun_durumu = :status";
-        $params['status'] = $filter_status;
+        $sql .= " AND u.urun_durumu = :filter_status";
+        $params['filter_status'] = $filter_status;
     }
 }
 
