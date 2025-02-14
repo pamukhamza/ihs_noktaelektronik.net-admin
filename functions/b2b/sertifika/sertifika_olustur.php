@@ -15,26 +15,40 @@ $yazi2 = 'İşbu sertifika ' . $tarih . ' tarihinde, ' . $field1 . ' yapısal ka
 
 // Debugging information
 error_log("Received data - uye_id: $uye_id, field1: $field1, tarih: $tarih");
-echo $uye_id, $field1, $tarih;
-// Fotoğrafı aç
-$image = imagecreatefromjpeg($imagePath);
+
+// Check if the GD library is installed
+if (!extension_loaded('gd')) {
+    error_log("GD library is not installed");
+    die("GD library is not installed");
+}
+
+// Check if the image file is accessible
+$imageData = file_get_contents($imagePath);
+if ($imageData === false) {
+    error_log("Failed to access image at $imagePath");
+    die("Failed to access image at $imagePath");
+}
+
+// Create image from string
+$image = imagecreatefromstring($imageData);
 if (!$image) {
     error_log("Failed to create image from $imagePath");
     die("Failed to create image from $imagePath");
 }
-echo $image;
+
+// Debugging information
+error_log("Image created successfully from $imagePath");
+
 // Renk ayarla (siyah)
 $black = imagecolorallocate($image, 0, 0, 0);
 
 // Yazı fontu ve boyutu
 $fontPath = '../../../assets/fonts/roboto/Roboto-Light.ttf';
-$boldItalicFontPath = '../../../assets/fonts/roboto/Roboto-BoldItalic.ttf';
+$boldItalicFontPath = '../../../assets/fonts/roboto/Roboto-BoldItalic.ttf'; // Yeni font eklendi
 $fontSize = 60;
 $fontSize2 = 30;
 
 // Debugging information
-echo $fontPath;
-echo $boldItalicFontPath;
 error_log("Font paths - fontPath: $fontPath, boldItalicFontPath: $boldItalicFontPath");
 
 // Yazıyı yerleştir (satır haline getirme)
