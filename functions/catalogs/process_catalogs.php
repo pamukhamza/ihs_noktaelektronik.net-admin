@@ -11,7 +11,6 @@ if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($c
     die('Missing required S3 configuration values.');
 }
 
-
 $s3Client = new S3Client([
     'version' => 'latest',
     'region'  => $config['s3']['region'],
@@ -23,7 +22,6 @@ $s3Client = new S3Client([
 
 $database = new Database();
 $action = $_POST['action'];
-
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
@@ -48,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($catalog_file)) {
             $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
-                echo "Image upload failed.";
+                echo "File upload failed.";
                 exit;
             }
             $params['file'] = $img;
@@ -70,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO catalogs (`title`, `title_en" .
+        $query = "INSERT INTO catalogs (`title`, `title_en`" .
             (empty($catalog_file) ? "" : ", `file`") .
             (empty($catalog_photo) ? "" : ", `img`") .
             ") VALUES (:catalog_title, :catalog_title_en" .
@@ -85,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!empty($catalog_file)) {
             $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
-                echo "Image upload failed.";
+                echo "File upload failed.";
                 exit;
             }
             $params['file'] = $img;
