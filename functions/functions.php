@@ -120,11 +120,7 @@ function validateAndSaveImage($file, $upload_path) {
 }
 
 function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
-    // Dosya Türü Doğrulama
-    $allowedTypes = array('image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp');
-    if (!in_array($file['type'], $allowedTypes)) {
-        return false;
-    }
+    
 
     // Maks. Dosya boyutu
     $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
