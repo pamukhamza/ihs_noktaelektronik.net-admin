@@ -1,6 +1,7 @@
 <?php
 include '../../db.php';
 $database = new Database();
+
 // Fotoğrafın yolu
 $imagePath = 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/sertifika/bos_sertifika.jpg'; // Fotoğrafın yolu
 $outputPath = 'output_image.jpg'; // Çıktı fotoğrafının yolu
@@ -14,6 +15,10 @@ $yazi2 = 'İşbu sertifika ' . $tarih . ' tarihinde, ' . $field1 . ' yapısal ka
 
 // Fotoğrafı aç
 $image = imagecreatefromjpeg($imagePath);
+if (!$image) {
+    error_log("Failed to create image from $imagePath");
+    die("Failed to create image from $imagePath");
+}
 
 // Renk ayarla (siyah)
 $black = imagecolorallocate($image, 0, 0, 0);
@@ -119,7 +124,10 @@ addMultilineText($image, $yazi1, 625, 1200, $fontPath, $boldItalicFontPath, $fon
 addMultilineTextSimple($image, $yazi2, 625, 2350, $fontPath, $boldItalicFontPath, $fontSize2, $black, $maxWidth); // Alt yazı
 
 // Fotoğrafı kaydet
-imagejpeg($image, $outputPath);
+if (!imagejpeg($image, $outputPath)) {
+    error_log("Failed to save image to $outputPath");
+    die("Failed to save image to $outputPath");
+}
 
 // Belleği temizle
 imagedestroy($image);
