@@ -142,7 +142,7 @@ error_log("Image saved to $outputPath");
 imagedestroy($image);
 
 // FPDF kütüphanesini dahil et
-require('../../../assets/fpdf/fpdf.php');
+require('../../assets/fpdf/fpdf.php');
 
 // Yeni bir PDF oluştur
 $pdf = new FPDF('L', 'mm', array(297, 210)); // A4 yatay
