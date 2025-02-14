@@ -4,7 +4,6 @@ $database = new Database();
 
 // Fotoğrafın yolu
 $imagePath = 'https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/sertifika/bos_sertifika.jpg'; // Fotoğrafın yolu
-$outputPath = 'output_image.jpg'; // Çıktı fotoğrafının yolu
 
 // Gelen verileri al
 $tarih = date('d/m/Y');
@@ -145,46 +144,18 @@ $maxWidth = 2700; // Yazı için maksimum genişlik
 addMultilineText($image, $yazi1, 625, 1200, $fontPath, $boldItalicFontPath, $fontSize, $black, $maxWidth); // Orta yazı
 addMultilineTextSimple($image, $yazi2, 625, 2350, $fontPath, $boldItalicFontPath, $fontSize2, $black, $maxWidth); // Alt yazı
 
-// Fotoğrafı kaydet
-if (!imagejpeg($image, $outputPath)) {
-    error_log("Failed to save image to $outputPath");
-    die("Failed to save image to $outputPath");
-}
+// Set headers to download the image
+header('Content-Type: image/jpeg');
+header('Content-Disposition: attachment; filename="output_image.jpg"');
+
+// Output the image directly to the browser
+imagejpeg($image);
 
 // Debugging information
-error_log("Image saved to $outputPath");
+error_log("Image output to browser");
 
 // Belleği temizle
 imagedestroy($image);
-
-// FPDF kütüphanesini dahil et
-require('../../../assets/fpdf/fpdf.php');
-
-// Yeni bir PDF oluştur
-$pdf = new FPDF('L', 'mm', array(297, 210)); // A4 yatay
-$pdf->AddPage();
-
-// JPG'yi PDF'e ekle
-$pdf->Image($outputPath, 0, 0, 297, 210);
-
-// PDF'i kaydet
-$pdfPath = 'output.pdf';
-$pdf->Output('F', $pdfPath);
-
-// Debugging information
-error_log("PDF saved to $pdfPath");
-
-// PDF'i indir
-header('Content-Type: application/pdf');
-header('Content-Disposition: attachment; filename="' . basename($pdfPath) . '"');
-readfile($pdfPath);
-
-// Geçici dosyaları temizle
-unlink($outputPath);
-unlink($pdfPath);
-
-// Debugging information
-error_log("Temporary files deleted");
 
 // Veritabanına kayıt ekle
 $query = "INSERT INTO b2b_sertifikalar (field1, uye_id) VALUES (:field1, :uye_id)";
