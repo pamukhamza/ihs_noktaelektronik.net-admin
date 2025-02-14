@@ -22,7 +22,7 @@ if (!$image) {
     error_log("Failed to create image from $imagePath");
     die("Failed to create image from $imagePath");
 }
-
+echo $image;
 // Renk ayarla (siyah)
 $black = imagecolorallocate($image, 0, 0, 0);
 
