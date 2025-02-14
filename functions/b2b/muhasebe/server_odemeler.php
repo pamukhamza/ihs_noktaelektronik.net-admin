@@ -1,89 +1,108 @@
 <?php
-include_once '../../db.php';
+require_once '../../db.php';
+$db = new Database();
 
-$database = new Database();
-
-$columns = ['pos_id', 'firmaUnvani', 'muhasebe_kodu', 'islem', 'tarih', 'tutar', 'basarili', 'dekont'];
-
-// Filtreleme parametreleri
+// DataTables için gerekli parametreler
+$start = $_POST['start'] ?? 0;
+$length = $_POST['length'] ?? 10;
+$search = $_POST['search']['value'] ?? '';
+$orderColumnIndex = $_POST['order'][0]['column'] ?? 0;
+$orderDir = $_POST['order'][0]['dir'] ?? 'asc';
 $minTutar = $_POST['minTutar'] ?? '';
 $maxTutar = $_POST['maxTutar'] ?? '';
 $minTarih = $_POST['minTarih'] ?? '';
 $maxTarih = $_POST['maxTarih'] ?? '';
 $basarili = $_POST['basarili'] ?? '';
+// Sütunlara göre sıralama için eşleşme
+$columns = ['pos_id', 'firmaUnvani', 'muhasebe_kodu', 'islem', 'islem_turu', 'tarih', 'tutar', 'basarili', 'islem'];
+$orderColumn = $columns[$orderColumnIndex] ?? 'tarih';
 
-// Sorgu başlangıcı
-$sql = "SELECT b.id, b.uye_id, b.pos_id, b.islem, b.islem_turu, b.tutar, b.basarili, b.tarih, u.firmaUnvani, u.muhasebe_kodu, u.tel, d.islem_no, d.dekont FROM b2b_sanal_pos_odemeler b
-LEFT JOIN uyeler u ON b.uye_id = u.id
-LEFT JOIN b2b_dekontlar d ON b.id = d.pos_odeme_id
-WHERE 1=1";
-
-// Dinamik filtreleme
+// Filtreleme için SQL sorgusu
+$where = 'WHERE 1=1';
 $params = [];
-if (!empty($minTutar)) {
-    $sql .= " AND b.tutar >= :minTutar";
-    $params['minTutar'] = $minTutar;
+if (!empty($search)) {
+    $where = " AND u.firmaUnvani LIKE :search OR u.muhasebe_kodu LIKE :search ";
+    $params['search'] = "%$search%";
 }
-if (!empty($maxTutar)) {
-    $sql .= " AND b.tutar <= :maxTutar";
-    $params['maxTutar'] = $maxTutar;
+if ($minTutar !== '') {
+    $where .= " AND p.tutar >= :minTutar";
+    $params['minTutar'] = (float)$minTutar;
 }
-if (!empty($minTarih)) {
-    $sql .= " AND b.tarih >= :minTarih";
+
+if ($maxTutar !== '') {
+    $where .= " AND p.tutar <= :maxTutar";
+    $params['maxTutar'] = (float)$maxTutar;
+}
+
+if ($minTarih !== '') {
+    $where .= " AND DATE(p.tarih) >= :minTarih";
     $params['minTarih'] = $minTarih;
 }
-if (!empty($maxTarih)) {
-    $sql .= " AND b.tarih <= :maxTarih";
+
+if ($maxTarih !== '') {
+    $where .= " AND DATE(p.tarih) <= :maxTarih";
     $params['maxTarih'] = $maxTarih;
 }
+
 if ($basarili !== '') {
-    $sql .= " AND b.basarili = :basarili";
+    $where .= " AND p.basarili = :basarili";
     $params['basarili'] = $basarili;
 }
 
-// Sıralama
-$orderBy = $columns[$_POST['order'][0]['column']] ?? 'b.tarih';
-$orderDir = $_POST['order'][0]['dir'] ?? 'DESC';
-$sql .= " ORDER BY $orderBy $orderDir";
+// Verileri getir
+$query = "SELECT p.pos_id, p.uye_id, p.islem_turu, p.tarih, p.tutar, p.basarili, p.islem , u.muhasebe_kodu, u.firmaUnvani, d.dekont
+          FROM b2b_sanal_pos_odemeler p
+          LEFT JOIN uyeler u ON p.uye_id = u.id
+          LEFT JOIN b2b_dekontlar d ON d.pos_odeme_id = p.id
+          $where 
+          ORDER BY $orderColumn $orderDir 
+          LIMIT :start, :length";
 
-// Sayfalama
-$start = $_POST['start'] ?? 0;
-$length = $_POST['length'] ?? 10;
-$sql .= " LIMIT :start, :length";
 $params['start'] = (int)$start;
 $params['length'] = (int)$length;
 
-// Verileri çek
-try {
-    $data = $database->fetchAll($sql, $params);
+$stmt = $db->fetchAll($query, $params);
 
-    // Toplam kayıt sayısını al
-    $totalRecords = $database->fetchColumn("SELECT COUNT(*) FROM b2b_sanal_pos_odemeler");
+// Toplam kayıt sayısı
+$totalRecords = $db->fetchColumn("SELECT COUNT(*) FROM b2b_sanal_pos_odemeler");
 
-    // Filtrelenmiş kayıt sayısı
-    $filterSql = "SELECT COUNT(*) FROM b2b_sanal_pos_odemeler b
-    LEFT JOIN uyeler u ON b.uye_id = u.id
-    LEFT JOIN b2b_dekontlar d ON b.id = d.pos_odeme_id
-    WHERE 1=1";
-    foreach ($params as $key => $value) {
-        if ($key !== 'start' && $key !== 'length') {
-            $filterSql .= " AND b." . str_replace(':', '', $key) . " = :$key";
-        }
+
+// DataTables için JSON çıktısı
+$data = [];
+foreach ($stmt as $row) {
+    $durum = $row['basarili'] ? '<span class="badge bg-success">Başarılı</span>' : '<span class="badge bg-danger">Başarısız</span>';
+    if ($row['islem_turu'] !== 'cari') {
+        $dekont = '-';
+    }else{
+        $dekont = $row['dekont'] ? "<a href='https://noktanet.s3.eu-central-1.amazonaws.com/uploads/dekont/{$row['dekont']}' target='_blank' class='btn btn-sm btn-info'>Dekont Gör</a>" : '-';
     }
-    $filteredRecords = $database->fetchColumn($filterSql, $params);
-
-    $response = [
-        "draw" => $_POST['draw'],
-        "recordsTotal" => $totalRecords,
-        "recordsFiltered" => $filteredRecords,
-        "data" => $data
-    ];
-} catch (Exception $e) {
-    $response = [
-        "error" => $e->getMessage()
+    $posText = match ($row['pos_id']) {
+        1 => 'Param Pos',
+        2 => 'Garanti Pos',
+        3 => 'Kuveyt Pos',
+        4 => 'Türkiye Finans Pos',
+        default => 'Diğer Poslar'
+    };
+    $data[] = [
+        $posText,
+        $row['firmaUnvani'],
+        $row['muhasebe_kodu'],
+        $row['islem'],
+        $row['islem_turu'],
+        date('d-m-Y H:i', strtotime($row['tarih'])),
+        number_format($row['tutar'], 2, ',', '.')." ₺",
+        $durum,
+        $dekont
     ];
 }
 
+$response = [
+    'draw' => intval($_POST['draw'] ?? 1),
+    'recordsTotal' => $totalRecords,
+    'recordsFiltered' => $totalRecords,
+    'data' => $data
+];
+
 header('Content-Type: application/json');
-echo json_encode($response, JSON_UNESCAPED_UNICODE);
+echo json_encode($response);
 ?>

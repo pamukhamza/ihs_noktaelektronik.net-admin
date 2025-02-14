@@ -66,7 +66,7 @@ if (!empty($start_date) && !empty($end_date)) {
 }
 
 // Sıralama
-$order_columns = ['t.takip_kodu', 'u.urun_kodu', 't.musteri', 't.tarih', 'u.tekniker', 'd.durum'];
+$order_columns = ['t.takip_kodu', 'u.UrunKodu', 't.musteri', 't.tarih', 'u.tekniker', 'd.durum'];
 $order_by = $order_columns[$order_column] ?? 't.takip_kodu';
 $sql .= " ORDER BY $order_by $order_dir";
 

@@ -21,23 +21,23 @@ $template->head();
                                     <thead>
                                         <tr>
                                             <th>Ad</th>
-                                            <th>Firma</th>
-                                            <th>Telefon</th>
                                             <th>Mail</th>
-                                            <th>Tarih</th>
+                                            <th>işlem</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         $database = new Database();
-                                        $query = "SELECT * FROM net_newsletter";
+                                        $query = "SELECT * FROM nokta_ebulten WHERE `site` = 'net'";
                                         $results = $database->fetchAll($query);
                                         foreach ($results as $row) {
                                             ?>
                                             <tr>
                                                 <td><?= $row['id']; ?></td>
-                                                <td><?= $row['mail']; ?></td>
-                                                <td><?= $row['date']; ?></td>
+                                                <td><?= $row['email']; ?></td>
+                                                <td>
+                                                    <a class="cursor-pointer me-2 delete_newsletter" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
+                                                </td>
                                             </tr>
                                         <?php } ?>
                                     </tbody>
@@ -80,6 +80,46 @@ $template->head();
                 buttons: [
                     'excelHtml5'
                 ]
+            });
+            $(".delete_newsletter").on('click', function () {
+                const id = $(this).data('id');
+
+                Swal.fire({
+                    title: 'Silmek istediğinize emin misiniz?',
+                    text: "Bu işlem geri alınamaz!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Evet, sil!',
+                    cancelButtonText: 'Hayır, iptal et!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: 'functions/functions.php',
+                            type: 'POST',
+                            data: { id: id, tablename: 'nokta_ebulten', type: 'delete' },  // Type delete olarak gönderiliyor
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Silindi!',
+                                    text: 'Kayıt başarıyla silindi.',
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                }).then(() => {
+                                    location.reload();  // Sayfayı yeniden yükle
+                                });
+                            },
+                            error: function () {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Hata!',
+                                    text: 'Silme işlemi başarısız oldu.',
+                                });
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

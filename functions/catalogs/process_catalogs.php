@@ -49,8 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = $s3Client->putObject([
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
-                    'SourceFile' => $_FILES['catalog_file']['tmp_name'],
-                    'ACL'    => 'public-read',
+                    'SourceFile' => $_FILES['catalog_file']['tmp_name']
                 ]);
                 $params['file'] = $result['ObjectURL'];
             } catch (AwsException $e) {
@@ -65,7 +64,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
                     'SourceFile' => $_FILES['catalog_photo']['tmp_name'],
-                    'ACL'    => 'public-read',
                 ]);
                 $params['img'] = $result['ObjectURL'];
             } catch (AwsException $e) {
@@ -98,8 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = $s3Client->putObject([
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
-                    'SourceFile' => $_FILES['catalog_file']['tmp_name'],
-                    'ACL'    => 'public-read',
+                    'SourceFile' => $_FILES['catalog_file']['tmp_name']
                 ]);
                 $params['file'] = $result['ObjectURL'];
             } catch (AwsException $e) {
@@ -113,8 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $result = $s3Client->putObject([
                     'Bucket' => $config['s3']['bucket'],
                     'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
-                    'SourceFile' => $_FILES['catalog_photo']['tmp_name'],
-                    'ACL'    => 'public-read',
+                    'SourceFile' => $_FILES['catalog_photo']['tmp_name']
                 ]);
                 $params['img'] = $result['ObjectURL'];
             } catch (AwsException $e) {

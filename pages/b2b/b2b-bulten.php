@@ -29,7 +29,7 @@ $template->head();
                                     <tbody>
                                     <?php
                                     $database = new Database();
-                                    $query = "SELECT * FROM b2b_bulten";
+                                    $query = "SELECT * FROM nokta_ebulten WHERE `site` = 'comtr'";
                                     $results = $database->fetchAll($query);
                                     foreach ($results as $row) {
                                         ?>
@@ -100,7 +100,7 @@ $template->head();
                         $.ajax({
                             url: 'functions/functions.php',
                             type: 'POST',
-                            data: { id: id, tablename: 'b2b_bulten', type: 'delete' },  // Type delete olarak gönderiliyor
+                            data: { id: id, tablename: 'nokta_ebulten', type: 'delete' },  // Type delete olarak gönderiliyor
                             success: function (response) {
                                 Swal.fire({
                                     icon: 'success',
