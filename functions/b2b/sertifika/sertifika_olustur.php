@@ -13,6 +13,9 @@ $field1 = $_POST['orta_yazi'];
 $yazi1 =  $field1 . ' yapısal kablolama projesinde uçtan uca kullanılan ve sonlandırılan tüm "OringNetworking" kablo ve ekipmanları bu sertifika ile "25 Yıl" boyunca garanti altına alınmıştır.';
 $yazi2 = 'İşbu sertifika ' . $tarih . ' tarihinde, ' . $field1 . ' yapısal kablolama projesinde uçtan uca kullanılan ve sonlandırılan tüm OringNetworking markalı ürünler için düzenlenmiştir.';
 
+// Debugging information
+error_log("Received data - uye_id: $uye_id, field1: $field1, tarih: $tarih");
+
 // Fotoğrafı aç
 $image = imagecreatefromjpeg($imagePath);
 if (!$image) {
@@ -28,6 +31,9 @@ $fontPath = '../../../assets/fonts/roboto/Roboto-Light.ttf';
 $boldItalicFontPath = '../../../assets/fonts/roboto/Roboto-BoldItalic.ttf'; // Yeni font eklendi
 $fontSize = 60;
 $fontSize2 = 30;
+
+// Debugging information
+error_log("Font paths - fontPath: $fontPath, boldItalicFontPath: $boldItalicFontPath");
 
 // Yazıyı yerleştir (satır haline getirme)
 function addMultilineText($image, $text, $x, $y, $fontPath, $boldItalicFontPath, $fontSize, $color, $maxWidth) {
@@ -129,6 +135,9 @@ if (!imagejpeg($image, $outputPath)) {
     die("Failed to save image to $outputPath");
 }
 
+// Debugging information
+error_log("Image saved to $outputPath");
+
 // Belleği temizle
 imagedestroy($image);
 
@@ -146,6 +155,9 @@ $pdf->Image($outputPath, 0, 0, 297, 210);
 $pdfPath = 'output.pdf';
 $pdf->Output('F', $pdfPath);
 
+// Debugging information
+error_log("PDF saved to $pdfPath");
+
 // PDF'i indir
 header('Content-Type: application/pdf');
 header('Content-Disposition: attachment; filename="' . basename($pdfPath) . '"');
@@ -155,11 +167,18 @@ readfile($pdfPath);
 unlink($outputPath);
 unlink($pdfPath);
 
+// Debugging information
+error_log("Temporary files deleted");
+
+// Veritabanına kayıt ekle
 $query = "INSERT INTO b2b_sertifikalar (field1, uye_id) VALUES (:field1, :uye_id)";
 $params = [
     'field1' => $field1,
     'uye_id' => $uye_id
 ];
 $database->insert($query, $params);
+
+// Debugging information
+error_log("Database record inserted - field1: $field1, uye_id: $uye_id");
 
 ?>
