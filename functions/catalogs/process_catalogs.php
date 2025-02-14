@@ -1,6 +1,5 @@
 <?php
 include_once '../db.php';
-include_once '../functions.php';
 require '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
@@ -103,6 +102,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             echo "Ekleme sırasında hata oluştu.";
         }
+    }
+}
+
+function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
+    
+
+    // Maks. Dosya boyutu
+    $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
+    if ($file["size"] > $max_file_size) {
+        return false;
+    }
+
+    // Get the original file extension
+    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Generate a unique filename with the original extension
+    $unique_filename = uniqid() . '.' . $fileExtension;
+    $uploadPath = $upload_path . $unique_filename;
+
+    try {
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $uploadPath,
+            'SourceFile' => $file['tmp_name']
+        ]);
+        return $unique_filename; // Return the unique filename on success
+    } catch (AwsException $e) {
+        return false; // Return false on failure
     }
 }
 ?>
