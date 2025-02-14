@@ -15,7 +15,7 @@ $yazi2 = 'İşbu sertifika ' . $tarih . ' tarihinde, ' . $field1 . ' yapısal ka
 
 // Debugging information
 error_log("Received data - uye_id: $uye_id, field1: $field1, tarih: $tarih");
-
+echo $uye_id, $field1, $tarih;
 // Fotoğrafı aç
 $image = imagecreatefromjpeg($imagePath);
 if (!$image) {
@@ -27,12 +27,14 @@ if (!$image) {
 $black = imagecolorallocate($image, 0, 0, 0);
 
 // Yazı fontu ve boyutu
-$fontPath = 'assets/fonts/roboto/Roboto-Light.ttf';
-$boldItalicFontPath = 'assets/fonts/roboto/Roboto-BoldItalic.ttf'; // Yeni font eklendi
+$fontPath = '../../../assets/fonts/roboto/Roboto-Light.ttf';
+$boldItalicFontPath = '../../../assets/fonts/roboto/Roboto-BoldItalic.ttf';
 $fontSize = 60;
 $fontSize2 = 30;
 
 // Debugging information
+echo $fontPath;
+echo $boldItalicFontPath;
 error_log("Font paths - fontPath: $fontPath, boldItalicFontPath: $boldItalicFontPath");
 
 // Yazıyı yerleştir (satır haline getirme)
