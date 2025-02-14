@@ -11,8 +11,6 @@ if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($c
     die('Missing required S3 configuration values.');
 }
 
-$database = new Database();
-$action = $_POST['action'];
 
 $s3Client = new S3Client([
     'version' => 'latest',
@@ -23,11 +21,14 @@ $s3Client = new S3Client([
     ],
 ]);
 
-$catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
-$catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
+$database = new Database();
+$action = $_POST['action'];
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $action = isset($_POST['action']) ? $_POST['action'] : null;
+    $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
+    $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
+
     $id = isset($_POST['id']) ? $_POST['id'] : null;
     $catalog_title = isset($_POST['catalog_title']) ? $_POST['catalog_title'] : null;
     $catalog_title_en = isset($_POST['catalog_title_en']) ? $_POST['catalog_title_en'] : null;
@@ -45,31 +46,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            try {
-                $result = $s3Client->putObject([
-                    'Bucket' => $config['s3']['bucket'],
-                    'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
-                    'SourceFile' => $_FILES['catalog_file']['tmp_name']
-                ]);
-                $params['file'] = $result['ObjectURL'];
-            } catch (AwsException $e) {
-                echo "Error uploading catalog file: " . $e->getMessage();
+            $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img === false) {
+                echo "Image upload failed.";
                 exit;
             }
+            $params['file'] = $img;
         }
 
         if (!empty($catalog_photo)) {
-            try {
-                $result = $s3Client->putObject([
-                    'Bucket' => $config['s3']['bucket'],
-                    'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
-                    'SourceFile' => $_FILES['catalog_photo']['tmp_name'],
-                ]);
-                $params['img'] = $result['ObjectURL'];
-            } catch (AwsException $e) {
-                echo "Error uploading catalog photo: " . $e->getMessage();
+            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img === false) {
+                echo "Image upload failed.";
                 exit;
             }
+            $params['img'] = $img;
         }
 
         if ($database->update($query, $params)) {
@@ -92,31 +83,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            try {
-                $result = $s3Client->putObject([
-                    'Bucket' => $config['s3']['bucket'],
-                    'Key'    => 'uploads/catalogs/' . basename($_FILES['catalog_file']['name']),
-                    'SourceFile' => $_FILES['catalog_file']['tmp_name']
-                ]);
-                $params['file'] = $result['ObjectURL'];
-            } catch (AwsException $e) {
-                echo "Error uploading catalog file: " . $e->getMessage();
+            $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img === false) {
+                echo "Image upload failed.";
                 exit;
             }
+            $params['file'] = $img;
         }
 
         if (!empty($catalog_photo)) {
-            try {
-                $result = $s3Client->putObject([
-                    'Bucket' => $config['s3']['bucket'],
-                    'Key'    => 'uploads/images/catalogs/' . basename($_FILES['catalog_photo']['name']),
-                    'SourceFile' => $_FILES['catalog_photo']['tmp_name']
-                ]);
-                $params['img'] = $result['ObjectURL'];
-            } catch (AwsException $e) {
-                echo "Error uploading catalog photo: " . $e->getMessage();
+            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img === false) {
+                echo "Image upload failed.";
                 exit;
             }
+            $params['img'] = $img;
         }
 
         if ($database->insert($query, $params)) {
