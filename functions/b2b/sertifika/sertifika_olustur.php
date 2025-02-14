@@ -27,8 +27,8 @@ if (!$image) {
 $black = imagecolorallocate($image, 0, 0, 0);
 
 // Yazı fontu ve boyutu
-$fontPath = '../../../assets/fonts/roboto/Roboto-Light.ttf';
-$boldItalicFontPath = '../../../assets/fonts/roboto/Roboto-BoldItalic.ttf'; // Yeni font eklendi
+$fontPath = 'assets/fonts/roboto/Roboto-Light.ttf';
+$boldItalicFontPath = 'assets/fonts/roboto/Roboto-BoldItalic.ttf'; // Yeni font eklendi
 $fontSize = 60;
 $fontSize2 = 30;
 
@@ -142,7 +142,7 @@ error_log("Image saved to $outputPath");
 imagedestroy($image);
 
 // FPDF kütüphanesini dahil et
-require('../../assets/fpdf/fpdf.php');
+require('../../../assets/fpdf/fpdf.php');
 
 // Yeni bir PDF oluştur
 $pdf = new FPDF('L', 'mm', array(297, 210)); // A4 yatay
