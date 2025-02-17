@@ -27,12 +27,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $technical = $_POST['teknik_ozellikler'];
     $technical_cn = $_POST['teknik_ozellikler_en'];
     $seolink = generateSeoLink($name, $id);
-
+    if(isset($_POST['birlikteal'])){
+        $birlikteal = $_POST['birlikteal'];
+        $birliktealStr = implode(',', $birlikteal);
+    }else{
+        $birliktealStr = "";
+    }
+    if(isset($_POST['ikon'])){
+        $ikon = $_POST['ikon'];
+        $ikonStr = implode(',', $ikon);
+    }else{
+        $ikonStr = "";
+    }
     try {
         // Ürün Güncelleme Sorgusu
         $updateQuery = "UPDATE nokta_urunler SET UrunAdiTR = :name ,UrunAdiEN = :name_en , UrunKodu = :UrunKodu ,
                 barkod = :barkod , KategoriID = :category ,MarkaID = :brand ,OzelliklerTR = :OzelliklerTR ,
-                OzelliklerEN = :OzelliklerEN ,BilgiTR = :BilgiTR , BilgiEN = :BilgiEN, seo_link = :seolink 
+                OzelliklerEN = :OzelliklerEN ,BilgiTR = :BilgiTR , BilgiEN = :BilgiEN, seo_link = :seolink, birlikte_al = :birlikte_al, ikon = :ikon 
                 WHERE id = :id";
 
         $params = [
@@ -47,6 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'BilgiTR' => $technical,
             'BilgiEN' => $technical_cn,
             'seolink' => $seolink,
+            'birlikte_al' => $birliktealStr,
+            'ikon' => $ikonStr,
             'id' => $id
         ];
 

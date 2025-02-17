@@ -67,6 +67,11 @@ $selectedSite = $_GET['w'] ?? 'noktanet';
                         <div data-i18n="Filtreler">Filtreler</div>
                     </a>
                 </li>
+                <li class="menu-item <?= $currentPage === 'ikons' ? 'active' : '' ?>">
+                    <a href="pages/genel/ikons" class="menu-link" >
+                        <div data-i18n="İkonlar">İkonlar</div>
+                    </a>
+                </li>
                 <?php endif; ?>
             </ul>
         </li>

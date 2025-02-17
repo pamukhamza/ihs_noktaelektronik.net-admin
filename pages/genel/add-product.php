@@ -118,7 +118,8 @@ $categories = getCategories();
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="col">
+                                                <div class="mb-6 row">
+                                                    <div class="col">
                                                         <label class="form-label" for="brand">Marka</label>
                                                         <select class="form-control" id="brand" name="brand" required>
                                                             <option value="">Marka Seçiniz</option>
@@ -129,6 +130,37 @@ $categories = getCategories();
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
+                                                </div>
+                                                <div class="row mb-6">
+                                                    <div class="col">
+                                                        <label for="muhasebe_grup" class="form-label">Birlikte Alınacak Ürünler</label>
+                                                        <select id='birlikte_al' name="birlikteal[]"  multiple='multiple' class="select2 form-select" style="width: 100%;">
+                                                            <?php
+                                                            $birlikte = $database->fetchAll("SELECT id, UrunKodu FROM nokta_urunler");
+                                                            $selectedFilters = explode(',', $product['birlikte_al']);
+                                                            foreach($birlikte as $row) {
+                                                                // Eğer mevcut filtre $selectedFilters dizisinde ise 'selected' ekleyin
+                                                                $selected = in_array($row['id'], $selectedFilters) ? 'selected' : '';
+                                                                ?>
+                                                                <option value='<?php echo $row['id']; ?>' <?php echo $selected; ?>><?php echo $row['UrunKodu']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label for="muhasebe_grup" class="form-label">Ürün İkonları</label>
+                                                        <select id='ikon' name="ikon[]"  multiple='multiple' class="select2 form-select" style="width: 100%;">
+                                                            <?php
+                                                            $birlikte = $database->fetchAll("SELECT * FROM nokta_urunler_ikonlar");
+                                                            $selectedFilters = explode(',', $product['ikon']);
+                                                            foreach($birlikte as $row) {
+                                                                // Eğer mevcut filtre $selectedFilters dizisinde ise 'selected' ekleyin
+                                                                $selected = in_array($row['id'], $selectedFilters) ? 'selected' : '';
+                                                                ?>
+                                                                <option value='<?php echo $row['id']; ?>' <?php echo $selected; ?>><?php echo $row['title']; ?></option>
+                                                            <?php } ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                         <!-- /Product Information -->
@@ -301,6 +333,9 @@ $categories = getCategories();
                                         </div>
                                     </div>
                                     <!-- /Filtre Listesi -->
+                                     <div class="card">
+                                        
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -851,6 +886,22 @@ $categories = getCategories();
     $(document).ready(function() {
         $('#category').select2({
             placeholder: 'Kategori Seçiniz',
+            allowClear: true
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#birlikte_al').select2({
+            placeholder: 'Birlikte Çalışacak Ürünleri Seçiniz',
+            allowClear: true
+        });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#ikon').select2({
+            placeholder: 'Ürüne Ait ikonları seçiniz',
             allowClear: true
         });
     });

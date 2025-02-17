@@ -2,12 +2,13 @@
 include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
-$database = new Database();
+
 $currentPage = 'catalog';
 $template = new Template('Catalog - Nokta Admin', $currentPage);
 
 // head'i çağırıyoruz
 $template->head();
+$database = new Database();
 ?>
 <body>
 

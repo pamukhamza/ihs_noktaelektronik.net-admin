@@ -15,13 +15,14 @@ Yapılacaklar
     - Ürün detayda ikonlar gelecek
     - Ürün detayda özellik teknik özellik gibi butonlara renk kat :D
 Admin
-    - Ürün düzenleme birlikte al ekle
-    - Ürün düzenleme ikonlar ekle
-    - Teknik destek sayfasını komple yap
-    - Kampanyadaki select alanını üst katmana taşı
-    - Ödemeler tablosunu çalıştır
+    - İkonlar sayfası yap (YAPILDI FOTO YÜKLEME TEST ET) 
     - Katalog sayfasını kontrol et (aws tarafını kontrol et)
+
+    - Teknik destek sayfasını komple yap
     - Kullanıcı yetkilerini ayarla
+
     - Dahua ürün içerik entegrasyonu yap
     - Sanal Pos entegrasyonu yap
     - Wolvox entegrasyonu yap 
+B2B
+    -Birlikte alınma zorunlu yap

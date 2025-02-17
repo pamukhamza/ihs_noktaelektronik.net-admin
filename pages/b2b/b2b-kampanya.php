@@ -169,7 +169,7 @@ $template->head();
 </div>
 <!-- / Layout wrapper -->
  <!-- Modal Popup Form -->
-<div class="modal fade" id="editKampanyaModal" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="editKampanyaModal" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-simple">
         <div class="modal-content">
             <div class="modal-header">
@@ -232,7 +232,6 @@ $template->head();
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="saveEditPopup">Kaydet</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
             </div>
         </div>
     </div>
@@ -393,9 +392,9 @@ $template->head();
                 }
             });
         });
-    });
-    $(document).ready(function() {
-        $('#editVarUrun').select2();
+        $('#editVarUrun').select2({
+            dropdownParent: $('#editKampanyaModal')
+        });
         $('#search-filter2').on('keyup', function() {
             $('#editVarUrun').val(null).trigger('change'); // Reset the selected values
             var searchText = $(this).val().toLowerCase();
@@ -409,6 +408,7 @@ $template->head();
             });
         });
     });
+
 </script>
 
 <!--Varysayon Düzenle-->
@@ -495,4 +495,5 @@ $template->head();
     document.getElementById('duzenle-kampanya').addEventListener('click', function() {
         document.getElementById('kampanya-olustur').style.display = 'block';
     });
+    
 </script>
