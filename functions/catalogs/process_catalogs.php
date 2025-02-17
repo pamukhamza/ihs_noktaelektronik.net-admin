@@ -23,8 +23,8 @@ $database = new Database();
 $action = $_POST['action'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
-    $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
+    $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file'] : null;
+    $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo'] : null;
 
     $id = isset($_POST['id']) ? $_POST['id'] : null;
     $catalog_title = isset($_POST['catalog_title']) ? $_POST['catalog_title'] : null;
@@ -43,16 +43,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
+            $uploadDir = 'uploads/catalogs/';
+            $unique_filename = uniqid() . '.' . pathinfo($catalog_file['name'], PATHINFO_EXTENSION);
+            $uploadPath = $uploadDir . $unique_filename;
+
+            if (move_uploaded_file($catalog_file['tmp_name'], $uploadPath)) {
+                $params['file'] = $uploadPath;
+            } else {
                 echo "File upload failed.";
                 exit;
             }
-            $params['file'] = $img;
         }
 
         if (!empty($catalog_photo)) {
-            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            $img = uploadImageToS3($catalog_photo, 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
                 echo "Image upload failed.";
                 exit;
@@ -80,16 +84,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            $img = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
+            $uploadDir = 'uploads/catalogs/';
+            $unique_filename = uniqid() . '.' . pathinfo($catalog_file['name'], PATHINFO_EXTENSION);
+            $uploadPath = $uploadDir . $unique_filename;
+
+            if (move_uploaded_file($catalog_file['tmp_name'], $uploadPath)) {
+                $params['file'] = $uploadPath;
+            } else {
                 echo "File upload failed.";
                 exit;
             }
-            $params['file'] = $img;
         }
 
         if (!empty($catalog_photo)) {
-            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            $img = uploadImageToS3($catalog_photo, 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img === false) {
                 echo "Image upload failed.";
                 exit;
@@ -106,8 +114,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
-    
-
     // Maks. Dosya boyutu
     $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
     if ($file["size"] > $max_file_size) {
@@ -125,7 +131,8 @@ function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
         $result = $s3Client->putObject([
             'Bucket' => $bucket,
             'Key'    => $uploadPath,
-            'SourceFile' => $file['tmp_name']
+            'SourceFile' => $file['tmp_name'],
+            'ACL'    => 'public-read',
         ]);
         return $unique_filename; // Return the unique filename on success
     } catch (AwsException $e) {
