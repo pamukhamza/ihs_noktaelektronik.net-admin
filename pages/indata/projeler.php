@@ -4,7 +4,7 @@ require '../../functions/admin_template.php';
 
 $database = new Database();
 
-$currentPage = 'projeler';
+$currentPage = 'indata-projeler';
 $template = new Template('Projeler - InData Admin', $currentPage);
 
 // head'i çağırıyoruz

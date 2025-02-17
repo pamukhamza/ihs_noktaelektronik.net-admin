@@ -25,10 +25,10 @@ $template->head();
                         <div class="card mb-6">
                             <div class="card-header px-0 pt-0">
                                 <div class="nav-align-top">
-                                    <ul class="nav nav-tabs" role="tablist">
+                                    <ul class="nav nav-tabs" role="tablist"><!--
                                         <li class="nav-item">
                                             <button type="button" class="nav-link active" data-bs-toggle="tab" data-bs-target="#form-tabs-settings" aria-controls="form-tabs-settings" role="tab" aria-selected="true"><span class="ti ti-settings ti-lg d-sm-none"></span><span class="d-none d-sm-block">Ayarlar</span></button>
-                                        </li>
+                                        </li>-->
                                         <li class="nav-item">
                                             <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-social" aria-controls="form-tabs-social" role="tab" aria-selected="false"><span class="ti ti-link ti-lg d-sm-none"></span><span class="d-none d-sm-block">Sosyal Medya Linkleri</span></button>
                                         </li>
@@ -38,7 +38,7 @@ $template->head();
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <!-- Personal Info -->
-                                    <div class="tab-pane fade active show" id="form-tabs-settings" role="tabpanel">
+                                    <!--<div class="tab-pane fade active show" id="form-tabs-settings" role="tabpanel">
                                         <form method="post" enctype="multipart/form-data">
                                             <?php
                                             $query = "SELECT * FROM settings WHERE id = 1";
@@ -73,9 +73,9 @@ $template->head();
                                                 </div>
                                             </div>
                                         </form>
-                                    </div>
+                                    </div>-->
                                     <!-- Social Links -->
-                                    <div class="tab-pane fade" id="form-tabs-social" role="tabpanel">
+                                    <div class="tab-pane fade active show" id="form-tabs-social" role="tabpanel">
                                         <form>
                                             <div class="row g-6">
                                                 <div class="col-md-6">

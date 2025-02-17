@@ -21,7 +21,8 @@ $orderColumn = $columns[$orderColumnIndex] ?? 'tarih';
 $where = 'WHERE 1=1';
 $params = [];
 if (!empty($search)) {
-    $where = " AND u.firmaUnvani LIKE :search OR u.muhasebe_kodu LIKE :search ";
+    $where = " AND u.firmaUnvani LIKE :search 
+                OR u.muhasebe_kodu LIKE :search ";
     $params['search'] = "%$search%";
 }
 if ($minTutar !== '') {

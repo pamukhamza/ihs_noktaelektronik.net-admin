@@ -65,7 +65,7 @@ $template->head();
                     <tr>
                       <td>
                         <span class="permission-name" data-id="<?php echo $permission['id']; ?>" style="cursor: pointer; color: blue;">
-                          <?php echo $permission['name']; ?>
+                          <?php echo $permission['id'] . ' - ' . $permission['name']; ?>
                         </span>
                       </td>
                       <td><?php echo $permission['description']; ?></td>
@@ -204,7 +204,7 @@ $(document).ready(function () {
                         html += `
                             <tr>
                                 <td>
-                                  <span class="permission-name" data-id="${permission.id}" style="cursor: pointer; color: blue;">${permission.name}
+                                  <span class="permission-name" data-id="${permission.id}" style="cursor: pointer; color: blue;">${permission.id}  -  ${permission.name}
                                   </span>
                                 </td>
                                 <td>${permission.description}</td>

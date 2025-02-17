@@ -98,10 +98,10 @@ $template->head();
 
         // Open modal for adding new language
         $(".add_user").on('click', function () {
-            window.location.href = 'users-detail?id=new';
+            window.location.href = 'pages/genel/users-detail?id=new';
         });
         $(".user_permissions").on('click', function () {
-            window.location.href = 'user-permission';
+            window.location.href = 'pages/genel/user-permission';
         });
 
         $(document).on('click', '.delete_user', function (e) {

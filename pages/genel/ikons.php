@@ -46,7 +46,7 @@ $database = new Database();
                                                 ?>
                                                     <tr>
                                                         <td>
-                                                            <img src="<?= $row["img"]; ?>" style="max-width: 60px; max-height: 60px; object-fit: cover; border-radius: 5px;">
+                                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/ikons/<?= $row["img"]; ?>" style="max-width: 60px; max-height: 60px; object-fit: cover; border-radius: 5px;">
                                                         </td>
                                                         <td><?= $row["title"]; ?></td>
                                                         <td>

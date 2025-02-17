@@ -41,6 +41,7 @@ class User {
                     'username' => $user['username'],
                     'email' => $user['email'],
                     'full_name' => $user['full_name'],
+                    'roles' => $user['roles'],
                     'permissions' => array_column($permissions, 'id')
                 ];
                 session_regenerate_id(true);

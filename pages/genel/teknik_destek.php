@@ -326,7 +326,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
         };
         var dataTable = $('#deneme').DataTable({
             "language": {
-                url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
+                url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/tr.json',
             },
             "processing": true,
             "serverSide": true,
@@ -424,18 +424,21 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                 reader.readAsDataURL(file);
             }
         });
-
         $(document).on('click', '.edit-tdp-duzenle', function() {
             var tdpID = $(this).data('tdp-id');
-
             $('#editDestekForm')[0].reset();
             $('#input-rows-container').empty(); // Resetting container
             $.ajax({
-                url: 'php/get_info.php',
+                url: 'functions/teknik_destek/get_info.php',
                 method: 'post',
                 dataType: 'json',
                 data: { id: tdpID, type: 'tdp' },
                 success: function(response) {
+                    console.log(response);
+                    if (response.error) {
+                        alert('Hata: ' + response.error);
+                        return;
+                    }
                     if (response.urun_durumu == '1' ) {
                         $('#saveEditDestekContainer').show();
                     }else if (response.urun_durumu == '2' ) {
@@ -474,7 +477,11 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                     // Durum kontrolü
                     //alert(response.urun_durumu);
 
-                 }
+                },
+                error: function(xhr, status, error) {
+                    console.error('AJAX Hatası:', status, error);
+                    alert('Sunucudan yanıt alınamadı!');
+                }
             });
             $('#editKayitForm').modal('show');
         });
@@ -506,7 +513,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                 formData.append('foto[]', files[i]);
             }
             $.ajax({
-                url: 'php/edit_info.php',
+                url: 'functions/teknik_destek/process_teknik.php',
                 method: 'post',
                 data: formData,
                 processData: false,
