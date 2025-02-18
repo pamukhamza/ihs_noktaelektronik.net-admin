@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            $file_url = uploadImageToS3($catalog_file, 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            $file_url = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($file_url === false) {
                 echo "File upload failed.";
                 exit;
@@ -52,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!empty($catalog_photo)) {
-            $img_url = uploadImageToS3($catalog_photo, 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            $img_url = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img_url === false) {
                 echo "Image upload failed.";
                 exit;
@@ -80,7 +80,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($catalog_file)) {
-            $file_url = uploadImageToS3($catalog_file, 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            $file_url = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($file_url === false) {
                 echo "File upload failed.";
                 exit;
@@ -89,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!empty($catalog_photo)) {
-            $img_url = uploadImageToS3($catalog_photo, 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            $img_url = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
             if ($img_url === false) {
                 echo "Image upload failed.";
                 exit;

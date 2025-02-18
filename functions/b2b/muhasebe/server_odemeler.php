@@ -3,16 +3,16 @@ require_once '../../db.php';
 $db = new Database();
 
 // DataTables için gerekli parametreler
-$start = $_POST['start'] ?? 0;
-$length = $_POST['length'] ?? 10;
-$search = $_POST['search']['value'] ?? '';
-$orderColumnIndex = $_POST['order'][0]['column'] ?? 0;
-$orderDir = $_POST['order'][0]['dir'] ?? 'asc';
-$minTutar = $_POST['minTutar'] ?? '';
-$maxTutar = $_POST['maxTutar'] ?? '';
-$minTarih = $_POST['minTarih'] ?? '';
-$maxTarih = $_POST['maxTarih'] ?? '';
-$basarili = $_POST['basarili'] ?? '';
+$start = $_GET['start'] ?? 0;
+$length = $_GET['length'] ?? 10;
+$search = $_GET['search']['value'] ?? '';
+$orderColumnIndex = $_GET['order'][0]['column'] ?? 0;
+$orderDir = $_GET['order'][0]['dir'] ?? 'asc';
+$minTutar = $_GET['minTutar'] ?? '';
+$maxTutar = $_GET['maxTutar'] ?? '';
+$minTarih = $_GET['minTarih'] ?? '';
+$maxTarih = $_GET['maxTarih'] ?? '';
+$basarili = $_GET['basarili'] ?? '';
 // Sütunlara göre sıralama için eşleşme
 $columns = ['pos_id', 'firmaUnvani', 'muhasebe_kodu', 'islem', 'islem_turu', 'tarih', 'tutar', 'basarili', 'islem'];
 $orderColumn = $columns[$orderColumnIndex] ?? 'tarih';
@@ -21,10 +21,10 @@ $orderColumn = $columns[$orderColumnIndex] ?? 'tarih';
 $where = 'WHERE 1=1';
 $params = [];
 if (!empty($search)) {
-    $where = " AND u.firmaUnvani LIKE :search 
-                OR u.muhasebe_kodu LIKE :search ";
+    $where .= " AND (u.firmaUnvani LIKE :search OR u.muhasebe_kodu LIKE :search)";
     $params['search'] = "%$search%";
 }
+
 if ($minTutar !== '') {
     $where .= " AND p.tutar >= :minTutar";
     $params['minTutar'] = (float)$minTutar;
@@ -67,7 +67,6 @@ $stmt = $db->fetchAll($query, $params);
 // Toplam kayıt sayısı
 $totalRecords = $db->fetchColumn("SELECT COUNT(*) FROM b2b_sanal_pos_odemeler");
 
-
 // DataTables için JSON çıktısı
 $data = [];
 foreach ($stmt as $row) {
@@ -98,7 +97,7 @@ foreach ($stmt as $row) {
 }
 
 $response = [
-    'draw' => intval($_POST['draw'] ?? 1),
+    'draw' => intval($_GET['draw'] ?? 1),
     'recordsTotal' => $totalRecords,
     'recordsFiltered' => $totalRecords,
     'data' => $data

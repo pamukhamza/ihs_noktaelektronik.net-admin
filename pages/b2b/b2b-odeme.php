@@ -90,8 +90,6 @@ $database = new Database();
 </div>
 <!-- / Layout wrapper -->
 <!-- Core JS -->
-<!-- / Layout wrapper -->
-<!-- Core JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -105,13 +103,13 @@ $database = new Database();
 <script src="assets/js/main.js"></script>
 <script>
 $(document).ready(function () {
-    $('#odemeler').DataTable({
+    var table = $('#odemeler').DataTable({
         processing: true,
         serverSide: true,
         order: [[5, 'desc']], // tarih sütunu
         ajax: {
             url: 'functions/b2b/muhasebe/server_odemeler.php',
-            type: 'POST',
+            type: 'GET',
             data: function (d) {
                 d.minTutar = $('#minTutar').val();
                 d.maxTutar = $('#maxTutar').val();
@@ -145,7 +143,5 @@ $(document).ready(function () {
     });
 });
 </script>
-
-
 </body>
 </html>

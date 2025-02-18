@@ -12,6 +12,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                     <select class="form-select" name="w" id="siteSelect" onchange="this.form.submit()">
                         <option value="net" <?= $selectedSite === 'net' ? 'selected' : '' ?>>Nokta Net</option>
                         <option value="b2b" <?= $selectedSite === 'b2b' ? 'selected' : '' ?>>Nokta B2B</option>
+                        <option value="b2b" <?= ($selectedSite === 'b2b' || $selectedSite === 'noktab2b') ? 'selected' : '' ?>>Nokta B2B</option>
                         <option value="noktacn" <?= $selectedSite === 'noktacn' ? 'selected' : '' ?>>Nokta CN</option>
                         <option value="indata" <?= $selectedSite === 'indata' ? 'selected' : '' ?>>InData</option>
                     </select>
@@ -215,7 +216,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                     </a>
                 </li>
             <?php endif; ?>
-        <?php elseif($selectedSite === 'b2b'): ?>
+        <?php elseif($selectedSite === 'b2b' || $selectedSite === 'noktab2b'): ?>
             <?php if ($user->hasPermission(8)): ?>
                 <!-- B2B menu items -->
                 <?php if ($user->hasPermission(34)): ?>
