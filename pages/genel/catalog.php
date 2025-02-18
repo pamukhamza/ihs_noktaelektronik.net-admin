@@ -48,6 +48,7 @@ $database = new Database();
                                                     <thead>
                                                     <tr>
                                                         <th>Sıralama</th>
+                                                        <th>foto</th>
                                                         <th>Title</th>
                                                         <th>Title EN</th>
                                                         <th>.net</th>
@@ -64,7 +65,10 @@ $database = new Database();
                                                     foreach ($results as $row) {
                                                     ?>
                                                     <tr>
-                                                        <td><?= $row["sira"]; ?></td>
+                                                        <td><?= $row["sira"]; ?></td><td>
+                                                            <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/catalogs/<?= $row['img'] ?>" alt="Image" style="max-width: 100px; height: auto;">
+                                                        </td>
+
                                                         <td><?= $row["title"]; ?></td>
                                                         <td><?= $row["title_en"]; ?></td>
                                                         <td>
