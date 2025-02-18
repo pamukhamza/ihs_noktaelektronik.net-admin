@@ -3,6 +3,7 @@
 include_once '../db.php';
 
 include_once '../functions.php';
+include_once '../../mail/mail_gonder.php';
 require '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
@@ -57,42 +58,54 @@ $database = new Database();
         }
     }
 
-    // Update SQL query preparation and execution
-    $query = "UPDATE teknik_destek_urunler SET tekniker = ?, yapilan_islemler = ?, foto = ?, seri_no = ?, urun_durumu = ?, teslim_edilen = ?, teslim_tarih = ? WHERE id = ?";
-    $stmt = $db->prepare($query);
-
     // Join $fileNames array into comma-separated string
     $fotoString = implode(',', $fileNames);
 
-    // Bind parameters and execute query
-    $stmt->execute([$tekniker, $yapilan_islemler, $fotoString, $seri_no, $urun_durum, $teslim_edilen, $teslim_tarih, $id]);
+    // Update SQL query preparation and execution
+    $query = "UPDATE teknik_destek_urunler SET tekniker = :tekniker, yapilan_islemler = :yapilan_islemler, 
+              foto = :foto, seri_no = :seri_no, urun_durumu = :urun_durum, 
+              teslim_edilen = :teslim_edilen, teslim_tarih = :teslim_tarih 
+              WHERE id = :id";
+    
+    $params = [
+        'tekniker' => $tekniker,
+        'yapilan_islemler' => $yapilan_islemler,
+        'foto' => $fotoString,
+        'seri_no' => $seri_no,
+        'urun_durum' => $urun_durum,
+        'teslim_edilen' => $teslim_edilen,
+        'teslim_tarih' => $teslim_tarih,
+        'id' => $id
+    ];
+    
+    $database->update($query, $params);
 
     // Fetch the tdp_id after the update
-    $query = "SELECT * FROM teknik_destek_urunler WHERE id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$id]);
-    $tdu = $stmt->fetch(PDO::FETCH_ASSOC);
+    $query = "SELECT * FROM teknik_destek_urunler WHERE id = :id";
+    $tdu = $database->fetch($query, ['id' => $id]);
 
     $tdp_id = $tdu["tdp_id"];
     $urun_kodu = $tdu["urun_kodu"];
     $urun_durum_id = $tdu["urun_durumu"];
     
-    $query = "UPDATE nokta_teknik_destek SET tel = ? WHERE id = ?";
-    $stmt = $db->prepare($query);
-    $stmt->execute([$tel, $tdp_id]);
+    // Update phone number
+    $query = "UPDATE nokta_teknik_destek SET tel = :tel WHERE id = :id";
+    $database->update($query, [
+        'tel' => $tel,
+        'id' => $tdp_id
+    ]);
 
-    $q = $db->prepare("SELECT * FROM nokta_teknik_durum WHERE id = ?");
-    $q->execute([$urun_durum_id]);
-    $utd = $q->fetch(PDO::FETCH_ASSOC);
+    // Get product status
+    $query = "SELECT * FROM nokta_teknik_durum WHERE id = :id";
+    $utd = $database->fetch($query, ['id' => $urun_durum_id]);
     $urun_durumu = $utd["durum"];
 
-    $q = $db->prepare("SELECT * FROM nokta_teknik_destek WHERE id = ?");
-    $q->execute([$tdp_id]);
-    $ntd = $q->fetch(PDO::FETCH_ASSOC);
+    // Get technical support details
+    $query = "SELECT * FROM nokta_teknik_destek WHERE id = :id";
+    $ntd = $database->fetch($query, ['id' => $tdp_id]);
     $musteri = $ntd["musteri"];
     $mail = $ntd["mail"];
     $takip_no = $ntd["takip_kodu"];
-
 
     if($urun_durum_id != 1 && $urun_durum_id != 2 && $urun_durum_id != 3){
         $mail_icerik = islemiBitenAriza($musteri, $takip_no, $urun_durumu, $urun_kodu);

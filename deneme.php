@@ -10,14 +10,19 @@ try {
 } catch (PDOException $e) {
     die("Veritabanı bağlantı hatası: " . $e->getMessage());
 }
-
 function fetchContentWithCurl($url) {
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/91.0.4472.124 Safari/537.36');
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+        'Accept-Language: en-US,en;q=0.9',
+        'Cache-Control: no-cache'
+    ]);
+    curl_setopt($ch, CURLOPT_REFERER, 'https://www.google.com/'); // Referer ekle
     curl_setopt($ch, CURLOPT_TIMEOUT, 30);
     $html = curl_exec($ch);
     $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
@@ -51,7 +56,10 @@ if ($elements->length === 0) {
 
 // Verileri veritabanına kaydet
 foreach ($elements as $element) {
-    $content = trim($element->nodeValue);
+    // HTML etiketleri ve özellikleriyle birlikte al
+    $content = $dom->saveHTML($element);
+    
+    // Veriyi veritabanına ekle
     $stmt = $db->prepare("INSERT INTO hedef_tablo (icerik) VALUES (:icerik)");
     $stmt->execute(['icerik' => $content]);
 }
