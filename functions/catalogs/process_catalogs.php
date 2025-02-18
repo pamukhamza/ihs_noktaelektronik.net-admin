@@ -29,9 +29,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
 
     $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
+    $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file']['name'] : null;
 
     if($action == 'update'){
-        $query = "UPDATE catalogs SET `title` = :catalog_title, `title_en` = :catalog_title_en" . (empty($catalog_photo) ? "" : ", `img` = :img") . " WHERE id = :id";
+        $query = "UPDATE catalogs SET `title` = :catalog_title, `title_en` = :catalog_title_en" . (empty($catalog_photo) ? "" : ", `img` = :img") .  (empty($catalog_file) ? "" : ", `file` = :file") . " WHERE id = :id";
 
         $params = [
             'catalog_title' => $catalog_title,
@@ -47,6 +48,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             $params['img'] = $img;
         }
+        if (!empty($catalog_file)) {
+            $file = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($file === false) {
+                echo "File upload failed.";
+                exit;
+            }
+            $params['file'] = $file;
+        }
 
         if ($database->update($query, $params)) {
             echo "Kayıt başarıyla güncellendi.";
@@ -55,7 +64,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     }elseif($action == 'insert'){
-        $query = "INSERT INTO catalogs (`title`, `title_en`" . (empty($catalog_photo) ? "" : ", `img`") . ") VALUES (:title, :title_en" . (empty($catalog_photo) ? "" : ", :img") . ")";
+        $query = "INSERT INTO catalogs (`title`, `title_en`" . (empty($catalog_photo) ? "" : ", `img`") .(empty($catalog_file) ? "" : ", `file`") . ") VALUES (:title, :title_en" . (empty($catalog_photo) ? "" : ", :img") .(empty($catalog_file) ? "" : ", :file") . ")";
 
         $params = [
             'title' => $catalog_title,
@@ -69,6 +78,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
             $params['img'] = $img;
+        }
+        if (!empty($catalog_file)) {
+            $file = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($file === false) {
+                echo "File upload failed.";
+                exit;
+            }
+            $params['file'] = $file;
         }
 
         if ($database->insert($query, $params)) {
