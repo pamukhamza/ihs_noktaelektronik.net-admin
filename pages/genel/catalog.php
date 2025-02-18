@@ -234,11 +234,8 @@ $database = new Database();
                         icon: 'success',
                         title: 'Success!',
                         text: response,
-                        showConfirmButton: false,
-                        timer: 1000
-                    }).then(function() {
-                        location.reload(1000);
-                    });
+                        showConfirmButton: false
+                    })
                 },
                 error: function (xhr, status, error) {
                     $('#editCatalog').modal('hide');
