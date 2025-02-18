@@ -17,21 +17,25 @@ $s3Client = new S3Client([
     'credentials' => [
         'key'    => $config['s3']['key'],
         'secret' => $config['s3']['secret'],
-    ]
+    ],
 ]);
 
 $database = new Database();
 $action = $_POST['action'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $catalog_title = $_POST['catalog_title'];
-    $catalog_title_en = $_POST['catalog_title_en'];
-    $id = $_POST['id'];
+    $catalog_file = !empty($_FILES['catalog_file']['name']) ? $_FILES['catalog_file'] : null;
+    $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo'] : null;
 
-    $catalog_photo = !empty($_FILES['catalog_photo']['name']) ? $_FILES['catalog_photo']['name'] : null;
+    $id = isset($_POST['id']) ? $_POST['id'] : null;
+    $catalog_title = isset($_POST['catalog_title']) ? $_POST['catalog_title'] : null;
+    $catalog_title_en = isset($_POST['catalog_title_en']) ? $_POST['catalog_title_en'] : null;
 
-    if($action == 'update'){
-        $query = "UPDATE catalogs SET `title` = :catalog_title, `title_en` = :catalog_title_en" . (empty($catalog_photo) ? "" : ", `img` = :img") . " WHERE id = :id";
+    if ($action == 'update') {
+        $query = "UPDATE catalogs SET `title` = :catalog_title, `title_en` = :catalog_title_en" .
+            (empty($catalog_file) ? "" : ", `file` = :file") .
+            (empty($catalog_photo) ? "" : ", `img` = :img") .
+            " WHERE id = :id";
 
         $params = [
             'catalog_title' => $catalog_title,
@@ -39,13 +43,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'id' => $id,
         ];
 
+        if (!empty($catalog_file)) {
+            $file_url = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($file_url === false) {
+                echo "File upload failed.";
+                exit;
+            }
+            $params['file'] = $file_url;
+        }
+
         if (!empty($catalog_photo)) {
-            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
+            $img_url = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img_url === false) {
                 echo "Image upload failed.";
                 exit;
             }
-            $params['img'] = $img;
+            $params['img'] = $img_url;
         }
 
         if ($database->update($query, $params)) {
@@ -54,21 +67,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Güncelleme sırasında hata oluştu.";
         }
 
-    }elseif($action == 'insert'){
-        $query = "INSERT INTO catalogs (`title`, `title_en`" . (empty($catalog_photo) ? "" : ", `img`") . ") VALUES (:title, :title_en" . (empty($catalog_photo) ? "" : ", :img") . ")";
+    } elseif ($action == 'insert') {
+        $query = "INSERT INTO catalogs (`title`, `title_en`" .
+            (empty($catalog_file) ? "" : ", `file`") .
+            (empty($catalog_photo) ? "" : ", `img`") .
+            ") VALUES (:catalog_title, :catalog_title_en" .
+            (empty($catalog_file) ? "" : ", :file") .
+            (empty($catalog_photo) ? "" : ", :img") . ")";
 
         $params = [
-            'title' => $catalog_title,
-            'title_en' => $catalog_title_en,
+            'catalog_title' => $catalog_title,
+            'catalog_title_en' => $catalog_title_en,
         ];
 
+        if (!empty($catalog_file)) {
+            $file_url = uploadImageToS3($_FILES['catalog_file'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($file_url === false) {
+                echo "File upload failed.";
+                exit;
+            }
+            $params['file'] = $file_url;
+        }
+
         if (!empty($catalog_photo)) {
-            $img = uploadImageToS3($_FILES['catalog_photo'], 'uploads/catalogs/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
+            $img_url = uploadImageToS3($_FILES['catalog_photo'], 'uploads/images/catalogs/', $s3Client, $config['s3']['bucket']);
+            if ($img_url === false) {
                 echo "Image upload failed.";
                 exit;
             }
-            $params['img'] = $img;
+            $params['img'] = $img_url;
         }
 
         if ($database->insert($query, $params)) {
@@ -77,9 +104,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Ekleme sırasında hata oluştu.";
         }
     }
-
-
 }
 
+function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
+    // Maks. Dosya boyutu
+    $max_file_size = 6 * 1024 * 1024; // 6MB in bytes
+    if ($file["size"] > $max_file_size) {
+        return false;
+    }
 
+    // Get the original file extension
+    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+
+    // Generate a unique filename with the original extension
+    $unique_filename = uniqid() . '.' . $fileExtension;
+    $uploadPath = $upload_path . $unique_filename;
+
+    try {
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $uploadPath,
+            'SourceFile' => $file['tmp_name'],
+        ]);
+        return $result['ObjectURL']; // Return the S3 URL on success
+    } catch (AwsException $e) {
+        error_log("S3 Upload Error: " . $e->getMessage());
+        return false; // Return false on failure
+    }
+}
 ?>
