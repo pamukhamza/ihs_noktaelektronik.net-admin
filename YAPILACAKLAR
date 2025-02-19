@@ -10,16 +10,10 @@ Yapılacaklar
 /////////////////////////////////////////////////////////////////////
 .Net
     - Ürünler sayfasına filtreler gelecek
-    - Ürün detayda ikonlar gelecek
-    - Ürün detayda özellik teknik özellik gibi butonlara renk kat :D
     
 Admin
-    - Katalog sayfasını kontrol et (aws tarafını kontrol et)
-
-    - Kullanıcı yetkilerini ayarla 
-
     - Dahua ürün içerik entegrasyonu yap
     - Sanal Pos entegrasyonu yap
     - Wolvox entegrasyonu yap 
 B2B
-    -Birlikte alınma zorunlu yap
+    -Birlikte alınma zorunlu yap"

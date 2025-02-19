@@ -24,13 +24,22 @@ $action = $_POST['action'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $ikon_photo = !empty($_FILES['ikon_photo']['name']) ? $_FILES['ikon_photo']['name'] : null;
-
     $id = isset($_POST['id']) ? $_POST['id'] : null;
-    $ikon_title = isset($_POST['ikon_title']) ? $_POST['ikon_title'] : null;
+
+    if (!empty($ikon_photo)) {
+        $img = uploadImageToS3($_FILES['ikon_photo'], 'uploads/images/ikons/', $s3Client, $config['s3']['bucket']);
+        if ($img === false) {
+            echo "Image upload failed.";
+            exit;
+        }
+        $ikon_title = pathinfo($img, PATHINFO_FILENAME); // Dosya adını title olarak kullan
+    } else {
+        $ikon_title = null;
+    }
 
     if ($action == 'update') {
-        $query = "UPDATE nokta_urunler_ikonlar SET `title` = :ikon_title " .
-            (empty($ikon_photo) ? "" : ", `img` = :img") .
+        $query = "UPDATE nokta_urunler_ikonlar SET `title` = :ikon_title " . 
+            (empty($ikon_photo) ? "" : ", `img` = :img") . 
             " WHERE id = :id";
 
         $params = [
@@ -39,11 +48,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($ikon_photo)) {
-            $img = uploadImageToS3($_FILES['ikon_photo'], 'uploads/images/ikons/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
-                echo "Image upload failed.";
-                exit;
-            }
             $params['img'] = $img;
         }
 
@@ -54,9 +58,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
     } elseif ($action == 'insert') {
-        $query = "INSERT INTO nokta_urunler_ikonlar (`title`" .
-            (empty($ikon_photo) ? "" : ", `img`") .
-            ") VALUES (:ikon_title" .
+        $query = "INSERT INTO nokta_urunler_ikonlar (`title`" . 
+            (empty($ikon_photo) ? "" : ", `img`") . 
+            ") VALUES (:ikon_title" . 
             (empty($ikon_photo) ? "" : ", :img") . ")";
 
         $params = [
@@ -64,11 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ];
 
         if (!empty($ikon_photo)) {
-            $img = uploadImageToS3($_FILES['ikon_photo'], 'uploads/images/ikons/', $s3Client, $config['s3']['bucket']);
-            if ($img === false) {
-                echo "Image upload failed.";
-                exit;
-            }
             $params['img'] = $img;
         }
 
@@ -79,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 
 function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
     

@@ -373,3 +373,10 @@ $database = new Database();
 <!--/ Edit User Modal -->
 </body>
 </html>
+<script>
+$(document).ready(function() {
+    $('#cardNumber').on('input', function() {
+        kartBinSorgulama('#cardNumber', 'kart-gelen-bilgi');
+    });
+});
+</script>
