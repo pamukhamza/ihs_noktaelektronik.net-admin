@@ -32,7 +32,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo "Image upload failed.";
             exit;
         }
-        $ikon_title = pathinfo($img, PATHINFO_FILENAME); // Dosya adını title olarak kullan
+        $ikon_title = pathinfo($_FILES['ikon_photo']['name'], PATHINFO_FILENAME);
+ // Dosya adını title olarak kullan
     } else {
         $ikon_title = null;
     }
