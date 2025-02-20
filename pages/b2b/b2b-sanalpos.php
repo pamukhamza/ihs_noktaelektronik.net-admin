@@ -140,7 +140,7 @@ $database = new Database();
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card">
-                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
+                            <form method="post" action="admin/functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -216,7 +216,7 @@ $database = new Database();
                             </form>
                         </div>
                         <div class="card mt-5">
-                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
+                            <form method="post" action="admin/functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -410,13 +410,13 @@ $(document).ready(function() {
 
                     switch (this.value) {
                         case '1':
-                            actionUrl = '../../php/banka/param/payment.php';
+                            actionUrl = 'admin/functions/banka/param/payment.php';
                             break;
                         case '3':
-                            actionUrl = 'functions/banka/kuveyt/2_Odeme.php';
+                            actionUrl = 'admin/functions/banka/kuveyt/2_Odeme.php';
                             break;
                         case '4':
-                            actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
+                            actionUrl = 'admin/functions/banka/turkiye_finans/turkiye_finans_request.php';
                             break;
                         default:
                             actionUrl = '';
