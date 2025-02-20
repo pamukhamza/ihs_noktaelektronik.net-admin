@@ -69,7 +69,10 @@ $database = new Database();
                                                 <td><?= $row['sira'] ?? '0'; ?></td>
                                                 <td><?= $row['UrunKodu']; ?></td>
                                                 <td><?= $row['UrunAdiTR']; ?></td>
-                                                <td><a href="pages/genel/add-product.php?id=<?= $row['id']; ?>" target="_blank" class="cursor-pointer me-2 edit_product" data-product-id="<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a></td>
+                                                <td>
+                                                    <a href="pages/genel/add-product.php?id=<?= $row['id']; ?>" target="_blank" class="cursor-pointer me-2 edit_product" data-product-id="<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                    <a class="cursor-pointer delete_product" data-id="<?= $row['id']; ?>"><i class="ti ti-trash me-1"></i></a>
+                                                </td>
                                             </tr>
                                         <?php endforeach; ?>
                                         </tbody>
@@ -120,6 +123,44 @@ $database = new Database();
                     success: function(response) {
                         // Optionally handle response from server
                         location.reload();
+                    }
+                });
+            }
+        });
+    });
+    $(document).on('click', '.delete_product', function() {
+        const id = $(this).data('id');
+        Swal.fire({
+            title: 'Emin misin?',
+            text: "Geri Alınamaz!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Delete!',
+            cancelButtonText: 'Cancel!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'functions/functions.php',
+                    type: 'POST',
+                    data: { id: id, type: 'deleteProduct' },  // Type delete olarak gönderiliyor
+                    success: function (response) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Silindi!',
+                            showConfirmButton: false,
+                            timer: 1500
+                        }).then(() => {
+                            location.reload();  // Sayfayı yeniden yükle
+                        });
+                    },
+                    error: function () {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'Failed.',
+                        });
                     }
                 });
             }
