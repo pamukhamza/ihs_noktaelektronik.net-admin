@@ -118,7 +118,6 @@ function validateAndSaveImage($file, $upload_path) {
 
     return false; // Return false on failure
 }
-
 function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
     
 
@@ -145,5 +144,12 @@ function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
     } catch (AwsException $e) {
         return false; // Return false on failure
     }
+}
+function WEB4UniqueOrderNumber() {
+    $prefix = 'WEB';
+    $datePart = date('YmdHi');
+    $randomPart = mt_rand(1000, 9999);
+    $orderNumber = $prefix . $datePart . $randomPart;
+    return $orderNumber;
 }
 ?>

@@ -21,8 +21,7 @@ $database = new Database();
             <!-- Content -->
             <div class=" flex-grow-1 container-p-y container-xxl">
                 <div class="row g-6">
-                    
-                <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card">
                             <form method="post" action="" id="paymentForm">
                                 <input type="hidden" name="adminCariOdeme" value="">
@@ -141,7 +140,7 @@ $database = new Database();
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card">
-                            <form method="post" action="../../php/bank/turkiye_finans/request.php">
+                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -183,7 +182,7 @@ $database = new Database();
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <label for="cardNumber">Kart Numarası</label>
-                                            <input type="text" class="form-control" id="cardNumber" MAXLENGTH="16" name="cardNumber" placeholder="" required>
+                                            <input type="text" class="form-control card_number_cs" id="cardNumber" MAXLENGTH="16" name="cardNumber" placeholder="" required>
                                         </div>
                                     </div>
                                     <div class="row">
@@ -199,7 +198,7 @@ $database = new Database();
                                             <input type="text" class="form-control" id="cvCode" name="cvCode" MAXLENGTH="4" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <small id="kart-gelen-bilgi"></small>
+                                            <small id="kart-gelen-bilgi1"></small>
                                         </div>
                                     </div>
                                     <hr>
@@ -217,7 +216,7 @@ $database = new Database();
                             </form>
                         </div>
                         <div class="card mt-5">
-                            <form method="post" action="../../php/bank/turkiye_finans/request.php">
+                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -227,7 +226,7 @@ $database = new Database();
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="uye_parola">İşlenecek Cari</label>
-                                                <select class="form-control" id="uye_id2" name="uye_id" style="width:100%" readonly>
+                                                <select class="form-control" id="uye_id2" name="uye_id"  style="width:100%" readonly>
                                                     <option value='0'>Firma Seç</option>
                                                     <?php
                                                     $uyeler = $database->fetchAll("SELECT muhasebe_kodu, id, firmaUnvani FROM uyeler");
@@ -274,7 +273,7 @@ $database = new Database();
                                             <input type="text" class="form-control" id="cvCode" name="cvCode" MAXLENGTH="4" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
-                                            <small id="kart-gelen-bilgi"></small>
+                                            <small id="kart-gelen-bilgi2"></small>
                                         </div>
                                     </div>
                                     <hr>
@@ -373,10 +372,61 @@ $database = new Database();
 <!--/ Edit User Modal -->
 </body>
 </html>
+<!-- Select2 JS -->
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script>
 $(document).ready(function() {
     $('#cardNumber').on('input', function() {
         kartBinSorgulama('#cardNumber', 'kart-gelen-bilgi');
     });
+
 });
 </script>
+<script>
+    $(document).ready(function() {
+        $('#uye_id').select2({
+            placeholder: 'Üye seçiniz',
+            allowClear: true
+        });
+        $('#uye_id1').select2({
+            placeholder: 'Üye seçiniz',
+            allowClear: true
+        });
+        $('#uye_id2').select2({
+            placeholder: 'Üye seçiniz',
+            allowClear: true
+        });
+    });
+</script>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const paymentForm = document.getElementById('paymentForm');
+            const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+
+            paymentMethods.forEach(method => {
+                method.addEventListener('change', function() {
+                    let actionUrl = '';
+
+                    switch (this.value) {
+                        case '1':
+                            actionUrl = '../../php/banka/param/payment.php';
+                            break;
+                        case '3':
+                            actionUrl = 'functions/banka/kuveyt/2_Odeme.php';
+                            break;
+                        case '4':
+                            actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
+                            break;
+                        default:
+                            actionUrl = '';
+                    }
+
+                    paymentForm.action = actionUrl;
+                });
+            });
+
+            // Set the initial action based on the default checked radio button
+            document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
+        });
+    </script>

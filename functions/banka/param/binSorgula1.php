@@ -1,5 +1,5 @@
 <?php
-$gelen = $_POST['bin'];
+$gelen = $_GET['bin'];
 $binXml = '<?xml version="1.0" encoding="utf-8"?> <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/"> <soap:Body>
 <BIN_SanalPos xmlns="https://turkpos.com.tr/">
 <G>
@@ -24,7 +24,6 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $binXml);
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 $response = curl_exec($ch);
-
 $responseXml = new DOMDocument();
 $responseXml->loadXML($response);
 
@@ -32,14 +31,11 @@ $xpath = new DOMXPath($responseXml);
 $xpath->registerNamespace('soap', 'http://schemas.xmlsoap.org/soap/envelope/');
 $xpath->registerNamespace('', 'https://turkpos.com.tr/');
 
-$kartBanka = $xpath->evaluate('string(//Kart_Banka)');
-$kartMarka = $xpath->evaluate('string(//Kart_Marka)');
-$kartOrg = $xpath->evaluate('string(//Kart_Org)');
-echo "$kartBanka,$kartMarka,$kartOrg";
 
-if (!$responseXml){
-    echo "API yanıtı geçerli bir XML değil.";
-}
+$SanalPOS_ID = $xpath->evaluate('string(//SanalPOS_ID)');
+echo "$SanalPOS_ID";
+
 
 curl_close($ch);
+
 ?>

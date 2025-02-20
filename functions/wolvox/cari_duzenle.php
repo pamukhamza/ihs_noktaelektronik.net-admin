@@ -1,6 +1,6 @@
 <?php
-function CariXmlOlustur(
-    $CARIKODU, $ADI, $SOYADI, $E_MAIL, $WEB_USER_PASSW, $TC_KIMLIK_NO, $ULKESI_1, $ILI_1, $ILCESI_1, 
+function CariGuncelleXmlOlustur(
+    $BLKODU, $CARIKODU, $ADI, $SOYADI, $E_MAIL, $WEB_USER_PASSW, $TC_KIMLIK_NO, $ULKESI_1, $ILI_1, $ILCESI_1, 
     $POSTA_KODU_1, $CEP_TEL, $ADRESI_1, $TICARI_UNVANI, $VERGI_NO, $VERGI_DAIRESI, $TEL1, 
     $uye_tipi, $dosya_ad, $DEGISTIRME_TARIHI, $MUHKODU_ALIS, $MUHKODU_SATIS, $STOK_FIYATI, 
     $PAZ_BLCRKODU, $PAZ_ADI
@@ -30,7 +30,13 @@ function CariXmlOlustur(
     // CARI BILGI ALANI
     $cari = $xmlDoc->createElement('CARI');
     $root->appendChild($cari);
-
+    if (!empty($BLKODU)) {
+        $element = $xmlDoc->createElement('BLKODU');
+        $element->appendChild($xmlDoc->createCDATASection($BLKODU));
+        $cari->appendChild($element);
+        $cariElements['BLKODU'] = $BLKODU; // Güncelleme işlemi için BLKODU eklenmeli
+    }
+    
     $cariElements = [
         'CARIKODU' => $CARIKODU,
         'OZEL_KODU1' => 'B2B',
@@ -66,8 +72,7 @@ function CariXmlOlustur(
     }
 
     // XML dosyasını kaydet
-    $xmlFileName = $dosya_ad;
-    $filePath = __DIR__ . '/../../assets/xml/cari/' . $xmlFileName;
+    $filePath = __DIR__ . '/../../assets/xml/cari/' . $dosya_ad;
     $xmlDoc->save($filePath);
 
     return $filePath;

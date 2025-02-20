@@ -78,9 +78,9 @@ if (isset($_POST['uye_guncelle'])) {
     }
     $degistirme_tarihi = date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours"));
     $dosya_adi = 'cariduzenle_' . $result['muhasebe_kodu'] . '.xml';
-    $dosya_yolu = 
-    CariXmlOlustur(
-        $result['muhasebe_kodu'], $result['ad'], $result['soyad'], $result['email'], $result['parola'], $result['tc_no'], $result['ulke'], $uyeil["il_adi"], $uyeilce["ilce_adi"], 
+    
+    CariGuncelleXmlOlustur(
+        $result['BLKODU'], $result['muhasebe_kodu'], $result['ad'], $result['soyad'], $result['email'], $result['parola'], $result['tc_no'], $result['ulke'], $uyeil["il_adi"], $uyeilce["ilce_adi"], 
         $result['posta_kodu'], $result['tel'], $result['adres'], $result['firmaUnvani'], $result['vergi_no'], $result['vergi_dairesi'], $result['sabit_tel'], 
         $uye_kayit_tipi, $dosya_adi, date("d.m.Y H:i:s", strtotime($currentDateTime . " +3 hours")), $result['MUHKODU_ALIS'],  $result['MUHKODU_SATIS'], $result['fiyat'], 
         $result['satis_temsilcisi'], $user
