@@ -5,8 +5,8 @@ include 'dekont_olustur.php';
 require_once '../wolvox/pos_olustur.php';
 $database = new Database();
 
-error_reporting(0); // HATA YAZDIRMA
-ini_set('display_errors', 0); // HATA YAZDIRMA
+error_reporting(1); // HATA YAZDIRMA
+ini_set('display_errors', 1); // HATA YAZDIRMA
 error_reporting(E_ALL);
 
 $kur = $database->fetch("SELECT * FROM kurlar WHERE id = :id", ['id' => '2']);
@@ -39,7 +39,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
 
     if($hesap == 1){$doviz = "$";}else{$doviz = "TL";}
 
-    $banka_pos = $database->fetch("SELECT * FROM banka_pos_listesi WHERE id = :id", ['id' => $banka_id]);
+    $banka_pos = $database->fetch("SELECT * FROM b2b_banka_pos_listesi WHERE id = :id", ['id' => $banka_id]);
     $blbnhskodu = $banka_pos["BLBNHSKODU"];
     $banka_adi = $banka_pos["BANKA_ADI"];
     $banka_tanimi = $banka_pos["TANIMI"];

@@ -72,7 +72,7 @@ if(isset($_POST["cariOdeme"])){
 
     $orgClientId  =   "280624575";
     $orgAmount = $odemetutar;
-    $orgOkUrl =  "https://www.noktaelektronik.net/admin/functions/banka/manualodeme?cariveriFinans=" . $verimizB64;
+    $orgOkUrl =  "https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriFinans=" . $verimizB64;
     $orgFailUrl = "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b";
     $orgTransactionType = "Auth";
     $orgInstallment = $_POST['odemetaksit'];
