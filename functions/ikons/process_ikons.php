@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         }
         $ikon_title = pathinfo($_FILES['ikon_photo']['name'], PATHINFO_FILENAME);
- // Dosya adını title olarak kullan
+        // Dosya adını title olarak kullan
     } else {
         $ikon_title = null;
     }

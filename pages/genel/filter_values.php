@@ -6,7 +6,8 @@ $database = new Database();
 
 $currentPage = 'filter_values';
 $template = new Template('Filtre Değerleri - Nokta Admin', $currentPage);
-
+$id = $_GET['id'];
+$result = $database->fetch("SELECT * FROM filter_title WHERE id = :id", ['id' => $id]);
 // head'i çağırıyoruz
 $template->head();
 ?>
@@ -20,10 +21,12 @@ $template->head();
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row g-6">
+                    
                     <!-- Categories table -->
                     <div class="col-xxl-12">
                         <div class="card">
                             <div class="card-body table-responsive">
+                                <div class="mb-3"><h3><?= $result['title']; ?></h3></div>
                                 <div class="mb-3">
                                     <button class="btn btn-primary add_filter" data-bs-toggle="modal" data-bs-target="#editFilter">Yeni Filtre Değeri Ekle</button>
                                 </div>

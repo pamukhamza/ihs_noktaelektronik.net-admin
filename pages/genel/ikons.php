@@ -29,7 +29,7 @@ $database = new Database();
                                 </div>
                                 <form>
                                     <div class="table-responsive text-nowrap">
-                                        <table class="table table-hover">
+                                        <table id="ikonlarTable" class="table table-hover">
                                             <thead>
                                             <tr>
                                                 <th>İkon</th>
@@ -112,6 +112,16 @@ $database = new Database();
 
 <script>
     $(document).ready(function() {
+        $('#ikonlarTable').DataTable({
+            "language": {
+                "url": "//cdn.datatables.net/plug-ins/1.11.5/i18n/Turkish.json"
+            },
+            "pageLength": 10, // Sayfa başına gösterilecek satır sayısı
+            "lengthChange": true, // Kullanıcının sayfa başına satır sayısını değiştirmesine izin ver
+            "ordering": true, // Sıralama aktif olsun
+            "searching": true, // Arama kutusu aktif olsun
+            "info": true // Alt kısımda bilgi gösterilsin
+        });
         // Open modal for adding new catalog
         $(".add_catalog").on('click', function () {
             // Reset form fields

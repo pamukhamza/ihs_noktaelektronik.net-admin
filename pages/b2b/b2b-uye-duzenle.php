@@ -132,7 +132,6 @@ $zorunlu = "<span style='color:red;'>*</span>"
                                                     <option value="0" <?php echo ($kullan['aktivasyon'] == 0) ? 'selected' : ''; ?>>Yapılmadı</option>
                                                 </select>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="row">
@@ -154,6 +153,20 @@ $zorunlu = "<span style='color:red;'>*</span>"
                                             <div class="form-group">
                                                 <label for="vergi_levhasi">Vergi Levhasi</label>
                                                 <a class="form-control form-control-sm" id="vergi_levhasi" name="vergi_levhasi" target="_blank" href="https://www.noktaelektronik.com.tr/assets/uploads/vergi_levhalari/<?= $kullan["vergi_levhasi"] ?>"><i class="fa-solid fa-file-arrow-down fa-xl"></i> İndirmek için tıkla!</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="muhasebe_alis_kodu" >Muhasebe Alış Kodu <?= $zorunlu ?></label>
+                                                <input id="muhasebe_alis_kodu" type="text" name="muhasebe_alis_kodu" required class="form-control form-control-sm" value="<?= $kullan['MUHKODU_ALIS'] ?>">
+                                            </div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="form-group">
+                                                <label for="muhasebe_satis_kodu" >Muhasebe Satış Kodu <?= $zorunlu ?></label>
+                                                <input id="muhasebe_satis_kodu" type="text" name="muhasebe_satis_kodu" required class="form-control form-control-sm" value="<?= $kullan['MUHKODU_SATIS'] ?>">
                                             </div>
                                         </div>
                                     </div>

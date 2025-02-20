@@ -90,7 +90,7 @@ if (isset($_POST["urun_dosya_ekle"])) {
         ];
 
         if ($database->insert($query, $params)) {
-            header("Location: ../../pages/add-product.php?id=$urun_id");
+            header("Location: ../../pages/genel/add-product.php?id=$urun_id");
             exit;
         } else {
             throw new Exception("Database insert failed");
