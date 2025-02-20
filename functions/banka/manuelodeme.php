@@ -76,7 +76,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         posXmlOlustur($uyecarikod, $hesap, $degistirme_tarihi,$currentDateTime,$yantoplam,'',$dov_al,$dov_sat,$siparisNumarasi,$blbnhskodu,$banka_adi,'', $doviz, $banka_tanimi);
         $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
         mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik');
-        header("Location: adminManuelOdeme.php?cari_odeme=");
+        header("Location: pages/b2b/b2b-sanalpos?w=noktab2b&cari_odeme=");
 
     }elseif(isset($_GET['cariveriFinans']) && $_POST["mdStatus"] == "1") {
         $username = 'noktaadmin';
@@ -158,7 +158,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
 
                 $mail_icerik = cariOdeme($firmaUnvani,$yantoplam,$taksit_sayisi);
                 mailGonder($uye_mail, 'Cari Ödeme Bildirimi', $mail_icerik,'Nokta Elektronik');
-                header("Location: adminManuelOdeme.php?cari_odeme=");
+                header("Location: pages/b2b/b2b-sanalpos?w=noktab2b&cari_odeme=");
                 exit();
 
             } else {
@@ -172,7 +172,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $yantoplam1, 'basarili' => $basarili ];
                 $database->insert($query, $params);
 
-                header("Location: adminManuelOdeme.php?code=".$xmlResponse->ProcReturnCode."&message=".$xmlResponse->ErrMsg);
+                header("Location: pages/b2b/b2b-sanalpos?w=noktab2b&code=".$xmlResponse->ProcReturnCode."&message=".$xmlResponse->ErrMsg);
             }
             curl_close($ch);
         }

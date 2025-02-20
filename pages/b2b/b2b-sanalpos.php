@@ -430,3 +430,31 @@ $(document).ready(function() {
             document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
         });
     </script>
+
+
+<?php 
+if(isset($_POST['ErrMsg'])) {
+    $responseMessage = !empty($_POST['ErrMsg']) ? $_POST['ErrMsg'] : $_POST['mdErrorMsg'];
+    $returnCode = !empty($_POST['ProcReturnCode']) ? $_POST['ProcReturnCode'] : '';
+    $response = $responseMessage . $returnCode;
+    $tutar = $_POST['amount'];
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$responseMessage',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 4;
+    $basarili = 0;
+
+
+
+    $query = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+    $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $response, 'tutar' => $tutar, 'basarili' => $basarili];
+    $database->insert($query, $params);
+
+}
+
+?>
