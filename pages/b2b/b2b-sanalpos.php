@@ -416,7 +416,7 @@ $(document).ready(function() {
                             actionUrl = 'admin/functions/banka/kuveyt/2_Odeme.php';
                             break;
                         case '4':
-                            actionUrl = 'admin/functions/banka/turkiye_finans/turkiye_finans_request.php';
+                            actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
                             break;
                         default:
                             actionUrl = '';

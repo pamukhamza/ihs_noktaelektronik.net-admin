@@ -29,7 +29,7 @@ if(isset($_POST["cariOdeme"])){
     $orgCallbackUrl = "https://www.noktaelektronik.com.tr/php/bank/turkiye_finans/callback.php";
     $orgCurrency = "949";
     ?>
-    <form id="cariOdemeForm" method="post" action="https://www.noktaelektronik.com.tr/php/bank/turkiye_finans/GenericVer3RequestHashHandler.php">
+    <form id="cariOdemeForm" method="post" action="https://www.noktaelektronik.com.tr/admin/php/bank/turkiye_finans/GenericVer3RequestHashHandler.php">
         <input type="hidden" name="Ecom_Payment_Card_ExpDate_Month" value="<?php echo $_POST['expMonth'] ?>">
         <input type="hidden" name="Ecom_Payment_Card_ExpDate_Year" value="<?php echo $_POST['expYear'] ?>">
         <input type="hidden" name="cv2" value="<?php echo $_POST['cvCode'] ?>">
@@ -77,10 +77,10 @@ if(isset($_POST["cariOdeme"])){
     $orgTransactionType = "Auth";
     $orgInstallment = $_POST['odemetaksit'];
     $orgRnd =  microtime();
-    $orgCallbackUrl = "https://www.noktaelektronik.net/functions/banka/turkiye_finans/callback.php";
+    $orgCallbackUrl = "https://www.noktaelektronik.net/admin/functions/banka/turkiye_finans/callback.php";
     $orgCurrency = "949";
     ?>
-    <form id="cariOdemeForm" method="post" action="https://www.noktaelektronik.net/functions/banka/turkiye_finans/GenericVer3RequestHashHandler.php">
+    <form id="cariOdemeForm" method="post" action="https://www.noktaelektronik.net/admin/functions/banka/turkiye_finans/GenericVer3RequestHashHandler.php">
         <input type="hidden" name="Ecom_Payment_Card_ExpDate_Month" value="<?php echo $_POST['expMonth'] ?>">
         <input type="hidden" name="Ecom_Payment_Card_ExpDate_Year" value="<?php echo $_POST['expYear'] ?>">
         <input type="hidden" name="cv2" value="<?php echo $_POST['cvCode'] ?>">
