@@ -211,7 +211,7 @@ $template->head();
 
         $(document).on('click', '.list_filter_title', function() {
             var id = $(this).data('id');
-            window.location.href = 'filter_values.php?id=' + id;
+            window.location.href = 'pages/genel/filter_values.php?id=' + id;
         });
 
 
