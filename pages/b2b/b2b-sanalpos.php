@@ -451,7 +451,7 @@ if(isset($_POST['ErrMsg'])) {
 
 
 
-    $query = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+    $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
     $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $response, 'tutar' => $tutar, 'basarili' => $basarili];
     $database->insert($query, $params);
 
