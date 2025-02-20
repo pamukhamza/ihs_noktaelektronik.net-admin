@@ -132,7 +132,7 @@ if(isset($_POST["cariOdeme"])){
     $basarili = 0;
     $sonucStr = 'Sipariş ödeme sayfasına giriş yapıldı!';
 
-    $query = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+    $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
     $params = ['uye_id' => $_POST["uye_id"], 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $_POST["toplam"], 'basarili' => $basarili];
     $database->insert($query, $params);
 

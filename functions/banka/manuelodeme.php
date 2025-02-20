@@ -65,7 +65,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
         $pos_id = 1;
         $basarili = 1;
 
-        $query = "INSERT INTO sanal_pos_odemeler (`uye_id`, `pos_id`, `islem`, `islem_turu`, `tutar`, `basarili`) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili) ";
+        $query = "INSERT INTO b2b_sanal_pos_odemeler (`uye_id`, `pos_id`, `islem`, `islem_turu`, `tutar`, `basarili`) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili) ";
         $params = [ 'uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $tutar, 'basarili' => $basarili, ];
         $database->insert($query, $params);
 
@@ -147,7 +147,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $transid = $xmlResponse->TransId;
 
 
-                $query = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili, transid, siparis_no) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili, :transid, :siparis_no)";
+                $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, islem_turu, tutar, basarili, transid, siparis_no) VALUES (:uye_id, :pos_id, :islem, :islem_turu, :tutar, :basarili, :transid, :siparis_no)";
                 $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'islem_turu' => $cariOdeme, 'tutar' => $yantoplam1, 'basarili' => $basarili, 'transid' => $transid, 'siparis_no' => $oid, ];
                 $database->insert($query, $params);
 
@@ -168,7 +168,7 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans'])) {
                 $basarili = 0;
                 $sonucStr = "Ödeme işlemi başarısız: " . $xmlResponse->ErrMsg . ' Kod= ' . $xmlResponse->ProcReturnCode;
 
-                $query = "INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+                $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
                 $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $yantoplam1, 'basarili' => $basarili ];
                 $database->insert($query, $params);
 
