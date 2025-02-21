@@ -119,7 +119,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
 		"lang" => $_POST["lang"],
 	];
 	$verimizB64 = base64_encode(json_encode($verimiz));
-	$gidesun = "https://www.noktaelektronik.net/admin/functions/banka/manualodeme?cariveriKuveyt=" .$verimizB64;
+	$gidesun = "https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriKuveyt=" .$verimizB64;
 	$Name=$_POST["cardName"];
 	$CardNumber=$_POST["cardNumber"]; // 16 haneli olarak
 	$CardExpireDateMonth=$_POST["expMonth"]; // iki hane olarak kartın ay bilgisi
