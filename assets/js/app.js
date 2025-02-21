@@ -30,8 +30,9 @@ function kartBinSorgulama(cardNumberSelector, infoContainerId) {
                 // Kart bilgilerini ekranda güncelleyen fonksiyonu çağırıyoruz
                 updateInfo(kamp, bank, kartOrg, infoContainer);
             },
-            error: function() {
+            error: function(hata) {
                 // AJAX isteği hata verirse kullanıcıya bilgi gösterilebilir
+                console.log(hata);
                 infoContainer.innerHTML = '<p>Bilgiler alınamadı. Lütfen tekrar deneyin.</p>';
             }
         });
