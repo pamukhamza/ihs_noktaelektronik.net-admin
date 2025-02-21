@@ -140,7 +140,7 @@ $database = new Database();
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card">
-                            <form method="post" action="admin/functions/banka/turkiye_finans/turkiye_finans_request.php">
+                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -216,7 +216,7 @@ $database = new Database();
                             </form>
                         </div>
                         <div class="card mt-5">
-                            <form method="post" action="admin/functions/banka/turkiye_finans/turkiye_finans_request.php">
+                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
@@ -431,8 +431,69 @@ $(document).ready(function() {
         });
     </script>
 
+<?php
+echo '<div style="display: none">';
+foreach ($_POST as $key => $value) {
+    echo $key . ': ' . $value . '<br>';
+}
+echo "</div>";
+//BAŞARILI SONUÇ GELİRSE
+if (isset($_GET["cari_odeme"])) {
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'İşlem Başarılı!',";
+    echo "  icon: 'success',";
+    echo "});";
+    echo "</script>";
+}
 
-<?php 
+
+//Kuveyt POS
+//https://sanalpos.kuveytturk.com.tr/
+if(isset($_POST['AuthenticationResponse'])) {
+    $data = urldecode($_POST['AuthenticationResponse']);
+    $xml = simplexml_load_string($data);
+    $responseMessage = (string) $xml->ResponseMessage;
+    $tutar = $xml->VPosMessage->Amount;
+    $tutar = $tutar / 100;
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$responseMessage',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 3;
+    $basarili = 0;
+
+    $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+    $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $responseMessage, 'tutar' => $tutar, 'basarili' => $basarili];
+    $database->insert($query, $params);
+}
+//Param Pos
+//https://posws1.param.com.tr/
+if (isset($_POST['TURKPOS_RETVAL_Sonuc_Str'])) {
+    $sonucStr = $_POST['TURKPOS_RETVAL_Sonuc_Str'];
+    $dekont = $_POST['TURKPOS_RETVAL_Dekont_ID'];
+    $tutar = $_POST['TURKPOS_RETVAL_Tahsilat_Tutari'];
+    $tutar = str_replace(',', '.', $tutar);
+    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
+    echo "<script>";
+    echo "Swal.fire({";
+    echo "  title: 'Başarısız İşlem !',";
+    echo "  text: '$sonucStr',";
+    echo "  icon: 'error',";
+    echo "});";
+    echo "</script>";
+    $pos_id = 1;
+    $basarili = 0;
+    $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+    $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $sonucStr, 'tutar' => $tutar, 'basarili' => $basarili];
+    $database->insert($query, $params);
+
+}
 if(isset($_POST['ErrMsg'])) {
     $responseMessage = !empty($_POST['ErrMsg']) ? $_POST['ErrMsg'] : $_POST['mdErrorMsg'];
     $returnCode = !empty($_POST['ProcReturnCode']) ? $_POST['ProcReturnCode'] : '';
@@ -448,9 +509,6 @@ if(isset($_POST['ErrMsg'])) {
     echo "</script>";
     $pos_id = 4;
     $basarili = 0;
-
-
-
     $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
     $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $response, 'tutar' => $tutar, 'basarili' => $basarili];
     $database->insert($query, $params);
