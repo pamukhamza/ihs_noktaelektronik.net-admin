@@ -376,12 +376,12 @@ $database = new Database();
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script>
-$(document).ready(function() {
-    $('#cardNumber').on('input', function() {
-        kartBinSorgulama('#cardNumber', 'kart-gelen-bilgi');
-    });
+    $(document).ready(function() {
+        $('#cardNumber').on('input', function() {
+            kartBinSorgulama('#cardNumber', 'kart-gelen-bilgi');
+        });
 
-});
+    });
 </script>
 <script>
     $(document).ready(function() {
@@ -400,37 +400,76 @@ $(document).ready(function() {
     });
 </script>
 <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const paymentForm = document.getElementById('paymentForm');
-            const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
+    document.addEventListener('DOMContentLoaded', function() {
+        const paymentForm = document.getElementById('paymentForm');
+        const paymentMethods = document.querySelectorAll('input[name="paymentMethod"]');
 
-            paymentMethods.forEach(method => {
-                method.addEventListener('change', function() {
-                    let actionUrl = '';
+        paymentMethods.forEach(method => {
+            method.addEventListener('change', function() {
+                let actionUrl = '';
 
-                    switch (this.value) {
-                        case '1':
-                            actionUrl = 'admin/functions/banka/param/payment.php';
-                            break;
-                        case '3':
-                            actionUrl = 'admin/functions/banka/kuveyt/2_Odeme.php';
-                            break;
-                        case '4':
-                            actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
-                            break;
-                        default:
-                            actionUrl = '';
-                    }
+                switch (this.value) {
+                    case '1':
+                        actionUrl = 'admin/functions/banka/param/payment.php';
+                        break;
+                    case '3':
+                        actionUrl = 'admin/functions/banka/kuveyt/2_Odeme.php';
+                        break;
+                    case '4':
+                        actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
+                        break;
+                    default:
+                        actionUrl = '';
+                }
 
-                    paymentForm.action = actionUrl;
-                });
+                paymentForm.action = actionUrl;
             });
-
-            // Set the initial action based on the default checked radio button
-            document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
         });
-    </script>
 
+        // Set the initial action based on the default checked radio button
+        document.querySelector('input[name="paymentMethod"]:checked').dispatchEvent(new Event('change'));
+    });
+</script>
+<script>
+    var toplam = document.getElementById("toplam1");
+    var odemetutarInput = document.getElementById("odemetutar1");
+    var komisyonInput = document.getElementById("vade");
+    toplam.addEventListener("input", function() {
+        var tutar = parseFloat(toplam.value);
+        var komisyon = parseFloat(komisyonInput.value);
+        var minKomisyon = 1;
+        if (komisyon < minKomisyon) {
+            komisyon = minKomisyon;
+        }
+        var odemetutar = tutar * komisyon;
+        odemetutarInput.value = odemetutar.toFixed(2);
+    });
+    
+    var toplam2 = document.getElementById("toplam2");
+    var odemetutarInput2 = document.getElementById("odemetutar2");
+    var komisyonInput2 = document.getElementById("vade");
+    toplam.addEventListener("input", function() {
+        var tutar2 = parseFloat(toplam2.value);
+        var komisyon2 = parseFloat(komisyonInput2.value);
+        var minKomisyon2 = 1;
+        if (komisyon2 < minKomisyon2) {
+            komisyon2 = minKomisyon2;
+        }
+        var odemetutar2 = tutar2 * komisyon2;
+        odemetutarInput2.value = odemetutar2.toFixed(2);
+    });
+
+    var toplamValue = document.getElementById("toplam1");
+    toplamValue.addEventListener("input", function() {
+        var tutar = parseFloat(toplamValue.value);
+        document.getElementById("odemetutar1").value = tutar;
+    });
+    var toplamValue2 = document.getElementById("toplam2");
+    toplamValue2.addEventListener("input", function() {
+        var tutar2 = parseFloat(toplamValue2.value);
+        document.getElementById("odemetutar2").value = tutar2;
+    });
+</script>
 <?php
 echo '<div style="display: none">';
 foreach ($_POST as $key => $value) {
