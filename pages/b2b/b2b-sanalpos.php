@@ -410,10 +410,10 @@ $database = new Database();
 
                 switch (this.value) {
                     case '1':
-                        actionUrl = 'admin/functions/banka/param/payment.php';
+                        actionUrl = 'functions/banka/param/payment.php';
                         break;
                     case '3':
-                        actionUrl = 'admin/functions/banka/kuveyt/2_Odeme.php';
+                        actionUrl = 'functions/banka/kuveyt/2_Odeme.php';
                         break;
                     case '4':
                         actionUrl = 'functions/banka/turkiye_finans/turkiye_finans_request.php';
