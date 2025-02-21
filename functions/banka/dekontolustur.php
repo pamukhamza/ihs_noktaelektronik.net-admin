@@ -77,11 +77,9 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
     // Output the PDF as a file (you can also use other output methods)
     $pdf->Output($dekont_yolu, 'F');
 
-    global $db;
-
     $islem_no = "COD_" . uniqid();
 
-    $query = "INSERT INTO dekontlar (uye_id, pos_odeme_id, islem_no , tutar, dekont, tarih) 
+    $query = "INSERT INTO b2b_dekontlar (uye_id, pos_odeme_id, islem_no , tutar, dekont, tarih) 
     VALUES (:uye_id, :pos_odeme_id, :islem_no, :tutar, :dekont, :tarih)";
     $params = [
         'uye_id' => $uye_id,
