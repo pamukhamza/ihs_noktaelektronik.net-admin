@@ -1,6 +1,6 @@
 <?php
 // Include the TCPDF library
-require_once('../../vendor/tcpdf/tcpdf.php');
+require_once '../../vendor/tcpdf/tcpdf.php';
 include_once '../db.php';
 
 // Function to generate PDF receipt
@@ -72,7 +72,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
     $pdf->Cell(0, 10, $date, 0, 1, 'R');
 
     $dekont_adi = "dekont" . uniqid() . ".pdf";
-    $dekont_yolu = realpath("../../assets/uploads/dekontlar/") . "/" . $dekont_adi;
+    $dekont_yolu = realpath("../../assets/uploads/dekontlar/") . $dekont_adi;
 
     // Output the PDF as a file (you can also use other output methods)
     $pdf->Output($dekont_yolu, 'F');
