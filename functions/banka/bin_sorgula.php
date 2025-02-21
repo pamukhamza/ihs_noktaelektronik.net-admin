@@ -1,4 +1,8 @@
+
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 $gelen = $_POST['bin'];
 
 $binXml = '<?xml version="1.0" encoding="utf-8"?> 
