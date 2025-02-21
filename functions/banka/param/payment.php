@@ -125,14 +125,14 @@ elseif(isset($_POST["adminCariOdeme"])) {
         if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
             echo "<script>window.top.location='".$value->TP_Islem_OdemeResult->UCD_URL."'</script>";
         } else {
-            $errorUrl = "https://www.noktaelektronik.com.tr/admin/muhasebe/adminManuelOdeme.php";
+            $errorUrl = "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos.php";
             header("Location: $errorUrl");
             exit();
         }
     }
     if ($_POST) {
         $bin = substr($_POST['cardNumber'], 0, 6); // 'cardNumber'ın ilk 6 hanesini al
-        $url = 'https://www.noktaelektronik.com.tr/php/bank/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
+        $url = 'https://www.noktaelektronik.net/admin/functions/banka/param/binSorgula1.php?bin=' . $bin; // 'binsorgula.php' adresine GET isteği yap
         $result = file_get_contents($url); // İstek sonucunu al
         $gelposid = $result;
         $odemetutar = $_POST['odemetutar'];
@@ -163,8 +163,8 @@ elseif(isset($_POST["adminCariOdeme"])) {
             "yearOfExpireDate" => "20" . $_POST['expYear'],
             "creditCardCvc" => $_POST['cvCode'],
             "creditCardOwnerName" => "5372403939",
-            "errorUrl" => "https://www.noktaelektronik.com.tr/admin/muhasebe/adminManuelOdeme.php",
-            "succesUrl" => "https://www.noktaelektronik.com.tr/admin/muhasebe/manualodeme?cariveri=" . $verimizB64,
+            "errorUrl" => "https://www.noktaelektronik.net/admin/muhasebe/adminManuelOdeme.php",
+            "succesUrl" => "https://www.noktaelektronik.net/admin/muhasebe/manualodeme?cariveri=" . $verimizB64,
             "orderID" => rand(0, 999999),
             "paymentUrl" => "http://localhost/param/index.php",
             "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
