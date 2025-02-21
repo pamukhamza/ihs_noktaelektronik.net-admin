@@ -19,9 +19,17 @@ function kartBinSorgulama(cardNumberSelector, infoContainerId) {
             method: 'POST',
             data: { bin: bin },
             success: function(response) {
-                console.log("Gelen yanıt:", response);
-            }
-            ,
+                // Sunucudan gelen yanıtı virgülle ayırıyoruz
+                var data = response.split(',');
+
+                // Yanıt verilerini alıp temizliyoruz
+                var bank = data[0].trim();
+                var kamp = data[1].trim();
+                var kartOrg = data[2].trim();
+
+                // Kart bilgilerini ekranda güncelleyen fonksiyonu çağırıyoruz
+                updateInfo(kamp, bank, kartOrg, infoContainer);
+            },
             error: function(hata) {
                 // AJAX isteği hata verirse kullanıcıya bilgi gösterilebilir
                 console.log(hata);
