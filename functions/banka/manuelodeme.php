@@ -9,11 +9,11 @@ error_reporting(1); // HATA YAZDIRMA
 ini_set('display_errors', 1); // HATA YAZDIRMA
 error_reporting(E_ALL);
 
-$kur = $database->fetch("SELECT * FROM kurlar WHERE id = :id", ['id' => '2']);
+$kur = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = :id", ['id' => '2']);
 $satis_dolar = $kur['satis'];
 $alis_dolar = $kur['alis'];
 
-$kur2 = $database->fetch("SELECT * FROM kurlar WHERE id = :id", ['id' => '3']);
+$kur2 = $database->fetch("SELECT * FROM b2b_kurlar WHERE id = :id", ['id' => '3']);
 $satis_euro = $kur2['satis'];
 $alis_euro = $kur2['alis'];
 
