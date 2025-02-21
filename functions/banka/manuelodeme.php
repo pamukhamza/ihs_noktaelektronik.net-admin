@@ -1,7 +1,7 @@
 <?php
 include_once '../db.php';
 include_once '../functions.php';
-include 'dekont_olustur.php';
+include 'dekontolustur.php';
 require_once '../wolvox/pos_olustur.php';
 require_once 'handlers/POSHandler.php';
 require_once 'handlers/ParamPOSHandler.php';
