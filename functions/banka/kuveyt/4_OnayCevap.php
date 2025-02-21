@@ -1,5 +1,7 @@
 <?php
-
+session_name("user_session");
+session_start();
+session_regenerate_id(true);
  // Ödemenin alındığı sayfa, 3_OdemeOnay sayfasında kart doğrulama başarılı ve MD değeri alınmışsa 
  
 	    $MerchantOrderId = $_POST["MerchantOrderId"];
