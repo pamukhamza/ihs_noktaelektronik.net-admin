@@ -444,7 +444,7 @@ $database = new Database();
         var odemetutar = tutar * komisyon;
         odemetutarInput.value = odemetutar.toFixed(2);
     });
-    
+
     var toplam2 = document.getElementById("toplam2");
     var odemetutarInput2 = document.getElementById("odemetutar2");
     var komisyonInput2 = document.getElementById("vade");
@@ -551,7 +551,5 @@ if(isset($_POST['ErrMsg'])) {
     $query = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem,  tutar, basarili ) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
     $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $response, 'tutar' => $tutar, 'basarili' => $basarili];
     $database->insert($query, $params);
-
 }
-
 ?>
