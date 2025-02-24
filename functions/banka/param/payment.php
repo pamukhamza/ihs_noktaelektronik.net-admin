@@ -162,7 +162,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
             "yearOfExpireDate" => "20" . $_POST['expYear'],
             "creditCardCvc" => $_POST['cvCode'],
             "creditCardOwnerName" => "5372403939",
-            "errorUrl" => "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos.php",
+            "errorUrl" => "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b",
             "succesUrl" => "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?cariveri=" . $verimizB64,
             "orderID" => rand(0, 999999),
             "paymentUrl" => "http://localhost/param/index.php",

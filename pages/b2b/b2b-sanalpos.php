@@ -471,11 +471,13 @@ $database = new Database();
     });
 </script>
 <?php
-echo '<div style="display: none">';
+echo '<script>';
+echo 'console.log("Form Verileri:");';
 foreach ($_POST as $key => $value) {
-    echo $key . ': ' . $value . '<br>';
+    echo 'console.log("' . $key . ': ' . addslashes($value) . '");';
 }
-echo "</div>";
+echo '</script>';
+
 //BAŞARILI SONUÇ GELİRSE
 if (isset($_GET["cari_odeme"])) {
     echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@10'></script>";
