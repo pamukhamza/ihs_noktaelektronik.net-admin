@@ -30,6 +30,7 @@ $database = new Database();
                                 <div class="card-body">
                                     <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Tüm Poslar</h4></div>
                                     <small class="text-danger">İşlem sırası Komisyon > Hesaba İşlenecek Tutar > Diğerleri !</small>
+                                    <large class="text-danger">Paramdan çekerken ,00 kullan!! <br/>Kuveytten çekerke .00 Kullan!! </small>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
