@@ -474,7 +474,7 @@ $database = new Database();
 echo '<script>';
 echo 'console.log("Form Verileri:");';
 foreach ($_POST as $key => $value) {
-    echo 'console.log("' . $key . ': ' . addslashes($value) . '");';
+    echo 'console.log("' . $key . ': ' . $value . '");';
 }
 echo '</script>';
 
