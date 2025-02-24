@@ -6,6 +6,7 @@ ini_set('display_errors', 1);
 ini_set('log_errors', 1);
 ob_start();
 session_start();
+session_regenerate_id(true);
 include('../../db.php');
 @include('validation.php');
 @include('env.php');
@@ -16,9 +17,11 @@ ini_set("soap.wsdl_cache_enabled", "0"); // disabling WSDL cache
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 
+$database = new Database();
+
 global $env;
 if(isset($_POST["cariOdeme"])){
-    global $db;
+    global $database;
     function isSucceced($value)
     {
         if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
@@ -39,8 +42,8 @@ if(isset($_POST["cariOdeme"])){
         $pos_id = 1;
         $basarili = 0;
         $sonucStr = 'Cari ödeme sayfasına giriş yapıldı!';
-        $stmt = $db->prepare("INSERT INTO sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)");
-        $stmt->execute(array(':uye_id' => $_POST["uye_id"], ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $_POST["toplam"], ':basarili' => $basarili));
+        $sql = "INSERT INTO b2b_sanal_pos_odemeler (uye_id, pos_id, islem, tutar, basarili) VALUES (:uye_id, :pos_id, :islem, :tutar, :basarili)";
+        $stmt->$database($sql,array(':uye_id' => $_POST["uye_id"], ':pos_id' => $pos_id, ':islem' => $sonucStr, ':tutar' => $_POST["toplam"], ':basarili' => $basarili));
 
 
         $verimiz = [
@@ -55,7 +58,6 @@ if(isset($_POST["cariOdeme"])){
         ];
         $verimizB64 = base64_encode(json_encode($verimiz));
 
-        session_regenerate_id(true);
         $ipAdr = $_SERVER['REMOTE_ADDR'];
         $client = new SoapClient($env['URL']);
         $transactionsValueList = [
@@ -149,7 +151,6 @@ elseif(isset($_POST["adminCariOdeme"])) {
         ];
         $verimizB64 = base64_encode(json_encode($verimiz));
 
-        session_regenerate_id(true);
         $ipAdr = $_SERVER['REMOTE_ADDR'];
         $client = new SoapClient($env['URL']);
         $transactionsValueList = [
@@ -163,7 +164,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
             "creditCardCvc" => $_POST['cvCode'],
             "creditCardOwnerName" => "5372403939",
             "errorUrl" => "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b",
-            "succesUrl" => "https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?cariveri=" . $verimizB64,
+            "succesUrl" => "https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveri=" . $verimizB64,
             "orderID" => rand(0, 999999),
             "paymentUrl" => "http://localhost/param/index.php",
             "orderExplanation" => date("d-m-Y H:i:s") . " tarihindeki ödeme",
