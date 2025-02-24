@@ -179,6 +179,7 @@ class KuveytPOSHandler extends POSHandler {
     }
 
     private function handleFailedPayment($response) {
+        echo $response; /*
         $message = $response ? $response->ResponseMessage : 'Unknown error';
         $code = $response ? $response->ResponseCode : 'UNKNOWN';
         
@@ -191,6 +192,6 @@ class KuveytPOSHandler extends POSHandler {
         
         $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&code=" . 
             urlencode($code) . "&message=" . urlencode($message));
-        return false;
+        return false;*/
     }
 }
