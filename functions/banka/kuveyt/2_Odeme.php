@@ -115,6 +115,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
 		"banka_id" => $_POST["banka_id"],
 		"hesap"  => $_POST["hesap"],
 		"uye_id" => $_POST["uye_id"],
+        "taksit" => $odemetaksit,
 		"tip" => $_POST["tip"],
 		"lang" => $_POST["lang"],
 	];
