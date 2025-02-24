@@ -48,7 +48,7 @@ class FinansPOSHandler extends POSHandler {
         }
 
         $baseXml .= '</CC5Request>';
-        
+    
         return $baseXml;
     }
 

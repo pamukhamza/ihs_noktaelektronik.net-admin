@@ -210,7 +210,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
         print_r($data);
         $response = $client->TP_Islem_Odeme($data);
         print_r($response);
-        isSucceced($response);
+        //isSucceced($response);
     }
 }else {
     function isSucceced($value)
