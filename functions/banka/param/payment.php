@@ -1,12 +1,12 @@
 <?php
 // Hataları görüntülemeyi devre dışı bırak
-error_reporting(0);
+error_reporting(1);
 // Hata raporlamayı yapılandırma
-ini_set('display_errors', 0);
-ini_set('log_errors', 0);
+ini_set('display_errors', 1);
+ini_set('log_errors', 1);
 ob_start();
 session_start();
-include('../../../baglanti.php');
+include('../../db.php');
 @include('validation.php');
 @include('env.php');
 @include "Auth.php";
@@ -137,7 +137,6 @@ elseif(isset($_POST["adminCariOdeme"])) {
         $gelposid = $result;
         $odemetutar = $_POST['odemetutar'];
 
-
         $verimiz = [
             "cardHolder" => $_POST['cardName'],
             "cardNo" => $_POST['cardNumber'],
@@ -213,8 +212,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
         print_r($response);
         isSucceced($response);
     }
-}
-else {
+}else {
     function isSucceced($value)
     {
         if ($value->TP_Islem_OdemeResult->Sonuc > 0) {
