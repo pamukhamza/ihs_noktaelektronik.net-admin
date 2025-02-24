@@ -407,7 +407,6 @@ $database = new Database();
         paymentMethods.forEach(method => {
             method.addEventListener('change', function() {
                 let actionUrl = '';
-
                 switch (this.value) {
                     case '1':
                         actionUrl = 'functions/banka/param/payment.php';
@@ -421,7 +420,6 @@ $database = new Database();
                     default:
                         actionUrl = '';
                 }
-
                 paymentForm.action = actionUrl;
             });
         });

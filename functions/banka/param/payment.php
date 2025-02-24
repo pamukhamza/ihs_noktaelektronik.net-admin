@@ -207,7 +207,7 @@ elseif(isset($_POST["adminCariOdeme"])) {
             $transactionsValueList["succesUrl"]);
 
         $data->Islem_Hash = $client->SHA2B64($authObject)->SHA2B64Result;
-        //print_r($data);
+        print_r($data);
         $response = $client->TP_Islem_Odeme($data);
         print_r($response);
         isSucceced($response);
