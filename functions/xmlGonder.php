@@ -729,6 +729,7 @@ function odemeGonder() {
         }
     }
 }
+
 function cariGonder() {
     global $newDate;
     $folderPath = "../assets/xml/cari/";
@@ -770,7 +771,6 @@ function cariGonder() {
     header('Content-Type: application/json');
     echo json_encode($xmlArray);
 }
-
 function cariGonderUpdate($xmlData) {
     global $newDate;
     $mysqli = connectToDatabase();
