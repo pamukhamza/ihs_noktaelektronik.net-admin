@@ -673,63 +673,47 @@ function getAccountBalanceList($xmlData) {
     $mysqli->close();
     echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
 }
-function faturalariGonder() {
-    global $newDate;
-    $files = scandir("../assets/faturalar/");
-    if ($files === false) {
-        echo "$newDate: XML dosyaları bulunamadı <br>";
-        return;
-    }
-    $jsonResult = array();
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/faturalar/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "$newDate: Yeni Sipariş $file gönderildi. <br>";
-    }
-    echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $filePath = "../assets/faturalar/$file";
-        if (is_file($filePath)) {
-            unlink($filePath); // Dosyayı sil
-        }
-    }
-}
 function odemeGonder() {
     global $newDate;
-    $files = scandir("assets/carihareket/");
+    $folderPath = "../assets/xml/pos/";
+    $files = scandir($folderPath);
+
     if ($files === false) {
-        echo "$newDate: XML dosyaları bulunamadı <br>";
+        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
         return;
     }
-    $jsonResult = array();
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $xmlData = file_get_contents("https://www.denemeb2b.noktaelektronik.net/assets/carihareket/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "$newDate: Yeni Cari Hareket $file gönderildi. <br>";
-    }
-    echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $filePath = "assets/carihareket/$file";
-        if (is_file($filePath)) {
-            unlink($filePath); // Dosyayı sil
-        }
-    }
-}
 
+    $xmlArray = array();
+
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+
+        $filePath = $folderPath . $file;
+
+        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_file($filePath);
+
+            if ($xml === false) {
+                $hatalar = [];
+                foreach (libxml_get_errors() as $error) {
+                    $hatalar[] = htmlspecialchars($error->message);
+                }
+                libxml_clear_errors();
+                $xmlArray[$file] = ["hata" => $hatalar];
+            } else {
+                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
+                $filePath = "../assets/xml/pos/$file";
+                if (is_file($filePath)) {
+                    //unlink($filePath); // Dosyayı sil
+                }
+            }
+        }
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($xmlArray);
+}
 function cariGonder() {
     global $newDate;
     $folderPath = "../assets/xml/cari/";
@@ -762,7 +746,7 @@ function cariGonder() {
                 $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
                 $filePath = "../assets/xml/cari/$file";
                 if (is_file($filePath)) {
-                    //unlink($filePath); // Dosyayı sil
+                    unlink($filePath); // Dosyayı sil
                 }
             }
         }
@@ -947,7 +931,6 @@ $xml_data_account_list = isset($_POST['xml_data_cari_liste']) ? $_POST['xml_data
 $xml_data_account_transaction_list = isset($_POST['xml_data_cari_hareket_liste']) ? $_POST['xml_data_cari_hareket_liste'] : '';
 $xml_data_account_transaction_sil = isset($_POST['xml_data_cari_hareket_sil']) ? $_POST['xml_data_cari_hareket_sil'] : '';
 $xml_data_account_balance_list = isset($_POST['xml_data_cari_bakiye_liste']) ? $_POST['xml_data_cari_bakiye_liste'] : '';
-$xml_siparis_gonder = isset($_POST['xml_siparis_gonder']) ? $_POST['xml_siparis_gonder'] : '';
 $xml_odeme_sorgula = isset($_POST['xml_odeme_sorgula']) ? $_POST['xml_odeme_sorgula'] : '';
 $xml_cari_gonder = isset($_POST['xml_cari_gonder']) ? $_POST['xml_cari_gonder'] : '';
 
@@ -956,7 +939,10 @@ $xml_cari_kodu   = isset($_POST['xml_cari_kodu']) ? $_POST['xml_cari_kodu'] : ''
 
 $xml_cari_gonder_guncelle = isset($_POST['xml_cari_gonder_guncelle']) ? $_POST['xml_cari_gonder_guncelle'] : '';
 
-if (!empty($xml_data_stock_inventory)) {
+
+if (!empty($xml_odeme_sorgula)) { odemeGonder(); }
+elseif (!empty($xml_cari_gonder)) { cariGonder(); }
+elseif (!empty($xml_data_stock_inventory)) {
     getStockInventory($xml_data_stock_inventory);
     insertCategoriesFromDatabase();
     updateKategoriIDForAllProducts();
@@ -967,11 +953,6 @@ elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list)
 elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
 elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
-elseif (!empty($xml_siparis_gonder)) { faturalariGonder(); }
-elseif (!empty($xml_odeme_sorgula)) { odemeGonder(); }
-elseif (!empty($xml_cari_gonder)) { cariGonder(); }
-
-
 elseif (!empty($xml_cari_gonder_guncelle)) { cariGonderUpdate($xml_cari_gonder_guncelle); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 ?>
