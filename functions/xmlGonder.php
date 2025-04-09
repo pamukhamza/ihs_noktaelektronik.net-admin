@@ -294,179 +294,9 @@ function getStockList($xmlData) {
     echo "$newDate: Fiyat Tarama Tamamlandı. <br>";
 }
 
-function getAccountTransactionList($xmlData) {
-    $mysqli = connectToDatabase();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo "$newDate: Evrak Taraması Başladı. <br>";
-    if ($xml === false) {
-        echo "Failed to parse XML Cari Hareket Liste.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "$newDate: Evrak taraması tamamlandı.  <br>";
-        return;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $BLCRKODU = $mysqli->real_escape_string((string)$row-> BLCRKODU);
-        $EVRAK_NO = $mysqli->real_escape_string((string)$row-> EVRAK_NO);
-        $TARIHI = $mysqli->real_escape_string((string)$row-> TARIHI);
-        $MUH_DURUM = $mysqli->real_escape_string((string)$row-> MUH_DURUM);
-        $MUH_HESKODU = $mysqli->real_escape_string((string)$row-> MUH_HESKODU);
-        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row-> DOVIZ_KULLAN);
-        $DOVIZ_ALIS = $mysqli->real_escape_string((string)$row-> DOVIZ_ALIS);
-        $DOVIZ_SATIS = $mysqli->real_escape_string((string)$row-> DOVIZ_SATIS);
-        $KPBDVZ = $mysqli->real_escape_string((string)$row-> KPBDVZ);
-        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row-> DOVIZ_BIRIMI);
-        $DOVIZ_HES_ISLE = (int)$row->DOVIZ_HES_ISLE;
-        $ACIKLAMA = $mysqli->real_escape_string((string)$row-> ACIKLAMA);
-        $KASA_ADI = $mysqli->real_escape_string((string)$row-> KASA_ADI);
-        $BANKA_ADI = $mysqli->real_escape_string((string)$row-> BANKA_ADI);
-        $KKARTI_DETAY = $mysqli->real_escape_string((string)$row-> KKARTI_DETAY);
-        $ENTEGRASYON = $mysqli->real_escape_string((string)$row-> ENTEGRASYON);
-        $KPB_BTUT = $mysqli->real_escape_string((string)$row-> KPB_BTUT);
-        $KPB_ATUT = $mysqli->real_escape_string((string)$row-> KPB_ATUT);
-        $DVZ_BTUT = $mysqli->real_escape_string((string)$row-> DVZ_BTUT);
-        $DVZ_ATUT = $mysqli->real_escape_string((string)$row-> DVZ_ATUT);
-        $ISLEM_TURU = (int)$row->ISLEM_TURU;
-        $SILINDI = (int)$row->SILINDI;
-        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
-        $VADESI = date('Y-m-d', strtotime((string)$row->VADESI));
 
-        $checkQuery = "SELECT * FROM uyeler_hareket_deneme WHERE EVRAK_NO = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("s", $EVRAK_NO);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        $stmt->close();
-        if ($checkResult->num_rows > 0) {
-            $existingRow = $checkResult->fetch_assoc();
-            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
-            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
-                $updateQuery = "UPDATE uyeler_hareket_deneme 
-                                SET BLCRKODU = ?, EVRAK_NO = ?, TARIHI = ?, VADESI = ?, MUH_DURUM = ?, MUH_HESKODU = ?, DOVIZ_KULLAN = ?, DOVIZ_ALIS = ?, DOVIZ_SATIS = ?, KPBDVZ = ?,
-                                    DOVIZ_BIRIMI = ?, DOVIZ_HES_ISLE = ?, ACIKLAMA = ?, KASA_ADI = ?, BANKA_ADI = ?, KKARTI_DETAY = ?, ENTEGRASYON = ?, KPB_BTUT = ?, KPB_ATUT = ?,
-                                    DVZ_BTUT = ?, DVZ_ATUT = ?, DEGISTIRME_TARIHI = ?, ISLEM_TURU = ?, SILINDI = ? WHERE EVRAK_NO = ?";
-                $stmt = $mysqli->prepare($updateQuery);
-                $stmt->bind_param("sssssssssssissssssssssiis", $BLCRKODU, $EVRAK_NO, $TARIHI, $VADESI, $MUH_DURUM, $MUH_HESKODU, $DOVIZ_KULLAN, $DOVIZ_ALIS,
-                    $DOVIZ_SATIS, $KPBDVZ, $DOVIZ_BIRIMI, $DOVIZ_HES_ISLE, $ACIKLAMA, $KASA_ADI, $BANKA_ADI, $KKARTI_DETAY, $ENTEGRASYON, $KPB_BTUT, $KPB_ATUT, $DVZ_BTUT, $DVZ_ATUT,
-                    $DEGISTIRME_TARIHI, $ISLEM_TURU, $SILINDI, $EVRAK_NO);
-                $stmt->execute();
-                $stmt->close();
-                echo "$newDate: Güncellenen Evrak Numarası: $EVRAK_NO <br>";
-            }
-        } else {
-            $insertQuery = "INSERT INTO uyeler_hareket_deneme (BLKODU ,BLCRKODU ,EVRAK_NO ,TARIHI ,VADESI ,MUH_DURUM ,MUH_HESKODU ,DOVIZ_KULLAN ,DOVIZ_ALIS ,DOVIZ_SATIS ,KPBDVZ ,DOVIZ_BIRIMI ,
-                           DOVIZ_HES_ISLE ,ACIKLAMA ,KASA_ADI ,BANKA_ADI ,KKARTI_DETAY ,ENTEGRASYON ,KPB_BTUT ,KPB_ATUT ,DVZ_BTUT ,DVZ_ATUT ,DEGISTIRME_TARIHI ,ISLEM_TURU, SILINDI)
-                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
-            $stmt = $mysqli->prepare($insertQuery);
-            $stmt->bind_param("isssssssssssissssssssssii", $BLKODU ,$BLCRKODU ,$EVRAK_NO ,$TARIHI ,$VADESI ,$MUH_DURUM ,$MUH_HESKODU ,$DOVIZ_KULLAN ,
-                $DOVIZ_ALIS ,$DOVIZ_SATIS ,$KPBDVZ ,$DOVIZ_BIRIMI ,$DOVIZ_HES_ISLE ,$ACIKLAMA ,$KASA_ADI ,$BANKA_ADI ,$KKARTI_DETAY ,$ENTEGRASYON ,$KPB_BTUT ,$KPB_ATUT ,$DVZ_BTUT ,
-                $DVZ_ATUT ,$DEGISTIRME_TARIHI ,$ISLEM_TURU, $SILINDI);
-            $stmt->execute();
-            $stmt->close();
-            echo "$newDate: Yeni Evrak Numarası: $EVRAK_NO <br>";
-        }
-    }
-    $mysqli->close();
-    echo "$newDate: Evrak taraması tamamlandı. <br>";
-}
-function getAccountTransactionSil($xmlData) {
-    $pdo = connectToDatabasePDO();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo "$newDate: Evrak Silindi Kontrol Başladı. <br>";
 
-    if ($xml === false) {
-        echo "XML Cari Hareket Liste Silindi parse edilemedi.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
-        return;
-    }
-    try {
-        // Start a transaction
-        $pdo->beginTransaction();
-        // Prepare the update query once
-        $updateQuery = "UPDATE uyeler_hareket_deneme SET SILINDI = 1 WHERE EVRAK_NO = :EVRAK_NO";
-        $updateStmt = $pdo->prepare($updateQuery);
 
-        foreach ($xml->table->row as $row) {
-            $EVRAK_NO = $row->EVRAK_NO;
-
-            $updateStmt->execute([':EVRAK_NO' => $EVRAK_NO]);
-        }
-        $pdo->commit();
-        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
-    } catch (Exception $e) {
-        // Rollback the transaction in case of error
-        $pdo->rollBack();
-        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
-    }
-}
-function getAccountBalanceList($xmlData) {
-    $mysqli = connectToDatabase();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo "$newDate: Hesap Bakiye Taraması Başladı. <br>";
-    if ($xml === false) {
-        echo "Failed to parse XML Cari Bakiye Liste.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
-        return;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $HESAP = $mysqli->real_escape_string((string)$row-> HESAP);
-        $TPL_BRC = $mysqli->real_escape_string((string)$row-> TPL_BRC);
-        $TPL_ALC = $mysqli->real_escape_string((string)$row-> TPL_ALC);
-        $TPL_BKY = $mysqli->real_escape_string((string)$row-> TPL_BKY);
-        $TPL_BTR = $mysqli->real_escape_string((string)$row-> TPL_BTR);
-        $DVZ_HESAP = $mysqli->real_escape_string((string)$row-> DVZ_HESAP);
-        $DVZ_TPLBRC = $mysqli->real_escape_string((string)$row-> DVZ_TPLBRC);
-        $DVZ_TPLALC = $mysqli->real_escape_string((string)$row-> DVZ_TPLALC);
-        $DVZ_BAKIYE = $mysqli->real_escape_string((string)$row-> DVZ_BAKIYE);
-        $DVZ_BTR = $mysqli->real_escape_string((string)$row-> DVZ_BTR);
-        $CARIKODU = $mysqli->real_escape_string((string)$row-> CARIKODU);
-
-        $checkQuery = "SELECT * FROM cari_bakiye WHERE BLKODU = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("i", $BLKODU);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        $stmt->close();
-        if ($checkResult->num_rows > 0) {
-            $existingRow = $checkResult->fetch_assoc();
-            $mevcutTplBakiye = $existingRow['TPL_BKY'];
-            $mevcutDvzBakiye = $existingRow['DVZ_BAKIYE'];
-            if ($mevcutTplBakiye != $TPL_BKY || $mevcutDvzBakiye != $DVZ_BAKIYE) {
-                $updateQuery = "UPDATE cari_bakiye 
-                            SET HESAP = ?, TPL_BRC = ?, TPL_ALC = ?, TPL_BKY = ?, TPL_BTR = ?, DVZ_HESAP = ?, DVZ_TPLBRC = ?, DVZ_TPLALC = ?, DVZ_BAKIYE = ?, DVZ_BTR = ?, CARIKODU = ? 
-                            WHERE BLKODU = ?";
-                $stmt = $mysqli->prepare($updateQuery);
-                $stmt->bind_param("sssssssssssi",
-                    $HESAP, $TPL_BRC, $TPL_ALC, $TPL_BKY, $TPL_BTR, $DVZ_HESAP, $DVZ_TPLBRC, $DVZ_TPLALC, $DVZ_BAKIYE, $DVZ_BTR, $CARIKODU, $BLKODU);
-                $stmt->execute();
-                $stmt->close();
-                echo "$newDate: Güncellenen Hesap Bakiyesi: $CARIKODU <br>";
-            }
-        } else {
-            $insertQuery = "INSERT INTO cari_bakiye (HESAP ,TPL_BRC ,TPL_ALC ,TPL_BKY ,TPL_BTR ,DVZ_HESAP ,DVZ_TPLBRC ,DVZ_TPLALC ,DVZ_BAKIYE ,DVZ_BTR ,BLKODU ,CARIKODU )
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $mysqli->prepare($insertQuery);
-            $stmt->bind_param("ssssssssssis", $HESAP ,$TPL_BRC ,$TPL_ALC ,$TPL_BKY ,$TPL_BTR ,$DVZ_HESAP ,$DVZ_TPLBRC ,$DVZ_TPLALC ,$DVZ_BAKIYE ,$DVZ_BTR ,$BLKODU ,$CARIKODU);
-            $stmt->execute();
-            $stmt->close();
-            echo "$newDate: Yeni Hesap Bakiyesi : $CARIKODU <br>";
-        }
-    }
-    $mysqli->close();
-    echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
-}
 
 function cariGonderUpdate($xmlData) {
     global $newDate;
@@ -925,6 +755,181 @@ function getAccountList($xmlData) {
     $mysqli->close();
     echo "$newDate: Cari Tarama Tamamlandı. <br>";
 }
+function getAccountBalanceList($xmlData) {
+    $mysqli = connectToDatabase();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Hesap Bakiye Taraması Başladı. <br>";
+    if ($xml === false) {
+        echo "Failed to parse XML Cari Bakiye Liste.";
+        return;
+    }
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
+        return;
+    }
+    foreach ($xml->table->row as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $HESAP = $mysqli->real_escape_string((string)$row-> HESAP);
+        $TPL_BRC = $mysqli->real_escape_string((string)$row-> TPL_BRC);
+        $TPL_ALC = $mysqli->real_escape_string((string)$row-> TPL_ALC);
+        $TPL_BKY = $mysqli->real_escape_string((string)$row-> TPL_BKY);
+        $TPL_BTR = $mysqli->real_escape_string((string)$row-> TPL_BTR);
+        $DVZ_HESAP = $mysqli->real_escape_string((string)$row-> DVZ_HESAP);
+        $DVZ_TPLBRC = $mysqli->real_escape_string((string)$row-> DVZ_TPLBRC);
+        $DVZ_TPLALC = $mysqli->real_escape_string((string)$row-> DVZ_TPLALC);
+        $DVZ_BAKIYE = $mysqli->real_escape_string((string)$row-> DVZ_BAKIYE);
+        $DVZ_BTR = $mysqli->real_escape_string((string)$row-> DVZ_BTR);
+        $CARIKODU = $mysqli->real_escape_string((string)$row-> CARIKODU);
+
+        $checkQuery = "SELECT TPL_BKY, DVZ_BAKIYE FROM cari_bakiye WHERE BLKODU = ?";
+        $stmt = $mysqli->prepare($checkQuery);
+        $stmt->bind_param("i", $BLKODU);
+        $stmt->execute();
+        $checkResult = $stmt->get_result();
+        $stmt->close();
+        if ($checkResult->num_rows > 0) {
+            $existingRow = $checkResult->fetch_assoc();
+            $mevcutTplBakiye = $existingRow['TPL_BKY'];
+            $mevcutDvzBakiye = $existingRow['DVZ_BAKIYE'];
+            if ($mevcutTplBakiye != $TPL_BKY || $mevcutDvzBakiye != $DVZ_BAKIYE) {
+                $updateQuery = "UPDATE cari_bakiye 
+                            SET HESAP = ?, TPL_BRC = ?, TPL_ALC = ?, TPL_BKY = ?, TPL_BTR = ?, DVZ_HESAP = ?, DVZ_TPLBRC = ?, DVZ_TPLALC = ?, DVZ_BAKIYE = ?, DVZ_BTR = ?, CARIKODU = ? 
+                            WHERE BLKODU = ?";
+                $stmt = $mysqli->prepare($updateQuery);
+                $stmt->bind_param("sssssssssssi",
+                    $HESAP, $TPL_BRC, $TPL_ALC, $TPL_BKY, $TPL_BTR, $DVZ_HESAP, $DVZ_TPLBRC, $DVZ_TPLALC, $DVZ_BAKIYE, $DVZ_BTR, $CARIKODU, $BLKODU);
+                $stmt->execute();
+                $stmt->close();
+                echo "$newDate: Güncellenen Hesap Bakiyesi: $CARIKODU <br>";
+            }
+        } else {
+            $insertQuery = "INSERT INTO cari_bakiye (HESAP ,TPL_BRC ,TPL_ALC ,TPL_BKY ,TPL_BTR ,DVZ_HESAP ,DVZ_TPLBRC ,DVZ_TPLALC ,DVZ_BAKIYE ,DVZ_BTR ,BLKODU ,CARIKODU )
+                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = $mysqli->prepare($insertQuery);
+            $stmt->bind_param("ssssssssssis", $HESAP ,$TPL_BRC ,$TPL_ALC ,$TPL_BKY ,$TPL_BTR ,$DVZ_HESAP ,$DVZ_TPLBRC ,$DVZ_TPLALC ,$DVZ_BAKIYE ,$DVZ_BTR ,$BLKODU ,$CARIKODU);
+            $stmt->execute();
+            $stmt->close();
+            echo "$newDate: Yeni Hesap Bakiyesi : $CARIKODU <br>";
+        }
+    }
+    $mysqli->close();
+    echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
+}
+function getAccountTransactionList($xmlData) {
+    $mysqli = connectToDatabase();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Evrak Taraması Başladı. <br>";
+    if ($xml === false) {
+        echo "Failed to parse XML Cari Hareket Liste.";
+        return;
+    }
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Evrak taraması tamamlandı.  <br>";
+        return;
+    }
+    foreach ($xml->table->row as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $BLCRKODU = $mysqli->real_escape_string((string)$row-> BLCRKODU);
+        $EVRAK_NO = $mysqli->real_escape_string((string)$row-> EVRAK_NO);
+        $TARIHI = $mysqli->real_escape_string((string)$row-> TARIHI);
+        $MUH_DURUM = $mysqli->real_escape_string((string)$row-> MUH_DURUM);
+        $MUH_HESKODU = $mysqli->real_escape_string((string)$row-> MUH_HESKODU);
+        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row-> DOVIZ_KULLAN);
+        $DOVIZ_ALIS = $mysqli->real_escape_string((string)$row-> DOVIZ_ALIS);
+        $DOVIZ_SATIS = $mysqli->real_escape_string((string)$row-> DOVIZ_SATIS);
+        $KPBDVZ = $mysqli->real_escape_string((string)$row-> KPBDVZ);
+        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row-> DOVIZ_BIRIMI);
+        $DOVIZ_HES_ISLE = (int)$row->DOVIZ_HES_ISLE;
+        $ACIKLAMA = $mysqli->real_escape_string((string)$row-> ACIKLAMA);
+        $KASA_ADI = $mysqli->real_escape_string((string)$row-> KASA_ADI);
+        $BANKA_ADI = $mysqli->real_escape_string((string)$row-> BANKA_ADI);
+        $KKARTI_DETAY = $mysqli->real_escape_string((string)$row-> KKARTI_DETAY);
+        $ENTEGRASYON = $mysqli->real_escape_string((string)$row-> ENTEGRASYON);
+        $KPB_BTUT = $mysqli->real_escape_string((string)$row-> KPB_BTUT);
+        $KPB_ATUT = $mysqli->real_escape_string((string)$row-> KPB_ATUT);
+        $DVZ_BTUT = $mysqli->real_escape_string((string)$row-> DVZ_BTUT);
+        $DVZ_ATUT = $mysqli->real_escape_string((string)$row-> DVZ_ATUT);
+        $ISLEM_TURU = (int)$row->ISLEM_TURU;
+        $SILINDI = (int)$row->SILINDI;
+        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
+        $VADESI = date('Y-m-d', strtotime((string)$row->VADESI));
+
+        $checkQuery = "SELECT * FROM uyeler_hareket WHERE EVRAK_NO = ?";
+        $stmt = $mysqli->prepare($checkQuery);
+        $stmt->bind_param("s", $EVRAK_NO);
+        $stmt->execute();
+        $checkResult = $stmt->get_result();
+        $stmt->close();
+        if ($checkResult->num_rows > 0) {
+            $existingRow = $checkResult->fetch_assoc();
+            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
+            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
+                $updateQuery = "UPDATE uyeler_hareket 
+                                SET BLCRKODU = ?, EVRAK_NO = ?, TARIHI = ?, VADESI = ?, MUH_DURUM = ?, MUH_HESKODU = ?, DOVIZ_KULLAN = ?, DOVIZ_ALIS = ?, DOVIZ_SATIS = ?, KPBDVZ = ?,
+                                    DOVIZ_BIRIMI = ?, DOVIZ_HES_ISLE = ?, ACIKLAMA = ?, KASA_ADI = ?, BANKA_ADI = ?, KKARTI_DETAY = ?, ENTEGRASYON = ?, KPB_BTUT = ?, KPB_ATUT = ?,
+                                    DVZ_BTUT = ?, DVZ_ATUT = ?, DEGISTIRME_TARIHI = ?, ISLEM_TURU = ?, SILINDI = ? WHERE EVRAK_NO = ?";
+                $stmt = $mysqli->prepare($updateQuery);
+                $stmt->bind_param("sssssssssssissssssssssiis", $BLCRKODU, $EVRAK_NO, $TARIHI, $VADESI, $MUH_DURUM, $MUH_HESKODU, $DOVIZ_KULLAN, $DOVIZ_ALIS,
+                    $DOVIZ_SATIS, $KPBDVZ, $DOVIZ_BIRIMI, $DOVIZ_HES_ISLE, $ACIKLAMA, $KASA_ADI, $BANKA_ADI, $KKARTI_DETAY, $ENTEGRASYON, $KPB_BTUT, $KPB_ATUT, $DVZ_BTUT, $DVZ_ATUT,
+                    $DEGISTIRME_TARIHI, $ISLEM_TURU, $SILINDI, $EVRAK_NO);
+                $stmt->execute();
+                $stmt->close();
+                echo "$newDate: Güncellenen Evrak Numarası: $EVRAK_NO <br>";
+            }
+        } else {
+            $insertQuery = "INSERT INTO uyeler_hareket (BLKODU ,BLCRKODU ,EVRAK_NO ,TARIHI ,VADESI ,MUH_DURUM ,MUH_HESKODU ,DOVIZ_KULLAN ,DOVIZ_ALIS ,DOVIZ_SATIS ,KPBDVZ ,DOVIZ_BIRIMI ,
+                           DOVIZ_HES_ISLE ,ACIKLAMA ,KASA_ADI ,BANKA_ADI ,KKARTI_DETAY ,ENTEGRASYON ,KPB_BTUT ,KPB_ATUT ,DVZ_BTUT ,DVZ_ATUT ,DEGISTIRME_TARIHI ,ISLEM_TURU, SILINDI)
+                            VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+            $stmt = $mysqli->prepare($insertQuery);
+            $stmt->bind_param("isssssssssssissssssssssii", $BLKODU ,$BLCRKODU ,$EVRAK_NO ,$TARIHI ,$VADESI ,$MUH_DURUM ,$MUH_HESKODU ,$DOVIZ_KULLAN ,
+                $DOVIZ_ALIS ,$DOVIZ_SATIS ,$KPBDVZ ,$DOVIZ_BIRIMI ,$DOVIZ_HES_ISLE ,$ACIKLAMA ,$KASA_ADI ,$BANKA_ADI ,$KKARTI_DETAY ,$ENTEGRASYON ,$KPB_BTUT ,$KPB_ATUT ,$DVZ_BTUT ,
+                $DVZ_ATUT ,$DEGISTIRME_TARIHI ,$ISLEM_TURU, $SILINDI);
+            $stmt->execute();
+            $stmt->close();
+            echo "$newDate: Yeni Evrak Numarası: $EVRAK_NO <br>";
+        }
+    }
+    $mysqli->close();
+    echo "$newDate: Evrak taraması tamamlandı. <br>";
+}
+function getAccountTransactionSil($xmlData) {
+    $pdo = connectToDatabasePDO();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Evrak Silindi Kontrol Başladı. <br>";
+
+    if ($xml === false) {
+        echo "XML Cari Hareket Liste Silindi parse edilemedi.";
+        return;
+    }
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
+        return;
+    }
+    try {
+        // Start a transaction
+        $pdo->beginTransaction();
+        // Prepare the update query once
+        $updateQuery = "UPDATE uyeler_hareket SET SILINDI = 1 WHERE EVRAK_NO = :EVRAK_NO";
+        $updateStmt = $pdo->prepare($updateQuery);
+
+        foreach ($xml->table->row as $row) {
+            $EVRAK_NO = $row->EVRAK_NO;
+
+            $updateStmt->execute([':EVRAK_NO' => $EVRAK_NO]);
+        }
+        $pdo->commit();
+        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
+    } catch (Exception $e) {
+        // Rollback the transaction in case of error
+        $pdo->rollBack();
+        echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
+    }
+}
+
+
 $xml_data_stock_inventory = isset($_POST['xml_data_stok_envanter']) ? $_POST['xml_data_stok_envanter'] : '';
 $xml_data_stock = isset($_POST['xml_data_stok_adet']) ? $_POST['xml_data_stok_adet'] : '';
 $xml_data_stock_list = isset($_POST['xml_data_stok_liste']) ? $_POST['xml_data_stok_liste'] : '';
@@ -943,6 +948,12 @@ $xml_cari_gonder_guncelle = isset($_POST['xml_cari_gonder_guncelle']) ? $_POST['
 
 if (!empty($xml_odeme_sorgula)) { odemeGonder(); }
 elseif (!empty($xml_cari_gonder)) { cariGonder(); }
+elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list); }
+elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
+elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
+elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
+
+
 elseif (!empty($xml_data_stock_inventory)) {
     getStockInventory($xml_data_stock_inventory);
     insertCategoriesFromDatabase();
@@ -950,10 +961,6 @@ elseif (!empty($xml_data_stock_inventory)) {
     getMarka($xml_data_stock_inventory);
 }
 elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
-elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list); }
-elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
-elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
-elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
 elseif (!empty($xml_cari_gonder_guncelle)) { cariGonderUpdate($xml_cari_gonder_guncelle); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 ?>
