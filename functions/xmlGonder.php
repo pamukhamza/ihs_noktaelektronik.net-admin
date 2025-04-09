@@ -705,7 +705,7 @@ function odemeGonder() {
                 $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
                 $filePath = "../assets/xml/pos/$file";
                 if (is_file($filePath)) {
-                    //unlink($filePath); // Dosyayı sil
+                    unlink($filePath); // Dosyayı sil
                 }
             }
         }
