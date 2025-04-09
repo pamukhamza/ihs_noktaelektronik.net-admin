@@ -293,213 +293,7 @@ function getStockList($xmlData) {
     $mysqli->close();
     echo "$newDate: Fiyat Tarama Tamamlandı. <br>";
 }
-function getAccountList($xmlData) {
-    $mysqli = connectToDatabase();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo "$newDate: Cari Tarama Başladı. <br>";
-    if ($xml === false) {
-        echo "Failed to parse XML Cari Liste.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "$newDate: Cari Tarama Tamamlandı. <br>";
-        return;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $CARIKODU = $mysqli->real_escape_string((string)$row-> CARIKODU);
-        $ADI = $mysqli->real_escape_string((string)$row-> ADI);
-        $SOYADI = $mysqli->real_escape_string((string)$row-> SOYADI);
-        $TICARI_UNVANI = $mysqli->real_escape_string((string)$row-> TICARI_UNVANI);
-        $VERGI_DAIRESI = $mysqli->real_escape_string((string)$row-> VERGI_DAIRESI);
-        $VERGI_NO = $mysqli->real_escape_string((string)$row-> VERGI_NO);
-        $CEP_TEL = $mysqli->real_escape_string((string)$row-> CEP_TEL);
-        $AKTIF = $mysqli->real_escape_string((string)$row-> AKTIF);
-        $STOK_FIYATI = $mysqli->real_escape_string((string)$row-> STOK_FIYATI);
-        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row-> DOVIZ_KULLAN);
-        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row-> DOVIZ_BIRIMI);
-        $MUHKODU_ALIS = $mysqli->real_escape_string((string)$row-> MUHKODU_ALIS);
-        $MUHKODU_SATIS = $mysqli->real_escape_string((string)$row-> MUHKODU_SATIS);
-        $ADRESI_1 = $mysqli->real_escape_string((string)$row-> ADRESI_1);
-        $ILI_1 = $mysqli->real_escape_string((string)$row-> ILI_1);
-        $ILCESI_1 = $mysqli->real_escape_string((string)$row-> ILCESI_1);
-        $POSTA_KODU_1 = $mysqli->real_escape_string((string)$row-> POSTA_KODU_1);
-        $WEB_USER_NAME = $mysqli->real_escape_string((string)$row-> WEB_USER_NAME);
-        $WEB_USER_PASSW = $mysqli->real_escape_string((string)$row-> WEB_USER_PASSW);
-        $ULKESI_1 = $mysqli->real_escape_string((string)$row-> ULKESI_1);
-        $ADI_SOYADI = $mysqli->real_escape_string((string)$row-> ADI_SOYADI);
-        $CINSIYETI = $mysqli->real_escape_string((string)$row-> CINSIYETI);
-        $TC_KIMLIK_NO = $mysqli->real_escape_string((string)$row-> TC_KIMLIK_NO);
-        $PAZ_BLCRKODU = $mysqli->real_escape_string((string)$row-> PAZ_BLCRKODU);
-        $OZEL_KODU3 = $mysqli->real_escape_string((string)$row-> OZEL_KODU3);
-        $OZELALANTANIM_3 = $mysqli->real_escape_string((string)$row-> OZELALANTANIM_3);
-        $OZELALANTANIM_27 = $mysqli->real_escape_string((string)$row-> OZELALANTANIM_27);
-        $EFATURA_SENARYO = $mysqli->real_escape_string((string)$row-> EFATURA_SENARYO);
-        $EFATURA_KULLAN = $mysqli->real_escape_string((string)$row-> EFATURA_KULLAN);
-        $ALICI_GRUBU = $mysqli->real_escape_string((string)$row-> ALICI_GRUBU);
-        $EIRSALIYE_KULLAN = $mysqli->real_escape_string((string)$row-> EIRSALIYE_KULLAN);
-        $GRUBU = $mysqli->real_escape_string((string)$row-> GRUBU);
-        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
-        $currentDateTime = date("Y-m-d H:i:s");
-        $KAYIT_TARIHI = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
 
-        $checkQueryIl = "SELECT * FROM iller WHERE il_adi = ?";
-        $checkStatementIl = $mysqli->prepare($checkQueryIl);
-        $checkStatementIl->bind_param("s", $ILI_1);
-        $checkStatementIl->execute();
-        $resultIl = $checkStatementIl->get_result();
-        $checkStatementIl->close();
-        $resultIlRow = $resultIl->fetch_assoc();
-            if ($resultIl && $resultIl->num_rows > 0){
-                $il = $resultIlRow["il_id"];
-            }else {
-                $il = "";
-            }
-        $checkQueryIlce = "SELECT * FROM ilceler WHERE ilce_adi = ? AND il_adi = ?";
-        $checkStatementIlce = $mysqli->prepare($checkQueryIlce);
-        $checkStatementIlce->bind_param("ss", $ILCESI_1, $ILI_1);
-        $checkStatementIlce->execute();
-        $resultIlce = $checkStatementIlce->get_result();
-        $checkStatementIlce->close();
-        $resultIlceRow = $resultIlce->fetch_assoc();
-            if ($resultIlce && $resultIlce->num_rows > 0) {
-                $ilce = $resultIlceRow["ilce_id"];
-            } else {
-                $ilce = ""; // Set $il to empty if there is no match
-            }
-        $aktif = 1;
-        $checkQuery = "SELECT * FROM uyeler WHERE BLKODU = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("i", $BLKODU);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        $stmt->close();
-        if ($checkResult->num_rows > 0) {
-            $existingRow = $checkResult->fetch_assoc();
-            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
-            $uyeid = $existingRow["id"];
-            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
-                $updateQuery = "UPDATE uyeler 
-                                SET muhasebe_kodu = ?, ad = ?, soyad = ?, firmaUnvani = ?, vergi_dairesi = ?, vergi_no = ?, tel = ?, aktif = ?, fiyat = ?, DOVIZ_KULLAN = ?,
-                                    DOVIZ_BIRIMI = ?, MUHKODU_ALIS = ?, MUHKODU_SATIS = ?, adres = ?, il = ?, ilce = ?, posta_kodu = ?, email = ?, ulke = ?, ADI_SOYADI = ?,
-                                    cinsiyet = ?, tc_no = ?, satis_temsilcisi = ?, uye_tipi = ?, OZELALANTANIM_3 = ?, OZELALANTANIM_27 = ?, DEGISTIRME_TARIHI = ?, EFATURA_SENARYO = ?,
-                                    EFATURA_KULLAN = ?, ALICI_GRUBU = ?, EIRSALIYE_KULLAN = ?, GRUBU = ? WHERE BLKODU = ?";
-                $stmt = $mysqli->prepare($updateQuery);
-                $stmt->bind_param("ssssssssssssssssssssssssssssssssi", $CARIKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
-                    $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME, $ULKESI_1,
-                    $ADI_SOYADI, $CINSIYETI, $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI,
-                    $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $GRUBU, $BLKODU);
-                $stmt->execute();
-                $stmt->close();
-
-                // Check if the record already exists in adresler table
-                $checkAddressQuery = "SELECT * FROM adresler WHERE uye_id = ?";
-                $stmt = $mysqli->prepare($checkAddressQuery);
-                $stmt->bind_param("i", $uyeid);
-                $stmt->execute();
-                $checkAddressResult = $stmt->get_result();
-                $adres_turu = "teslimat";
-
-                if ($checkAddressResult->num_rows > 0) {
-                    // Update the existing record in adresler table
-                    $updateAddressQuery = "UPDATE adresler SET ad = ?, soyad = ?, adres_turu = ?, firma_adi = ?, il = ?, ilce = ?, vergi_dairesi = ?, vergi_no = ?, telefon = ?, aktif = ?, adres = ?, posta_kodu = ?, ulke = ?, tc_no = ? WHERE uye_id = ?";
-                    $stmt = $mysqli->prepare($updateAddressQuery);
-                    $stmt->bind_param("ssssiisssissssi", $ADI, $SOYADI, $adres_turu, $TICARI_UNVANI, $il, $ilce, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO, $uyeid);
-                    $stmt->execute();
-                    $stmt->close();
-                } else {
-                    $insertAddressQuery = "INSERT INTO adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                    $stmt = $mysqli->prepare($insertAddressQuery);
-                    $stmt->bind_param("isiissssssissss", $uyeid, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
-                    $stmt->execute();
-                    $stmt->close();
-                }
-                echo "$newDate: Güncellenen Cari Kodu: $CARIKODU <br>";
-            }
-        } else {
-                $checkQuery = "SELECT * FROM uyeler WHERE muhasebe_kodu = ?";
-                $stmt = $mysqli->prepare($checkQuery);
-                $stmt->bind_param("s", $CARIKODU);
-                $stmt->execute();
-                $checkResult = $stmt->get_result();
-                $stmt->close();
-            if ($checkResult->num_rows > 0) {
-                $existingRow = $checkResult->fetch_assoc();
-                $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
-                $uyeid = $existingRow["id"];
-                if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
-                    $updateQuery = "UPDATE uyeler 
-                                SET BLKODU = ?, ad = ?, soyad = ?, firmaUnvani = ?, vergi_dairesi = ?, vergi_no = ?, tel = ?, aktif = ?, fiyat = ?, DOVIZ_KULLAN = ?,
-                                    DOVIZ_BIRIMI = ?, MUHKODU_ALIS = ?, MUHKODU_SATIS = ?, adres = ?, il = ?, ilce = ?, posta_kodu = ?, email = ?,  ulke = ?, ADI_SOYADI = ?,
-                                    cinsiyet = ?, tc_no = ?, satis_temsilcisi = ?, uye_tipi = ?, OZELALANTANIM_3 = ?, OZELALANTANIM_27 = ?, DEGISTIRME_TARIHI = ?, EFATURA_SENARYO = ?,
-                                    EFATURA_KULLAN = ?, ALICI_GRUBU = ?, EIRSALIYE_KULLAN = ?, GRUBU = ? WHERE muhasebe_kodu = ?";
-                    $stmt = $mysqli->prepare($updateQuery);
-                    $stmt->bind_param("issssssssssssssssssssssssssssssss", $BLKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
-                        $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME,  $ULKESI_1,
-                        $ADI_SOYADI, $CINSIYETI, $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI,
-                        $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $GRUBU, $CARIKODU);
-                    $stmt->execute();
-                    $stmt->close();
-
-                    // Check if the record already exists in adresler table
-                    $checkAddressQuery = "SELECT * FROM adresler WHERE uye_id = ?";
-                    $stmt = $mysqli->prepare($checkAddressQuery);
-                    $stmt->bind_param("i", $uyeid);
-                    $stmt->execute();
-                    $checkAddressResult = $stmt->get_result();
-                    $adres_turu = "teslimat";
-
-                    if ($checkAddressResult->num_rows > 0) {
-                        // Update the existing record in adresler table
-                        $updateAddressQuery = "UPDATE adresler SET ad = ?, soyad = ?, adres_turu = ?, firma_adi = ?, il = ?, ilce = ?, vergi_dairesi = ?, vergi_no = ?, telefon = ?, aktif = ?, adres = ?, posta_kodu = ?, ulke = ?, tc_no = ? WHERE uye_id = ?";
-                        $stmt = $mysqli->prepare($updateAddressQuery);
-                        $stmt->bind_param("ssssiisssissssi", $ADI, $SOYADI, $adres_turu, $TICARI_UNVANI, $il, $ilce, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO, $uyeid);
-                        $stmt->execute();
-                        $stmt->close();
-                    } else {
-                        $insertAddressQuery = "INSERT INTO adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                        $stmt = $mysqli->prepare($insertAddressQuery);
-                        $stmt->bind_param("isiissssssissss", $uyeid, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
-                        $stmt->execute();
-                        $stmt->close();
-                    }
-                    echo "$newDate: Güncellenen Cari Kodu: $CARIKODU <br>";
-                }
-            }
-            else {
-                /* BURADA MUHASEBE KODUNU KONTROL ET EĞER AYNI İSE GÜNCELLEME YAP VE BLKODUNU DA GÜNCELLE DEĞİLSE INSERT YAP */
-                $insertQuery = "INSERT INTO uyeler (BLKODU, muhasebe_kodu, ad, soyad, firmaUnvani, vergi_dairesi, vergi_no, tel, aktif, fiyat, DOVIZ_KULLAN, DOVIZ_BIRIMI, MUHKODU_ALIS,
-                MUHKODU_SATIS, adres, il, ilce, posta_kodu, email, parola, ulke, ADI_SOYADI, cinsiyet, tc_no, satis_temsilcisi, uye_tipi, OZELALANTANIM_3, OZELALANTANIM_27,
-                DEGISTIRME_TARIHI, EFATURA_SENARYO, EFATURA_KULLAN, ALICI_GRUBU, EIRSALIYE_KULLAN, kayit_tarihi, GRUBU)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $mysqli->prepare($insertQuery);
-                $stmt->bind_param("issssssssssssssssssssssssssssssssss", $BLKODU, $CARIKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
-                    $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME, $WEB_USER_PASSW, $ULKESI_1, $ADI_SOYADI, $CINSIYETI,
-                    $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI, $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $KAYIT_TARIHI, $GRUBU);
-
-                if (!$stmt->execute()) {
-                    echo "$newDate: INSERT sorgusunu yürütme hatası: " . $stmt->error;
-                } else {
-                    $lastInsertedID = $mysqli->insert_id;
-                }
-                $stmt->close();
-
-                $adres_turu = "teslimat";
-                // Insert a new record in adresler table
-                $insertAddressQuery = "INSERT INTO adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $mysqli->prepare($insertAddressQuery);
-                $stmt->bind_param("isiissssssissss", $lastInsertedID, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
-                $stmt->execute();
-                $stmt->close();
-
-                echo "$newDate: Yeni Kayıt Eklendi. Cari Kodu: $CARIKODU <br>";
-            }
-        }
-    }
-    $mysqli->close();
-    echo "$newDate: Cari Tarama Tamamlandı. <br>";
-}
 function getAccountTransactionList($xmlData) {
     $mysqli = connectToDatabase();
     $xml = simplexml_load_string($xmlData);
@@ -673,88 +467,7 @@ function getAccountBalanceList($xmlData) {
     $mysqli->close();
     echo "$newDate: Hesap Bakiye Taraması Tamamlandı. <br>";
 }
-function odemeGonder() {
-    global $newDate;
-    $folderPath = "../assets/xml/pos/";
-    $files = scandir($folderPath);
 
-    if ($files === false) {
-        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
-        return;
-    }
-
-    $xmlArray = array();
-
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') continue;
-
-        $filePath = $folderPath . $file;
-
-        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
-            libxml_use_internal_errors(true);
-            $xml = simplexml_load_file($filePath);
-
-            if ($xml === false) {
-                $hatalar = [];
-                foreach (libxml_get_errors() as $error) {
-                    $hatalar[] = htmlspecialchars($error->message);
-                }
-                libxml_clear_errors();
-                $xmlArray[$file] = ["hata" => $hatalar];
-            } else {
-                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
-                $filePath = "../assets/xml/pos/$file";
-                if (is_file($filePath)) {
-                    unlink($filePath); // Dosyayı sil
-                }
-            }
-        }
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($xmlArray);
-}
-function cariGonder() {
-    global $newDate;
-    $folderPath = "../assets/xml/cari/";
-    $files = scandir($folderPath);
-
-    if ($files === false) {
-        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
-        return;
-    }
-
-    $xmlArray = array();
-
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') continue;
-
-        $filePath = $folderPath . $file;
-
-        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
-            libxml_use_internal_errors(true);
-            $xml = simplexml_load_file($filePath);
-
-            if ($xml === false) {
-                $hatalar = [];
-                foreach (libxml_get_errors() as $error) {
-                    $hatalar[] = htmlspecialchars($error->message);
-                }
-                libxml_clear_errors();
-                $xmlArray[$file] = ["hata" => $hatalar];
-            } else {
-                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
-                $filePath = "../assets/xml/cari/$file";
-                if (is_file($filePath)) {
-                    unlink($filePath); // Dosyayı sil
-                }
-            }
-        }
-    }
-
-    header('Content-Type: application/json');
-    echo json_encode($xmlArray);
-}
 function cariGonderUpdate($xmlData) {
     global $newDate;
     $mysqli = connectToDatabase();
@@ -924,6 +637,294 @@ function cariGonderUpdate($xmlData) {
     $mysqli->close();
 }
 
+//KULLANILAN FONKSİYONLAR
+function odemeGonder() {
+    global $newDate;
+    $folderPath = "../assets/xml/pos/";
+    $files = scandir($folderPath);
+
+    if ($files === false) {
+        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
+        return;
+    }
+
+    $xmlArray = array();
+
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+
+        $filePath = $folderPath . $file;
+
+        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_file($filePath);
+
+            if ($xml === false) {
+                $hatalar = [];
+                foreach (libxml_get_errors() as $error) {
+                    $hatalar[] = htmlspecialchars($error->message);
+                }
+                libxml_clear_errors();
+                $xmlArray[$file] = ["hata" => $hatalar];
+            } else {
+                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
+                $filePath = "../assets/xml/pos/$file";
+                if (is_file($filePath)) {
+                    unlink($filePath); // Dosyayı sil
+                }
+            }
+        }
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($xmlArray);
+}
+function cariGonder() {
+    global $newDate;
+    $folderPath = "../assets/xml/cari/";
+    $files = scandir($folderPath);
+
+    if ($files === false) {
+        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
+        return;
+    }
+
+    $xmlArray = array();
+
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+
+        $filePath = $folderPath . $file;
+
+        if (is_file($filePath) && pathinfo($filePath, PATHINFO_EXTENSION) === 'xml') {
+            libxml_use_internal_errors(true);
+            $xml = simplexml_load_file($filePath);
+
+            if ($xml === false) {
+                $hatalar = [];
+                foreach (libxml_get_errors() as $error) {
+                    $hatalar[] = htmlspecialchars($error->message);
+                }
+                libxml_clear_errors();
+                $xmlArray[$file] = ["hata" => $hatalar];
+            } else {
+                $xmlArray[$file] = $xml->asXML(); // RAW XML string dön
+                $filePath = "../assets/xml/cari/$file";
+                if (is_file($filePath)) {
+                    unlink($filePath); // Dosyayı sil
+                }
+            }
+        }
+    }
+
+    header('Content-Type: application/json');
+    echo json_encode($xmlArray);
+}
+function getAccountList($xmlData) {
+    $mysqli = connectToDatabase();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Cari Tarama Başladı. <br>";
+    if ($xml === false) {
+        echo "Failed to parse XML Cari Liste.";
+        return;
+    }
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Cari Tarama Tamamlandı. <br>";
+        return;
+    }
+    foreach ($xml->table->row as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $CARIKODU = $mysqli->real_escape_string((string)$row-> CARIKODU);
+        $ADI = $mysqli->real_escape_string((string)$row-> ADI);
+        $SOYADI = $mysqli->real_escape_string((string)$row-> SOYADI);
+        $TICARI_UNVANI = $mysqli->real_escape_string((string)$row-> TICARI_UNVANI);
+        $VERGI_DAIRESI = $mysqli->real_escape_string((string)$row-> VERGI_DAIRESI);
+        $VERGI_NO = $mysqli->real_escape_string((string)$row-> VERGI_NO);
+        $CEP_TEL = $mysqli->real_escape_string((string)$row-> CEP_TEL);
+        $AKTIF = $mysqli->real_escape_string((string)$row-> AKTIF);
+        $STOK_FIYATI = $mysqli->real_escape_string((string)$row-> STOK_FIYATI);
+        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row-> DOVIZ_KULLAN);
+        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row-> DOVIZ_BIRIMI);
+        $MUHKODU_ALIS = $mysqli->real_escape_string((string)$row-> MUHKODU_ALIS);
+        $MUHKODU_SATIS = $mysqli->real_escape_string((string)$row-> MUHKODU_SATIS);
+        $ADRESI_1 = $mysqli->real_escape_string((string)$row-> ADRESI_1);
+        $ILI_1 = $mysqli->real_escape_string((string)$row-> ILI_1);
+        $ILCESI_1 = $mysqli->real_escape_string((string)$row-> ILCESI_1);
+        $POSTA_KODU_1 = $mysqli->real_escape_string((string)$row-> POSTA_KODU_1);
+        $WEB_USER_NAME = $mysqli->real_escape_string((string)$row-> WEB_USER_NAME);
+        $WEB_USER_PASSW = $mysqli->real_escape_string((string)$row-> WEB_USER_PASSW);
+        $ULKESI_1 = $mysqli->real_escape_string((string)$row-> ULKESI_1);
+        $ADI_SOYADI = $mysqli->real_escape_string((string)$row-> ADI_SOYADI);
+        $CINSIYETI = $mysqli->real_escape_string((string)$row-> CINSIYETI);
+        $TC_KIMLIK_NO = $mysqli->real_escape_string((string)$row-> TC_KIMLIK_NO);
+        $PAZ_BLCRKODU = $mysqli->real_escape_string((string)$row-> PAZ_BLCRKODU);
+        $OZEL_KODU3 = $mysqli->real_escape_string((string)$row-> OZEL_KODU3);
+        $OZELALANTANIM_3 = $mysqli->real_escape_string((string)$row-> OZELALANTANIM_3);
+        $OZELALANTANIM_27 = $mysqli->real_escape_string((string)$row-> OZELALANTANIM_27);
+        $EFATURA_SENARYO = $mysqli->real_escape_string((string)$row-> EFATURA_SENARYO);
+        $EFATURA_KULLAN = $mysqli->real_escape_string((string)$row-> EFATURA_KULLAN);
+        $ALICI_GRUBU = $mysqli->real_escape_string((string)$row-> ALICI_GRUBU);
+        $EIRSALIYE_KULLAN = $mysqli->real_escape_string((string)$row-> EIRSALIYE_KULLAN);
+        $GRUBU = $mysqli->real_escape_string((string)$row-> GRUBU);
+        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
+        $currentDateTime = date("Y-m-d H:i:s");
+        $KAYIT_TARIHI = date("Y-m-d H:i:s", strtotime($currentDateTime . " +3 hours"));
+
+        $checkQueryIl = "SELECT * FROM iller WHERE il_adi = ?";
+        $checkStatementIl = $mysqli->prepare($checkQueryIl);
+        $checkStatementIl->bind_param("s", $ILI_1);
+        $checkStatementIl->execute();
+        $resultIl = $checkStatementIl->get_result();
+        $checkStatementIl->close();
+        $resultIlRow = $resultIl->fetch_assoc();
+            if ($resultIl && $resultIl->num_rows > 0){
+                $il = $resultIlRow["il_id"];
+            }else {
+                $il = "";
+            }
+        $checkQueryIlce = "SELECT * FROM ilceler WHERE ilce_adi = ? AND il_adi = ?";
+        $checkStatementIlce = $mysqli->prepare($checkQueryIlce);
+        $checkStatementIlce->bind_param("ss", $ILCESI_1, $ILI_1);
+        $checkStatementIlce->execute();
+        $resultIlce = $checkStatementIlce->get_result();
+        $checkStatementIlce->close();
+        $resultIlceRow = $resultIlce->fetch_assoc();
+            if ($resultIlce && $resultIlce->num_rows > 0) {
+                $ilce = $resultIlceRow["ilce_id"];
+            } else {
+                $ilce = ""; // Set $il to empty if there is no match
+            }
+        $aktif = 1;
+        $checkQuery = "SELECT DEGISTIRME_TARIHI, id, FROM uyeler WHERE BLKODU = ?";
+        $stmt = $mysqli->prepare($checkQuery);
+        $stmt->bind_param("i", $BLKODU);
+        $stmt->execute();
+        $checkResult = $stmt->get_result();
+        $stmt->close();
+        if ($checkResult->num_rows > 0) {
+            $existingRow = $checkResult->fetch_assoc();
+            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
+            $uyeid = $existingRow["id"];
+            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
+                $updateQuery = "UPDATE uyeler 
+                                SET muhasebe_kodu = ?, ad = ?, soyad = ?, firmaUnvani = ?, vergi_dairesi = ?, vergi_no = ?, tel = ?, aktif = ?, fiyat = ?, DOVIZ_KULLAN = ?,
+                                    DOVIZ_BIRIMI = ?, MUHKODU_ALIS = ?, MUHKODU_SATIS = ?, adres = ?, il = ?, ilce = ?, posta_kodu = ?, email = ?, ulke = ?, ADI_SOYADI = ?,
+                                    cinsiyet = ?, tc_no = ?, satis_temsilcisi = ?, uye_tipi = ?, OZELALANTANIM_3 = ?, OZELALANTANIM_27 = ?, DEGISTIRME_TARIHI = ?, EFATURA_SENARYO = ?,
+                                    EFATURA_KULLAN = ?, ALICI_GRUBU = ?, EIRSALIYE_KULLAN = ?, GRUBU = ? WHERE BLKODU = ?";
+                $stmt = $mysqli->prepare($updateQuery);
+                $stmt->bind_param("ssssssssssssssssssssssssssssssssi", $CARIKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
+                    $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME, $ULKESI_1,
+                    $ADI_SOYADI, $CINSIYETI, $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI,
+                    $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $GRUBU, $BLKODU);
+                $stmt->execute();
+                $stmt->close();
+
+                $checkAddressQuery = "SELECT id FROM b2b_adresler WHERE uye_id = ?";
+                $stmt = $mysqli->prepare($checkAddressQuery);
+                $stmt->bind_param("i", $uyeid);
+                $stmt->execute();
+                $checkAddressResult = $stmt->get_result();
+                $adres_turu = "teslimat";
+
+                if ($checkAddressResult->num_rows > 0) {
+                    $updateAddressQuery = "UPDATE b2b_adresler SET ad = ?, soyad = ?, adres_turu = ?, firma_adi = ?, il = ?, ilce = ?, vergi_dairesi = ?, vergi_no = ?, telefon = ?, aktif = ?, adres = ?, posta_kodu = ?, ulke = ?, tc_no = ? WHERE uye_id = ?";
+                    $stmt = $mysqli->prepare($updateAddressQuery);
+                    $stmt->bind_param("ssssiisssissssi", $ADI, $SOYADI, $adres_turu, $TICARI_UNVANI, $il, $ilce, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO, $uyeid);
+                    $stmt->execute();
+                    $stmt->close();
+                } else {
+                    $insertAddressQuery = "INSERT INTO b2b_adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $mysqli->prepare($insertAddressQuery);
+                    $stmt->bind_param("isiissssssissss", $uyeid, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
+                    $stmt->execute();
+                    $stmt->close();
+                }
+                echo "$newDate: Güncellenen Cari Kodu: $CARIKODU <br>";
+            }
+        } else {
+                $checkQuery = "SELECT DEGISTIRME_TARIHI, id FROM uyeler WHERE muhasebe_kodu = ?";
+                $stmt = $mysqli->prepare($checkQuery);
+                $stmt->bind_param("s", $CARIKODU);
+                $stmt->execute();
+                $checkResult = $stmt->get_result();
+                $stmt->close();
+            if ($checkResult->num_rows > 0) {
+                $existingRow = $checkResult->fetch_assoc();
+                $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
+                $uyeid = $existingRow["id"];
+                if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
+                    $updateQuery = "UPDATE uyeler 
+                                SET BLKODU = ?, ad = ?, soyad = ?, firmaUnvani = ?, vergi_dairesi = ?, vergi_no = ?, tel = ?, aktif = ?, fiyat = ?, DOVIZ_KULLAN = ?,
+                                    DOVIZ_BIRIMI = ?, MUHKODU_ALIS = ?, MUHKODU_SATIS = ?, adres = ?, il = ?, ilce = ?, posta_kodu = ?, email = ?,  ulke = ?, ADI_SOYADI = ?,
+                                    cinsiyet = ?, tc_no = ?, satis_temsilcisi = ?, uye_tipi = ?, OZELALANTANIM_3 = ?, OZELALANTANIM_27 = ?, DEGISTIRME_TARIHI = ?, EFATURA_SENARYO = ?,
+                                    EFATURA_KULLAN = ?, ALICI_GRUBU = ?, EIRSALIYE_KULLAN = ?, GRUBU = ? WHERE muhasebe_kodu = ?";
+                    $stmt = $mysqli->prepare($updateQuery);
+                    $stmt->bind_param("issssssssssssssssssssssssssssssss", $BLKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
+                        $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME,  $ULKESI_1,
+                        $ADI_SOYADI, $CINSIYETI, $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI,
+                        $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $GRUBU, $CARIKODU);
+                    $stmt->execute();
+                    $stmt->close();
+
+                    // Check if the record already exists in adresler table
+                    $checkAddressQuery = "SELECT * FROM b2b_adresler WHERE uye_id = ?";
+                    $stmt = $mysqli->prepare($checkAddressQuery);
+                    $stmt->bind_param("i", $uyeid);
+                    $stmt->execute();
+                    $checkAddressResult = $stmt->get_result();
+                    $adres_turu = "teslimat";
+
+                    if ($checkAddressResult->num_rows > 0) {
+                        // Update the existing record in adresler table
+                        $updateAddressQuery = "UPDATE b2b_adresler SET ad = ?, soyad = ?, adres_turu = ?, firma_adi = ?, il = ?, ilce = ?, vergi_dairesi = ?, vergi_no = ?, telefon = ?, aktif = ?, adres = ?, posta_kodu = ?, ulke = ?, tc_no = ? WHERE uye_id = ?";
+                        $stmt = $mysqli->prepare($updateAddressQuery);
+                        $stmt->bind_param("ssssiisssissssi", $ADI, $SOYADI, $adres_turu, $TICARI_UNVANI, $il, $ilce, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO, $uyeid);
+                        $stmt->execute();
+                        $stmt->close();
+                    } else {
+                        $insertAddressQuery = "INSERT INTO b2b_adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        $stmt = $mysqli->prepare($insertAddressQuery);
+                        $stmt->bind_param("isiissssssissss", $uyeid, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
+                        $stmt->execute();
+                        $stmt->close();
+                    }
+                    echo "$newDate: Güncellenen Cari Kodu: $CARIKODU <br>";
+                }
+            }
+            else {
+                /* BURADA MUHASEBE KODUNU KONTROL ET EĞER AYNI İSE GÜNCELLEME YAP VE BLKODUNU DA GÜNCELLE DEĞİLSE INSERT YAP */
+                $insertQuery = "INSERT INTO uyeler (BLKODU, muhasebe_kodu, ad, soyad, firmaUnvani, vergi_dairesi, vergi_no, tel, aktif, fiyat, DOVIZ_KULLAN, DOVIZ_BIRIMI, MUHKODU_ALIS,
+                MUHKODU_SATIS, adres, il, ilce, posta_kodu, email, parola, ulke, ADI_SOYADI, cinsiyet, tc_no, satis_temsilcisi, uye_tipi, OZELALANTANIM_3, OZELALANTANIM_27,
+                DEGISTIRME_TARIHI, EFATURA_SENARYO, EFATURA_KULLAN, ALICI_GRUBU, EIRSALIYE_KULLAN, kayit_tarihi, GRUBU)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $mysqli->prepare($insertQuery);
+                $stmt->bind_param("issssssssssssssssssssssssssssssssss", $BLKODU, $CARIKODU, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $AKTIF, $STOK_FIYATI,
+                    $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $MUHKODU_ALIS, $MUHKODU_SATIS, $ADRESI_1, $il, $ilce, $POSTA_KODU_1, $WEB_USER_NAME, $WEB_USER_PASSW, $ULKESI_1, $ADI_SOYADI, $CINSIYETI,
+                    $TC_KIMLIK_NO, $PAZ_BLCRKODU, $OZEL_KODU3, $OZELALANTANIM_3, $OZELALANTANIM_27, $DEGISTIRME_TARIHI, $EFATURA_SENARYO, $EFATURA_KULLAN, $ALICI_GRUBU, $EIRSALIYE_KULLAN, $KAYIT_TARIHI, $GRUBU);
+
+                if (!$stmt->execute()) {
+                    echo "$newDate: INSERT sorgusunu yürütme hatası: " . $stmt->error;
+                } else {
+                    $lastInsertedID = $mysqli->insert_id;
+                }
+                $stmt->close();
+
+                $adres_turu = "teslimat";
+                // Insert a new record in adresler table
+                $insertAddressQuery = "INSERT INTO b2b_adresler (uye_id, adres_turu, il, ilce, ad, soyad, firma_adi, vergi_dairesi, vergi_no, telefon, aktif, adres, posta_kodu, ulke, tc_no) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $stmt = $mysqli->prepare($insertAddressQuery);
+                $stmt->bind_param("isiissssssissss", $lastInsertedID, $adres_turu, $il, $ilce, $ADI, $SOYADI, $TICARI_UNVANI, $VERGI_DAIRESI, $VERGI_NO, $CEP_TEL, $aktif, $ADRESI_1, $POSTA_KODU_1, $ULKESI_1, $TC_KIMLIK_NO);
+                $stmt->execute();
+                $stmt->close();
+
+                echo "$newDate: Yeni Kayıt Eklendi. Cari Kodu: $CARIKODU <br>";
+            }
+        }
+    }
+    $mysqli->close();
+    echo "$newDate: Cari Tarama Tamamlandı. <br>";
+}
 $xml_data_stock_inventory = isset($_POST['xml_data_stok_envanter']) ? $_POST['xml_data_stok_envanter'] : '';
 $xml_data_stock = isset($_POST['xml_data_stok_adet']) ? $_POST['xml_data_stok_adet'] : '';
 $xml_data_stock_list = isset($_POST['xml_data_stok_liste']) ? $_POST['xml_data_stok_liste'] : '';
