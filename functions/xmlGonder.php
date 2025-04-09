@@ -796,7 +796,7 @@ function getAccountList($xmlData) {
                 $ilce = ""; // Set $il to empty if there is no match
             }
         $aktif = 1;
-        $checkQuery = "SELECT DEGISTIRME_TARIHI, id, FROM uyeler WHERE BLKODU = ?";
+        $checkQuery = "SELECT DEGISTIRME_TARIHI, id FROM uyeler WHERE BLKODU = ?";
         $stmt = $mysqli->prepare($checkQuery);
         $stmt->bind_param("i", $BLKODU);
         $stmt->execute();
@@ -868,7 +868,7 @@ function getAccountList($xmlData) {
                     $stmt->close();
 
                     // Check if the record already exists in adresler table
-                    $checkAddressQuery = "SELECT * FROM b2b_adresler WHERE uye_id = ?";
+                    $checkAddressQuery = "SELECT id FROM b2b_adresler WHERE uye_id = ?";
                     $stmt = $mysqli->prepare($checkAddressQuery);
                     $stmt->bind_param("i", $uyeid);
                     $stmt->execute();
