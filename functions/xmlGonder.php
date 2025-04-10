@@ -585,7 +585,7 @@ function getStockBLKODU(){
             $BLKODU[] = $row['BLKODU'];
         }
     }
-    echo $BLKODU;
+    print_r($BLKODU);
     return $BLKODU;
 }
 
