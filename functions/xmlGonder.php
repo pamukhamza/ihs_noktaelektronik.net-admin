@@ -574,11 +574,9 @@ function getAccountTransactionSil($xmlData) {
         echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
     }
 }
-function getStockBLKODU(){
-    echo "$newDate: Stok BLKODU Kontrol Başladı. <br>";
+function getStockBLKODU() {
     $mysqli = connectToDatabase();
     $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL AND BLKODU != '' AND BLKODU != '0'";
-
     $result = $mysqli->query($query);
     $BLKODU = array();
     if ($result->num_rows > 0) {
@@ -586,9 +584,10 @@ function getStockBLKODU(){
             $BLKODU[] = $row['BLKODU'];
         }
     }
-    print_r($BLKODU);
-    return $BLKODU;
+    header('Content-Type: application/json');
+    echo json_encode($BLKODU);
 }
+
 
 
 
