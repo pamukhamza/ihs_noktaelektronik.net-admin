@@ -577,7 +577,8 @@ function getAccountTransactionSil($xmlData) {
 function getStockBLKODU(){
     echo "$newDate: Stok BLKODU Kontrol Başladı. <br>";
     $mysqli = connectToDatabase();
-    $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL";
+    $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL AND BLKODU != '' AND BLKODU != '0'";
+
     $result = $mysqli->query($query);
     $BLKODU = array();
     if ($result->num_rows > 0) {
