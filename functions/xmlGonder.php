@@ -575,6 +575,7 @@ function getAccountTransactionSil($xmlData) {
     }
 }
 function getStockBLKODU(){
+    echo "$newDate: Stok BLKODU Kontrol Başladı. <br>";
     $mysqli = connectToDatabase();
     $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL";
     $result = $mysqli->query($query);
@@ -670,7 +671,7 @@ elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list)
 elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
 elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
-elseif (!empty($xml_data_stok_BLKODU)) { getStockBLKODU($xml_data_stok_BLKODU);}
+elseif (!empty($xml_data_stok_BLKODU)) { getStockBLKODU();}
 
 
 elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
