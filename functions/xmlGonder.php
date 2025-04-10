@@ -60,130 +60,8 @@ function connectToDatabasePDO() {
         die();
     }
 }
-function getStockInventory($xmlData) {
-    updateKategoriIDForAllProducts();
-    $mysqli = connectToDatabase();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo '<br>' . $newDate . ': Stok Tarama Başladı.<br>';
-    if ($xml === false) {
-        echo"Failed to parse XML Stok Envanter ENVANTER.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo $newDate . ': Stok Tarama Tamamlandı.</br>';
-        return;
-    }
-    function getMarkaIdByTitle($title, $mysqli) {
-        // 'title' alanında arama yaparak 'id'yi al
-        $selectQuery = "SELECT id FROM nokta_urun_markalar_1 WHERE title = ?";
-        $statement = $mysqli->prepare($selectQuery);
-        $statement->bind_param("s", $title);
-        $statement->execute();
-        $result = $statement->get_result()->fetch_assoc();
-        $statement->close();
-        return ($result) ? $result['id'] : null;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $STOKKODU = $mysqli->real_escape_string((string)$row->STOKKODU);
-        $STOK_ADI = (string)$row->STOK_ADI;
-        $STOK_ADI_YD = $mysqli->real_escape_string((string)$row->STOK_ADI_YD);
-        $ARA_GRUBU = $mysqli->real_escape_string((string)$row->ARA_GRUBU);
-        $ALT_GRUBU = $mysqli->real_escape_string((string)$row->ALT_GRUBU);
-        $GRUBU = $mysqli->real_escape_string((string)$row->GRUBU);
-        $MARKASI = $mysqli->real_escape_string((string)$row->MARKASI);
-        $BARKODU = $mysqli->real_escape_string((string)$row->BARKODU);
-        $KDV_ORANI = $mysqli->real_escape_string((string)$row->KDV_ORANI);
-        $KDV_ORANI_SATIS_TPT = $mysqli->real_escape_string((string)$row->KDV_ORANI_SATIS_TPT);
-        $ACIKLAMA1 = $mysqli->real_escape_string((string)$row->ACIKLAMA1);
-        $ACIKLAMA2 = $mysqli->real_escape_string((string)$row->ACIKLAMA2);
-        $ACIKLAMA3 = $mysqli->real_escape_string((string)$row->ACIKLAMA3);
-        $OZEL_KODU1 = $mysqli->real_escape_string((string)$row->OZEL_KODU1);
-        $OZELALANTANIM_18 = $mysqli->real_escape_string((string)$row->OZELALANTANIM_18);
-        $BIRIMLER = $mysqli->real_escape_string((string)$row->BIRIMLER);
-        $BIRIMI = $mysqli->real_escape_string((string)$row->BIRIMI);
-        $MIKTAR_KULBILIR = $mysqli->real_escape_string((string)$row->MIKAR_KALAN);
-        $WEBDE_GORUNSUN = (int)$row->WEBDE_GORUNSUN;
-        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
-        $AKTIF = $WEBDE_GORUNSUN;
-        $proje = 0;
-        $markaId = getMarkaIdByTitle($MARKASI, $mysqli);
-        $checkQuery = "SELECT * FROM nokta_urunler WHERE BLKODU = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("i", $BLKODU);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        $stmt->close();
-        if ($checkResult->num_rows > 0) {
-            $existingRow = $checkResult->fetch_assoc();
-            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
-            $suan = date('Y-m-d H:i:s');
-            $suan = date('Y-m-d H:i:s', strtotime($suan . ' +3 hours'));
-            $currentTimestamp = strtotime($suan);
-            $degistirmeTimestamp = strtotime($DEGISTIRME_TARIHI);
-            $timeDifference = $currentTimestamp - $degistirmeTimestamp;
 
-            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI || ($timeDifference <= 60)) {
-                $sGRUBU = duzenleString($GRUBU);
-                $sARA_GRUBU = duzenleString($ARA_GRUBU);
-                $sALT_GRUBU = duzenleString($ALT_GRUBU);
-                $sOZEL_KODU1 = duzenleString($OZEL_KODU1);
-                $sSTOK_ADI = duzenleString($STOK_ADI);
-                $sSTOKKODU = duzenleString($STOKKODU);
-                $seoLink = $sGRUBU .'/'. ($sARA_GRUBU ? $sARA_GRUBU .'/' : '') . ($sALT_GRUBU ? $sALT_GRUBU .'/' : '') . ($sOZEL_KODU1 ? $sOZEL_KODU1 .'/': '') . $sSTOK_ADI.'-'.$sSTOKKODU;
-                $updateQuery = "UPDATE nokta_urunler 
-                                SET seo_link = ? ,MarkaID = ? ,UrunKodu = ?, UrunAdiTR = ?, UrunAdiEN = ?, ARA_GRUBU = ?, ALT_GRUBU = ?, GRUBU = ?, MARKASI = ?, barkod = ?, kdv = ?, KDV_ORANI_SATIS_TPT = ?,
-                                ACIKLAMA1 = ?, ACIKLAMA2 = ?, ACIKLAMA3 = ?, OZEL_KODU1 = ?, OZELALANTANIM_18 = ?, BIRIMLER = ?, BIRIMI = ?, MIKTAR_KULBILIR = ?, WEBDE_GORUNSUN = ?, DEGISTIRME_TARIHI = ?,stok = ?, aktif = ?
-                                WHERE BLKODU = ?";
-                $stmt = $mysqli->prepare($updateQuery);
-                $stmt->bind_param("sissssssssssssssssssissii", $seoLink, $markaId, $STOKKODU, $STOK_ADI, $STOK_ADI_YD, $ARA_GRUBU, $ALT_GRUBU, $GRUBU, $MARKASI, $BARKODU, $KDV_ORANI, $KDV_ORANI_SATIS_TPT, $ACIKLAMA1, $ACIKLAMA2,
-                    $ACIKLAMA3, $OZEL_KODU1, $OZELALANTANIM_18, $BIRIMLER, $BIRIMI, $MIKTAR_KULBILIR, $WEBDE_GORUNSUN, $DEGISTIRME_TARIHI, $MIKTAR_KULBILIR, $AKTIF,$BLKODU);
-                $stmt->execute();
-                $stmt->close();
-                echo "$newDate: Güncellenen stok kodu: $STOKKODU <br>";
-            }
-        } else {
-            if($WEBDE_GORUNSUN == 1){
-                $sGRUBU = duzenleString($GRUBU);
-                $sARA_GRUBU = duzenleString($ARA_GRUBU);
-                $sALT_GRUBU = duzenleString($ALT_GRUBU);
-                $sOZEL_KODU1 = duzenleString($OZEL_KODU1);
-                $sSTOK_ADI = duzenleString($STOK_ADI);
-                $sSTOKKODU = duzenleString($STOKKODU);
-                $seoLink = $sGRUBU .'/'. ($sARA_GRUBU ? $sARA_GRUBU .'/' : '') . ($sALT_GRUBU ? $sALT_GRUBU .'/' : '') . ($sOZEL_KODU1 ? $sOZEL_KODU1 .'/': '') . $sSTOK_ADI.'-'.$sSTOKKODU;
-                $insertQuery = "INSERT INTO nokta_urunler (BLKODU, UrunKodu, UrunAdiTR, UrunAdiEN, ARA_GRUBU, ALT_GRUBU, GRUBU, MARKASI, barkod, kdv, KDV_ORANI_SATIS_TPT, ACIKLAMA1, ACIKLAMA2, ACIKLAMA3, OZEL_KODU1,
-                OZELALANTANIM_18, BIRIMLER, BIRIMI, MIKTAR_KULBILIR, WEBDE_GORUNSUN, DEGISTIRME_TARIHI, MarkaID, stok, seo_link, aktif,proje)
-                            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                $stmt = $mysqli->prepare($insertQuery);
-                $stmt->bind_param("issssssssssssssssssissssii", $BLKODU, $STOKKODU, $STOK_ADI, $STOK_ADI_YD, $ARA_GRUBU, $ALT_GRUBU,
-                    $GRUBU, $MARKASI, $BARKODU, $KDV_ORANI, $KDV_ORANI_SATIS_TPT, $ACIKLAMA1, $ACIKLAMA2, $ACIKLAMA3,
-                    $OZEL_KODU1, $OZELALANTANIM_18, $BIRIMLER, $BIRIMI, $MIKTAR_KULBILIR, $WEBDE_GORUNSUN, $DEGISTIRME_TARIHI, $markaId, $MIKTAR_KULBILIR, $seoLink, $AKTIF, $proje);
-                $stmt->execute();
-                $stmt->close();
-                // Sitemap.xml dosyasını yükle
-                $sitemapPath = "sitemap.xml";
-                $sitemapXml = simplexml_load_file($sitemapPath);
-                // Üst öğeyi oluştur (Eğer yoksa)
-                if ($sitemapXml === false) {
-                    $sitemapXml = new SimpleXMLElement('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"></urlset>');
-                }
-                // Sitemap e ekle
-                $newProdUrl = "https://www.denemeb2b.noktaelektronik.net/urunler/" . $seoLink;
-                $newProdElement = $sitemapXml->addChild('url');
-                $newProdElement->addChild('loc', $newProdUrl);
-                $newProdElement->addChild('lastmod', date('Y-m-d'));
-                $newProdElement->addChild('changefreq', 'daily');
-                $newProdElement->addChild('priority', '0.8');
-                // Sitemap dosyasını kaydet
-                $sitemapXml->asXML($sitemapPath);
-                echo "$newDate: Yeni Kayıt Eklendi. Stok Kodu: $STOKKODU <br>";
-            }
-        }
-    }
-    $mysqli->close();
-    echo "$newDate: Stok Tarama Tamamlandı. <br>";
-}
+
 function stokMiktar($xmlData) {
     $pdo = connectToDatabasePDO();
     $xml = simplexml_load_string($xmlData);
@@ -233,239 +111,7 @@ function stokMiktar($xmlData) {
         echo "Error: " . $e->getMessage();
     }
 }
-function getStockList($xmlData) {
-    $mysqli = connectToDatabase();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo "$newDate: Fiyat Tarama Başladı. <br>";
-    if ($xml === false) {
-        echo "Failed to parse XML Fiyat Liste.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "$newDate: Fiyat Tarama Tamamlandı.<br>";
-        return;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $STOKKODU = $mysqli->real_escape_string((string)$row->STOKKODU);
-        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row->DOVIZ_KULLAN);
-        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row->DOVIZ_BIRIMI);
-        $KSF1 = $mysqli->real_escape_string((string)$row->KSF1);
-        $KSF2 = $mysqli->real_escape_string((string)$row->KSF2);
-        $KSF3 = $mysqli->real_escape_string((string)$row->KSF3);
-        $KSF4 = $mysqli->real_escape_string((string)$row->KSF4);
-        $DSF1 = $mysqli->real_escape_string((string)$row->DSF1);
-        $DSF2 = $mysqli->real_escape_string((string)$row->DSF2);
-        $DSF3 = $mysqli->real_escape_string((string)$row->DSF3);
-        $DSF4 = $mysqli->real_escape_string((string)$row->DSF4);
-        $KSF1 = gelenFiyatDuzenle($KSF1);
-        $KSF2 = gelenFiyatDuzenle($KSF2);
-        $KSF3 = gelenFiyatDuzenle($KSF3);
-        $KSF4 = gelenFiyatDuzenle($KSF4);
-        $DSF1 = gelenFiyatDuzenle($DSF1);
-        $DSF2 = gelenFiyatDuzenle($DSF2);
-        $DSF3 = gelenFiyatDuzenle($DSF3);
-        $DSF4 = gelenFiyatDuzenle($DSF4);
-        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
-        $checkQuery = "SELECT * FROM nokta_urunler WHERE BLKODU = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("i", $BLKODU);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        $stmt->close();
-        if ($checkResult->num_rows > 0) {
-            $existingRow = $checkResult->fetch_assoc();
-            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
-            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
-                $updateQuery = "UPDATE nokta_urunler 
-                                SET DOVIZ_KULLAN = ?, DOVIZ_BIRIMI = ?, KSF1 = ?, KSF2 = ?, KSF3 = ?,KSF4 = ?, DSF1 = ?, DSF2 = ?, DSF3 = ?, DSF4 = ?, DEGISTIRME_TARIHI = ?
-                                WHERE BLKODU = ?";
-                $stmt = $mysqli->prepare($updateQuery);
-                $stmt->bind_param("sssssssssssi", $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $KSF1, $KSF2, $KSF3, $KSF4, $DSF1, $DSF2, $DSF3, $DSF4, $DEGISTIRME_TARIHI, $BLKODU);
-                $stmt->execute();
-                $stmt->close();
 
-                echo "$newDate: Fiyatı güncellenen stok kodu: $STOKKODU <br>";
-            }
-        }
-    }
-    $mysqli->close();
-    echo "$newDate: Fiyat Tarama Tamamlandı. <br>";
-}
-
-
-
-
-
-function cariGonderUpdate($xmlData) {
-    global $newDate;
-    $mysqli = connectToDatabase();
-    $date = date("Y-m-d H:i:s", strtotime("-24 hour"));
-    $xml = simplexml_load_string($xmlData);
-    $dataArray = [];
-    if ($xml === false) {
-        echo "Failed to parse XML Cari Güncelle Liste. <br>";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo "Gönderilecek veri yok. (Cari Liste) <br>";
-        return;
-    }
-    foreach ($xml->table->row as $row) {
-        $BLKODU = (int)$row->BLKODU;
-        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
-        $dataArray[] = ["BLKODU" => $BLKODU, "DEGISTIRME_TARIHI" => $DEGISTIRME_TARIHI];
-    }
-    $checkQuery = "SELECT BLKODU, DEGISTIRME_TARIHI FROM uyeler WHERE DEGISTIRME_TARIHI >= ?";
-    $stmt = $mysqli->prepare($checkQuery);
-    $stmt->bind_param("s", $date);
-    $stmt->execute();
-    $checkResult = $stmt->get_result();
-    $unmatchedBLKODUs = [];
-    while ($row = $checkResult->fetch_assoc()) {
-        $BLKODU_db = (int)$row['BLKODU'];
-        $DEGISTIRME_TARIHI_db = $row['DEGISTIRME_TARIHI'];
-        $found = false;
-        foreach ($dataArray as $data) {
-            if ($data["BLKODU"] === $BLKODU_db && $data["DEGISTIRME_TARIHI"] === $DEGISTIRME_TARIHI_db) {
-                $found = true;
-                break;
-            }
-        }
-        if (!$found) {
-            $unmatchedBLKODUs[] = ["BLKODU" => $BLKODU_db, "DEGISTIRME_TARIHI" => $DEGISTIRME_TARIHI_db];
-        }
-    }
-    foreach ($unmatchedBLKODUs as $unmatchedBLKODU) {
-        $gelsinBL = $unmatchedBLKODU["BLKODU"];
-
-        $checkQuery = "SELECT * FROM uyeler WHERE BLKODU = ?";
-        $stmt = $mysqli->prepare($checkQuery);
-        $stmt->bind_param("s", $gelsinBL);
-        $stmt->execute();
-        $checkResult = $stmt->get_result();
-        if ($row = $checkResult->fetch_assoc()) {
-
-            $il = $row['il'];
-            $ilce = $row['ilce'];
-
-            $query1 = "SELECT * FROM iller WHERE il_id = ?";
-            $stmt1 = $mysqli->prepare($query1);
-            $stmt1->bind_param("i", $il);
-            $stmt1->execute();
-            $result1 = $stmt1->get_result();
-            if ($result1->num_rows > 0) {
-                $row1 = $result1->fetch_assoc();
-                $il_adi = $row1['il_adi'];
-            }
-
-            $query2 = "SELECT * FROM ilceler WHERE ilce_id = ? AND il_id = ?";
-            $stmt2 = $mysqli->prepare($query2);
-            $stmt2->bind_param("ii", $ilce, $il);
-            $stmt2->execute();
-            $result2 = $stmt2->get_result();
-
-            if ($result2->num_rows > 0) {
-                $row2 = $result2->fetch_assoc();
-                $ilce_adi = $row2['ilce_adi'];
-            }
-
-            $query3 = "SELECT * FROM users WHERE id = ?";
-            $stmt3 = $mysqli->prepare($query3);
-            $stmt3->bind_param("i", $row["satis_temsilcisi"]);
-            $stmt3->execute();
-            $result3 = $stmt3->get_result();
-
-            if ($result3->num_rows > 0) {
-                $row3 = $result3->fetch_assoc();
-                $satis_temsilcisi = $row3['full_name'] ;
-            }
-
-            $xmlDoc = new DOMDocument('1.0', 'UTF-8');
-            $xmlDoc->formatOutput = true;
-            $root = $xmlDoc->createElement('WCR');
-            $xmlDoc->appendChild($root);
-
-            // AYAR ALANI
-            $ayar = $xmlDoc->createElement('AYAR');
-            $root->appendChild($ayar);
-            $ayarElements = [
-                'TRSVER' => 'ASWCR1.02.03',
-                'DBNAME' => 'WOLVOX',
-                'PERSUSER' => 'sa',
-                'SUBE_KODU' => '3402'                ];
-            foreach ($ayarElements as $tag => $value) {
-                $element = $xmlDoc->createElement($tag);
-                $element->appendChild($xmlDoc->createCDATASection($value));
-                $ayar->appendChild($element);
-            }
-            // CARI BILGI ALANI
-            $cari = $xmlDoc->createElement('CARI');
-            $root->appendChild($cari);
-            $cariElements = [
-                'BLKODU' => $row['BLKODU'],
-                'CARIKODU' => $row['muhasebe_kodu'],
-                'OZEL_KODU1' => 'B2B',
-                'OZEL_KODU2' => $satis_temsilcisi,
-                'OZEL_KODU3' => $row['uye_tipi'],
-                'MUHKODU_ALIS' => $row['MUHKODU_ALIS'],
-                'MUHKODU_SATIS' => $row['MUHKODU_SATIS'],
-                'STOK_FIYATI' => $row['fiyat'],
-                'PAZ_BLCRKODU' => $row['satis_temsilcisi'],
-                'ADI' => $row['ad'],
-                'SOYADI' => $row['soyad'],
-                'E_MAIL' => $row['email'],
-                'WEB_USER_NAME' => $row['email'],
-                'WEB_USER_PASSW' => $row['parola'],
-                'TC_KIMLIK_NO' => $row['tc_no'],
-                'ILI_1' => $il_adi,
-                'ILCESI_1' => $ilce_adi,
-                'POSTA_KODU_1' => $row['posta_kodu'],
-                'CEP_TEL' => $row['tel'],
-                'ADRESI_1' => $row['adres'],
-                'TICARI_UNVANI' => $row['firmaUnvani'],
-                'VERGI_NO' => $row['vergi_no'],
-                'VERGI_DAIRESI' => $row['vergi_dairesi'],
-                'TEL1' => $row['sabit_tel']
-            ];
-            foreach ($cariElements as $tag => $value) {
-                $element = $xmlDoc->createElement($tag);
-                $element->appendChild($xmlDoc->createCDATASection($value ?? ''));
-                $cari->appendChild($element);
-            }
-            $xmlFileName = 'cari_guncelle_' . $row['BLKODU'] . '.xml';
-            $xmlDoc->save('../assets/cari_guncelle/' . $xmlFileName);
-        }
-        $stmt->close();
-    }
-    $files = scandir("assets/cari_guncelle/");
-    if ($files === false) {
-        echo "$newDate: XML dosyaları bulunamadı <br>";
-        return;
-    }
-    $jsonResult = array();
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $xmlData = file_get_contents("https://denemeb2b.noktaelektronik.net/assets/cari_guncelle/$file");
-        $jsonResult[$file] = $xmlData; // XML verisini JSON'a dönüştür ve dosya adıyla eşleştir
-        echo "$newDate: Güncellenen Cari $file gönderildi. <br>";
-    }
-    echo json_encode($jsonResult);
-    // Faturalar klasöründeki dosyaları sil
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-        $filePath = "assets/cari_guncelle/$file";
-        if (is_file($filePath)) {
-            unlink($filePath); // Dosyayı sil
-        }
-    }
-    $mysqli->close();
-}
 
 //KULLANILAN FONKSİYONLAR
 function odemeGonder() {
@@ -928,7 +574,81 @@ function getAccountTransactionSil($xmlData) {
         echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
     }
 }
+function getStockBLKODU(){
+    $mysqli = connectToDatabase();
+    $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL";
+    $result = $mysqli->query($query);
+    $BLKODU = array();
+    if ($result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+            $BLKODU[] = $row['BLKODU'];
+        }
+    }
+    return $BLKODU;
+}
 
+
+
+function getStockList($xmlData) {
+    $mysqli = connectToDatabase();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Fiyat Tarama Başladı. <br>";
+    if ($xml === false) {
+        echo "Failed to parse XML Fiyat Liste.";
+        return;
+    }
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Fiyat Tarama Tamamlandı.<br>";
+        return;
+    }
+    foreach ($xml->table->row as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $STOKKODU = $mysqli->real_escape_string((string)$row->STOKKODU);
+        $DOVIZ_KULLAN = $mysqli->real_escape_string((string)$row->DOVIZ_KULLAN);
+        $DOVIZ_BIRIMI = $mysqli->real_escape_string((string)$row->DOVIZ_BIRIMI);
+        $KSF1 = $mysqli->real_escape_string((string)$row->KSF1);
+        $KSF2 = $mysqli->real_escape_string((string)$row->KSF2);
+        $KSF3 = $mysqli->real_escape_string((string)$row->KSF3);
+        $KSF4 = $mysqli->real_escape_string((string)$row->KSF4);
+        $DSF1 = $mysqli->real_escape_string((string)$row->DSF1);
+        $DSF2 = $mysqli->real_escape_string((string)$row->DSF2);
+        $DSF3 = $mysqli->real_escape_string((string)$row->DSF3);
+        $DSF4 = $mysqli->real_escape_string((string)$row->DSF4);
+        $KSF1 = gelenFiyatDuzenle($KSF1);
+        $KSF2 = gelenFiyatDuzenle($KSF2);
+        $KSF3 = gelenFiyatDuzenle($KSF3);
+        $KSF4 = gelenFiyatDuzenle($KSF4);
+        $DSF1 = gelenFiyatDuzenle($DSF1);
+        $DSF2 = gelenFiyatDuzenle($DSF2);
+        $DSF3 = gelenFiyatDuzenle($DSF3);
+        $DSF4 = gelenFiyatDuzenle($DSF4);
+        $DEGISTIRME_TARIHI = date('Y-m-d H:i:s', strtotime((string)$row->DEGISTIRME_TARIHI));
+        $checkQuery = "SELECT * FROM nokta_urunler WHERE BLKODU = ?";
+        $stmt = $mysqli->prepare($checkQuery);
+        $stmt->bind_param("i", $BLKODU);
+        $stmt->execute();
+        $checkResult = $stmt->get_result();
+        $stmt->close();
+        if ($checkResult->num_rows > 0) {
+            $existingRow = $checkResult->fetch_assoc();
+            $existingDegistirmeTarihi = $existingRow['DEGISTIRME_TARIHI'];
+            if ($existingDegistirmeTarihi != $DEGISTIRME_TARIHI) {
+                $updateQuery = "UPDATE nokta_urunler 
+                                SET DOVIZ_KULLAN = ?, DOVIZ_BIRIMI = ?, KSF1 = ?, KSF2 = ?, KSF3 = ?,KSF4 = ?, DSF1 = ?, DSF2 = ?, DSF3 = ?, DSF4 = ?, DEGISTIRME_TARIHI = ?
+                                WHERE BLKODU = ?";
+                $stmt = $mysqli->prepare($updateQuery);
+                $stmt->bind_param("sssssssssssi", $DOVIZ_KULLAN, $DOVIZ_BIRIMI, $KSF1, $KSF2, $KSF3, $KSF4, $DSF1, $DSF2, $DSF3, $DSF4, $DEGISTIRME_TARIHI, $BLKODU);
+                $stmt->execute();
+                $stmt->close();
+
+                echo "$newDate: Fiyatı güncellenen stok kodu: $STOKKODU <br>";
+            }
+        }
+    }
+    $mysqli->close();
+    echo "$newDate: Fiyat Tarama Tamamlandı. <br>";
+}
 
 $xml_data_stock_inventory = isset($_POST['xml_data_stok_envanter']) ? $_POST['xml_data_stok_envanter'] : '';
 $xml_data_stock = isset($_POST['xml_data_stok_adet']) ? $_POST['xml_data_stok_adet'] : '';
@@ -939,11 +659,9 @@ $xml_data_account_transaction_sil = isset($_POST['xml_data_cari_hareket_sil']) ?
 $xml_data_account_balance_list = isset($_POST['xml_data_cari_bakiye_liste']) ? $_POST['xml_data_cari_bakiye_liste'] : '';
 $xml_odeme_sorgula = isset($_POST['xml_odeme_sorgula']) ? $_POST['xml_odeme_sorgula'] : '';
 $xml_cari_gonder = isset($_POST['xml_cari_gonder']) ? $_POST['xml_cari_gonder'] : '';
-
 $xml_cari_blkodu = isset($_POST['xml_cari_blkodu']) ? $_POST['xml_cari_blkodu'] : '';
 $xml_cari_kodu   = isset($_POST['xml_cari_kodu']) ? $_POST['xml_cari_kodu'] : '';
-
-$xml_cari_gonder_guncelle = isset($_POST['xml_cari_gonder_guncelle']) ? $_POST['xml_cari_gonder_guncelle'] : '';
+$xml_data_stok_BLKODU   = isset($_POST['xml_data_stok_BLKODU']) ? $_POST['xml_data_stok_BLKODU'] : '';
 
 
 if (!empty($xml_odeme_sorgula)) { odemeGonder(); }
@@ -952,15 +670,15 @@ elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list)
 elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
 elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
+elseif (!empty($xml_data_stok_BLKODU)) { getStockBLKODU($xml_data_stok_BLKODU);}
+
+
+elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
 
 
 elseif (!empty($xml_data_stock_inventory)) {
-    getStockInventory($xml_data_stock_inventory);
     insertCategoriesFromDatabase();
     updateKategoriIDForAllProducts();
-    getMarka($xml_data_stock_inventory);
 }
-elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
-elseif (!empty($xml_cari_gonder_guncelle)) { cariGonderUpdate($xml_cari_gonder_guncelle); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 ?>
