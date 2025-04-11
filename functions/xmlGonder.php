@@ -528,57 +528,47 @@ function getAccountTransactionSil($xmlData) {
 }
 function stokMiktar($xmlData) {
     $pdo = connectToDatabasePDO();
-    $xml = simplexml_load_string($xmlData);
     global $newDate;
     echo '<br>' . $newDate . ': Stok Miktar Tarama Başladı.<br>';
-    
-    if ($xml === false) {
-        echo "Failed to parse XML Stok Envanter.";
-        return;
-    }
 
-    if (!isset($xml->table->row)) {
+    $xml = simplexml_load_string($xmlData);
+    if ($xml === false || !isset($xml->table->row)) {
         echo $newDate . ': Stok Miktar Tarama Tamamlandı.<br>';
         return;
     }
 
-    try {
-        $valueSets = array();
-        $BLKODUs = array();
+    $rows = $xml->table->row;
+    $BLKODUs = array_map(fn($row) => (int)$row->BLKODU, iterator_to_array($rows));
+    $placeholders = implode(',', array_fill(0, count($BLKODUs), '?'));
 
-        foreach ($xml->table->row as $row) {
-            $BLKODU = (int)$row->BLKODU;
-            $MIKTAR_KULBILIR = (int)$row->MIKTAR_KULBILIR;
-            $MIKTAR_TERMIN = (int)$row->MIKTAR_TERMIN;
-            $toplamMiktar = $MIKTAR_KULBILIR - $MIKTAR_TERMIN;
+    $stmt = $pdo->prepare("SELECT BLKODU, stok FROM nokta_urunler WHERE BLKODU IN ($placeholders)");
+    $stmt->execute($BLKODUs);
+    $stoklar = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
 
-            // Mevcut stok bilgisini al
-            $selectStmt = $pdo->prepare("SELECT stok FROM nokta_urunler WHERE BLKODU = ?");
-            $selectStmt->execute([$BLKODU]);
-            $current = $selectStmt->fetch(PDO::FETCH_ASSOC);
+    $valueSets = [];
+    $updateIds = [];
 
-            if ($current && $current['stok'] != $toplamMiktar) {
-                echo "BLKODU $BLKODU stok güncellendi: {$current['stok']} → $toplamMiktar<br>";
-            }
+    foreach ($rows as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $toplamMiktar = (int)$row->MIKTAR_KULBILIR - (int)$row->MIKTAR_TERMIN;
+        $currentStok = $stoklar[$BLKODU] ?? null;
 
+        if ($currentStok !== null && $currentStok != $toplamMiktar) {
+            echo "BLKODU $BLKODU stok güncellendi: $currentStok → $toplamMiktar<br>";
             $valueSets[] = "WHEN $BLKODU THEN '$toplamMiktar'";
-            $BLKODUs[] = $BLKODU;
+            $updateIds[] = $BLKODU;
         }
-
-        if (!empty($valueSets)) {
-            $updateQuery = "UPDATE nokta_urunler SET stok = CASE BLKODU ";
-            $updateQuery .= implode(' ', $valueSets);
-            $updateQuery .= " END WHERE BLKODU IN (" . implode(',', $BLKODUs) . ")";
-            
-            $stmt = $pdo->prepare($updateQuery);
-            $stmt->execute();
-        }
-
-        echo "$newDate: Stok Miktar Tarama Tamamlandı.<br>";
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
     }
+
+    if ($valueSets) {
+        $updateQuery = "UPDATE nokta_urunler SET stok = CASE BLKODU " . implode(' ', $valueSets) .
+                       " END WHERE BLKODU IN (" . implode(',', $updateIds) . ")";
+        $pdo->prepare($updateQuery)->execute();
+    }
+
+    echo "$newDate: Stok Miktar Tarama Tamamlandı.<br>";
 }
+
 
 
 function getStockList($xmlData) {
