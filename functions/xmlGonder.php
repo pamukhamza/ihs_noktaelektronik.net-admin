@@ -77,7 +77,7 @@ function stokMiktar($xmlData) {
     }
     try {
         // Build the update query with multiple value sets
-        $updateQuery = "UPDATE nokta_urunler SET MIKTAR_KULBILIR = CASE BLKODU ";
+        $updateQuery = "UPDATE nokta_urunler SET stok = CASE BLKODU ";
         $valueSets = array();
         foreach ($xml->table->row as $row) {
             $BLKODU = (int)$row->BLKODU;
@@ -574,21 +574,6 @@ function getAccountTransactionSil($xmlData) {
         echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
     }
 }
-function getStockBLKODU() {
-    $mysqli = connectToDatabase();
-    $query = "SELECT BLKODU FROM nokta_urunler WHERE BLKODU IS NOT NULL AND BLKODU != '' AND BLKODU != '0'";
-    $result = $mysqli->query($query);
-    $BLKODU = array();
-    if ($result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $BLKODU[] = $row['BLKODU'];
-        }
-    }
-    header('Content-Type: application/json');
-    echo json_encode($BLKODU);
-}
-
-
 
 
 function getStockList($xmlData) {
@@ -672,7 +657,8 @@ elseif (!empty($xml_data_account_list)) { getAccountList($xml_data_account_list)
 elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_data_account_balance_list); }
 elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
-elseif (!empty($xml_data_stok_BLKODU)) { getStockBLKODU();}
+elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
+
 
 
 elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
@@ -682,5 +668,4 @@ elseif (!empty($xml_data_stock_inventory)) {
     insertCategoriesFromDatabase();
     updateKategoriIDForAllProducts();
 }
-elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 ?>
