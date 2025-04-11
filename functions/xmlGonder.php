@@ -62,55 +62,7 @@ function connectToDatabasePDO() {
 }
 
 
-function stokMiktar($xmlData) {
-    $pdo = connectToDatabasePDO();
-    $xml = simplexml_load_string($xmlData);
-    global $newDate;
-    echo '<br>' . $newDate . ': Stok Miktar Tarama Başladı.<br>';
-    if ($xml === false) {
-        echo "Failed to parse XML Stok Envanter.";
-        return;
-    }
-    if (!isset($xml->table->row)) {
-        echo $newDate . ': Stok Miktar Tarama Tamamlandı.</br>';
-        return;
-    }
-    try {
-        // Build the update query with multiple value sets
-        $updateQuery = "UPDATE nokta_urunler SET stok = CASE BLKODU ";
-        $valueSets = array();
-        foreach ($xml->table->row as $row) {
-            $BLKODU = (int)$row->BLKODU;
-            $MIKTAR_KULBILIR = (int)$row->MIKTAR_KULBILIR;
-            $MIKTAR_TERMIN = (int)$row->MIKTAR_TERMIN;
-            $toplamMiktar = $MIKTAR_KULBILIR - $MIKTAR_TERMIN;
-            $valueSets[] = "WHEN $BLKODU THEN '$toplamMiktar'";
-        }
-        $updateQuery .= implode(' ', $valueSets);
-        $updateQuery .= " END, stok = CASE BLKODU ";
-        $valueSets = array();
-        foreach ($xml->table->row as $row) {
-            $BLKODU = (int)$row->BLKODU;
-            $MIKTAR_KULBILIR = (int)$row->MIKTAR_KULBILIR;
-            $MIKTAR_TERMIN = (int)$row->MIKTAR_TERMIN;
-            $toplamMiktar = $MIKTAR_KULBILIR - $MIKTAR_TERMIN;
-            $valueSets[] = "WHEN $BLKODU THEN '$toplamMiktar'";
-        }
-        $updateQuery .= implode(' ', $valueSets);
-        $updateQuery .= " END WHERE BLKODU IN (";
-        $BLKODUs = array();
-        foreach ($xml->table->row as $row) {
-            $BLKODUs[] = (int)$row->BLKODU;
-        }
-        $updateQuery .= implode(',', $BLKODUs) . ")";
-        // Execute the update query
-        $stmt = $pdo->prepare($updateQuery);
-        $stmt->execute();
-        echo "$newDate: Stok Miktar Tarama Tamamlandı. <br>";
-    } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
-    }
-}
+
 
 
 //KULLANILAN FONKSİYONLAR
@@ -572,6 +524,59 @@ function getAccountTransactionSil($xmlData) {
         // Rollback the transaction in case of error
         $pdo->rollBack();
         echo "$newDate: Evrak Silindi Kontrol tamamlandı. <br>";
+    }
+}
+function stokMiktar($xmlData) {
+    $pdo = connectToDatabasePDO();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo '<br>' . $newDate . ': Stok Miktar Tarama Başladı.<br>';
+    
+    if ($xml === false) {
+        echo "Failed to parse XML Stok Envanter.";
+        return;
+    }
+
+    if (!isset($xml->table->row)) {
+        echo $newDate . ': Stok Miktar Tarama Tamamlandı.<br>';
+        return;
+    }
+
+    try {
+        $valueSets = array();
+        $BLKODUs = array();
+
+        foreach ($xml->table->row as $row) {
+            $BLKODU = (int)$row->BLKODU;
+            $MIKTAR_KULBILIR = (int)$row->MIKTAR_KULBILIR;
+            $MIKTAR_TERMIN = (int)$row->MIKTAR_TERMIN;
+            $toplamMiktar = $MIKTAR_KULBILIR - $MIKTAR_TERMIN;
+
+            // Mevcut stok bilgisini al
+            $selectStmt = $pdo->prepare("SELECT stok FROM nokta_urunler WHERE BLKODU = ?");
+            $selectStmt->execute([$BLKODU]);
+            $current = $selectStmt->fetch(PDO::FETCH_ASSOC);
+
+            if ($current && $current['stok'] != $toplamMiktar) {
+                echo "BLKODU $BLKODU stok güncellendi: {$current['stok']} → $toplamMiktar<br>";
+            }
+
+            $valueSets[] = "WHEN $BLKODU THEN '$toplamMiktar'";
+            $BLKODUs[] = $BLKODU;
+        }
+
+        if (!empty($valueSets)) {
+            $updateQuery = "UPDATE nokta_urunler SET stok = CASE BLKODU ";
+            $updateQuery .= implode(' ', $valueSets);
+            $updateQuery .= " END WHERE BLKODU IN (" . implode(',', $BLKODUs) . ")";
+            
+            $stmt = $pdo->prepare($updateQuery);
+            $stmt->execute();
+        }
+
+        echo "$newDate: Stok Miktar Tarama Tamamlandı.<br>";
+    } catch (Exception $e) {
+        echo "Error: " . $e->getMessage();
     }
 }
 
