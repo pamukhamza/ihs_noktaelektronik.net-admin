@@ -525,7 +525,7 @@ function stokMiktar($xmlData) {
     $pdo = connectToDatabasePDO();
     $xml = simplexml_load_string($xmlData);
     global $newDate;
-    echo '<br>' . $newDate . ': Stok Miktar Tarama Başladı.<br>';
+    echo $newDate . ': Stok Miktar Tarama Başladı.<br>';
     
     if ($xml === false) {
         echo "Failed to parse XML Stok Envanter.";
