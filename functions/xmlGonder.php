@@ -60,11 +60,6 @@ function connectToDatabasePDO() {
         die();
     }
 }
-
-
-
-
-
 //KULLANILAN FONKSİYONLAR
 function odemeGonder() {
     global $newDate;
@@ -579,8 +574,6 @@ function stokMiktar($xmlData) {
         echo "Error: " . $e->getMessage();
     }
 }
-
-
 function getStockList($xmlData) {
     $mysqli = connectToDatabase();
     $xml = simplexml_load_string($xmlData);
@@ -663,14 +656,5 @@ elseif (!empty($xml_data_account_balance_list)) { getAccountBalanceList($xml_dat
 elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList($xml_data_account_transaction_list); }
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
-
-
-
 elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
-
-
-elseif (!empty($xml_data_stock_inventory)) {
-    insertCategoriesFromDatabase();
-    updateKategoriIDForAllProducts();
-}
 ?>
