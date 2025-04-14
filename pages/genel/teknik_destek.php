@@ -842,7 +842,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                         var adet = adet_array.join(', ');
                         var musteri = $('#musteri').val();
                         var tel = $('#tel').val();
-                        var email = $('#email').val();
+                        var email = $('#email11').val();
                         var aciklama = $('#aciklama').val();
 
                         var printContent = `
