@@ -265,7 +265,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                             </div>
                             <div class="col-sm-6">
                                 <label for="email" class="form-label">E-Posta*</label>
-                                <input type="email" class="form-control" id="email" placeholder="mail@example.com" required>
+                                <input type="email" class="form-control" id="email11" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
                             <div class="col-sm-12">
@@ -812,7 +812,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
             formData.append('id', $('#musteri_id').val());
             formData.append('musteri', $('#musteri').val());
             formData.append('tel', $('#tel').val());
-            formData.append('email', $('#email').val());
+            formData.append('email', $('#email11').val());
             formData.append('adres', $('#adres').val());
             formData.append('fatura_no', $('#fatura_no').val());
             formData.append('aciklama', $('#aciklama').val());
