@@ -70,7 +70,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                         </div>
                     </div>
                     <div class="btn-group d-flex flex-wrap" role="group">
-                        <button class="btn btn-primary m-1 flex-fill" data-toggle="modal" data-target="#basvuruModal" data-basvur-id="1">Yeni Kayıt Ekle</button>
+                        <button class="btn btn-primary m-1 flex-fill" data-bs-toggle="modal" data-bs-target="#basvuruModal" data-basvur-id="1">Yeni Kayıt Ekle</button>
                         <a href="pages/genel/teknik_destek.php?sDurum=0" class="btn btn-secondary m-1 flex-fill">Tüm Kayıtlar</a>
                         <a href="pages/genel/teknik_destek.php?sDurum=1" class="btn btn-warning m-1 flex-fill">Beklenen Kayıtlar</a>
                         <a href="pages/genel/teknik_destek.php?sDurum=2" class="btn btn-danger m-1 flex-fill">Onaylanan Kayıtlar </a>
