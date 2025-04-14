@@ -118,6 +118,10 @@ if (!empty($search_value)) {
 if (!empty($filter_technician)) {
     $filtered_records_sql .= " AND u.tekniker LIKE :technician";
 }
+if (!empty($seri_no_ara)) {
+    $filtered_records_sql .= " AND u.tekniker LIKE :seri_no";
+
+}
 
 if ($filter_status == '1' || $filter_status == '2' || $filter_status == '3') {
     $filtered_records_sql .= " AND u.urun_durumu = :status";
