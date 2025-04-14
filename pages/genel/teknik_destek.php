@@ -240,7 +240,178 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
             </div>
         </div>
     </div>
-<!-- Core JS -->
+
+    <!-- Modal Basvuru Formu -->
+    <div class="modal fade" data-bs-backdrop="static" id="basvuruModal" tabindex="-1" role="dialog" aria-labelledby="basvuruModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="basvuruModalLabel">Teknik Destek</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="applicationForm" class="needs-validation" novalidate>
+                        <div class="row g-3">
+                            <div class="col-sm-12">
+                                <label for="musteri" class="form-label">Müşteri(Firma Bilgisi)</label>
+                                <input type="text" class="form-control" id="musteri_id" hidden value="<?php if($_SESSION['id']){ echo $_SESSION['id'];} ?>">
+                                <input type="text" class="form-control" id="musteri" value="<?php if($_SESSION['id']){ echo $_SESSION['firma'];} ?>" required>
+                                <div class="invalid-feedback">Geçerli ad giriniz!</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="tel" class="form-label">Telefon*</label>
+                                <input type="tel" class="form-control" id="tel" placeholder="0(xxx)xxx xx xx" required>
+                                <div class="invalid-feedback">Geçerli Telefon giriniz!</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="email" class="form-label">E-Posta*</label>
+                                <input type="email" class="form-control" id="email" placeholder="mail@example.com" required>
+                                <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="adres" class="form-label">Adres*</label>
+                                <input type="text" class="form-control" id="adres" required>
+                                <div class="invalid-feedback">Geçerli Adres giriniz!</div>
+                            </div>
+                            <div id="input-row-template" style="display: none;">
+                                <div class="row mb-2">
+                                    <div class="col-sm-4">
+                                        <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
+                                        <input type="text" class="form-control urun_kodu" required>
+                                        <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label for="seri_no" class="form-label">Seri Numarası</label>
+                                        <input type="text" class="form-control seri_no">
+                                        <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label for="adet" class="form-label">Adet*</label>
+                                        <input type="text" class="form-control adet" required>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn mt-4 remove-row-btn"><i class="fa-solid fa-circle-minus fa-lg"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                            <small style="color: red">Birden fazla ürün girmek için + işaretine tıklayınız !</small>
+                            <div id="input-rows-container">
+                                    <div class="row mb-2">
+                                        <div class="col-sm-4">
+                                            <label for="urun_kodu" class="form-label">Ürün Kodu*</label>
+                                            <input type="text" class="form-control urun_kodu" required>
+                                            <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label for="seri_no" class="form-label">Seri Numarası</label>
+                                            <input type="text" class="form-control seri_no">
+                                            <div class="invalid-feedback">Geçerli Seri Numarası giriniz!</div>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <label for="adet" class="form-label">Adet*</label>
+                                            <input type="text" class="form-control adet" required>
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <button type="button" class="btn mt-4 add-row-btn"><i class="fa-solid fa-circle-plus fa-lg"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            <div class="col-sm-6">
+                                <label for="fatura_no" class="form-label">Fatura No</label>
+                                <input type="text" class="form-control" id="fatura_no" >
+                                <div class="invalid-feedback">Geçerli fatura numarası giriniz!</div>
+                            </div>
+                            <div class="col-sm-6">
+                                <label for="ad_soyad" class="form-label">Formu Dolduran Bilgileri*</label>
+                                <input type="text" class="form-control" id="ad_soyad" required placeholder="Ad / Soyad...">
+                                <div class="invalid-feedback">Geçerli bilgi giriniz!</div>
+                            </div>
+                            <div class="col-sm-12">
+                                <label for="aciklama" class="form-label">Açıklama*</label>
+                                <textarea name="aciklama" id="aciklama"  class="form-control" required></textarea>
+                                <div class="invalid-feedback">Geçerli Ürün Kodu giriniz!</div>
+                            </div>
+                            <div class="row mb-2 mt-2">
+                                <div class="col-6">
+                                    <label for="gonderim_sekli" class="form-label">Gönderim Şekli*</label>
+                                    <select class="form-control" id="gonderim_sekli" name="gonderim_sekli" required>
+                                        <option value="1">Kargo ile Gönderim</option>
+                                        <option value="2">Elden Teslim</option>
+                                    </select>
+                                </div>
+                                <div class="col-6" id="kargo_firmasi_div">
+                                    <label for="kargo_firmasi" class="form-label">Kargo Firması*</label>
+                                    <select class="form-control" id="kargo_firmasi" name="kargo_firmasi" required>
+                                        <option value="">Kargo Firması Seçiniz</option>
+                                        <option value="Yurtiçi Kargo">Yurtiçi Kargo</option>
+                                        <option value="MNG Kargo">MNG Kargo</option>
+                                        <option value="Aras Kargo">Aras Kargo</option>
+                                        <option value="Sürat Kargo">Sürat Kargo</option>
+                                        <option value="PTT Kargo">PTT Kargo</option>
+                                        <option value="Diğer Kargo Firmaları">Diğer Kargo Firmaları</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="checkbox">
+                                    <input type="checkbox" id="onay" name="onay" required class="form-check-input"/>
+                                    <a class="sozBtn" data-toggle="modal" data-target="#sozlesmeModal">
+                                        Arıza Kayıt Sözleşmesini onaylıyorum.
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <button class="w-100 btn btn-primary btn-lg" style="background-color:#f29720; border-color:#f29720" type="submit">Gönder</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Sözleşme -->
+    <div class="modal fade" data-bs-backdrop="static" id="sozlesmeModal" tabindex="-1" role="dialog" aria-labelledby="sozlesmeModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="sozlesmeModalLabel">Şartlar ve Koşullar</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <div class="row g-3">
+                            <div class="col-sm-12">
+                                    <p>1. Servis süresi en fazla 30 iş günüdür ve 90 gün takibi yapılmayan ürünler için şirketimiz hiçbir sorumluluk kabul etmez.
+                                        <br>2. Garanti süreleri, Fatura düzenleme tarihinden itibaren başlar. Bunun dışında belirtilen Üretici Garantisi ancak üreticinin tespit ettiği koşullar çerçevesinde geçerlidir. Nokta Elektronik bu koşulları aynen müşteriye yansıtır.
+                                        <br>3. Kurulum sırasında oluşan fiziksel ve elektriksel hatalar veya müşteriden kaynaklanan diğer donanım arızalarından dolayı servise gelmiş ürün garanti dışıdır ve servis ücreti alınır.
+                                        <br>4. Teknik servis ücreti cari hesaba dahil olmayıp peşin olarak tahsil edilir.
+                                        <br>5. Garanti harici tamir edilen ürünler teslimden itibaren 3 ay garantilidir.
+                                        <br>6. Nokta Elektronik arızalı ürün servise geldiği anda, eğer kullanıcı hatasını tanımlayabiliyorsa, bunu belirtir ancak ürün daha sonraki test aşamaların da garanti dışı tutulabilir. İstenildiğinde Nokta Elektronik bu tür arızalar için Teknik Rapor verir.
+                                        <br>7. Bu formu imzalayarak teslim eden şirket ve birey bu koşulları kabul eder. Bu ürünler firmamızın stoğundan çıktığı andan itibaren her türlü risk müşteriye aittir.</p>
+                            </div>
+                        </div>
+                        <hr class="my-4">
+                        <button class="w-100 btn btn-primary btn-lg sozOnay" style="background-color:#f29720; border-color:#f29720">sozlesmeyi_okudum_onayliyorum</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Success Modal -->
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="successModal" tabindex="-1" aria-labelledby="modalTitle" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="modalBody"></div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                    <button type="button" id="yazdirButton" class="btn btn-primary"><i class="fa-solid fa-print me-2"></i>Yazdır</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Core JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
