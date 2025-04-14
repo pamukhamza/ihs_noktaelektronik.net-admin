@@ -69,6 +69,14 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                             </div>
                         </div>
                     </div>
+                    <div class="btn-group d-flex flex-wrap" role="group">
+                        <a href="admin/ariza-kayit-ekle.php" class="btn btn-primary m-1 flex-fill">Yeni Kayıt Ekle</a>
+                        <a href="teknik_destek.php?sDurum=0" class="btn btn-secondary m-1 flex-fill">Tüm Kayıtlar</a>
+                        <a href="teknik_destek.php?sDurum=1" class="btn btn-warning m-1 flex-fill">Beklenen Kayıtlar</a>
+                        <a href="teknik_destek.php?sDurum=2" class="btn btn-danger m-1 flex-fill">Onaylanan Kayıtlar </a>
+                        <a href="teknik_destek.php?sDurum=3" class="btn btn-info m-1 flex-fill">İşlemdeki Kayıtlar</a>
+                        <a href="teknik_destek.php?sDurum=4" class="btn btn-success m-1 flex-fill">İşlemi Biten Kayıtlar</a>
+                    </div>
 
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Arızalı Cihazlar</h5>
