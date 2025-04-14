@@ -12,6 +12,7 @@ $filter_technician = $_GET['technician'] ?? ''; // Technician filter
 $filter_status = $_GET['sDurum'] ?? ''; // sDurum filter
 $start_date = $_GET['start_date'] ?? ''; // Start date filter
 $end_date = $_GET['end_date'] ?? ''; // End date filter
+$seri_no_ara = $_GET['seri_no_ara'] ?? ''; 
 
 // Define your SQL query for total records
 $sql = "SELECT COUNT(*) AS total_records FROM teknik_destek_urunler WHERE SILINDI = 0";
@@ -52,7 +53,10 @@ if (!empty($filter_technician)) {
     $sql .= " AND u.tekniker LIKE :technician";
     $params['technician'] = "%$filter_technician%";
 }
-
+if (!empty($seri_no_ara)) {
+    $sql .= " AND u.seri_no LIKE :seri_no";
+    $params['seri_no'] = "%$seri_no_ara%";
+}
 // Add status filter
 if ($filter_status == '1') {
     $sql .= " AND u.urun_durumu = :status";

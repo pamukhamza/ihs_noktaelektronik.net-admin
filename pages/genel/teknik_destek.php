@@ -64,7 +64,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                                     <input type="text" class="form-control" id="seri_no_ara" name="seri_no_ara">
                                 </div>
                                 <div class="mt-2 ml-3">
-                                    <button id="filterBtnSeri" class="btn btn-primary">Tarih Aralığı Filtrele</button>
+                                    <button id="filterBtnSeri" class="btn btn-primary">Seri No Sorgula</button>
                                 </div>
                             </div>
                         </div>
@@ -350,6 +350,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                     d.sDurum = $('#sDurum').val(); // Get sDurum value from select box
                     d.start_date = $('#start_date').val(); // Get start date value
                     d.end_date = $('#end_date').val(); // Get end date value
+                    d.seri_no_ara = $('#seri_no_ara').val();
                 }
             },
             "columns": [
