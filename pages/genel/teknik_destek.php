@@ -264,8 +264,8 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                                 <div class="invalid-feedback">Geçerli Telefon giriniz!</div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="email11" class="form-label">E-Posta*</label>
-                                <input type="email" class="form-control" id="email11" placeholder="mail@example.com" required>
+                                <label for="eposta" class="form-label">E-Posta*</label>
+                                <input type="email" class="form-control" id="eposta" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
                             <div class="col-sm-12">
@@ -812,7 +812,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
             formData.append('id', $('#musteri_id').val());
             formData.append('musteri', $('#musteri').val());
             formData.append('tel', $('#tel').val());
-            formData.append('email', $('#email11').val());
+            formData.append('email', $('#eposta').val());
             formData.append('adres', $('#adres').val());
             formData.append('fatura_no', $('#fatura_no').val());
             formData.append('aciklama', $('#aciklama').val());
@@ -842,7 +842,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                         var adet = adet_array.join(', ');
                         var musteri = $('#musteri').val();
                         var tel = $('#tel').val();
-                        var email = $('#email11').val();
+                        var email = $('#eposta').val();
                         var aciklama = $('#aciklama').val();
 
                         var printContent = `
