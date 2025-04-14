@@ -311,8 +311,6 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
         newWindow.document.close();
         newWindow.print();
     });
-
-
 </script>
 <script>
     $(document).ready(function() {
@@ -399,6 +397,9 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                 }
             ],
             "order": [[3, 'desc']] // Default order by 'tarih' column (index 3)
+        });
+        $('#technician, #start_date, #end_date, #seri_no_ara').on('change keyup', function() {
+            $('#deneme').DataTable().ajax.reload();
         });
 
         $('#filterBtn').on('click', function() {
