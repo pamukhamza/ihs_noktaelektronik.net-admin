@@ -398,8 +398,13 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
             ],
             "order": [[3, 'desc']] // Default order by 'tarih' column (index 3)
         });
-        $('#filterBtn, #filterBtnDate, #filterBtnSeri').on('change keyup', function() {
-            $('#deneme').DataTable().ajax.reload();
+
+
+        $('#filterBtn').on('click', function() {
+            dataTable.draw();
+        });
+        $('#filterBtnDate').on('click', function() {
+            dataTable.draw();
         });
 
         $('#editKayitForm').on('hidden.bs.modal', function() {
