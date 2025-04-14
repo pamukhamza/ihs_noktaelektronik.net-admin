@@ -56,6 +56,19 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                             </div>
                         </div>
                     </div>
+                    <div class="col-xl-3 col-lg-3 col-md-6 col-sm-12 col-12">
+                        <div class="card">
+                            <div class="card-body row">
+                                <div class="col-6">
+                                    <label for="seri_no_ara">Seri No</label>
+                                    <input type="text" class="form-control" id="seri_no_ara" name="seri_no_ara">
+                                </div>
+                                <div class="mt-2 ml-3">
+                                    <button id="filterBtnSeri" class="btn btn-primary">Tarih Aralığı Filtrele</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Arızalı Cihazlar</h5>
