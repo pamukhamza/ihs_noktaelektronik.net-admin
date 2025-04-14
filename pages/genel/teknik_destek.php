@@ -406,7 +406,9 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
         $('#filterBtnDate').on('click', function() {
             dataTable.draw();
         });
-
+        $('#filterBtnSeri').on('click', function() {
+            dataTable.draw();
+        });
         $('#editKayitForm').on('hidden.bs.modal', function() {
             // Reset the form fields
             $('#editDestekForm')[0].reset();
