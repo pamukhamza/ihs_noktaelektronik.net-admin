@@ -113,7 +113,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
     <div class="drag-target"></div>
 </div>
 <!-- / Layout wrapper -->
-<div class="modal fade" data-backdrop="static" id="editKayitForm" tabindex="-1" role="dialog" aria-labelledby="editKayitFormLabel" aria-hidden="true">
+    <div class="modal fade" data-backdrop="static" id="editKayitForm" tabindex="-1" role="dialog" aria-labelledby="editKayitFormLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content ">
                 <div class="modal-header">
@@ -264,7 +264,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                                 <div class="invalid-feedback">Geçerli Telefon giriniz!</div>
                             </div>
                             <div class="col-sm-6">
-                                <label for="email" class="form-label">E-Posta*</label>
+                                <label for="email11" class="form-label">E-Posta*</label>
                                 <input type="email" class="form-control" id="email11" placeholder="mail@example.com" required>
                                 <div class="invalid-feedback">Geçerli e-posta giriniz!</div>
                             </div>
@@ -341,8 +341,8 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                                     </select>
                                 </div>
                                 <div class="col-6" id="kargo_firmasi_div">
-                                    <label for="kargo_firmasi" class="form-label">Kargo Firması*</label>
-                                    <select class="form-control" id="kargo_firmasi" name="kargo_firmasi" required>
+                                    <label for="kargo_firmasi11" class="form-label">Kargo Firması*</label>
+                                    <select class="form-control" id="kargo_firmasi11" name="kargo_firmasi11" required>
                                         <option value="">Kargo Firması Seçiniz</option>
                                         <option value="Yurtiçi Kargo">Yurtiçi Kargo</option>
                                         <option value="MNG Kargo">MNG Kargo</option>
@@ -747,7 +747,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
     document.addEventListener("DOMContentLoaded", function() {
         var gonderimSekliSelect = document.getElementById("gonderim_sekli");
         var kargoFirmasiDiv = document.getElementById("kargo_firmasi_div");
-        var kargoFirmasiInput = document.getElementById("kargo_firmasi");
+        var kargoFirmasiInput = document.getElementById("kargo_firmasi11");
 
         // Initial check
         toggleKargoFirmasiVisibility();
@@ -819,7 +819,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
             formData.append('ad_soyad', $('#ad_soyad').val());
             formData.append('onay', $('#onay').is(':checked') ? 1 : 0);
             formData.append('gonderim_sekli', $('#gonderim_sekli').val());
-            formData.append('kargo_firmasi', $('#kargo_firmasi').val());
+            formData.append('kargo_firmasi', $('#kargo_firmasi11').val());
             formData.append('type', 'ariza');
 
             $.ajax({
