@@ -25,7 +25,7 @@ $database = new Database();
                             <div class="card-body table-responsive">
                                 asasdas
                                 <?php 
-$satis_id = $_SESSION["id"]; 
+$satis_id = $_SESSION["user_session"]["id"]; 
                                 echo $satis_id;
                                 echo '<pre>';
 print_r($_SESSION);
