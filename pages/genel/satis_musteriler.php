@@ -1,13 +1,12 @@
 <?php
 include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
-
-
 $currentPage = 'b2b-uyeler';
 $template = new Template('Üyeler - NEBSİS',  $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $database = new Database();
+$satis_id = $_SESSION["user_session"]["id"]; 
 ?>
 <body>
 <!-- Layout wrapper -->
@@ -23,14 +22,6 @@ $database = new Database();
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive">
-                                asasdas
-                                <?php 
-$satis_id = $_SESSION["user_session"]["id"]; 
-                                echo $satis_id;
-                                echo '<pre>';
-print_r($_SESSION);
-echo '</pre>';
- ?>
                                 <table id="deneme" class="table table-striped">
                                     <thead>
                                         <tr class="border-0">
@@ -91,6 +82,7 @@ echo '</pre>';
 </script>
 <script>
     $(document).ready(function() {
+        var satisId = '<?php echo $satis_id; ?>';
         var table = $('#deneme').DataTable({
             "language": {
                 url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/tr.json',
@@ -98,9 +90,10 @@ echo '</pre>';
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "functions/uyeler/datatable_uyeler.php",
+                "url": "functions/uyeler/datatable_uyeler__satis.php",
                 "type": "POST",
                 "data": function(d) {
+                    d.satis_id = satisId;
                 }
             },
             "columns": [
@@ -150,13 +143,7 @@ echo '</pre>';
                 {
                     "data": null, "orderable": false,
                     "render": function (data, type, row) {
-                        return `
-                                <button type="button" class="btn btn-sm btn-danger" onclick="dynamicSil('${data.id}', '', 'uye', 'Üye Silindi!', 'pages/b2b/b2b-uyeler.php');" data-toggle="tooltip" title="Sil"><i class="fa-solid fa-trash-can"></i></button>
-                                <button type="button" name="uyeDuzenle" value="Düzenle" class="btn btn-sm btn-success edit-uyeDuzenle" data-uye-id="${data.id}" data-toggle="tooltip" title="Düzenle"><i class="fa-regular fa-pen-to-square"></i></button>
-                                <a href="mailto:${data.email}" name="uyeMail" value="Mail" class="btn btn-sm btn-info edit-uyeMail" data-uyeMail-id="${data.id}" data-toggle="tooltip" title="Mail Gönder"><i class="fa-solid fa-envelope"></i></a>
-                                <button type="button" name="uyegirisyap" value="Giriş Yap" class="btn btn-sm btn-dark edit-uyegirisyap" data-uyegirisyap-id="${data.id}" data-toggle="tooltip" title="Üye Adına Giriş Yap"><i class="fa-solid fa-arrow-right-to-bracket"></i></button>
-                            
-                        `;
+                        return `<button type="button" name="uyeDuzenle" value="Düzenle" class="btn btn-sm btn-success edit-uyeDuzenle" data-uye-id="${data.id}" data-toggle="tooltip" title="Düzenle"><i class="fa-regular fa-pen-to-square"></i></button> `;
                     }
                 }
             ],
@@ -168,95 +155,6 @@ echo '</pre>';
             }
         });
     });
-
-</script>
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.aktifPasifUye', function() {
-            var id = $(this).attr("id");
-            var konum = "uyeler";
-            var durum = ($(this).is(':checked')) ? '1' : '0';
-            $.ajax({
-                type: 'POST',
-                url: 'functions/aktifPasif.php',  //işlem yaptığımız sayfayı belirtiyoruz
-                data: { id:id, durum: durum, konum: konum },
-                success: function (result) {
-                    Swal.fire({
-                        title: "Aktif/Pasif işlemi yapıldı!" ,
-                        toast: true,
-                        position: 'bottom-end',
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500
-                    });
-                },
-                error: function () {
-                    alert('Hata');
-                }
-            });
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        $(document).on('click', '.edit-uyegirisyap', function() {
-            var userId = $(this).data('uyegirisyap-id');
-            $.ajax({
-                url: 'functions/uyeler/ses_uye.php',
-                method: 'post',
-                data: { userId: userId },
-                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                dataType: 'json', // Beklenen yanıt türü
-                success: function(response) {
-                    if (response.status === 'success') {
-                        window.open('https://www.noktaelektronik.com.tr', '_blank');
-                    } else {
-                        alert(response.message);
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error(xhr.responseText);
-                    alert('AJAX hatası: ' + status + ' ' + error);
-                }
-            });
-        });
-    });
-</script>
-<script>
-    function dynamicSil(gid, gel, customType, successMessage, redirectPage) {
-        Swal.fire({
-            title: 'Emin misiniz?',
-            text: 'Bu eylem geri alınamaz!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Evet',
-            cancelButtonText: 'İptal'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: 'functions/uyeler/delete_uye.php',
-                    type: 'POST',
-                    data: {
-                        'gid': gid,
-                        'gel': gel,
-                        type: customType
-                    },
-                    success: function () {
-                        Swal.fire({
-                            position: 'center',
-                            icon: 'success',
-                            title: successMessage /* Ürün Silindi! */,
-                            showConfirmButton: false,
-                            timer: 1000
-                        });
-                        setTimeout(function () {
-                            window.location.href = redirectPage /* adminSlider.php */;
-                        }, 1000);
-                    }
-                });
-            }
-        });
-    }
 </script>
 </body>
 </html>
