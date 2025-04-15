@@ -2,6 +2,8 @@
 include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 $currentPage = 'b2b-sepetler';
 $template = new Template('Sepetler - NEBSİS',  $currentPage);
 // head'i çağırıyoruz
