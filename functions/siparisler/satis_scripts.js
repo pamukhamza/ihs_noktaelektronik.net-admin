@@ -24,7 +24,7 @@ $(document).ready(function() {
             processing: true,
             serverSide: true,
             ajax: {
-                url: `${baseUrl}functions/siparisler/server_siparis.php`,
+                url: `${baseUrl}functions/siparisler/server_satissiparis.php`,
                 type: 'POST',
                 data: function(d) { 
                     d.sDurum = sDurum;
