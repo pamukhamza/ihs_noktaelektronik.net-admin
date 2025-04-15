@@ -70,7 +70,6 @@ if ($filter_status == '1') {
 } elseif ($filter_status == '4') {
     $sql .= " AND u.urun_durumu NOT IN (1, 2, 3)";
 } elseif ($filter_status == '0') {
-    $sql .= " AND u.urun_durumu IN (1, 2, 3)";
 }
 
 // Add date range filter if both start and end dates are provided
@@ -128,7 +127,6 @@ if ($filter_status == '1' || $filter_status == '2' || $filter_status == '3') {
 } elseif ($filter_status == '4') {
     $filtered_records_sql .= " AND u.urun_durumu NOT IN (1, 2, 3)";
 } elseif ($filter_status == '0') {
-    $filtered_records_sql .= " AND u.urun_durumu IN (1, 2, 3)";
 }
 
 if (!empty($start_date) && !empty($end_date)) {
