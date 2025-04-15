@@ -589,3 +589,30 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
         });
     });
 </script>
+<script>
+    function teknikSil(gid) {
+        Swal.fire({
+            title: 'Emin misiniz?',
+            text: 'Bu eylem geri alınamaz!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Evet',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    type:'POST',
+                    url:'functions/delete.php',
+                    data:{
+                        'gid': gid,
+                        type : 'teknik-servis'
+                    },
+                    success: function(){
+                        Swal.fire({position: 'center',icon:'success',title: gid + ' id numaralı arıza kaydı silindi!',showConfirmButton: false,timer: 1000});
+                        setTimeout(function () {location.reload(); }, 1000);
+                    }
+                });
+            }
+        });
+    }
+</script>
