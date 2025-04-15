@@ -120,7 +120,7 @@ $database = new Database();
                 {
                     "data": null,
                     "render": function(data, type, row) {
-                        return row.username ;
+                        return row.full_name ;
                     }
                 },
 

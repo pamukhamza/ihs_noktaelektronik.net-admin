@@ -125,7 +125,7 @@ $satis_id = $_SESSION["user_session"]["id"];
                 {
                     "data": null,
                     "render": function(data, type, row) {
-                        return row.username ;
+                        return row.full_name ;
                     }
                 },
 
