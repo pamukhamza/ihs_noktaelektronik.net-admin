@@ -94,6 +94,9 @@ $satis_id = $_SESSION["user_session"]["id"];
                 "type": "POST",
                 "data": function(d) {
                     d.satis_id = satisId;
+                },
+                "error": function(xhr, error, thrown) {
+                    console.error("AJAX Hatası:", xhr.responseText);
                 }
             },
             "columns": [
