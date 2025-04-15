@@ -2,12 +2,13 @@
 include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
-$satis_id = $_SESSION["id"]; 
+
 $currentPage = 'b2b-uyeler';
 $template = new Template('Üyeler - NEBSİS',  $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $database = new Database();
+$satis_id = $_SESSION["id"]; 
 ?>
 <body>
 <!-- Layout wrapper -->
@@ -24,7 +25,9 @@ $database = new Database();
                         <div class="card">
                             <div class="card-body table-responsive">
                                 asasdas
-                                <?php echo '<pre>';
+                                <?php 
+                                echo $satis_id;
+                                echo '<pre>';
 print_r($_SESSION);
 echo '</pre>';
  ?>
