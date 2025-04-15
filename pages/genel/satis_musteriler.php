@@ -8,7 +8,6 @@ $template = new Template('Üyeler - NEBSİS',  $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $database = new Database();
-$satis_id = $_SESSION["id"]; 
 ?>
 <body>
 <!-- Layout wrapper -->
@@ -26,6 +25,7 @@ $satis_id = $_SESSION["id"];
                             <div class="card-body table-responsive">
                                 asasdas
                                 <?php 
+$satis_id = $_SESSION["id"]; 
                                 echo $satis_id;
                                 echo '<pre>';
 print_r($_SESSION);
