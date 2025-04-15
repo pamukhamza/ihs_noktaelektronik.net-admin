@@ -180,7 +180,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                 </a>
             </li>
             <li class="menu-item <?= $currentPage === 's_siparisler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_siparişler" class="menu-link">
+                <a href="pages/genel/satis_siparisler" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-headset"></i>
                     <div data-i18n="Siparişler">Siparişler</div>
                 </a>
