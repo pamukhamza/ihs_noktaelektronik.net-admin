@@ -48,13 +48,11 @@ $satis_id = $_SESSION["user_session"]["id"];
                                         $satis_id = $_SESSION["user_session"]["id"];
 
                                         // Sadece oturumdaki satış temsilcisine ait sepetleri alıyoruz
-                                        $sepetler = $database->fetchAll("
-                                            SELECT us.*, u.ad, u.soyad, u.firmaUnvani, u.email, u.tel 
+                                        $sepetler = $database->fetchAll("SELECT us.*, u.ad, u.soyad, u.firmaUnvani, u.email, u.tel 
                                             FROM uye_sepet us
                                             INNER JOIN uyeler u ON us.uye_id = u.id
                                             WHERE u.satis_temsilcisi = :satis_id
-                                            GROUP BY us.uye_id
-                                        ", ['id' => $satis_id]);
+                                            GROUP BY us.uye_id ", ['satis_id' => $satis_id]);
 
                                         foreach ($sepetler as $sepet):
                                     ?>
