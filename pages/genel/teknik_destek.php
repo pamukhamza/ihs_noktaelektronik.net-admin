@@ -91,17 +91,17 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
 
                         <a href="pages/genel/teknik_destek.php?sDurum=2" class="btn btn-danger m-1 flex-fill d-flex justify-content-between align-items-center">
                             <span>Onaylanan Kayıtlar</span>
-                            <span class="badge bg-light text-dark ms-1"><?= $serviste ?></span>
+                            <span class="badge bg-light text-dark"><?= $serviste ?></span>
                         </a>
 
                         <a href="pages/genel/teknik_destek.php?sDurum=3" class="btn btn-info m-1 flex-fill d-flex justify-content-between align-items-center">
                             <span>İşlemdeki Kayıtlar</span>
-                            <span class="badge bg-light text-dark ms-2"><?= $islemde ?></span>
+                            <span class="badge bg-light text-dark"><?= $islemde ?></span>
                         </a>
 
                         <a href="pages/genel/teknik_destek.php?sDurum=4" class="btn btn-success m-1 flex-fill d-flex justify-content-between align-items-center">
                             <span>İşlemi Biten Kayıtlar</span>
-                            <span class="badge bg-light text-dark ms-2"><?= $islembitti ?></span>
+                            <span class="badge bg-light text-dark"><?= $islembitti ?></span>
                         </a>
                     </div>
 
