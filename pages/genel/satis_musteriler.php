@@ -90,7 +90,7 @@ $satis_id = $_SESSION["user_session"]["id"];
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "functions/uyeler/datatable_uyeler__satis.php",
+                "url": "functions/uyeler/datatable_uyeler_satis.php",
                 "type": "POST",
                 "data": function(d) {
                     d.satis_id = satisId;
