@@ -120,9 +120,6 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                     <h5 class="modal-title " id="editKayitFormLabel" name="baslik">Destek Kaydı
                         <i class="fa-solid fa-print fa-lg yazdir-btn ml-3"></i>
                     </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                 </div>
                 <div class="modal-body">
                         <!-- Edit User Form -->
@@ -235,7 +232,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                     <div id="saveEditDestekContainer">
                         <button type="button" id="saveEditDestek" class="btn btn-primary">Güncelle</button>
                     </div>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
                 </div>
             </div>
         </div>
