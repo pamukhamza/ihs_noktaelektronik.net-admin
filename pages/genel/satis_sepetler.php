@@ -40,14 +40,11 @@ $satis_id = $_SESSION["user_session"]["id"];
                                     <th>Telefon</th>
                                     <th>Tarih</th>
                                     <th>
-                                        <button type="button" class="btn btn-sm btn-danger" onclick="dynamicSil('', '', 'tum_sepetler', 'Tüm Sepetler Silindi!', 'adminSepetler.php?s=1');"><i class="fa-regular fa-trash-can"></i>  Tümünü Sil</button>
-                                    </th>
+                                  </th>
                                     </thead>
                                     <tbody>
                                     <?php
                                         $satis_id = $_SESSION["user_session"]["id"];
-
-                                        // Sadece oturumdaki satış temsilcisine ait sepetleri alıyoruz
                                         $sepetler = $database->fetchAll("SELECT us.*, u.ad, u.soyad, u.firmaUnvani, u.email, u.tel 
                                             FROM uye_sepet us
                                             INNER JOIN uyeler u ON us.uye_id = u.id
