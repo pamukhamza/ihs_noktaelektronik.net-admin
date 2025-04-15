@@ -37,7 +37,6 @@ $satis_id = 86732;
                                             <th class="border-0">Kayıt Tarihi</th>
                                             <th class="border-0">Son Giriş</th>
                                             <th class="border-0">Satış Temsilcisi</th>
-                                            <th class="border-0">Durum</th>
                                             <th class="border-0">İşlemler</th>
                                         </tr>
                                     </thead>
@@ -126,21 +125,6 @@ $satis_id = 86732;
                     "data": null,
                     "render": function(data, type, row) {
                         return row.full_name ;
-                    }
-                },
-
-                {
-                    "data": null, "orderable": false,
-                    "render": function(data, type, row){
-                        return`
-                        <label class="switch switch-success">
-                            <input type="checkbox" class="switch-input aktifPasifUye" name="${data.id}" id="${data.id}"  data-id="${data.id}"  ${data.aktif == 1 ? 'checked' : ''} />
-                            <span class="switch-toggle-slider">
-                                <span class="switch-on"><i class="ti ti-check"></i></span>
-                                <span class="switch-off"><i class="ti ti-x"></i></span>
-                            </span>
-                        </label>
-                        `;
                     }
                 },
                 {
