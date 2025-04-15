@@ -1,3 +1,11 @@
-<?php echo '<pre>';
+<?php 
+include_once '../../functions/db.php';
+require '../../functions/admin_template.php';
+$currentPage = 'b2b-uyeler';
+$template = new Template('Üyeler - NEBSİS',  $currentPage);
+// head'i çağırıyoruz
+$template->head();
+$database = new Database();
+echo '<pre>';
 print_r($_SESSION);
 echo '</pre>';
