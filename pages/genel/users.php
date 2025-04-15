@@ -35,6 +35,7 @@ $template->head();
                                         <tr>
                                             <th>ID</th>
                                             <th>Kullanıcı Adı</th>
+                                            <th>Ad Soyad</th>
                                             <th>E-Posta</th>
                                             <th>İşlemler</th>
                                         </tr>
@@ -49,6 +50,7 @@ $template->head();
                                         <tr>
                                             <td><?= $row['id']; ?></td>
                                             <td><?= $row['username']; ?></td>
+                                            <td><?= $row['full_name']; ?></td>
                                             <td><?= $row['email']; ?></td>
                                             <td>
                                                 <a class="cursor-pointer me-2 edit_user" href="pages/genel/users-detail?id=<?= $row['id']; ?>"><i class="ti ti-pencil me-1"></i></a>
