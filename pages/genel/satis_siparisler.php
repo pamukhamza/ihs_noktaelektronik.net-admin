@@ -39,48 +39,6 @@ $satis_id = $_SESSION["user_session"]["id"];
                                     </div>
                                 </div>
                             </div>
-
-                            <!-- Action Buttons -->
-                            <?php if ($sDurum == 1): ?>
-                                <div class="row mb-4">
-                                    <div class="col-12">
-                                        <div class="action-buttons">
-                                            <button type="button" class="btn btn-secondary onayla-btn">Onaylandı Yap</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if ($sDurum == 2): ?>
-                                <div class="row mb-4">
-                                    <div class="col-6">
-                                        <button type="button" class="btn btn-secondary kargo-numara-ver-btn">Kargo Numarası Ver</button>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <button type="button" class="btn btn-secondary teslim-edildi-btn">Teslim Edildi Yap</button>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if ($sDurum == 3): ?>
-                                <div class="row mb-4">
-                                    <div class="col-6">
-                                        <button type="button" class="btn btn-secondary">Kargolandı Yap</button>
-                                    </div>
-                                    <div class="col-6 text-end">
-                                        <button type="button" class="btn btn-secondary yazdir-btn">Yazdır</button>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
-                            <?php if ($sDurum == 4): ?>
-                                <div class="row mb-4">
-                                    <div class="col-12">
-                                        <button type="button" class="btn btn-secondary">Teslim Edildi Yap</button>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
                             <!-- Orders Table -->
                             <div class="row">
                                 <div class="col-12">
