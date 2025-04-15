@@ -416,7 +416,7 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                 {
                     data: 'id',
                     render: function(data, type, full, meta) {
-                        return '<button type="button" name="tdpDuzenle" value="Düzenle" class="btn btn-sm btn-outline-success edit-tdp-duzenle" data-tdp-id="'+data+'"><i class="far fa-edit"></i></button>' +
+                        return '<button type="button" name="tdpDuzenle" value="Düzenle" class="btn btn-sm btn-outline-success edit-tdp-duzenle" data-tdp-id="'+data+'"><i class="far fa-edit"></i></button>' ;
                     },
                     orderable: false // Disable ordering on this column
                 }
