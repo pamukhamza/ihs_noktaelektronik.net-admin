@@ -115,7 +115,6 @@ $satis_id = $_SESSION["user_session"]["id"];
                                                         <th>Ödeme Şekli</th>
                                                         <th>Kargo</th>
                                                         <th>Toplam</th>
-                                                        <th>İşlemler</th>
                                                     </tr>
                                                 </thead>
                                             </table>

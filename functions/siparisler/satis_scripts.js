@@ -148,21 +148,6 @@ $(document).ready(function() {
                     });
                     return `<span class="fw-bold fs-13">${formattedData}₺</span>`;
                 }
-            },
-            {
-                data: null,
-                orderable: false,
-                render: function(data) {
-                    return `
-                        <button type="button" 
-                                class="btn btn-sm btn-outline-success edit-order" 
-                                data-order-id="${data.id}" 
-                                data-bs-toggle="tooltip" 
-                                title="Düzenle">
-                            <i class="fa-regular fa-pen-to-square"></i>
-                        </button>
-                    `;
-                }
             }
         ];
         
