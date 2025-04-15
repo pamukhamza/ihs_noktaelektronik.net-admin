@@ -24,7 +24,10 @@ $database = new Database();
                         <div class="card">
                             <div class="card-body table-responsive">
                                 asasdas
-                                <?php echo $satis_id; ?>
+                                <?php echo '<pre>';
+print_r($_SESSION);
+echo '</pre>';
+ ?>
                                 <table id="deneme" class="table table-striped">
                                     <thead>
                                         <tr class="border-0">
