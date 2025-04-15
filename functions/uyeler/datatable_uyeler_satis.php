@@ -19,7 +19,7 @@ try {
     $orderColumn = $columns[$orderColumnIndex]['data'] ?? $defaultOrderColumn;
 
     // Verileri çekmek için SQL sorgusu
-    $sql = "SELECT u.*, k.username, ii.il_adi, ilc.ilce_adi 
+    $sql = "SELECT u.*, k.full_name, ii.il_adi, ilc.ilce_adi 
             FROM uyeler u 
             LEFT JOIN users k ON u.satis_temsilcisi = k.id
             LEFT JOIN iller ii ON u.il = ii.il_id
@@ -35,7 +35,7 @@ try {
             u.ad LIKE :search OR 
             u.soyad LIKE :search OR 
             u.email LIKE :search OR 
-            k.username LIKE :search OR 
+            k.full_name LIKE :search OR 
             ii.il_adi LIKE :search OR 
             ilc.ilce_adi LIKE :search
         )";
@@ -66,7 +66,7 @@ try {
             u.ad LIKE :search OR 
             u.soyad LIKE :search OR 
             u.email LIKE :search OR 
-            k.username LIKE :search OR 
+            k.full_name LIKE :search OR 
             ii.il_adi LIKE :search OR 
             ilc.ilce_adi LIKE :search
         )";

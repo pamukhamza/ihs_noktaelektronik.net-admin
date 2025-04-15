@@ -125,7 +125,7 @@ $satis_id = 86732;
                 {
                     "data": null,
                     "render": function(data, type, row) {
-                        return row.fullname ;
+                        return row.full_name ;
                     }
                 },
 
