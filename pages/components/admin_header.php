@@ -168,53 +168,54 @@ $selectedSite = $_GET['w'] ?? 'net';
         <!-- Technical Support -->
         <?php if ($user->hasPermission(52)): ?>
             <li class="menu-item <?= $currentPage === 's_havuz_bayiler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_havuzbayileri" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Havuz Bayileri">Havuz Bayileri</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_müsteriler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_musteriler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Müşteriler">Müşteriler</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_siparisler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_siparisler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Siparişler">Siparişler</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_sepetler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_sepetler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Sepetler">Sepetler</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_odemeler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_odemeler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Ödemeler">Ödemeler</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_urunler' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_urunler" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Ürünler">Ürünler</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_teknikservis' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_teknikservis" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Teknik Servis">Teknik Servis</div>
-                </a>
-            </li>
-            <li class="menu-item <?= $currentPage === 's_uyegirisyap' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_uyegirisyap" class="menu-link">
-                    <i class="menu-icon tf-icons ti ti-headset"></i>
-                    <div data-i18n="Üye Olarak Giriş">Üye Olarak Giriş</div>
-                </a>
-            </li>
+    <a href="pages/genel/satis_havuzbayileri" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-users-group"></i>
+        <div data-i18n="Havuz Bayileri">Havuz Bayileri</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_müsteriler' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_musteriler" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-user-circle"></i>
+        <div data-i18n="Müşteriler">Müşteriler</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_siparisler' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_siparisler" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-file-invoice"></i>
+        <div data-i18n="Siparişler">Siparişler</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_sepetler' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_sepetler" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-shopping-cart"></i>
+        <div data-i18n="Sepetler">Sepetler</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_odemeler' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_odemeler" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-credit-card"></i>
+        <div data-i18n="Ödemeler">Ödemeler</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_urunler' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_urunler" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-package"></i>
+        <div data-i18n="Ürünler">Ürünler</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_teknikservis' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_teknikservis" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-tools"></i>
+        <div data-i18n="Teknik Servis">Teknik Servis</div>
+    </a>
+</li>
+<li class="menu-item <?= $currentPage === 's_uyegirisyap' ? 'active' : '' ?>">
+    <a href="pages/genel/satis_uyegirisyap" class="menu-link">
+        <i class="menu-icon tf-icons ti ti-login"></i>
+        <div data-i18n="Üye Olarak Giriş">Üye Olarak Giriş</div>
+    </a>
+</li>
+
         <?php endif; ?>
         <!-- Apps & Pages -->
         <li class="menu-header small">
