@@ -240,11 +240,13 @@ $zorunlu = "<span style='color:red;'>*</span>"
                                     </div>
                                 </div>
                             </div>
+                            <?php if ($_SESSION["user_session"]['roles'] != 2): ?>
                             <div class="col-12 pl-0 mt-5">
                                 <p class="text-center">
                                     <button type="submit" name="uye_guncelle" class="btn btn-space btn-primary font-weight-bold">Kaydet</button>
                                 </p>
                             </div>
+                            <?php endif; ?>
                         </div>
                     </form>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12 ">
