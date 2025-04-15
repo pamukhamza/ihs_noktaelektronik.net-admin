@@ -63,14 +63,6 @@ $satis_id = $_SESSION["user_session"]["id"];
                                             <td><?= $sepet['tel'] ?? ''; ?></td>
                                             <td><?= $sepet['tarih'] ?? ''; ?></td>
                                             <td>
-                                                <button type="button" class="btn btn-sm btn-outline-light" onclick="dynamicSil(<?= $sepet['uye_id'] ?>, '', 'sepetler', 'Sepet Silindi!', 'admin/siparisler/adminSepetler.php?s=1');" data-toggle="tooltip" title="Sil"><i class="fa-solid fa-trash-can"></i></button>
-
-                                                <form method="POST" action="">
-                                                    <input type="hidden" name="musteri" value="<?= $sepet['uye_id']; ?>">
-                                                    <input type="hidden" name="email" value="<?= $sepet['email']; ?>">
-                                                    <button type="submit" name="sepetMailGonder" class="btn btn-sm btn-outline-light" data-toggle="tooltip" title="Sepet Hatırlatma Maili Gönder"><i class="fa-solid fa-envelope-open-text"></i></button>
-                                                </form>
-                                                
                                                 <button type="button" name="uyeDuzenle" value="Düzenle" class="btn btn-sm btn-outline-light edit-sepet" data-sepet-id="<?= $sepet['uye_id']; ?>" data-toggle="tooltip" title="Düzenle"><i class="fa-regular fa-pen-to-square"></i></button>
                                             </td>
                                         </tr>
