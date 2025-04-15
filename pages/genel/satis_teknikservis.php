@@ -69,43 +69,6 @@ $durumlar = $database->fetchAll("SELECT * FROM nokta_teknik_durum");
                             </div>
                         </div>
                     </div>
-                    <?php 
-                        $beklenen   = $database->fetchColumn("SELECT COUNT(*) FROM teknik_destek_urunler WHERE urun_durumu = 1 AND SILINDI = 0");
-                        $serviste   = $database->fetchColumn("SELECT COUNT(*) FROM teknik_destek_urunler WHERE urun_durumu = 2 AND SILINDI = 0");
-                        $islemde    = $database->fetchColumn("SELECT COUNT(*) FROM teknik_destek_urunler WHERE urun_durumu = 3 AND SILINDI = 0");
-                        $islembitti = $database->fetchColumn("SELECT COUNT(*) FROM teknik_destek_urunler WHERE urun_durumu NOT IN (1, 2, 3) AND SILINDI = 0");
-                    ?>
-                    <div class="d-flex flex-wrap">
-                        <button class="btn btn-primary m-1 flex-fill" data-bs-toggle="modal" data-bs-target="#basvuruModal" data-basvur-id="1">
-                            Yeni Kayıt Ekle
-                        </button>
-
-                        <a href="pages/genel/teknik_destek.php?sDurum=0" class="btn btn-secondary m-1 flex-fill">
-                            Tüm Kayıtlar
-                        </a>
-
-                        <a href="pages/genel/teknik_destek.php?sDurum=1" class="btn btn-warning m-1 flex-fill d-flex justify-content-between align-items-center">
-                            <span>Bekleyen Kayıtlar</span>
-                            <span class="badge bg-dark"><?= $beklenen ?></span>
-                        </a>
-
-                        <a href="pages/genel/teknik_destek.php?sDurum=2" class="btn btn-danger m-1 flex-fill d-flex justify-content-between align-items-center">
-                            <span>Onaylanan Kayıtlar</span>
-                            <span class="badge bg-light text-dark"><?= $serviste ?></span>
-                        </a>
-
-                        <a href="pages/genel/teknik_destek.php?sDurum=3" class="btn btn-info m-1 flex-fill d-flex justify-content-between align-items-center">
-                            <span>İşlemdeki Kayıtlar</span>
-                            <span class="badge bg-light text-dark"><?= $islemde ?></span>
-                        </a>
-
-                        <a href="pages/genel/teknik_destek.php?sDurum=4" class="btn btn-success m-1 flex-fill d-flex justify-content-between align-items-center">
-                            <span>İşlemi Biten Kayıtlar</span>
-                            <span class="badge bg-light text-dark"><?= $islembitti ?></span>
-                        </a>
-                    </div>
-
-
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Arızalı Cihazlar</h5>
                         <div class="card">
