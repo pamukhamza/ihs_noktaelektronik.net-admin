@@ -23,6 +23,7 @@ $database = new Database();
                     <div class="col-12">
                         <div class="card">
                             <div class="card-body table-responsive">
+                                asasdas
                                 <?php echo $satis_id; ?>
                                 <table id="deneme" class="table table-striped">
                                     <thead>
