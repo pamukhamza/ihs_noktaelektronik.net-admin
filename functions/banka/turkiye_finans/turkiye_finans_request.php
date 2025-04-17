@@ -69,9 +69,6 @@ if(isset($_POST["cariOdeme"])){
     $verimizB64 = base64_encode(json_encode($verimiz));
 
     $odemetutar = $_POST['odemetutar'];
-    $odemetutar = str_replace(',', '', $odemetutar);
-    // Separate last two digits with a dot
-    $odemetutar = substr_replace($odemetutar, '.', -2, 0);
 
     $orgClientId  =   "280624575";
     $orgAmount = $odemetutar;
