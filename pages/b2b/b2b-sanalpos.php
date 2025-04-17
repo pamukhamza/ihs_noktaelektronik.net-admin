@@ -216,6 +216,8 @@ $database = new Database();
                                 </div>
                             </form>
                         </div>
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
                         <div class="card mt-5">
                             <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
                                 <input type="hidden" name="adminCariOdeme" value="">
