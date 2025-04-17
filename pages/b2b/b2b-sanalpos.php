@@ -21,7 +21,7 @@ $database = new Database();
             <!-- Content -->
             <div class=" flex-grow-1 container-p-y container-xxl">
                 <div class="row g-6">
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" style="display: none">
                         <div class="card">
                             <form method="post" action="" id="paymentForm">
                                 <input type="hidden" name="adminCariOdeme" value="">
