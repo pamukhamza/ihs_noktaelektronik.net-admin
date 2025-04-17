@@ -118,6 +118,25 @@ function validateAndSaveImage($file, $upload_path) {
 
     return false; // Return false on failure
 }
+function uploadImageToS3Dekont($file_path, $upload_path, $s3Client, $bucket) {
+    try {
+        // S3 yükleme yolu
+        $s3_file_path = $upload_path . basename($file_path); // Dosyanın basename'ini S3'e koyuyoruz
+
+        // Dosyayı S3'e yükleyin
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $s3_file_path,
+            'SourceFile' => $file_path // SourceFile için dosya yolunu geçiyoruz
+        ]);
+
+        // Yükleme başarılı ise dosya adını veya URL'yi döndürüyoruz
+        return basename($file_path); // veya $result['ObjectURL'] dönebilirsiniz, S3 URL'si için
+    } catch (AwsException $e) {
+        error_log('S3 yükleme hatası: ' . $e->getMessage());
+        return false;
+    }
+}
 function uploadImageToS3($file, $upload_path, $s3Client, $bucket) {
     
 

@@ -2,11 +2,31 @@
 // Include the TCPDF library
 require_once '../../vendor/tcpdf/tcpdf.php';
 include_once '../db.php';
+include_once '../functions.php';
+require '../../vendor/autoload.php';
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
 
-// Function to generate PDF receipt
+$config = require '../../aws-config.php';
+
+if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
+    die('Missing required S3 configuration values.');
+}
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ]
+]);
+
 function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $taksit_sayisi, $odenentutar, $date) {
     try {
         $database = new Database();
+        global $s3Client, $config;
+
         // Create new PDF instance
         $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
@@ -22,9 +42,6 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         // Set margins
         $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
 
-        // Set auto page breaks
-        $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
         // Add a page
         $pdf->AddPage();
 
@@ -37,12 +54,10 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             $pdf->Image($logo_path, 10, 20, 40);
         }
 
-        // Company name and document title
+        // Document title
         $pdf->SetXY(10, 32);
         $pdf->Cell(0, 10, 'Nokta Elektronik ve Bilişim Sistemleri San. Tic. A.Ş', 0, 0, 'L');
         $pdf->Cell(0, 10, 'DEKONT', 0, 1, 'R');
-
-        // Draw a horizontal line
         $pdf->Line(10, 45, $pdf->getPageWidth() - 10, 45);
 
         // Payment details
@@ -61,31 +76,23 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             $pdf->Cell(0, 10, ': ' . $value, 0, 1, 'L');
         }
 
-        // Add date
         $pdf->SetXY(150, 50);
         $pdf->Cell(0, 10, $date, 0, 1, 'R');
 
-        // Generate unique filename
-        $dekont_adi = "dekont" . uniqid() . ".pdf";
-        
-        // Set the complete file path
-        $upload_dir = __DIR__ . '/../../assets/uploads/dekontlar/';
-        
-        // Create directory if it doesn't exist
-        if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0755, true);
+        // Dosya adı ve PDF içeriğini geçici bir dosyaya kaydetme
+        $dekont_adi = "dekont_" . uniqid() . ".pdf";
+        $pdf_content = $pdf->Output('', 'S');
+        $temp_file_path = sys_get_temp_dir() . '/' . uniqid('dekont_') . '.pdf';
+        file_put_contents($temp_file_path, $pdf_content);
+
+        $file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/dekont/', $s3Client, $config['s3']['bucket']);
+        if ($file_url) {
+            $dekont_adi = basename($temp_file_path);
         }
-        
-        $dekont_yolu = $upload_dir . $dekont_adi;
-
-        // Output the PDF
-        $pdf->Output($dekont_yolu, 'F');
-
-        // Generate unique transaction number
-        $islem_no = "COD_" . uniqid();
 
         // Save to database
-        $query = "INSERT INTO b2b_dekontlar (uye_id, pos_odeme_id, islem_no, tutar, dekont, tarih) 
+        $islem_no = "COD_" . uniqid();
+        $query = "INSERT INTO b2b_dekontlar (uye_id, pos_odeme_id, islem_no, tutar, dekont,  tarih) 
                  VALUES (:uye_id, :pos_odeme_id, :islem_no, :tutar, :dekont, :tarih)";
         $params = [
             'uye_id' => $uye_id,
@@ -96,10 +103,10 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
             'tarih' => $date
         ];
         $database->insert($query, $params);
-
+        unlink($temp_file_path);
         return true;
     } catch (Exception $e) {
-        error_log('Dekont oluşturma hatası: ' . $e->getMessage());
+        error_log('Dekont oluşturma veya S3 yükleme hatası: ' . $e->getMessage());
         throw new Exception('Dekont oluşturulurken bir hata oluştu: ' . $e->getMessage());
     }
 }
