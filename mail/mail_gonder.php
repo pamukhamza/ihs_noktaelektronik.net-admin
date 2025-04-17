@@ -1,5 +1,5 @@
 <?php
-
+require_once '../functions/db.php';
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
@@ -82,14 +82,11 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
         </tbody>
     </table>
     <?php
-    global $db;
-    $q = $db->prepare("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM siparis_urunler AS su 
+    $db = new Database();
+    $urunlar = $db->fetchAll("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM b2b_siparis_urunler AS su 
          LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
-         WHERE su.sip_id = $sip_id ");
-    $q->execute();
+         WHERE su.sip_id = :sip_id" , ['sip_id' => $sip_id]);
 
-    // Fetch all rows as an associative array
-    $urunlar = $q->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <table style="margin-top: 10px; width: 100%; max-width: 750px; border: 1px solid #ccc; border-collapse: collapse; background-color: #f9f9f9;">
         <thead>
@@ -108,7 +105,7 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                 <td style="border: 1px solid #ccc; width: 60px;">
                     <?php
                     // Resmi URL'den al
-                    $imageUrl = "https://www.noktaelektronik.com.tr/assets/images/urunler/" . $urun["foto"];
+                    $imageUrl = "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $urun["foto"];
 
                     // Resmi yükle
                     $imageData = @file_get_contents($imageUrl);
@@ -189,9 +186,8 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
             </tr>
         <?php endforeach; ?>
         <?php
-        $q = $db->prepare("SELECT * FROM siparisler WHERE id = $sip_id ");
-        $q->execute();
-        $siparisler = $q->fetch(PDO::FETCH_ASSOC);
+        $siparisler = $db->fetch("SELECT * FROM b2b_siparisler WHERE id = :id " , ['id' => $sip_id]);
+
       if($siparisler["indirim"] != '0.00'){ ?>
         <tr>
             <td></td>
@@ -233,9 +229,7 @@ function siparisAlindi($uye, $sip_id, $siparis_no){
                 <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">KDV Dahil Toplam :</td>
                 <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">
                     <?php
-                    $q = $db->prepare("SELECT * FROM siparisler WHERE id = $sip_id ");
-                    $q->execute();
-                    $siparisler = $q->fetch(PDO::FETCH_ASSOC);
+                    $siparisler = $db->prepare("SELECT * FROM b2b_siparisler WHERE id = :id " , ['id' => $sip_id]);
 
                     $toplam_fiyat = $siparisler["toplam"];
                     $toplam_fiyat_float = (float) str_replace(',', '.', $toplam_fiyat);
@@ -633,14 +627,10 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
         </tbody>
     </table>
     <?php
-    global $db;
-    $q = $db->prepare("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM siparis_urunler AS su 
+    $db = new Database();
+    $urunlar = $db->fetchAll("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM b2b_siparis_urunler AS su 
          LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
-         WHERE su.sip_id = $sip_id ");
-    $q->execute();
-
-    // Fetch all rows as an associative array
-    $urunlar = $q->fetchAll(PDO::FETCH_ASSOC);
+         WHERE su.sip_id = :sip_id " , ['sip_id' => $sip_id]);
     ?>
     <table style="margin-top: 10px; width: 100%; max-width: 750px; border: 1px solid #ccc; border-collapse: collapse; background-color: #f9f9f9;">
         <thead>
@@ -659,7 +649,7 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
                 <td style="border: 1px solid #ccc; width: 60px;">
                     <?php
                     // Resmi URL'den al
-                    $imageUrl = "https://www.noktaelektronik.com.tr/assets/images/urunler/" . $urun["foto"];
+                    $imageUrl = "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $urun["foto"];
 
                     // Resmi yükle
                     $imageData = @file_get_contents($imageUrl);
@@ -739,9 +729,7 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
             </tr>
         <?php endforeach; ?>
         <?php
-        $q = $db->prepare("SELECT * FROM siparisler WHERE id = $sip_id ");
-        $q->execute();
-        $siparisler = $q->fetch(PDO::FETCH_ASSOC);
+        $siparisler = $db->fetch("SELECT * FROM b2b_siparisler WHERE id = $sip_id ");
         if($siparisler["indirim"] != '0.00'){ ?>
             <tr>
                 <td></td>
@@ -783,9 +771,7 @@ function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
             <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">KDV Dahil Toplam :</td>
             <td style="border: 1px solid #ccc; text-align: center; font-weight: bold; color:white">
                 <?php
-                $q = $db->prepare("SELECT * FROM siparisler WHERE id = $sip_id ");
-                $q->execute();
-                $siparisler = $q->fetch(PDO::FETCH_ASSOC);
+                $siparisler = $db->fetch("SELECT * FROM b2b_siparisler WHERE id = :id", ['id' => $sip_id]);
 
                 $toplam_fiyat = $siparisler["toplam"];
                 $toplam_fiyat_float = (float) str_replace(',', '.', $toplam_fiyat);
@@ -1100,7 +1086,7 @@ function iadeOnayMail($uye, $siparis_no){
 
     return $content;
 }
-function uyeOnayMail($uye, $uye_mail, $uye_id){
+function uyeOnayMail($uye, $uye_mail, $aktivasyon){
     ob_start();
     ?>
     <table style=" margin-left: auto; margin-right: auto;  height:auto; width: 100%; min-width: 350px; max-width: 750px; font-family: &quot;Source Sans Pro&quot;, Arial, Tahoma, Geneva, sans-serif;">
@@ -1148,7 +1134,7 @@ function uyeOnayMail($uye, $uye_mail, $uye_id){
         <tbody>
         <tr>
             <td style="display: block; width: 100%; height: 45px;  font-family: &quot;Source Sans Pro&quot;, Arial, Verdana, Tahoma, Geneva, sans-serif; background-color: #27cbcc;  font-size: 20px; line-height: 45px; text-align: center; text-decoration-line: none; white-space: nowrap; font-weight: 600;">
-                <a href="https://www.noktaelektronik.com.tr/aktivasyon?id=<?= $uye_id ?>" style="text-decoration-line: none; color: rgb(255, 255, 255); white-space: nowrap;">Üyeliğinizi aktif etmek için tıklayınız.</a>
+                <a href="https://www.noktaelektronik.com.tr/aktivasyon?id=<?= $aktivasyon ?>" style="text-decoration-line: none; color: rgb(255, 255, 255); white-space: nowrap;">Üyeliğinizi aktif etmek için tıklayınız.</a>
             </td>
         </tr>
         </tbody>
@@ -1233,7 +1219,7 @@ function sifreDegistimeMail($uye, $kod){
         </tr>
         <tr>
             <td style="width: 100%;  line-height: 30px; max-width: 750px;  min-width: 350px; font-size: 18px;">
-                <a href="https://www.noktaelektronik.com.tr/sifreguncelle.php?lang=tr&code=<?= $kod ?>" style="text-decoration-line: none; color: rgb(0, 0, 255); white-space: nowrap;">Şifre sıfırlama linki</a>
+                <a href="https://www.noktaelektronik.com.tr/tr/sifreguncelle.php?code=<?= $kod ?>" style="text-decoration-line: none; color: rgb(0, 0, 255); white-space: nowrap;">Şifre sıfırlama linki</a>
             </td>
         </tr>
         </tbody>
@@ -1588,24 +1574,15 @@ function islemiBitenAriza($uye, $takip, $urun_durumu, $urun_kodu){
     return $content;
 }
 function sepetHatirlat($uyeid){
-    global $db;
+    $db = new Database();
     $query = "SELECT ad, soyad, fiyat FROM uyeler WHERE id = :uye_id";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':uye_id', $uyeid, PDO::PARAM_INT);
-    $stmt->execute();
-    $result = $stmt->fetch(PDO::FETCH_ASSOC);
+    $result = $db->fetch($query, ['uye_id' => $uyeid]);
     $uyefiyat = $result['fiyat'];
 
-    $query1 = "SELECT satis FROM kurlar WHERE id = 2";
-    $stmt1 = $db->prepare($query1);
-    $stmt1->execute();
-    $dolar = $stmt1->fetch(PDO::FETCH_ASSOC);
+    $dolar = $db->fetch("SELECT satis FROM b2b_kurlar WHERE id = 2");
     $dolarFiyat = $dolar['satis'];
 
-    $query2 = "SELECT satis FROM kurlar WHERE id = 2";
-    $stmt2 = $db->prepare($query2);
-    $stmt2->execute();
-    $euro = $stmt2->fetch(PDO::FETCH_ASSOC);
+    $euro = $db->fetch("SELECT satis FROM b2b_kurlar WHERE id = 3");
     $euroFiyat = $euro['satis'];
     ob_start();
     ?>
@@ -1637,13 +1614,10 @@ function sepetHatirlat($uyeid){
         </tbody>
     </table>
     <?php
-    $q = $db->prepare("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM uye_sepet AS su 
+        $urunlar = $db->fetchAll("SELECT su.*, nu.*, (SELECT nr.foto FROM nokta_urunler_resimler AS nr WHERE nr.urun_id = nu.BLKODU LIMIT 1) AS foto FROM b2b_uye_sepet AS su 
          LEFT JOIN nokta_urunler AS nu ON su.urun_id = nu.id
-         WHERE su.uye_id = $uyeid ");
-    $q->execute();
+         WHERE su.uye_id = :uye_id " ,['uye_id' => $uyeid]);
 
-    // Fetch all rows as an associative array
-    $urunlar = $q->fetchAll(PDO::FETCH_ASSOC);
     ?>
     <table style="margin-top: 10px; width: 100%; max-width: 750px; border: 1px solid #ccc; border-collapse: collapse; background-color: #f9f9f9;">
         <thead>
@@ -1662,7 +1636,7 @@ function sepetHatirlat($uyeid){
                 <td style="border: 1px solid #ccc; width: 60px">
                     <?php
                     // Fetch the image from the URL
-                    $imageUrl = "https://www.noktaelektronik.com.tr/assets/images/urunler/" . $urun["foto"];
+                    $imageUrl = "https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/products/" . $urun["foto"];
                     $imageData = @file_get_contents($imageUrl);
                     // Initialize variables to store image data and base64 string
                     $base64Image = '';
@@ -1784,4 +1758,3 @@ function sepetHatirlat($uyeid){
 
     return $content;
 }
-?>
