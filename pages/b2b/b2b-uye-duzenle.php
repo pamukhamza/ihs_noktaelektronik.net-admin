@@ -24,7 +24,7 @@ $ilce = $kullan["ilce"];
 $uye_tipi = $kullan["uye_tipi"];
 $fiyat = $kullan['fiyat'];
 
-$satis_temsilcileri = $database->fetchAll("SELECT * FROM users WHERE roles LIKE '%5%' ");
+$satis_temsilcileri = $database->fetchAll("SELECT * FROM users WHERE roles LIKE '%2%' ");
 
 $zorunlu = "<span style='color:red;'>*</span>"
 ?>
