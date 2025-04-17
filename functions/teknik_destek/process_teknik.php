@@ -108,8 +108,8 @@ $database = new Database();
     $takip_no = $ntd["takip_kodu"];
 
     if($urun_durum_id != 1 && $urun_durum_id != 2 && $urun_durum_id != 3){
-        //$mail_icerik = islemiBitenAriza($musteri, $takip_no, $urun_durumu, $urun_kodu);
-        //mailGonder($mail, 'Arızalı Cihaz Durumu!', $mail_icerik, 'Nokta Elektronik');
+        $mail_icerik = islemiBitenAriza($musteri, $takip_no, $urun_durumu, $urun_kodu);
+        mailGonder($mail, 'Arızalı Cihaz Durumu!', $mail_icerik, 'Nokta Elektronik');
     }
 
     return $tdp_id;
