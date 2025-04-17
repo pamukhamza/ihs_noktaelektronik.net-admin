@@ -27,9 +27,6 @@ class FinansPOSHandler extends POSHandler {
     }
 
     private function prepareXML() {
-        $amount = $_POST['amount'];
-$amount = str_replace('.', ',', $amount);
-
         $baseXml = '<?xml version="1.0" encoding="UTF-8"?>
         <CC5Request>
             <Name>' . $this->username . '</Name>
@@ -38,7 +35,7 @@ $amount = str_replace('.', ',', $amount);
             <OrderId>' . $_POST['oid'] . '</OrderId>
             <Type>Auth</Type>
             <Number>' . $_POST['md'] . '</Number>
-            <Total>' . $amount . '</Total>
+            <Total>' . $_POST['amount'] . '</Total>
             <Currency>949</Currency>
             <PayerTxnId>' . $_POST['xid'] . '</PayerTxnId>
             <PayerSecurityLevel>' . $_POST['eci'] . '</PayerSecurityLevel>

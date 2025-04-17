@@ -39,6 +39,8 @@ function posXmlOlustur(
     $hareket = $xmlDoc->createElement('HAREKET');
     $cariHareket->appendChild($hareket);
 
+    $toplamxml = str_replace('.', ',', $toplamxml);
+
     $cariElements = [
         'BLCRKODU'         => $cari_kodu,
         'DOVIZ_HES_ISLE'   => $doviz_hes_isle,
