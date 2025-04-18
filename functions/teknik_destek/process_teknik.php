@@ -23,8 +23,7 @@ $s3Client = new S3Client([
     ]
 ]);
 
-$database = new Database();
-
+    $database = new Database();
 
     $id = $_POST['id'];
     $yapilan_islemler = $_POST['yapilan_islemler'];
@@ -109,7 +108,14 @@ $database = new Database();
 
     if($urun_durum_id != 1 && $urun_durum_id != 2 && $urun_durum_id != 3){
         $mail_icerik = islemiBitenAriza($musteri, $takip_no, $urun_durumu, $urun_kodu);
-        mailGonder($mail, 'Arızalı Cihaz Durumu!', $mail_icerik, 'Nokta Elektronik');
+        // mailGonder($mail, 'Arızalı Cihaz Durumu!', $mail_icerik, 'Nokta Elektronik'); // Orijinal çağrı yorum satırına alındı
+
+        // Mail gönderme işlemini arka planda çalıştır
+        // Not: mail_worker.php dosyasının proje kök dizininde olduğunu varsayıyoruz.
+        // Eğer farklı bir dizindeyse, php -f kısmındaki yolu güncellemelisiniz.
+        // Windows için "> /dev/null 2>&1 &" yerine "> NUL 2>&1" kullanılabilir ancak genellikle & yeterli olur.
+        $cmd = "php -f ../../mail_worker.php " . escapeshellarg($mail) . " " . escapeshellarg('Arızalı Cihaz Durumu!') . " " . escapeshellarg($mail_icerik) . " " . escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
+        exec($cmd);
     }
 
     return $tdp_id;

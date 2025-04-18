@@ -5,9 +5,7 @@ include '../../mail/mail_gonder.php';
 include 'dekontolustur.php';
 require_once '../wolvox/pos_olustur.php';
 require_once 'handlers/POSHandler.php';
-require_once 'handlers/ParamPOSHandler.php';
 require_once 'handlers/FinansPOSHandler.php';
-require_once 'handlers/KuveytPOSHandler.php';
 
 $database = new Database();
 
@@ -83,15 +81,9 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['c
     ];
 
     // Process payment based on type
-    if(isset($_GET['cariveri'])) {
-        $handler = new ParamPOSHandler($database, $paymentData);
-        $handler->processPayment();
-    } elseif(isset($_GET['cariveriFinans'])) {
+    if(isset($_GET['cariveriFinans'])) {
         $handler = new FinansPOSHandler($database, $paymentData);
         $handler->processPayment();
-    } elseif(isset($_GET['cariveriKuveyt'])) {
-        $handler = new KuveytPOSHandler($database, $paymentData);
-        $handler->processPayment();
-    }
+    } 
 }
 ?>
