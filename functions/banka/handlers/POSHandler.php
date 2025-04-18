@@ -64,8 +64,13 @@ abstract class POSHandler {
             $this->paymentData['yantoplam'],
             $this->paymentData['taksit_sayisi']
         );
-        
-        mailGonder($this->paymentData['uye_mail'], 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik');
+
+        // mailGonder($this->paymentData['uye_mail'], 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik'); // Orijinal çağrı yorum satırına alındı
+
+        // Mail gönderme işlemini arka planda çalıştır
+        // POSHandler.php, functions/banka/handlers/ içinde olduğu için ../../../ ile kök dizine çıkıyoruz.
+        $cmd = "php -f ../../../mail_worker.php " . escapeshellarg($this->paymentData['uye_mail']) . " " . escapeshellarg('Cari Ödeme Bildirimi') . " " . escapeshellarg($mail_icerik) . " " . escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
+        exec($cmd);
     }
 
     protected function redirect($url) {
