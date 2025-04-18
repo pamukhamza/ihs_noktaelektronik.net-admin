@@ -65,12 +65,29 @@ abstract class POSHandler {
             $this->paymentData['taksit_sayisi']
         );
 
-        // mailGonder($this->paymentData['uye_mail'], 'Cari Ödeme Bildirimi', $mail_icerik, 'Nokta Elektronik'); // Orijinal çağrı yorum satırına alındı
+        // Absolute path kullanarak mail worker'ı çağıralım
+        $rootPath = realpath(__DIR__ . '/../../../');
+        $cmd = sprintf(
+            'php -f %s/mail_worker.php %s %s %s %s > %s/mail_worker.log 2>&1 &',
+            escapeshellarg($rootPath),
+            escapeshellarg($this->paymentData['uye_mail']),
+            escapeshellarg('Cari Ödeme Bildirimi'),
+            escapeshellarg($mail_icerik),
+            escapeshellarg('Nokta Elektronik'),
+            escapeshellarg($rootPath)
+        );
 
-        // Mail gönderme işlemini arka planda çalıştır
-        // POSHandler.php, functions/banka/handlers/ içinde olduğu için ../../../ ile kök dizine çıkıyoruz.
-        $cmd = "php -f ../../../mail_worker.php " . escapeshellarg($this->paymentData['uye_mail']) . " " . escapeshellarg('Cari Ödeme Bildirimi') . " " . escapeshellarg($mail_icerik) . " " . escapeshellarg('Nokta Elektronik') . " > NUL 2>&1 &";
-        exec($cmd);
+        // Windows için
+        if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+            $cmd = 'start /B ' . $cmd;
+        }
+
+        exec($cmd, $output, $returnVar);
+
+        // Hata durumunu logla
+        if ($returnVar !== 0) {
+            error_log("Mail worker çalıştırma hatası: " . print_r($output, true));
+        }
     }
 
     protected function redirect($url) {
