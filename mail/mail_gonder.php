@@ -93,12 +93,29 @@ function getMailFooter() {
 }
 function cariOdeme($uye,$fiyat,$taksit){
     $content = "
-    <div style='font-size: 20px; line-height: 30px;'>
-        <p>Sayın <strong>$uye</strong>,</p>
-        <p>Ödemeniz için teşekkür ederiz.</p>
-        <p>Ödenen Tutar: $fiyat</p>
-        <p>Taksit: $taksit</p>
-    </div>";
+    <table style='margin-top: 10px; width: 100%; max-width: 750px;'>
+        <tbody>
+        <tr>
+            <td align='center' style='width: 100%; height: 35px; line-height: 35px; max-width: 750px;'><img src='https://ci5.googleusercontent.com/proxy/F8CvHq6tqRXdMWR2SJ6TZ4mgz1ToO4x4hjadwMx9DJPdylF_gApmvzsh_p2z5APOkhEb3iMwfDSaxatv3BSgr8mp9XaMJZSvPcjR96Bz1r4g1hU144Gej1sWUA=s0-d-e1-ft#https://images.hepsiburada.net/banners/0/imageUrl2089_20200917121500.png' width='48' /></td>
+        </tr>
+        <tr>
+            <td align='center' style='width: 100%; height: 35px; line-height: 35px; max-width: 750px; text-align: center; min-width: 350px; margin-top: 25px; font-size: 30px;'><strong>Cari Ödeme Bildirimi</strong></td>
+        </tr>
+        <tr style='margin-top: 20px;'>
+            <td align='center' style='margin-top: 20px; width: 100%; height: 30px; line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;'><span style='font-size:20px;'>Sayın<strong> <?= $uye ?> </strong>,</span></td>
+        </tr>
+        <tr>
+            <td align='center' style='width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;'><span style='font-size:20px;'>Ödemeniz için teşekkür ederiz.<br />
+        </tr>
+        <tr>
+            <td align='center' style='width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;'><span style='font-size:20px;'>Ödenen Tutar: <?= $fiyat ?> <br/>
+        </tr>
+        <tr>
+            <td align='center' style='width: 100%;  line-height: 30px; max-width: 750px; text-align: center; min-width: 350px; font-size: 20px;'><span style='font-size:20px;'>Taksit: <?= $taksit ?> <br />
+        </tr>
+        </tbody>
+    </table>    
+    ";
     
     return getMailTemplate($content, 'Cari Ödeme Bildirimi');
 }
