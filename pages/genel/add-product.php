@@ -130,6 +130,10 @@ $categories = getCategories();
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
+                                                    <div class="col">
+                                                        <label class="form-label" for="BLKODU">BLKODU</label>
+                                                        <input type="text" class="form-control" id="BLKODU" placeholder="BLKODU" name="BLKODU" value="<?= $product['BLKODU']; ?>">
+                                                    </div>
                                                 </div>
                                                 <div class="row mb-6">
                                                     <div class="col">
