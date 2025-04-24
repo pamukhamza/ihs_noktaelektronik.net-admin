@@ -23,6 +23,8 @@ $s3Client = new S3Client([
 ]);
 
 function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $taksit_sayisi, $odenentutar, $date) {
+    $odenentutar = number_format($odenentutar, 2, ',', '.');
+
     try {
         $database = new Database();
         global $s3Client, $config;
