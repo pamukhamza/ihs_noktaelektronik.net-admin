@@ -24,10 +24,10 @@ $database = new Database();
                                         <th>Ürün Adı</th>
                                         <th>Marka</th>
                                         <th>KATEGORİ</th>
-                                        <th>DSF4</th>
-                                        <th>DSF3</th>
-                                        <th>DSF2</th>
-                                        <th>DSF1</th>
+                                        <th>DSF4 $/€</th>
+                                        <th>DSF3 $/€</th>
+                                        <th>DSF2 $/€</th>
+                                        <th>DSF1 $/€</th>
                                     </tr>
                                     </thead>
                                     <tbody>
