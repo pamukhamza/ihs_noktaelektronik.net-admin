@@ -69,6 +69,10 @@ foreach ($results as $row) {
         'aktif' => $row['aktif'],
         'web_net' => $row['web_net'],
         'web_comtr' => $row['web_comtr'],
+        'DSF4' => $row['DSF4'],
+        'DSF3' => $row['DSF3'],
+        'DSF2' => $row['DSF2'],
+        'DSF1' => $row['DSF1'],
         'web_cn' => $row['web_cn']
     ];
 }
