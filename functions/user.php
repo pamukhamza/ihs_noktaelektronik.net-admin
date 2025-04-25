@@ -34,6 +34,8 @@ class User {
                 // Get user permissions
                 $permissions = $this->getUserPermissions($user['id']);
                 
+                ini_set('session.gc_maxlifetime', 21600); // 6 saat (sunucu tarafı)
+                ini_set('session.cookie_lifetime', 21600); // 6 saat (tarayıcı çerezi)
                 session_name("user_session");
                 session_start();
                 $_SESSION[$this->session_key] = [
