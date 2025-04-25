@@ -74,10 +74,10 @@ $database = new Database();
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
-                { data: 'DSF4', defaultContent: 'Fiyat Yok' },
-                { data: 'DSF3', defaultContent: 'Fiyat Yok' },
-                { data: 'DSF2', defaultContent: 'Fiyat Yok' },
-                { data: 'DSF1', defaultContent: 'Fiyat Yok' }
+                { data: 'DSF4'},
+                { data: 'DSF3'},
+                { data: 'DSF2'},
+                { data: 'DSF1'}
             ]
         });
     });
