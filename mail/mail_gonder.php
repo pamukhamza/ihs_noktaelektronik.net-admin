@@ -82,7 +82,7 @@ function getMailFooter() {
         <tr>
             <td align="center" style="background-color: rgb(70, 70, 70); padding: 20px;">
                 <span style="color: #f1f1f1; font-size: 17px;">
-                    <a href="mailto:destek@noktaelektronik.com.tr" style="color: #f1f1f1; text-decoration: none;">destek@noktaelektronik.com.tr</a> |
+                    <a href="mailto:b2b@noktaelektronik.net" style="color: #f1f1f1; text-decoration: none;">b2b@noktaelektronik.net</a> |
                     <a href="tel:08503330208" style="color: #f1f1f1; text-decoration: none;">0850 333 02 08</a> |
                     <a href="https://noktaelektronik.com.tr/" style="color: #f1f1f1; text-decoration: none;">www.noktaelektronik.com.tr</a>
                 </span>
@@ -318,7 +318,7 @@ function sepetHatirlat($uyeid){
                                 <tr>
                                     <td align="center" valign="top">
                                         <div style="height: 34px; line-height: 34px; font-size: 14px;">&nbsp;</div>
-                                        <span style="font-size:12px;"><span style="font-family:tahoma,geneva,sans-serif;"><font color="#f1f1f1" style="font-size: 17px; line-height: 16px;"><span style="line-height: 16px;"><a href="mailto:destek@noktaelektronik.com.tr" style="text-decoration: none; color: #f1f1f1;">destek@noktaelektronik.com.tr</a> |
+                                        <span style="font-size:12px;"><span style="font-family:tahoma,geneva,sans-serif;"><font color="#f1f1f1" style="font-size: 17px; line-height: 16px;"><span style="line-height: 16px;"><a href="mailto:b2b@noktaelektronik.net" style="text-decoration: none; color: #f1f1f1;">b2b@noktaelektronik.net</a> |
                                         <a href="tel:08503330208" style="text-decoration: none; color: #f1f1f1;">0850 333 02 08</a> |
                                         <a href="https://noktaelektronik.com.tr/" style="text-decoration: none; color: #f1f1f1;">www.noktaelektronik.com.tr</a></span> </font></span></span>
 

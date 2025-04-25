@@ -1,5 +1,7 @@
 <?php
 // Set the session name before starting the session
+ini_set('session.gc_maxlifetime', 21600); // 6 saat (sunucu tarafı)
+ini_set('session.cookie_lifetime', 21600); // 6 saat (tarayıcı çerezi)
 session_name("user_session");
 session_start();
 
