@@ -20,7 +20,7 @@ $totalRecords = $totalRecordsResult[0]['total'];
 
 // Build main query for data
 $mainQuery = "
-    SELECT SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn, p.DSF4, p.DSF3, p.DSF2, p.DSF1
+    SELECT SQL_CALC_FOUND_ROWS p.id, p.UrunKodu, p.UrunAdiTR, p.web_net, p.web_comtr, p.web_cn, p.DSF4, p.DSF3, p.DSF2, p.DSF1, 
            m.id AS mid, m.title, 
            c.KategoriAdiTR AS category_name, 
            p.Vitrin, p.YeniUrun, p.aktif
