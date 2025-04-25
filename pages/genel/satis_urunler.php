@@ -24,10 +24,10 @@ $database = new Database();
                                         <th>Ürün Adı</th>
                                         <th>Marka</th>
                                         <th>KATEGORİ</th>
-                                        <th>DSF4 $/€</th>
-                                        <th>DSF3 $/€</th>
-                                        <th>DSF2 $/€</th>
-                                        <th>DSF1 $/€</th>
+                                        <th>DSF4</th>
+                                        <th>DSF3</th>
+                                        <th>DSF2</th>
+                                        <th>DSF1</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -74,10 +74,23 @@ $database = new Database();
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
-                { data: 'DSF4'},
-                { data: 'DSF3'},
-                { data: 'DSF2'},
-                { data: 'DSF1'}
+                {   data: 'DSF4',
+                    render: function (data, type, row) {
+                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    }
+                },{ data: 'DSF3',
+                    render: function (data, type, row) {
+                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    }
+                },{ data: 'DSF2',
+                    render: function (data, type, row) {
+                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    }
+                },{ data: 'DSF1',
+                    render: function (data, type, row) {
+                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    }
+                }
             ]
         });
     });
