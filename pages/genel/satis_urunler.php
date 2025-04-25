@@ -76,19 +76,47 @@ $database = new Database();
                 { data: 'category_name', defaultContent: 'Kategori Yok' },
                 {   data: 'DSF4',
                     render: function (data, type, row) {
-                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    let value = parseFloat(data);
+                    if (isNaN(value)) {
+                        return '0,00';
                     }
+                    return value.toLocaleString('tr-TR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + ' ' + (row.DOVIZ_BIRIMI ?? '');
+                }
                 },{ data: 'DSF3',
                     render: function (data, type, row) {
-                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                    let value = parseFloat(data);
+                    if (isNaN(value)) {
+                        return '0,00';
                     }
+                    return value.toLocaleString('tr-TR', {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }) + ' ' + (row.DOVIZ_BIRIMI ?? '');
+                }
                 },{ data: 'DSF2',
                     render: function (data, type, row) {
-                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                        let value = parseFloat(data);
+                        if (isNaN(value)) {
+                            return '0,00';
+                        }
+                        return value.toLocaleString('tr-TR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) + ' ' + (row.DOVIZ_BIRIMI ?? '');
                     }
                 },{ data: 'DSF1',
                     render: function (data, type, row) {
-                        return parseFloat(data).toLocaleString('tr-TR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' ' + row.DOVIZ_BIRIMI;
+                        let value = parseFloat(data);
+                        if (isNaN(value)) {
+                            return '0,00';
+                        }
+                        return value.toLocaleString('tr-TR', {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2
+                        }) + ' ' + (row.DOVIZ_BIRIMI ?? '');
                     }
                 }
             ]
