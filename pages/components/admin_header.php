@@ -210,7 +210,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                 </a>
             </li>
             <li class="menu-item <?= $currentPage === 's_uyegirisyap' ? 'active' : '' ?>">
-                <a href="pages/genel/satis_uyegirisyap" class="menu-link">
+                <a href="https://noktaelektronik.com.tr/tr/giris" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-login"></i>
                     <div data-i18n="Üye Olarak Giriş">Üye Olarak Giriş</div>
                 </a>
