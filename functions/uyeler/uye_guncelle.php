@@ -86,6 +86,6 @@ if (isset($_POST['uye_guncelle'])) {
         $result['satis_temsilcisi'], $user
     );
   
-    header("Location: ../../pages/b2b/b2b-uye-duzenle.php?id=" . $id . "&s=1");
+    header("Location: ../../pages/b2b/b2b-uye-duzenle.php?w=b2b&id=" . $id . "&s=1");
 }
 ?>
