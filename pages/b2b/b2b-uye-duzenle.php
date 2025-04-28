@@ -152,7 +152,7 @@ $zorunlu = "<span style='color:red;'>*</span>"
                                         <div class="col">
                                             <div class="form-group">
                                                 <label for="vergi_levhasi">Vergi Levhasi</label>
-                                                <a class="form-control form-control-sm" id="vergi_levhasi" name="vergi_levhasi" target="_blank" href="https://www.noktaelektronik.com.tr/assets/uploads/vergi_levhalari/<?= $kullan["vergi_levhasi"] ?>"><i class="fa-solid fa-file-arrow-down fa-xl"></i> İndirmek için tıkla!</a>
+                                                <a class="form-control form-control-sm" id="vergi_levhasi" name="vergi_levhasi" target="_blank" href="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/vergi_levhalari/<?= $kullan["vergi_levhasi"] ?>"><i class="fa-solid fa-file-arrow-down fa-xl"></i> İndirmek için tıkla!</a>
                                             </div>
                                         </div>
                                     </div>
