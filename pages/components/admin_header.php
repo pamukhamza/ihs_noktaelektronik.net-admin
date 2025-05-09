@@ -166,6 +166,51 @@ $selectedSite = $_GET['w'] ?? 'net';
             </li>
         <?php endif; ?>
         <!-- Technical Support -->
+        <?php if ($user->hasPermission(40)): ?>
+                    <li class="menu-item  <?= in_array($currentPage, ['b2b-doviz-ayarlari','b2b-odemeler', 'b2b-banka-komisyonları', 'b2b-banka-bilgileri', 'b2b-sanal-pos-odeme']) ? 'active open' : '' ?>">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                            <i class='menu-icon tf-icons ti ti-box'></i>
+                            <div data-i18n="Muhasebe">Muhasebe</div>
+                        </a>
+                        <ul class="menu-sub">
+                            <?php if ($user->hasPermission(47)): ?>
+                                <li class="menu-item <?= $currentPage === 'b2b-doviz-ayarlari' ? 'active' : '' ?>">
+                                    <a href="pages/b2b/b2b-doviz?w=noktab2b" class="menu-link">
+                                        <div data-i18n="Döviz Ayarları">Döviz Ayarları</div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($user->hasPermission(48)): ?>
+                                <li class="menu-item <?= $currentPage === 'b2b-odemeler' ? 'active' : '' ?>">
+                                    <a href="pages/b2b/b2b-odeme?w=noktab2b" class="menu-link">
+                                        <div data-i18n="Ödemeler">Ödemeler</div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($user->hasPermission(49)): ?>
+                                <li class="menu-item <?= $currentPage === 'b2b-banka-komisyonları' ? 'active' : '' ?>">
+                                    <a href="pages/b2b/b2b-komisyon?w=noktab2b" class="menu-link">
+                                        <div data-i18n="Banka Komisyonları">Banka Komisyonları</div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($user->hasPermission(50)): ?>
+                                <li class="menu-item <?= $currentPage === 'b2b-banka-bilgileri' ? 'active' : '' ?>">
+                                    <a href="pages/b2b/b2b-banka-hesap?w=noktab2b" class="menu-link">
+                                        <div data-i18n="Banka Hesap Bilgileri">Banka Hesap Bilgileri</div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                            <?php if ($user->hasPermission(51)): ?>
+                                <li class="menu-item <?= $currentPage === 'b2b-sanal-pos-odeme' ? 'active' : '' ?>">
+                                    <a href="pages/b2b/b2b-sanalpos?w=noktab2b" class="menu-link">
+                                        <div data-i18n="Sanal Pos Ödeme">Sanal Pos Ödeme</div>
+                                    </a>
+                                </li>
+                            <?php endif; ?>
+                        </ul>
+                    </li>
+                <?php endif; ?>
         <?php if ($user->hasPermission(52)): ?>
             <li class="menu-item <?= $currentPage === 's_havuz_bayiler' ? 'active' : '' ?>">
                 <a href="pages/genel/satis_havuzbayileri" class="menu-link">
@@ -346,51 +391,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                         </ul>
                     </li>
                 <?php endif; ?>
-                <?php if ($user->hasPermission(40)): ?>
-                    <li class="menu-item  <?= in_array($currentPage, ['b2b-doviz-ayarlari','b2b-odemeler', 'b2b-banka-komisyonları', 'b2b-banka-bilgileri', 'b2b-sanal-pos-odeme']) ? 'active open' : '' ?>">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                            <i class='menu-icon tf-icons ti ti-box'></i>
-                            <div data-i18n="Muhasebe">Muhasebe</div>
-                        </a>
-                        <ul class="menu-sub">
-                            <?php if ($user->hasPermission(47)): ?>
-                                <li class="menu-item <?= $currentPage === 'b2b-doviz-ayarlari' ? 'active' : '' ?>">
-                                    <a href="pages/b2b/b2b-doviz?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Döviz Ayarları">Döviz Ayarları</div>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ($user->hasPermission(48)): ?>
-                                <li class="menu-item <?= $currentPage === 'b2b-odemeler' ? 'active' : '' ?>">
-                                    <a href="pages/b2b/b2b-odeme?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Ödemeler">Ödemeler</div>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ($user->hasPermission(49)): ?>
-                                <li class="menu-item <?= $currentPage === 'b2b-banka-komisyonları' ? 'active' : '' ?>">
-                                    <a href="pages/b2b/b2b-komisyon?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Banka Komisyonları">Banka Komisyonları</div>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ($user->hasPermission(50)): ?>
-                                <li class="menu-item <?= $currentPage === 'b2b-banka-bilgileri' ? 'active' : '' ?>">
-                                    <a href="pages/b2b/b2b-banka-hesap?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Banka Hesap Bilgileri">Banka Hesap Bilgileri</div>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                            <?php if ($user->hasPermission(51)): ?>
-                                <li class="menu-item <?= $currentPage === 'b2b-sanal-pos-odeme' ? 'active' : '' ?>">
-                                    <a href="pages/b2b/b2b-sanalpos?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Sanal Pos Ödeme">Sanal Pos Ödeme</div>
-                                    </a>
-                                </li>
-                            <?php endif; ?>
-                        </ul>
-                    </li>
-                <?php endif; ?>
+                
                 <?php if ($user->hasPermission(41)): ?>
                     <li class="menu-item <?= $currentPage === 'b2b-uyeler' ? 'active' : '' ?>">
                         <a href="pages/b2b/b2b-uyeler?w=noktab2b" class="menu-link">
