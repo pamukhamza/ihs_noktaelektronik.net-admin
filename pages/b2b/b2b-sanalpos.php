@@ -205,7 +205,7 @@ $database = new Database();
                                     <hr>
                                     <div class="row">
                                         <input type="hidden" name="odemetutar" id="odemetutar1">
-                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="3">
+                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="2">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
                                         <input type="hidden" name="banka_id" id="banka_id" value="59">
