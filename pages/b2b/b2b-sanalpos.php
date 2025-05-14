@@ -146,7 +146,7 @@ $database = new Database();
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
                                 <div class="card-body">
-                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - 2 Taksit Çekim</h4></div>
+                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - 3 Taksit Çekim</h4></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -205,7 +205,7 @@ $database = new Database();
                                     <hr>
                                     <div class="row">
                                         <input type="hidden" name="odemetutar" id="odemetutar1">
-                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="2">
+                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="3">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
                                         <input type="hidden" name="banka_id" id="banka_id" value="59">
