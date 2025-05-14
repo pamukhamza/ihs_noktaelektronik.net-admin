@@ -85,5 +85,9 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['c
         $handler = new FinansPOSHandler($database, $paymentData);
         $handler->processPayment();
     } 
+    if(isset($_GET['cariveriKuveyt'])) {
+        $handler = new KuveytPOSHandler($database, $paymentData);
+        $handler->processPayment();
+    } 
 }
 ?>
