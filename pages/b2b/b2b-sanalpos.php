@@ -146,7 +146,7 @@ $database = new Database();
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
                                 <div class="card-body">
-                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - 3 Taksit Çekim</h4></div>
+                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - 2 Taksit Çekim</h4></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
