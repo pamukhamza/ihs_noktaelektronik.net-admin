@@ -5,7 +5,7 @@ include('../../db.php');
 $database = new Database();
 elseif(isset($_POST["adminCariOdeme"])) {
 
-	$odemetaksit = $_POST['odemetaksit'];
+	$odemetaksit = $_POST['taksit_sayisi'];
 	if ($odemetaksit == 1 || $odemetaksit == 0) {
 		$odemetaksit = 0;
 	}
