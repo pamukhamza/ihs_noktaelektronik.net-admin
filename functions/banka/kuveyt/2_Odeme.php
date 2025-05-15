@@ -1,8 +1,6 @@
 <?php
 session_start();
 session_regenerate_id(true);
-include('../../db.php');
-$database = new Database();
 elseif(isset($_POST["adminCariOdeme"])) {
 
 	$odemetaksit = $_POST['taksit_sayisi'];
