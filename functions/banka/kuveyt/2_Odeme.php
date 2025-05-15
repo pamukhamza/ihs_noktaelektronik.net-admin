@@ -69,7 +69,7 @@ if(isset($_POST["adminCariOdeme"])) {
 		.'<ClientIP>'.$_SERVER['REMOTE_ADDR'].'</ClientIP>'
 		.'</DeviceData>'
 		.'</KuveytTurkVPosMessage>';
-
+echo $xml;
 	try {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
