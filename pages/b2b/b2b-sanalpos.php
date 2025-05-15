@@ -27,7 +27,7 @@ $database = new Database();
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
-                                <div class="card-body">
+                                <div class="card-body" style="display: none;">
                                     <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Tüm Poslar</h4></div>
                                     <small class="text-danger">İşlem sırası Komisyon > Hesaba İşlenecek Tutar > Diğerleri !</small><br/>
                                     <large class="text-danger">Paramdan çekerken ,00 kullan!! <br/>Kuveytten çekerke .00 Kullan!! </large>
