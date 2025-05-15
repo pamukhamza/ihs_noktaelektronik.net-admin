@@ -21,13 +21,13 @@ $database = new Database();
             <!-- Content -->
             <div class=" flex-grow-1 container-p-y container-xxl">
                 <div class="row g-6">
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" style="">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12" style="display: none;">
                         <div class="card">
                             <form method="post" action="" id="paymentForm">
                                 <input type="hidden" name="adminCariOdeme" value="">
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
-                                <div class="card-body" style="display: none;">
+                                <div class="card-body" style="">
                                     <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Tüm Poslar</h4></div>
                                     <small class="text-danger">İşlem sırası Komisyon > Hesaba İşlenecek Tutar > Diğerleri !</small><br/>
                                     <large class="text-danger">Paramdan çekerken ,00 kullan!! <br/>Kuveytten çekerke .00 Kullan!! </large>
