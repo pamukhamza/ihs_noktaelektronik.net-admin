@@ -88,6 +88,8 @@ if(isset($_POST["adminCariOdeme"])) {
 	$filename = 'kuveyt_turk_request.xml';
 	file_put_contents($filename, $xml);
 	echo($data);
+	error_reporting(E_ALL);
+	ini_set("display_errors", 1);
 }
 ?>
 
