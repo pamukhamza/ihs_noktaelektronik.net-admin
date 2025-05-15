@@ -1,8 +1,4 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 session_start();
 session_regenerate_id(true);
 if(isset($_POST["adminCariOdeme"])) {
@@ -69,7 +65,7 @@ if(isset($_POST["adminCariOdeme"])) {
 		.'<ClientIP>'.$_SERVER['REMOTE_ADDR'].'</ClientIP>'
 		.'</DeviceData>'
 		.'</KuveytTurkVPosMessage>';
-echo $xml;
+
 	try {
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_SSLVERSION, 6);
@@ -92,8 +88,6 @@ echo $xml;
 	$filename = 'kuveyt_turk_request.xml';
 	file_put_contents($filename, $xml);
 	echo($data);
-	error_reporting(E_ALL);
-	ini_set("display_errors", 1);
 }
 ?>
 
