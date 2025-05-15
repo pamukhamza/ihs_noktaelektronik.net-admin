@@ -5,7 +5,7 @@ error_reporting(E_ALL);
 
 session_start();
 session_regenerate_id(true);
-elseif(isset($_POST["adminCariOdeme"])) {
+if(isset($_POST["adminCariOdeme"])) {
 
 	$odemetaksit = $_POST['taksit_sayisi'];
 	if ($odemetaksit == 1 || $odemetaksit == 0) {
