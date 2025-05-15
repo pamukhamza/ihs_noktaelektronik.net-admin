@@ -477,6 +477,10 @@ $database = new Database();
             placeholder: 'Üye seçiniz',
             allowClear: true
         });
+        $('#uye_id3').select2({
+            placeholder: 'Üye seçiniz',
+            allowClear: true
+        });
     });
 </script>
 <script>
@@ -537,6 +541,20 @@ $database = new Database();
         odemetutarInput2.value = odemetutar2.toFixed(2);
     });
 
+    var toplam3 = document.getElementById("toplam3");
+    var odemetutarInput3 = document.getElementById("odemetutar3");
+    var komisyonInput3 = document.getElementById("vade");
+    toplam.addEventListener("input", function() {
+        var tutar3 = parseFloat(toplam3.value);
+        var komisyon3 = parseFloat(komisyonInput3.value);
+        var minKomisyon3 = 1;
+        if (komisyon3 < minKomisyon3) {
+            komisyon3 = minKomisyon3;
+        }
+        var odemetutar3 = tutar3 * komisyon3;
+        odemetutarInput3.value = odemetutar3.toFixed(2);
+    });
+
     var toplamValue = document.getElementById("toplam1");
     toplamValue.addEventListener("input", function() {
         var tutar = parseFloat(toplamValue.value);
@@ -546,6 +564,11 @@ $database = new Database();
     toplamValue2.addEventListener("input", function() {
         var tutar2 = parseFloat(toplamValue2.value);
         document.getElementById("odemetutar2").value = tutar2;
+    });
+        var toplamValue3 = document.getElementById("toplam3");
+    toplamValue3.addEventListener("input", function() {
+        var tutar3 = parseFloat(toplamValue3.value);
+        document.getElementById("odemetutar3").value = tutar3;
     });
 </script>
 <?php
