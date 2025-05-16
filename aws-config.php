@@ -2,7 +2,7 @@
 return [
     's3' => [
         'key'    => 'AKIAWNHTHJK4LGVYEKUL',
-        'secret' => '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',
+        'secret' => 'akjotpUR5tiGvl/Np60x+lbrcvSHPaRmLJl1ih3I',
         'bucket' => 'noktanet',
         'region' => 'eu-central-1',
     ],
