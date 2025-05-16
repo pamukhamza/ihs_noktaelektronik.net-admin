@@ -362,7 +362,7 @@ $database = new Database();
                                         <input type="hidden" name="taksit_sayisi" id="taksit_sayisi" value="1">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
-                                        <input type="hidden" name="banka_id" id="banka_id" value="125">
+                                        <input type="hidden" name="banka_id" id="banka_id" value="28">
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" id="kartlaOdemeyeGec" name="kartlaOdemeyeGec" class="btn btn-space btn-primary">Gönder</button>

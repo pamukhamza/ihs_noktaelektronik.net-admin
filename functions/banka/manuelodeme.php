@@ -6,6 +6,7 @@ include_once 'dekontolustur.php';
 require_once '../wolvox/pos_olustur.php';
 require_once 'handlers/POSHandler.php';
 require_once 'handlers/FinansPOSHandler.php';
+require_once 'handlers/KuveytPOSHandler.php';
 
 $database = new Database();
 
