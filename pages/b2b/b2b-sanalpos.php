@@ -146,7 +146,7 @@ $database = new Database();
                                 <input type="hidden" name="taksit_sayisi" value="">
                                 <input type="hidden" name="lang" value="tr">
                                 <div class="card-body">
-                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - 3 Taksit Çekim</h4></div>
+                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans</h4></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -172,6 +172,14 @@ $database = new Database();
                                             <select class="form-control" name="hesap">
                                                 <option value="0">TL Hesabıma İşle</option>
                                                 <option value="1">Döviz Hesabıma İşle</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="odemetaksit">Taksit Seçin:</label>
+                                            <select name="odemetaksit" id="odemetaksit1" class="form-control">
+                                                <option value="1">1 Taksit</option>
+                                                <option value="2">2 Taksit</option>
+                                                <option value="3">3 Taksit</option>
                                             </select>
                                         </div>
                                     </div>
@@ -205,87 +213,9 @@ $database = new Database();
                                     <hr>
                                     <div class="row">
                                         <input type="hidden" name="odemetutar" id="odemetutar1">
-                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="3">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
-                                        <input type="hidden" name="banka_id" id="banka_id" value="59">
-                                    </div>
-                                    <div class="text-center">
-                                        <button type="submit" id="kartlaOdemeyeGec" name="kartlaOdemeyeGec" class="btn btn-space btn-primary">Gönder</button>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
-                        <div class="card mt-5">
-                            <form method="post" action="functions/banka/turkiye_finans/turkiye_finans_request.php">
-                                <input type="hidden" name="adminCariOdeme" value="">
-                                <input type="hidden" name="taksit_sayisi" value="">
-                                <input type="hidden" name="lang" value="tr">
-                                <div class="card-body">
-                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Türkiye Finans - Tek Çekim</h4></div>
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="uye_parola">İşlenecek Cari</label>
-                                                <select class="form-control" id="uye_id2" name="uye_id"  style="width:100%" readonly>
-                                                    <option value='0'>Firma Seç</option>
-                                                    <?php
-                                                    $uyeler = $database->fetchAll("SELECT muhasebe_kodu, id, firmaUnvani FROM uyeler");
-                                                    foreach($uyeler as $row) {
-                                                        ?>
-                                                        <option value='<?php echo $row['id']; ?>'><?php echo $row['muhasebe_kodu']. ' - ' . $row['firmaUnvani']; ?></option>
-                                                    <?php } ?>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 ">
-                                            <label for="tutarInput">Hesaba İşlenecek Tutar <small class="text-danger">(Virgül yerine nokta kullan!)</small></label>
-                                            <input type="text" class="form-control" id="toplam2" name="toplam" placeholder="Ör. 1582.44" required>
-                                        </div>
-                                        <div class="col-md-6 ">
-                                            <label for="hesap">Müşteri Hesabı</label>
-                                            <select class="form-control" name="hesap">
-                                                <option value="0">TL Hesabıma İşle</option>
-                                                <option value="1">Döviz Hesabıma İşle</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="cardName">Kart Sahibi</label>
-                                            <input type="text" class="form-control" id="cardName" name="cardName" placeholder="" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="cardNumber">Kart Numarası</label>
-                                            <input type="text" class="form-control" id="cardNumber" MAXLENGTH="16" name="cardNumber" placeholder="" required>
-                                        </div>
-                                    </div>
-                                    <div class="row">
-                                        <div class=" col-sm-12 col-md-6">
-                                            <label class="form-label" >SKT</label>
-                                            <div class="d-flex">
-                                                <input type="text" id="expMonth" name="expMonth" class="form-control me-2" placeholder="Ay" autocomplete="off" required MAXLENGTH="3" />
-                                                <input type="text" id="expYear" name="expYear" class="form-control" placeholder="Yıl" autocomplete="off" required MAXLENGTH="3" />
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3 mb-3">
-                                            <label for="cvCode">CVV</label>
-                                            <input type="text" class="form-control" id="cvCode" name="cvCode" MAXLENGTH="4" required>
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <small id="kart-gelen-bilgi2"></small>
-                                        </div>
-                                    </div>
-                                    <hr>
-                                    <div class="row">
-                                        <input type="hidden" name="odemetutar" id="odemetutar2">
-                                        <input type="hidden" name="odemetaksit" id="odemetaksit" value="1">
-                                        <input type="hidden" name="tip" id="tip" value="Sanal Pos">
-                                        <input type="hidden" name="vade" id="vade" value="0">
-                                        <input type="hidden" name="banka_id" id="banka_id" value="57">
+                                        <input type="hidden" name="banka_id" id="banka_id1" value="121">
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" id="kartlaOdemeyeGec" name="kartlaOdemeyeGec" class="btn btn-space btn-primary">Gönder</button>
@@ -362,7 +292,7 @@ $database = new Database();
                                         <input type="hidden" name="taksit_sayisi" id="taksit_sayisi" value="1">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
-                                        <input type="hidden" name="banka_id" id="banka_id" value="28">
+                                        <input type="hidden" name="banka_id" id="banka_id" value="113">
                                     </div>
                                     <div class="text-center">
                                         <button type="submit" id="kartlaOdemeyeGec" name="kartlaOdemeyeGec" class="btn btn-space btn-primary">Gönder</button>
@@ -455,6 +385,37 @@ $database = new Database();
 <!-- Select2 JS -->
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const taksitSelect = document.getElementById('odemetaksit1');
+    const bankaInput = document.getElementById('banka_id1');
+
+    function updateBankaId() {
+        const taksit = taksitSelect.value;
+
+        let bankaId = '121'; // Varsayılan
+
+        switch (taksit) {
+            case '1':
+                bankaId = '120';
+                break;
+            case '2':
+                bankaId = '124';
+                break;
+            case '3':
+                bankaId = '121';
+                break;
+        }
+
+        bankaInput.value = bankaId;
+    }
+
+    taksitSelect.addEventListener('change', updateBankaId);
+
+    // İlk değer için de güncelle
+    updateBankaId();
+});
+</script>
 <script>
     $(document).ready(function() {
         $('#cardNumber').on('input', function() {
