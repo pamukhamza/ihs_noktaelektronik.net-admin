@@ -248,7 +248,7 @@ $database = new Database();
                                             </div>
                                         </div>
                                         <div class="col-md-6 ">
-                                            <label for="tutarInput">Hesaba İşlenecek Tutar <small class="text-danger">(Virgül yerine nokta kullan!)</small></label>
+                                            <label for="tutarInput">Hesaba İşlenecek Tutar <small class="text-danger">(pos cihazından çeker gibi: 125TL için 12500 şeklinde girilmeli! Örn: 125,52 tl için 12552 yaz)</small></label>
                                             <input type="text" class="form-control" id="toplam3" name="toplam" placeholder="Ör. 1582.44" required>
                                         </div>
                                         <div class="col-md-6 ">
