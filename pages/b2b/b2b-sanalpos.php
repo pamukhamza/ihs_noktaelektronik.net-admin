@@ -434,10 +434,6 @@ document.addEventListener('DOMContentLoaded', function () {
             placeholder: 'Üye seçiniz',
             allowClear: true
         });
-        $('#uye_id2').select2({
-            placeholder: 'Üye seçiniz',
-            allowClear: true
-        });
         $('#uye_id3').select2({
             placeholder: 'Üye seçiniz',
             allowClear: true
@@ -488,19 +484,6 @@ document.addEventListener('DOMContentLoaded', function () {
         odemetutarInput.value = odemetutar.toFixed(2);
     });
 
-    var toplam2 = document.getElementById("toplam2");
-    var odemetutarInput2 = document.getElementById("odemetutar2");
-    var komisyonInput2 = document.getElementById("vade");
-    toplam.addEventListener("input", function() {
-        var tutar2 = parseFloat(toplam2.value);
-        var komisyon2 = parseFloat(komisyonInput2.value);
-        var minKomisyon2 = 1;
-        if (komisyon2 < minKomisyon2) {
-            komisyon2 = minKomisyon2;
-        }
-        var odemetutar2 = tutar2 * komisyon2;
-        odemetutarInput2.value = odemetutar2.toFixed(2);
-    });
 
     var toplam3 = document.getElementById("toplam3");
     var odemetutarInput3 = document.getElementById("odemetutar3");
@@ -520,11 +503,6 @@ document.addEventListener('DOMContentLoaded', function () {
     toplamValue.addEventListener("input", function() {
         var tutar = parseFloat(toplamValue.value);
         document.getElementById("odemetutar1").value = tutar;
-    });
-    var toplamValue2 = document.getElementById("toplam2");
-    toplamValue2.addEventListener("input", function() {
-        var tutar2 = parseFloat(toplamValue2.value);
-        document.getElementById("odemetutar2").value = tutar2;
     });
         var toplamValue3 = document.getElementById("toplam3");
     toplamValue3.addEventListener("input", function() {
