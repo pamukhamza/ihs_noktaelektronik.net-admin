@@ -177,9 +177,9 @@ $database = new Database();
                                         <div class="col-md-6">
                                             <label for="odemetaksit">Taksit Seçin:</label>
                                             <select name="odemetaksit" id="odemetaksit1" class="form-control">
-                                                <option value="1">1 Taksit</option>
-                                                <option value="2">2 Taksit</option>
                                                 <option value="3">3 Taksit</option>
+                                                <option value="2">2 Taksit</option>
+                                                <option value="1">1 Taksit</option>
                                             </select>
                                         </div>
                                     </div>
