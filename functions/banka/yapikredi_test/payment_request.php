@@ -39,13 +39,24 @@ curl_setopt($ch, CURLOPT_URL, POSNET_URL);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, 'xmldata=' . urlencode($xml));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, [
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // SSL doğrulamasını devre dışı bırak
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // SSL host doğrulamasını devre dışı bırak
+
+$headers = [
     'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
     'X-MERCHANT-ID: ' . MERCHANT_ID,
     'X-TERMINAL-ID: ' . TERMINAL_ID,
     'X-POSNET-ID: ' . POSNET_ID,
     'X-CORRELATION-ID: ' . $orderID
-]);
+];
+
+curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+
+// Header'ları göster
+echo "<h3>Gönderilen Headers:</h3>";
+echo "<pre>";
+print_r($headers);
+echo "</pre>";
 
 $response = curl_exec($ch);
 
