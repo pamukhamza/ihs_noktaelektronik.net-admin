@@ -1,6 +1,9 @@
 <?php
 date_default_timezone_set("Europe/Istanbul");
 include 'config.php';
+echo '<pre>';
+print_r($_POST);
+echo '</pre>';
 
 // Formdan gelen veriler
 $ccno = $_POST['ccno'];
@@ -58,7 +61,7 @@ $headers = [
 ];
 
 curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-
+/*
 // Header'ları göster
 echo "<h3>Gönderilen Headers:</h3>";
 echo "<pre>";
@@ -79,7 +82,7 @@ echo "<h3>CURL Bilgileri:</h3>";
 echo "<pre>";
 print_r(curl_getinfo($ch));
 echo "</pre>";
-
+*/
 if (curl_errno($ch)) {
     echo "<h3>CURL Hatası:</h3>";
     echo curl_error($ch);
