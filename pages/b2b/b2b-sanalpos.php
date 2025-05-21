@@ -364,8 +364,8 @@ $database = new Database();
                                             </div>
                                         </div>
                                         <div class="col-md-3 mb-3">
-                                            <label for="ccno">CVV</label>
-                                            <input type="text" class="form-control" id="ccno" name="ccno" MAXLENGTH="4" required>
+                                            <label for="cvc">CVV</label>
+                                            <input type="text" class="form-control" id="cvc" name="cvc" MAXLENGTH="4" required>
                                         </div>
                                         <div class="col-md-6 mb-3">
                                             <small id="kart-gelen-bilgi1"></small>
