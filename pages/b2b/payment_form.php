@@ -2,6 +2,9 @@
     <label>Kart Numarası:</label>
     <input type="text" name="ccno" maxlength="16" required><br>
 
+    <label>cardHolderName:</label>
+    <input type="text" name="cardHolderName" ><br>
+
     <label>Son Kullanma Tarihi (YYAA):</label>
     <input type="text" name="expDate" maxlength="4" placeholder="2706" required><br>
 

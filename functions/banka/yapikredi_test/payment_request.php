@@ -4,6 +4,7 @@ include 'config.php';
 
 // Formdan gelen veriler
 $ccno = $_POST['ccno'];
+$cardHolderName = $_POST['cardHolderName'];
 $expDate = $_POST['expDate'];
 $cvc = $_POST['cvc'];
 $amountInput = str_replace(',', '.', $_POST['amount']); // 12,34 -> 12.34
@@ -25,6 +26,7 @@ $xml = <<<XML
         <currencyCode>{$currencyCode}</currencyCode>
         <installment>{$installment}</installment>
         <tranType>Sale</tranType>
+        <cardHolderName>{$cardHolderName}</cardHolderName>
         <ccno>{$ccno}</ccno>
         <expDate>{$expDate}</expDate>
         <cvc>{$cvc}</cvc>
