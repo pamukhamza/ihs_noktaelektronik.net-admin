@@ -313,7 +313,7 @@ $database = new Database();
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="uye_parola">İşlenecek Cari</label>
-                                                <select class="form-control" id="uye_id1" name="uye_id" style="width:100%" readonly>
+                                                <select class="form-control" id="uye_id5" name="uye_id" style="width:100%" readonly>
                                                     <option value='0'>Firma Seç</option>
                                                     <?php
                                                     $uyeler = $database->fetchAll("SELECT muhasebe_kodu, id, firmaUnvani FROM uyeler");
