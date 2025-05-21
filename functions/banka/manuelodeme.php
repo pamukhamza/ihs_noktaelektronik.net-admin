@@ -7,6 +7,7 @@ require_once '../wolvox/pos_olustur.php';
 require_once 'handlers/POSHandler.php';
 require_once 'handlers/FinansPOSHandler.php';
 require_once 'handlers/KuveytPOSHandler.php';
+require_once 'handlers/YapiKrediPOSHandler.php';
 
 $database = new Database();
 
@@ -24,7 +25,7 @@ $alis_euro = $kur2['alis'];
 
 $siparisNumarasi = WEB4UniqueOrderNumber();
 
-if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['cariveriKuveyt'])) {
+if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['cariveriKuveyt']) || isset($_GET['cariveriYapiKredi'])) {
     // Decode payment data
     if(isset($_GET['cariveri'])) {
         $veri = base64_decode($_GET['cariveri']);
@@ -32,6 +33,8 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['c
         $veri = base64_decode($_GET['cariveriFinans']);
     } elseif(isset($_GET['cariveriKuveyt'])) {
         $veri = base64_decode($_GET['cariveriKuveyt']);
+    }elseif(isset($_GET['cariveriYapiKredi'])) {
+        $veri = base64_decode($_GET['cariveriYapiKredi']);
     }
     
     $decodedVeri = json_decode($veri, true);
@@ -90,5 +93,9 @@ if (isset($_GET['cariveri']) || isset($_GET['cariveriFinans']) || isset($_GET['c
         $handler = new KuveytPOSHandler($database, $paymentData);
         $handler->processPayment();
     } 
+    if(isset($_GET['cariveriYapiKredi'])) {
+        $handler = new YapiKrediPOSHandler($database, $paymentData);
+        $handler->processPayment();
+    }
 }
 ?>
