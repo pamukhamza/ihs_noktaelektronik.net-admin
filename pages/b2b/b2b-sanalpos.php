@@ -301,6 +301,90 @@ $database = new Database();
                             </form>
                         </div>
                     </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12 col-12">
+                        <div class="card mt-5">
+                            <form method="post" action="functions/banka/yapikredi_test/payment_request.php">
+                                <input type="hidden" name="adminCariOdeme" value="">
+                                <input type="hidden" name="taksit_sayisi" value="">
+                                <input type="hidden" name="lang" value="tr">
+                                <div class="card-body">
+                                    <div class="text-center rounded" style="background-color: #0a90eb;"><h4 class="card-title font-weight-bold" style="color: whitesmoke">Yapı Kredi TEST</h4></div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="uye_parola">İşlenecek Cari</label>
+                                                <select class="form-control" id="uye_id1" name="uye_id" style="width:100%" readonly>
+                                                    <option value='0'>Firma Seç</option>
+                                                    <?php
+                                                    $uyeler = $database->fetchAll("SELECT muhasebe_kodu, id, firmaUnvani FROM uyeler");
+
+                                                    foreach($uyeler as $row) {
+                                                        ?>
+                                                        <option value='<?php echo $row['id']; ?>'><?php echo $row['muhasebe_kodu']. ' - ' . $row['firmaUnvani']; ?></option>
+                                                    <?php } ?>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label for="tutarInput">Hesaba İşlenecek Tutar <small class="text-danger">(Virgül yerine nokta kullan!)</small></label>
+                                            <input type="text" class="form-control" id="toplam5" name="toplam" placeholder="Ör. 1582.44" required>
+                                        </div>
+                                        <div class="col-md-6 ">
+                                            <label for="hesap">Müşteri Hesabı</label>
+                                            <select class="form-control" name="hesap">
+                                                <option value="0">TL Hesabıma İşle</option>
+                                                <option value="1">Döviz Hesabıma İşle</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6" style="color: red;">
+                                            <label for="installment">Taksit Seçin:</label>
+                                            <select name="installment" id="installment" class="form-control" style="color: red;">
+                                                <option value="02">2 Taksit</option>
+                                                <option value="03">3 Taksit</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-md-6 mb-3">
+                                            <label for="cardHolderName">Kart Sahibi</label>
+                                            <input type="text" class="form-control" id="cardHolderName" name="cardHolderName" placeholder="" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <label for="ccno">Kart Numarası</label>
+                                            <input type="text" class="form-control card_number_cs" id="ccno" MAXLENGTH="16" name="ccno" placeholder="" required>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class=" col-sm-12 col-md-6">
+                                            <label class="form-label" >SKT</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="expMonth" name="expMonth" class="form-control me-2" placeholder="Ay" autocomplete="off" required MAXLENGTH="2" />
+                                                <input type="text" id="expYear" name="expYear" class="form-control" placeholder="Yıl" autocomplete="off" required MAXLENGTH="2" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 mb-3">
+                                            <label for="ccno">CVV</label>
+                                            <input type="text" class="form-control" id="ccno" name="ccno" MAXLENGTH="4" required>
+                                        </div>
+                                        <div class="col-md-6 mb-3">
+                                            <small id="kart-gelen-bilgi1"></small>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <input type="hidden" name="odemetutar" id="odemetutar1">
+                                        <input type="hidden" name="tip" id="tip" value="Sanal Pos">
+                                        <input type="hidden" name="vade" id="vade" value="0">
+                                        <input type="hidden" name="banka_id" id="banka_id5" value="106">
+                                    </div>
+                                    <div class="text-center">
+                                        <button type="submit" id="kartlaOdemeyeGec" name="kartlaOdemeyeGec" class="btn btn-space btn-primary">Gönder</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
             <!-- Content backdrop -->
@@ -386,7 +470,9 @@ $database = new Database();
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script>
+    
 document.addEventListener('DOMContentLoaded', function () {
+    //Türkiye Finans başlangıç
     const taksitSelect = document.getElementById('odemetaksit1');
     const bankaInput = document.getElementById('banka_id1');
 
@@ -411,18 +497,32 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     taksitSelect.addEventListener('change', updateBankaId);
-
-    // İlk değer için de güncelle
     updateBankaId();
-});
-</script>
-<script>
-    $(document).ready(function() {
-        $('#cardNumber').on('input', function() {
-            kartBinSorgulama('#cardNumber', 'kart-gelen-bilgi');
-        });
+    //Türkiye Finans sonu
+    ////////////////
+    //YAPİ KREDİ
+    const taksitSelectYapi = document.getElementById('installment');
+    const bankaInputYapi = document.getElementById('banka_id5');
 
-    });
+    function updateBankaIdYAPIKREDI() {
+        const taksitYapi = taksitSelectYapi.value;
+
+        let bankaIdYapi = '106'; // Varsayılan
+
+        switch (taksitYapi) {
+            case '02':
+                bankaIdYapi = '106';
+                break;
+            case '03':
+                bankaIdYapi = '107';
+                break;
+        }
+        bankaInputYapi.value = bankaIdYapi;
+    }
+    taksitSelectYapi.addEventListener('change', updateBankaIdYAPIKREDI);
+    updateBankaIdYAPIKREDI();
+    //YAPİ KREDİ sonu
+});
 </script>
 <script>
     $(document).ready(function() {
@@ -435,6 +535,10 @@ document.addEventListener('DOMContentLoaded', function () {
             allowClear: true
         });
         $('#uye_id3').select2({
+            placeholder: 'Üye seçiniz',
+            allowClear: true
+        });
+        $('#uye_id5').select2({
             placeholder: 'Üye seçiniz',
             allowClear: true
         });
@@ -499,15 +603,34 @@ document.addEventListener('DOMContentLoaded', function () {
         odemetutarInput3.value = odemetutar3.toFixed(2);
     });
 
+    var toplam5 = document.getElementById("toplam5");
+    var odemetutarInput5 = document.getElementById("odemetutar5");
+    var komisyonInput5 = document.getElementById("vade");
+    toplam.addEventListener("input", function() {
+        var tutar5 = parseFloat(toplam5.value);
+        var komisyon5 = parseFloat(komisyonInput5.value);
+        var minKomisyon5 = 1;
+        if (komisyon5 < minKomisyon5) {
+            komisyon5 = minKomisyon5;
+        }
+        var odemetutar5 = tutar5 * komisyon5;
+        odemetutarInput5.value = odemetutar5.toFixed(2);
+    });
+
     var toplamValue = document.getElementById("toplam1");
     toplamValue.addEventListener("input", function() {
         var tutar = parseFloat(toplamValue.value);
         document.getElementById("odemetutar1").value = tutar;
     });
-        var toplamValue3 = document.getElementById("toplam3");
+    var toplamValue3 = document.getElementById("toplam3");
     toplamValue3.addEventListener("input", function() {
         var tutar3 = parseFloat(toplamValue3.value);
         document.getElementById("odemetutar3").value = tutar3;
+    });
+    var toplamValue5 = document.getElementById("toplam5");
+    toplamValue5.addEventListener("input", function() {
+        var tutar5 = parseFloat(toplamValue5.value);
+        document.getElementById("odemetutar5").value = tutar5;
     });
 </script>
 <?php
