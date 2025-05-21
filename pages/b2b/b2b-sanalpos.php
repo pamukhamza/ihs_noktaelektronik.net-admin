@@ -373,7 +373,7 @@ $database = new Database();
                                     </div>
                                     <hr>
                                     <div class="row">
-                                        <input type="hidden" name="odemetutar" id="odemetutar1">
+                                        <input type="hidden" name="odemetutar" id="odemetutar5">
                                         <input type="hidden" name="tip" id="tip" value="Sanal Pos">
                                         <input type="hidden" name="vade" id="vade" value="0">
                                         <input type="hidden" name="banka_id" id="banka_id5" value="106">
