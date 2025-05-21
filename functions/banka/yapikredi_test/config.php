@@ -1,10 +1,7 @@
 <?php
-// Yapı Kredi test bilgileri
-define("POS_URL", "https://entegrasyon.yapikredi.com.tr/3DSWebService/YKBPaymentService");
-define("MERCHANT_ID", "XXXXXXXX"); // Mağaza numarası
-define("TERMINAL_ID", "XXXXXX");   // Terminal numarası (6 hane)
-define("POS_PASSWORD", "XXXXXX");  // Terminal şifresi (Hash yapılacak)
-define("STORE_KEY", "XXXXXXX");    // Store key (3D secure hash için)
-
-define("RETURN_URL", "https://www.siteniz.com/sonuc.php"); // 3D secure dönüş adresi
+// Ortam değişkenleri - TEST ortamı bilgileri
+define('MERCHANT_ID', '6700000001');
+define('TERMINAL_ID', '67000001');
+define('POSNET_ID', '9644');
+define('POSNET_URL', 'https://setmpos.ykb.com/PosnetWebService/XML');
 ?>
