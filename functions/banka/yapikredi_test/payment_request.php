@@ -48,11 +48,30 @@ curl_setopt($ch, CURLOPT_HTTPHEADER, [
 ]);
 
 $response = curl_exec($ch);
+
+// Hata ayıklama bilgileri
+echo "<h3>Gönderilen XML:</h3>";
+echo "<pre>" . htmlspecialchars($xml) . "</pre>";
+
+echo "<h3>CURL Bilgileri:</h3>";
+echo "<pre>";
+print_r(curl_getinfo($ch));
+echo "</pre>";
+
+if (curl_errno($ch)) {
+    echo "<h3>CURL Hatası:</h3>";
+    echo curl_error($ch);
+}
+
 curl_close($ch);
 
 // Yanıtı işle
 if ($response) {
+    echo "<h3>Bankadan Gelen Yanıt:</h3>";
+    echo "<pre>" . htmlspecialchars($response) . "</pre>";
+    
     $xmlResponse = simplexml_load_string($response);
+    echo "<h3>İşlenmiş Yanıt:</h3>";
     echo "<pre>"; print_r($xmlResponse); echo "</pre>";
 
     if ((string)$xmlResponse->approved === '1') {
