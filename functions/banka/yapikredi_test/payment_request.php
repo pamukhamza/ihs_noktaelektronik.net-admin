@@ -18,20 +18,25 @@ $xml = <<<XML
 <posnetRequest>
     <mid>{MERCHANT_ID}</mid>
     <tid>{TERMINAL_ID}</tid>
-    <tranDateRequired>1</tranDateRequired>
-    <sale>
+    <oosRequestData>
+        <posnetid>{POSNET_ID}</posnetid>
+        <XID>{$orderID}</XID>
         <amount>{$amount}</amount>
-        <ccno>{$ccno}</ccno>
         <currencyCode>{$currencyCode}</currencyCode>
-        <cvc>{$cvc}</cvc>
-        <expDate>{$expDate}</expDate>
-        <orderID>{$orderID}</orderID>
         <installment>{$installment}</installment>
-    </sale>
+        <tranType>Sale</tranType>
+        <ccno>{$ccno}</ccno>
+        <expDate>{$expDate}</expDate>
+        <cvc>{$cvc}</cvc>
+    </oosRequestData>
 </posnetRequest>
 XML;
 
-$xml = str_replace(['{MERCHANT_ID}', '{TERMINAL_ID}'], [MERCHANT_ID, TERMINAL_ID], $xml);
+$xml = str_replace(
+    ['{MERCHANT_ID}', '{TERMINAL_ID}', '{POSNET_ID}'], 
+    [MERCHANT_ID, TERMINAL_ID, POSNET_ID], 
+    $xml
+);
 
 // Bankaya POST gönder
 $ch = curl_init();
@@ -39,8 +44,8 @@ curl_setopt($ch, CURLOPT_URL, POSNET_URL);
 curl_setopt($ch, CURLOPT_POST, true);
 curl_setopt($ch, CURLOPT_POSTFIELDS, 'xmldata=' . urlencode($xml));
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); // SSL doğrulamasını devre dışı bırak
-curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false); // SSL host doğrulamasını devre dışı bırak
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
 
 $headers = [
     'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
@@ -57,6 +62,10 @@ echo "<h3>Gönderilen Headers:</h3>";
 echo "<pre>";
 print_r($headers);
 echo "</pre>";
+
+// URL'yi göster
+echo "<h3>Gönderilen URL:</h3>";
+echo "<pre>" . POSNET_URL . "</pre>";
 
 $response = curl_exec($ch);
 
