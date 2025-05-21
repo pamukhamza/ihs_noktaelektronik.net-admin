@@ -1,4 +1,4 @@
-<form action="payment_request.php" method="POST">
+<form action="functions/banka/yapikredi_test/payment_request.php" method="POST">
     <label>Kart Numarası:</label>
     <input type="text" name="ccno" maxlength="16" required><br>
 
