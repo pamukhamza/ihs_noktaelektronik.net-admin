@@ -24,7 +24,7 @@ class YapiKrediPOSHandler
         }
 
         // POSNET bilgileri (config'ten gelmeli)
-        include_once '../../yapikredi_test/config.php';
+        include_once 'yapikredi_test/config.php';
 
         $xml = <<<XML
             <?xml version="1.0" encoding="ISO-8859-9"?>
