@@ -75,7 +75,9 @@ if(isset($_POST["adminCariOdeme"])){
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
-    
+    $merchant_id = MERCHANT_ID;
+    $terminal_id = TERMINAL_ID;
+    $posnet_id   = POSNET_ID;
     $headers = [
         'Content-Type: application/x-www-form-urlencoded; charset=utf-8',
         'X-MERCHANT-ID: ' . MERCHANT_ID,
@@ -144,8 +146,8 @@ if(isset($_POST["adminCariOdeme"])){
                     </head>
                 <body>
             <form name="formName" method="post" action="https://setmpos.ykb.com/3DSWebService/YKBPaymentService" target="YKBWindow"> 
-                <input name="mid" type="" id="mid" value="<?php echo MERCHANT_ID; ?>" />
-                <input name="posnetID" type="" id="PosnetID" value="<?php echo POSNET_ID; ?>" /> 
+                <input name="mid" type="hidden" id="mid" value="{$merchant_id}" />
+                <input name="posnetID" type="hidden" id="PosnetID" value="{$posnet_id}" /> 
                 <input type="" name="posnetData" value="{$data1}" />
                 <input type="" name="posnetData2" value="{$data2}" />
                 <input type="" name="digest" value="{$sign}" />
