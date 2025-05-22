@@ -130,17 +130,16 @@ if(isset($_POST["adminCariOdeme"])){
 
             $redirectForm = <<<HTML
             <form id="posnetForm" method="post" action="https://entegrasyon.asseco-see.com.tr/3DSWebGate/WEB3DSV2">
-                <input type="hidden" name="posnetData" value="{$data1}" />
-                <input type="hidden" name="posnetData2" value="{$data2}" />
-                <input type="hidden" name="digest" value="{$sign}" />
-                <input type="hidden" name="vftCode" value="" />
-                <input type="hidden" name="merchantSessionId" value="{$orderID}" />
-                <input type="hidden" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
-                <input type="hidden" name="lang" value="tr" />
+                <input type="" name="posnetData" value="{$data1}" />
+                <input type="" name="posnetData2" value="{$data2}" />
+                <input type="" name="digest" value="{$sign}" />
+                <input type="" name="vftCode" value="" />
+                <input type="" name="merchantSessionId" value="{$orderID}" />
+                <input type="" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
+                <input type="" name="lang" value="tr" />
+                <input type="submit" value="gonder">
+
             </form>
-            <script>
-                document.getElementById('posnetForm').submit();
-            </script>
             HTML;
 
             echo $redirectForm;
