@@ -129,16 +129,33 @@ if(isset($_POST["adminCariOdeme"])){
             $sign  = (string)$xmlResponse->oosRequestDataResponse->sign;
 
             $redirectForm = <<<HTML
-            <form id="posnetForm" method="post" action="https://entegrasyon.asseco-see.com.tr/3DSWebGate/WEB3DSV2">
+            <!DOCTYPE html>
+                <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+                    <head>
+                        <meta charset="utf-8" />
+                        <title></title>
+                        <script type="text/javascript" src="https://posnet.yapikredi.com.tr/3DSWebService/scriptler/posnet.js"></script>
+                        <script type="text/javascript">
+                            function submitFormEx(Form, OpenNewWindowFlag, WindowName) {
+                                submitForm(Form, OpenNewWindowFlag, WindowName)
+                                Form.submit();
+                            }
+                    </script>
+                    </head>
+                <body>
+            <form name="formName" method="post" action="https://setmpos.ykb.com/3DSWebService/YKBPaymentService" target="YKBWindow"> 
+                <input name="mid" type="" id="mid" value="{MERCHANT_ID}" />
+                <input name="posnetID" type="" id="PosnetID" value="{POSNET_ID}" /> 
                 <input type="" name="posnetData" value="{$data1}" />
                 <input type="" name="posnetData2" value="{$data2}" />
                 <input type="" name="digest" value="{$sign}" />
                 <input type="" name="vftCode" value="" />
                 <input type="" name="merchantSessionId" value="{$orderID}" />
+                <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
                 <input type="" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
                 <input type="" name="lang" value="tr" />
-                <input type="submit" value="gonder">
-
+                <input name="openANewWindow" type="" id="openANewWindow" value="0" />
+                <input type="submit" name="Submit" value="Doğrulama Yap" onclick="submitFormEx(formName, 0, 'YKBWindow')" /> 
             </form>
             HTML;
 
