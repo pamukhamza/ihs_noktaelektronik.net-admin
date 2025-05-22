@@ -145,7 +145,7 @@ if(isset($_POST["adminCariOdeme"])){
                     </script>
                     </head>
                 <body>
-            <form name="formName" method="post" action="https://setmpos.ykb.com/3DSWebService/YKBPaymentService" target="YKBWindow"> 
+            <form name="formName" method="post" action="https://setmpos.ykb.com/3DSWebService/YKBPaymentService" target="_self"> 
                 <input name="mid" type="hidden" id="mid" value="{$merchant_id}" />
                 <input name="posnetID" type="hidden" id="PosnetID" value="{$posnet_id}" /> 
                 <input type="" name="posnetData" value="{$data1}" />
