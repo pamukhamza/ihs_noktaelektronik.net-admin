@@ -9,11 +9,12 @@ $template->head();
 $database = new Database();
 
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['error_message'])) {
     $message = htmlspecialchars($_POST['error_message'], ENT_QUOTES, 'UTF-8');
     echo "<script>alert('{$message}');</script>";
 }
-?
+?>
 <body>
 <style>
     .form-group{margin-top:10px}
