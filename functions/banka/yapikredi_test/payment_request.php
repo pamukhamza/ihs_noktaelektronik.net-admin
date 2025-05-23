@@ -87,7 +87,7 @@ if(isset($_POST["adminCariOdeme"])){
     ];
     
     curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    
+    /*
     // Header'ları göster
     echo "<h3>Gönderilen Headers:</h3>";
     echo "<pre>";
@@ -97,9 +97,9 @@ if(isset($_POST["adminCariOdeme"])){
     // URL'yi göster
     echo "<h3>Gönderilen URL:</h3>";
     echo "<pre>" . POSNET_URL . "</pre>";
-    
+    */
     $response = curl_exec($ch);
-    /*
+    
     // Hata ayıklama bilgileri
     echo "<h3>Gönderilen XML:</h3>";
     echo "<pre>" . htmlspecialchars($xml) . "</pre>";
@@ -109,7 +109,7 @@ if(isset($_POST["adminCariOdeme"])){
     print_r(curl_getinfo($ch));
     echo "</pre>";
     
-    */
+    
     if (curl_errno($ch)) {
         echo "<h3>CURL Hatası:</h3>";
         echo curl_error($ch);
