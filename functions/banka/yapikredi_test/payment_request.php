@@ -167,10 +167,7 @@ if(isset($_POST["adminCariOdeme"])){
             $errorMessage = "❌ Hata: {$xmlResponse->respText}";
             echo "<form id='redirectForm' method='POST' action='https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b'>
                     <input type='hidden' name='error_message' value='" . htmlspecialchars($successMessage) . "'>
-                  </form>
-                  <script>
-                    document.getElementById('redirectForm').submit();
-                  </script>";
+                  </form>";
         }
     } else {
         $errorMessage = "❌ Bankaya bağlanılamadı.";
