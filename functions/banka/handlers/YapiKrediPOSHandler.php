@@ -66,6 +66,7 @@ class YapiKrediPOSHandler
 
         // Yanıtı işle
         $xmlResponse = simplexml_load_string($response);
+        echo "<pre>" . htmlspecialchars($response) . "</pre>";
 
         if ((string)$xmlResponse->approved === '1') {
             // Başarılı ödeme → kayıt/işlem yapılabilir
