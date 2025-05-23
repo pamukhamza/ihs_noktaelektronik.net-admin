@@ -3,6 +3,62 @@
     print_r($_POST);
     echo '</pre>';
 date_default_timezone_set("Europe/Istanbul");
+if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") {
+
+    // 1. Bankadan dönen verileri al
+    $bankData   = $_POST['BankPacket'] ?? '';
+    $xid        = $_POST['Xid'] ?? '';
+    $amount     = $_POST['Amount'] ?? '';
+    $currency   = 'TL'; // Sabit TL varsayıldı
+    $merchantId = $_POST['MerchantId'] ?? '';
+    include 'config.php';
+    $terminalId = TERMINAL_ID;
+    $encKey     = ENCKEY; 
+
+    // 2. MAC oluştur (şifreleme sırası çok önemli!)
+    function hashString($str) {
+        return base64_encode(hash('sha256', $str, true));
+    }
+
+    $firstHash = hashString($encKey . ";" . $terminalId);
+    $mac = hashString($xid . ";" . $amount . ";" . $currency . ";" . $merchantId . ";" . $firstHash);
+
+    // 3. Finansallaştırma XML'i hazırla
+    $xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-9\"?>
+    <posnetRequest>
+        <mid>{$merchantId}</mid>
+        <tid>{$terminalId}</tid>
+        <oosTranData>
+            <bankData>{$bankData}</bankData>
+            <wpAmount>0</wpAmount>
+            <mac>{$mac}</mac>
+        </oosTranData>
+    </posnetRequest>";
+
+    // 4. POST ile POSNET sistemine gönder
+    $url = 'https://setmpos.ykb.com/PosnetWebService/XML';
+
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, 'xmldata=' . urlencode($xml));
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/x-www-form-urlencoded; charset=utf-8'
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    // 5. Cevabı kontrol et
+    if (strpos($response, '<approved>1</approved>') !== false) {
+        // Finansallaştırma başarılı
+        header("Location: ../../../pages/b2b/b2b-sanalpos.php");
+        exit;
+    } else {
+        echo "Finansallaştırma başarısız:<br><pre>" . htmlentities($response) . "</pre>";
+        exit;
+    }
+}
 
 if(isset($_POST["adminCariOdeme"])){
     include 'config.php';
@@ -153,7 +209,7 @@ if(isset($_POST["adminCariOdeme"])){
                 <input type="" name="digest" value="{$sign}" />
                 <input type="" name="vftCode" value="" />
                 <input type="" name="merchantSessionId" value="{$orderID}" />
-                <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?yapiOnay=Onaylandı" />
+                <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
                 <input type="" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
                 <input type="" name="lang" value="tr" />
                 <input name="openANewWindow" type="" id="openANewWindow" value="0" />
