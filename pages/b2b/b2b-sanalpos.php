@@ -9,7 +9,6 @@ $template->head();
 $database = new Database();
 
 
-echo "<script>console.log(" . json_encode($_POST, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ");</script>";
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['error_message'])) {
@@ -726,4 +725,6 @@ if(isset($_POST['ErrMsg'])) {
     $params = ['uye_id' => $uye_id, 'pos_id' => $pos_id, 'islem' => $response, 'tutar' => $tutar, 'basarili' => $basarili];
     $database->insert($query, $params);
 }
+
+echo "<script>console.log(" . json_encode($_POST, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE) . ");</script>";
 ?>
