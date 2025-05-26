@@ -1,7 +1,4 @@
 <?php
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
 date_default_timezone_set("Europe/Istanbul");
 if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") {
 
