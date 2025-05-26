@@ -171,8 +171,8 @@ if(isset($_POST["adminCariOdeme"])){
     
     // Yanıtı işle
     if ($response) {
-        //echo "<h3>Bankadan Gelen Yanıt:</h3>";
-        //echo "<pre>" . htmlspecialchars($response) . "</pre>";
+        echo "<h3>Bankadan Gelen Yanıt:</h3>";
+        echo "<pre>" . htmlspecialchars($response) . "</pre>";
         
         $xmlResponse = simplexml_load_string($response);
         //echo "<h3>İşlenmiş Yanıt:</h3>";
