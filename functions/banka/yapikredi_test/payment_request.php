@@ -220,13 +220,25 @@ if(isset($_POST["adminCariOdeme"])){
             echo $redirectForm;
             exit;
         } else {
-            $errorMessage = "❌ Hata: {$xmlResponse->respText}";
+            echo "<div style='color: red; font-weight: bold;'>❌ Hata Oluştu:</div>";
+        
+            // Eğer response birden fazla hata içeriyorsa onları döngü ile yazdıralım
+            if (!empty($xmlResponse->errors) && is_array($xmlResponse->errors)) {
+                echo "<ul>";
+                foreach ($xmlResponse->errors as $error) {
+                    echo "<li>" . htmlspecialchars($error) . "</li>";
+                }
+                echo "</ul>";
+            } else {
+                // Tek bir hata varsa
+                echo "<p>" . htmlspecialchars($xmlResponse->respText) . "</p>";
+            }
+        
+            // Formu gizli şekilde hazırla ama otomatik gönderme
             echo "<form id='redirectForm' method='POST' action='https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&hata='>
-                    <input type='hidden' name='error_message' value='" . htmlspecialchars($successMessage) . "'>
-                  </form>
-                  <script>
-                    document.getElementById('redirectForm').submit();
-                  </script>";
+                    <input type='hidden' name='error_message' value='" . htmlspecialchars($xmlResponse->respText) . "'>
+                    <button type='submit'>Formu Gönder</button> <!-- Kullanıcı manuel gönderir -->
+                  </form>";
         }
     } else {
         $errorMessage = "❌ Bankaya bağlanılamadı.";
