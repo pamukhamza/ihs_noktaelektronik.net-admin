@@ -1,5 +1,4 @@
 <?php
-// Ortam değişkenleri - TEST ortamı bilgileri
 define('MERCHANT_ID', '6702493366');
 define('TERMINAL_ID', '67C242C2');
 define('POSNET_ID', '1010651186111175');

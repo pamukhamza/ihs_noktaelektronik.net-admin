@@ -36,7 +36,7 @@ if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") 
     </posnetRequest>";
 
     // 4. POST ile POSNET sistemine gönder
-    $url = 'https://setmpos.ykb.com/PosnetWebService/XML';
+    $url = 'https://posnet.yapikredi.com.tr/PosnetWebService/XML';
 
     $ch = curl_init($url);
     curl_setopt($ch, CURLOPT_POST, true);
@@ -201,7 +201,7 @@ if(isset($_POST["adminCariOdeme"])){
                     </script>
                     </head>
                 <body>
-            <form name="formName" method="post" action="https://setmpos.ykb.com/3DSWebService/YKBPaymentService" target="_self"> 
+            <form name="formName" method="post" action="https://posnet.yapikredi.com.tr/3DSWebService/YKBPaymentService" target="_self"> 
                 <input name="mid" type="hidden" id="mid" value="{$merchant_id}" />
                 <input name="posnetID" type="hidden" id="PosnetID" value="{$posnet_id}" /> 
                 <input type="" name="posnetData" value="{$data1}" />
