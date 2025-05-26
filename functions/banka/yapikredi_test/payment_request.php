@@ -52,7 +52,8 @@ if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") 
     // 5. Cevabı kontrol et
     if (strpos($response, '<approved>1</approved>') !== false) {
         // Finansallaştırma başarılı
-        header("Location: ../../../pages/b2b/b2b-sanalpos.php");
+        echo "Finansallaştırma11 başarısız:<br><pre>" . htmlentities($response) . "</pre>";
+        //header("Location: ../../../pages/b2b/b2b-sanalpos.php");
         exit;
     } else {
         echo "Finansallaştırma başarısız:<br><pre>" . htmlentities($response) . "</pre>";
@@ -194,10 +195,10 @@ if(isset($_POST["adminCariOdeme"])){
                         <title></title>
                         <script type="text/javascript" src="https://posnet.yapikredi.com.tr/3DSWebService/scriptler/posnet.js"></script>
                         <script type="text/javascript">
-                            function submitFormEx(Form, OpenNewWindowFlag, WindowName) {
+                            /*function submitFormEx(Form, OpenNewWindowFlag, WindowName) {
                                 submitForm(Form, OpenNewWindowFlag, WindowName)
                                 Form.submit();
-                            }
+                            }*/
                     </script>
                     </head>
                 <body>
