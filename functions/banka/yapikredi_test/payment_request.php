@@ -221,8 +221,13 @@ if(isset($_POST["adminCariOdeme"])){
             exit;
         } else {
             echo "<div style='color: red; font-weight: bold;'>❌ Hata Oluştu:</div>";
+
+            // xmlResponse içeriğini okunabilir şekilde yazdır
+            echo "<pre>";
+            print_r($xmlResponse);
+            echo "</pre>";
         
-            // Eğer response birden fazla hata içeriyorsa onları döngü ile yazdıralım
+            // Daha önceki hata yazdırma işlemi de kalsın
             if (!empty($xmlResponse->errors) && is_array($xmlResponse->errors)) {
                 echo "<ul>";
                 foreach ($xmlResponse->errors as $error) {
@@ -230,7 +235,6 @@ if(isset($_POST["adminCariOdeme"])){
                 }
                 echo "</ul>";
             } else {
-                // Tek bir hata varsa
                 echo "<p>" . htmlspecialchars($xmlResponse->respText) . "</p>";
             }
         
