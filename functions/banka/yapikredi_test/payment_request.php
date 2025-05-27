@@ -49,10 +49,15 @@ if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") 
     // 5. Cevabı kontrol et
     if (strpos($response, '<approved>1</approved>') !== false) {
         // Finansallaştırma başarılı
-        header("Location: ../../../pages/b2b/b2b-sanalpos.php");
+        header("Location: ../../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=1");
         exit;
     } else {
-        echo "Finansallaştırma başarısız:<br><pre>" . htmlentities($response) . "</pre>";
+        preg_match('/<respCode>(.*?)<\/respCode>/', $response, $codeMatch);
+        preg_match('/<respText>(.*?)<\/respText>/', $response, $textMatch);
+        $respCode = isset($codeMatch[1]) ? urlencode($codeMatch[1]) : '';
+        $respText = isset($textMatch[1]) ? urlencode($textMatch[1]) : '';
+
+        header("Location: ../../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=0&respCode={$respCode}&respText={$respText}");
         exit;
     }
 }

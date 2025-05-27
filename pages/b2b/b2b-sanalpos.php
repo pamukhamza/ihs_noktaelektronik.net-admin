@@ -417,6 +417,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['error_message'])) {
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/app.js"></script>
+<script>
+  const urlParams = new URLSearchParams(window.location.search);
+  const yapikrediOdeme = urlParams.get('yapikrediodeme');
+  const respCode = urlParams.get('respCode');
+  const respText = urlParams.get('respText');
+
+  if (yapikrediOdeme === '1') {
+    Swal.fire({
+      title: 'Ödeme Alındı',
+      icon: 'success',
+      confirmButtonText: 'Tamam'
+    });
+  } else if (yapikrediOdeme === '0') {
+    Swal.fire({
+      title: 'Ödeme Başarısız',
+      text: `Kod: ${respCode}\nAçıklama: ${respText}`,
+      icon: 'error',
+      confirmButtonText: 'Tamam'
+    });
+  }
+</script>
 
 
 
