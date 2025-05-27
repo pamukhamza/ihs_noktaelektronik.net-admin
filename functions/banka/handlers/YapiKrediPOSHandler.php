@@ -13,71 +13,60 @@ class YapiKrediPOSHandler
 
     public function processPayment()
     {
-        // 3D'den dönen POST verileri
-        $bankData    = $_POST['BankPacket'] ?? '';
-        $merchantData = $_POST['MerchantPacket'] ?? '';
-        $sign        = $_POST['Sign'] ?? '';
-
-        if (!$bankData || !$merchantData || !$sign) {
-            echo "❌ Hatalı 3D dönüş verisi.";
-            return;
-        }
-
-        // POSNET bilgileri (config'ten gelmeli)
+        $bankData   = $_POST['BankPacket'] ?? '';
+        $xid        = $_POST['Xid'] ?? '';
+        $amount     = $_POST['Amount'] ?? '';
+        $currency   = 'TL'; // Sabit TL varsayıldı
+        $merchantId = $_POST['MerchantId'] ?? '';
         include_once 'yapikredi_test/config.php';
+        $terminalId = TERMINAL_ID;
+        $encKey     = ENCKEY; 
+        // 2. MAC oluştur (şifreleme sırası çok önemli!)
+        function hashString($str) {
+            return base64_encode(hash('sha256', $str, true));
+        }
+        $firstHash = hashString($encKey . ";" . $terminalId);
+        $mac = hashString($xid . ";" . $amount . ";" . $currency . ";" . $merchantId . ";" . $firstHash);
+        // 3. Finansallaştırma XML'i hazırla
+        $xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-9\"?>
+        <posnetRequest>
+            <mid>{$merchantId}</mid>
+            <tid>{$terminalId}</tid>
+            <oosTranData>
+                <bankData>{$bankData}</bankData>
+                <wpAmount>0</wpAmount>
+                <mac>{$mac}</mac>
+            </oosTranData>
+        </posnetRequest>";
 
-        $xml = <<<XML
-            <?xml version="1.0" encoding="ISO-8859-9"?>
-            <posnetRequest>
-                <mid>{MERCHANT_ID}</mid>
-                <tid>{TERMINAL_ID}</tid>
-                <oosResolveMerchantData>
-                    <bankData>{$bankData}</bankData>
-                    <merchantData>{$merchantData}</merchantData>
-                    <sign>{$sign}</sign>
-                </oosResolveMerchantData>
-            </posnetRequest>
-        XML;
+         // 4. POST ile POSNET sistemine gönder
+        $url = 'https://posnet.yapikredi.com.tr/PosnetWebService/XML';
 
-        $xml = str_replace(
-            ['{MERCHANT_ID}', '{TERMINAL_ID}'],
-            [MERCHANT_ID, TERMINAL_ID],
-            $xml
-        );
-
-        // cURL ile isteği gönder
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, POSNET_URL);
+        $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_POST, true);
         curl_setopt($ch, CURLOPT_POSTFIELDS, 'xmldata=' . urlencode($xml));
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, [
+            'Content-Type: application/x-www-form-urlencoded; charset=utf-8'
+        ]);
 
         $response = curl_exec($ch);
-
-        if (curl_errno($ch)) {
-            echo "CURL Hatası: " . curl_error($ch);
-            curl_close($ch);
-            return;
-        }
-
         curl_close($ch);
-
-        // Yanıtı işle
-        $xmlResponse = simplexml_load_string($response);
-        echo "<pre>" . htmlspecialchars($response) . "</pre>";
-
-        if ((string)$xmlResponse->approved === '1') {
-            // Başarılı ödeme → kayıt/işlem yapılabilir
-            echo "<h2>✅ Ödeme başarılı!</h2>";
-            echo "<p>HostLogKey: " . $xmlResponse->hostlogkey . "</p>";
-            
-            // Burada veri kaydı yapılabilir (örn. dekont, mail, fatura vb.)
-            // örn: $this->db->insert(...) veya dekont oluştur vs.
+        
+        // 5. Cevabı kontrol et
+        if (strpos($response, '<approved>1</approved>') !== false) {
+            // Finansallaştırma başarılı
+            header("Location: ../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=1");
+            exit;
         } else {
-            echo "<h2>❌ Ödeme başarısız.</h2>";
-            echo "<p>Hata: " . $xmlResponse->respText . "</p>";
+            preg_match('/<respCode>(.*?)<\/respCode>/', $response, $codeMatch);
+            preg_match('/<respText>(.*?)<\/respText>/', $response, $textMatch);
+            $respCode = isset($codeMatch[1]) ? urlencode($codeMatch[1]) : '';
+            $respText = isset($textMatch[1]) ? urlencode($textMatch[1]) : '';
+
+            header("Location: ../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=0&respCode={$respCode}&respText={$respText}");
+            exit;
         }
+
     }
 }

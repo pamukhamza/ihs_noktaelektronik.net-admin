@@ -212,7 +212,7 @@ if(isset($_POST["adminCariOdeme"])){
                     <input name="digest" type="hidden" value="{$sign}" />
                     <input name="vftCode" type="hidden" value="" />
                     <input name="merchantSessionId" type="hidden" value="{$orderID}" />
-                    <input name="merchantReturnURL" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
+                    <input name="merchantReturnURL" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}&finanslastirma=Onaylandı" />
                     <input name="url" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
                     <input name="lang" type="hidden" value="tr" />
                     <input name="openANewWindow" type="hidden" value="0" />
