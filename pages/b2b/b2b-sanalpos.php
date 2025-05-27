@@ -349,6 +349,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['error_message'])) {
                                             <select name="installment" id="installment" class="form-control" style="color: red;">
                                                 <option value="02">2 Taksit</option>
                                                 <option value="03">3 Taksit</option>
+                                                <option value="00">Peşin</option>
                                             </select>
                                         </div>
                                     </div>
