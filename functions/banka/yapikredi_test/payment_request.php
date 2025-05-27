@@ -159,13 +159,13 @@ if(isset($_POST["adminCariOdeme"])){
     $response = curl_exec($ch);
     
     // Hata ayıklama bilgileri
-    echo "<h3>Gönderilen XML:</h3>";
-    echo "<pre>" . htmlspecialchars($xml) . "</pre>";
+    //echo "<h3>Gönderilen XML:</h3>";
+    //echo "<pre>" . htmlspecialchars($xml) . "</pre>";
     
-    echo "<h3>CURL Bilgileri:</h3>";
-    echo "<pre>";
-    print_r(curl_getinfo($ch));
-    echo "</pre>";
+    //echo "<h3>CURL Bilgileri:</h3>";
+    //echo "<pre>";
+    //print_r(curl_getinfo($ch));
+    //echo "</pre>";
     
     
     if (curl_errno($ch)) {
@@ -176,8 +176,8 @@ if(isset($_POST["adminCariOdeme"])){
     
     // Yanıtı işle
     if ($response) {
-        echo "<h3>Bankadan Gelen Yanıt:</h3>";
-        echo "<pre>" . htmlspecialchars($response) . "</pre>";
+        //echo "<h3>Bankadan Gelen Yanıt:</h3>";
+        //echo "<pre>" . htmlspecialchars($response) . "</pre>";
         
         $xmlResponse = simplexml_load_string($response);
         //echo "<h3>İşlenmiş Yanıt:</h3>";
@@ -193,30 +193,31 @@ if(isset($_POST["adminCariOdeme"])){
                 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
                     <head>
                         <meta charset="utf-8" />
-                        <title></title>
+                        <title>Yönlendiriliyorsunuz...</title>
                         <script type="text/javascript" src="https://posnet.yapikredi.com.tr/3DSWebService/scriptler/posnet.js"></script>
+                       
+                    </head>
+                    <body onload="submitFormEx(document.forms['formName'], 0, 'YKBWindow');">
+                        <form name="formName" method="post" action="https://posnet.yapikredi.com.tr/3DSWebService/YKBPaymentService" target="_self"> 
+                            <input name="mid" type="hidden" id="mid" value="{$merchant_id}" />
+                            <input name="posnetID" type="hidden" id="PosnetID" value="{$posnet_id}" /> 
+                            <input type="" name="posnetData" value="{$data1}" />
+                            <input type="" name="posnetData2" value="{$data2}" />
+                            <input type="" name="digest" value="{$sign}" />
+                            <input type="" name="vftCode" value="" />
+                            <input type="" name="merchantSessionId" value="{$orderID}" />
+                            <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
+                            <input type="" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
+                            <input type="" name="lang" value="tr" />
+                            <input name="openANewWindow" type="" id="openANewWindow" value="0" />
+                            <input type="submit" name="Submit" value="Doğrulama Yap" onclick="submitFormEx(formName, 0, 'YKBWindow')" /> 
+                        </form>
                         <script type="text/javascript">
                             function submitFormEx(Form, OpenNewWindowFlag, WindowName) {
-                                submitForm(Form, OpenNewWindowFlag, WindowName)
+                                submitForm(Form, OpenNewWindowFlag, WindowName);
                                 Form.submit();
                             }
-                    </script>
-                    </head>
-                <body>
-            <form name="formName" method="post" action="https://posnet.yapikredi.com.tr/3DSWebService/YKBPaymentService" target="_self"> 
-                <input name="mid" type="hidden" id="mid" value="{$merchant_id}" />
-                <input name="posnetID" type="hidden" id="PosnetID" value="{$posnet_id}" /> 
-                <input type="" name="posnetData" value="{$data1}" />
-                <input type="" name="posnetData2" value="{$data2}" />
-                <input type="" name="digest" value="{$sign}" />
-                <input type="" name="vftCode" value="" />
-                <input type="" name="merchantSessionId" value="{$orderID}" />
-                <input name="merchantReturnURL" type="hidden" id=" merchantReturnURL" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
-                <input type="" name="url" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
-                <input type="" name="lang" value="tr" />
-                <input name="openANewWindow" type="" id="openANewWindow" value="0" />
-                <input type="submit" name="Submit" value="Doğrulama Yap" onclick="submitFormEx(formName, 0, 'YKBWindow')" /> 
-            </form>
+                        </script>
             HTML;
 
             echo $redirectForm;
