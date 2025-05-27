@@ -77,7 +77,7 @@ if(isset($_POST["adminCariOdeme"])){
     $vade = $_POST['vade'];
     $banka_id = $_POST['banka_id'];
 
-    $orderID = substr(md5(uniqid()), 0, 24); // 24 karaktere kadar benzersiz ID
+    $orderID = substr(md5(uniqid()), 0, 20); // 24 karaktere kadar benzersiz ID
     $currencyCode = 'TL';
     
     $verimiz = [
