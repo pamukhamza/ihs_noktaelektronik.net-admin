@@ -185,53 +185,49 @@ if(isset($_POST["adminCariOdeme"])){
     
         
         if ((string)$xmlResponse->approved === '1') {
-                $data1 = (string)$xmlResponse->oosRequestDataResponse->data1;
-                $data2 = (string)$xmlResponse->oosRequestDataResponse->data2;
-                $sign  = (string)$xmlResponse->oosRequestDataResponse->sign;
-            
-                $redirectForm = <<<HTML
-                <!DOCTYPE html>
-                <html lang="tr">
-                <head>
-                    <meta charset="utf-8" />
-                    <title>Yapı Kredi Ödeme Yönlendirme</title>
-                    <script type="text/javascript" src="https://posnet.yapikredi.com.tr/3DSWebService/scriptler/posnet.js"></script>
-                    <script type="text/javascript">
-                        function submitFormEx(Form, OpenNewWindowFlag, WindowName) {
-                            submitForm(Form, OpenNewWindowFlag, WindowName);
-                            Form.submit();
-                        }
-            
-                        window.onload = function() {
-                            var form = document.forms['formName'];
-                            submitFormEx(form, 0, 'YKBWindow');
-                        };
-                    </script>
-                </head>
-                <body>
-                    <form name="formName" method="post" action="https://posnet.yapikredi.com.tr/3DSWebService/YKBPaymentService" target="_self"> 
-                        <input name="mid" type="hidden" value="{$merchant_id}" />
-                        <input name="posnetID" type="hidden" value="{$posnet_id}" /> 
-                        <input name="posnetData" type="hidden" value="{$data1}" />
-                        <input name="posnetData2" type="hidden" value="{$data2}" />
-                        <input name="digest" type="hidden" value="{$sign}" />
-                        <input name="vftCode" type="hidden" value="" />
-                        <input name="merchantSessionId" type="hidden" value="{$orderID}" />
-                        <input name="merchantReturnURL" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
-                        <input name="url" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
-                        <input name="lang" type="hidden" value="tr" />
-                        <input name="openANewWindow" type="hidden" value="0" />
-                        <noscript>
-                            <input type="submit" value="Devam Et (Tarayıcınız otomatik yönlendirmeyi desteklemiyor)" />
-                        </noscript>
-                    </form>
-                </body>
-                </html>
-                HTML;
-            
-                echo $redirectForm;
-                exit;
-        } else {
+            $data1 = (string)$xmlResponse->oosRequestDataResponse->data1;
+            $data2 = (string)$xmlResponse->oosRequestDataResponse->data2;
+            $sign  = (string)$xmlResponse->oosRequestDataResponse->sign;
+        
+            $redirectForm = <<<HTML
+            <!DOCTYPE html>
+            <html lang="tr">
+            <head>
+                <meta charset="utf-8" />
+                <title>Yapı Kredi Ödeme Yönlendirme</title>
+                <script type="text/javascript" src="https://posnet.yapikredi.com.tr/3DSWebService/scriptler/posnet.js"></script>
+                <script>
+                    window.onload = function() {
+                        document.forms['formName'].submit();
+                    };
+                </script>
+            </head>
+            <body>
+                <p>Yapı Kredi ödeme sayfasına yönlendiriliyorsunuz, lütfen bekleyin...</p>
+                <form name="formName" method="post" action="https://posnet.yapikredi.com.tr/3DSWebService/YKBPaymentService" target="_self"> 
+                    <input name="mid" type="hidden" value="{$merchant_id}" />
+                    <input name="posnetID" type="hidden" value="{$posnet_id}" /> 
+                    <input name="posnetData" type="hidden" value="{$data1}" />
+                    <input name="posnetData2" type="hidden" value="{$data2}" />
+                    <input name="digest" type="hidden" value="{$sign}" />
+                    <input name="vftCode" type="hidden" value="" />
+                    <input name="merchantSessionId" type="hidden" value="{$orderID}" />
+                    <input name="merchantReturnURL" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/yapikredi_test/payment_request.php?finanslastirma=Onaylandı" />
+                    <input name="url" type="hidden" value="https://www.noktaelektronik.net/admin/functions/banka/manuelodeme?cariveriYapiKredi={$verimizB64}" />
+                    <input name="lang" type="hidden" value="tr" />
+                    <input name="openANewWindow" type="hidden" value="0" />
+                    <noscript>
+                        <input type="submit" value="Devam Et" />
+                    </noscript>
+                </form>
+            </body>
+            </html>
+            HTML;
+        
+            echo $redirectForm;
+            exit;
+        }
+        else {
             echo "<div style='color: red; font-weight: bold;'>❌ Hata Oluştu:</div>";
 
             // xmlResponse içeriğini okunabilir şekilde yazdır
