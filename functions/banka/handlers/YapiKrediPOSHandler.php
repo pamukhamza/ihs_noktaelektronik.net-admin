@@ -3,13 +3,9 @@ require_once 'POSHandler.php';
 
 class YapiKrediPOSHandler extends POSHandler
 {
-    private $db;
-    private $paymentData;
-
-    public function __construct($db, $paymentData)
+    public function __construct($database, $paymentData)
     {
-        $this->db = $db;
-        $this->paymentData = $paymentData;
+        parent::__construct($database, $paymentData);
     }
 
     public function processPayment()
