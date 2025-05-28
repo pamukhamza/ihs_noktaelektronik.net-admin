@@ -81,7 +81,7 @@ foreach ($stmt as $row) {
         2 => 'Garanti Pos',
         3 => 'Kuveyt Pos',
         4 => 'Türkiye Finans Pos',
-        4 => 'Yapı Kredi Pos',
+        5 => 'Yapı Kredi Pos',
         default => 'Diğer Poslar'
     };
     $data[] = [
