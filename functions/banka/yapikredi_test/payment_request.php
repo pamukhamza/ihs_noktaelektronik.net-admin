@@ -1,5 +1,6 @@
 <?php
 date_default_timezone_set("Europe/Istanbul");
+/*
 if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") {
 
     // 1. Bankadan dönen verileri al
@@ -61,7 +62,7 @@ if (isset($_GET["finanslastirma"]) && $_GET["finanslastirma"] === "Onaylandı") 
         exit;
     }
 }
-
+*/
 if(isset($_POST["adminCariOdeme"])){
     include 'config.php';
 

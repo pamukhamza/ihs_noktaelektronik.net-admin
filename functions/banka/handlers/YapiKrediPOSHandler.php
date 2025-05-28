@@ -1,6 +1,7 @@
 <?php
+require_once 'POSHandler.php';
 
-class YapiKrediPOSHandler
+class YapiKrediPOSHandler extends POSHandler
 {
     private $db;
     private $paymentData;
@@ -56,17 +57,32 @@ class YapiKrediPOSHandler
         // 5. Cevabı kontrol et
         if (strpos($response, '<approved>1</approved>') !== false) {
             // Finansallaştırma başarılı
-            header("Location: ../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=1");
-            exit;
+            $inserted_id = $this->saveTransaction(
+                2, // Yapı Kredi POS ID
+                "Ödeme işlemi başarılı",
+                $this->paymentData['yantoplam'],
+                1
+            );
+            
+            $this->handleSuccess($inserted_id);
+            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&cari_odeme=");
+            return true;
         } else {
             preg_match('/<respCode>(.*?)<\/respCode>/', $response, $codeMatch);
             preg_match('/<respText>(.*?)<\/respText>/', $response, $textMatch);
-            $respCode = isset($codeMatch[1]) ? urlencode($codeMatch[1]) : '';
-            $respText = isset($textMatch[1]) ? urlencode($textMatch[1]) : '';
+            $respCode = isset($codeMatch[1]) ? $codeMatch[1] : '';
+            $respText = isset($textMatch[1]) ? $textMatch[1] : '';
 
-            header("Location: ../../pages/b2b/b2b-sanalpos.php?yapikrediodeme=0&respCode={$respCode}&respText={$respText}");
-            exit;
+            $this->saveTransaction(
+                2, // Yapı Kredi POS ID
+                "Ödeme işlemi başarısız: " . $respText . ' Kod= ' . $respCode,
+                $this->paymentData['yantoplam'],
+                0
+            );
+
+            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&code=" . 
+                urlencode($respCode) . "&message=" . urlencode($respText));
+            return false;
         }
-
     }
 }
