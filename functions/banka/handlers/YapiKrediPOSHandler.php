@@ -61,7 +61,7 @@ class YapiKrediPOSHandler extends POSHandler
             );
             
             $this->handleSuccess($inserted_id);
-            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&cari_odeme=");
+            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&yapikrediodeme=");
             return true;
         } else {
             preg_match('/<respCode>(.*?)<\/respCode>/', $response, $codeMatch);
@@ -76,8 +76,8 @@ class YapiKrediPOSHandler extends POSHandler
                 0
             );
 
-            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&code=" . 
-                urlencode($respCode) . "&message=" . urlencode($respText));
+            $this->redirect("https://www.noktaelektronik.net/admin/pages/b2b/b2b-sanalpos?w=noktab2b&yapikrediodeme=0&respCode=" . 
+                urlencode($respCode) . "&respText=" . urlencode($respText));
             return false;
         }
     }
