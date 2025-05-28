@@ -54,7 +54,7 @@ class YapiKrediPOSHandler extends POSHandler
         if (strpos($response, '<approved>1</approved>') !== false) {
             // Finansallaştırma başarılı
             $inserted_id = $this->saveTransaction(
-                2, // Yapı Kredi POS ID
+                4, // Yapı Kredi POS ID
                 "Ödeme işlemi başarılı",
                 $this->paymentData['yantoplam'],
                 1
@@ -70,7 +70,7 @@ class YapiKrediPOSHandler extends POSHandler
             $respText = isset($textMatch[1]) ? $textMatch[1] : '';
 
             $this->saveTransaction(
-                2, // Yapı Kredi POS ID
+                4, // Yapı Kredi POS ID
                 "Ödeme işlemi başarısız: " . $respText . ' Kod= ' . $respCode,
                 $this->paymentData['yantoplam'],
                 0
