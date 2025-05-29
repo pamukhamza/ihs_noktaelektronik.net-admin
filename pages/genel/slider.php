@@ -128,8 +128,8 @@ $template->head();
                                                         <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
+                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
+                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" width="150px" class="">
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -186,8 +186,8 @@ $template->head();
                                                         <td><?= $row["link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
+                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
+                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" width="150px" class="">
                                                                 </li>
                                                             </ul>
                                                         </td>
