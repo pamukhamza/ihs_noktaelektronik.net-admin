@@ -29,9 +29,9 @@ $template->head();
                 <div class="row mb-4">
                     <div class="col-12">
                         <div class="btn-group" role="group">
-                            <a href="?site=b2b" class="btn btn-outline-primary <?= $siteType === 'b2b' ? 'active' : '' ?>">B2B</a>
-                            <a href="?site=net" class="btn btn-outline-primary <?= $siteType === 'net' ? 'active' : '' ?>">NET</a>
-                            <a href="?site=b2b-urun" class="btn btn-outline-primary <?= $siteType === 'b2b-urun' ? 'active' : '' ?>">B2B Ürün</a>
+                            <a href="pages/genel/slider-sorting?site=b2b" class="btn btn-outline-primary <?= $siteType === 'b2b' ? 'active' : '' ?>">B2B</a>
+                            <a href="pages/genel/slider-sorting?site=net" class="btn btn-outline-primary <?= $siteType === 'net' ? 'active' : '' ?>">NET</a>
+                            <a href="pages/genel/slider-sorting?site=b2b-urun" class="btn btn-outline-primary <?= $siteType === 'b2b-urun' ? 'active' : '' ?>">B2B Ürün</a>
                         </div>
                     </div>
                 </div>
