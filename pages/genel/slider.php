@@ -157,7 +157,7 @@ $template->head();
                                             </div>
                                         </form>
                                     </div>
-                                    <!-- B2C -->
+                                    <!-- B2B Ürün -->
                                     <div class="tab-pane fade" id="form-tabs-b2b-urun" role="tabpanel">
                                         <div class="mb-3">
                                             <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Yeni Ekle</button>
@@ -249,7 +249,7 @@ $template->head();
                         <select class="form-select" id="slider_site" name="slider_site">
                             <option value="net">NET</option>
                             <option value="b2b">B2B</option>
-                            <option value="b2c">B2C</option>
+                            <option value="b2b-urun">B2B-Urun</option>
                         </select>
                     </div>
                     <div class="col-12 text-center">
