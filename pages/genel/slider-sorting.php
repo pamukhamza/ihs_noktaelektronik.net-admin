@@ -3,7 +3,7 @@ include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
 $database = new Database();
-$currentPage = 'catalog';
+$currentPage = 'slider';
 $template = new Template('Slider Sıralama - NEBSİS', $currentPage);
 
 // Get site type from URL parameter
@@ -32,6 +32,9 @@ $template->head();
                             <a href="pages/genel/slider-sorting?site=b2b" class="btn btn-outline-primary <?= $siteType === 'b2b' ? 'active' : '' ?>">B2B</a>
                             <a href="pages/genel/slider-sorting?site=net" class="btn btn-outline-primary <?= $siteType === 'net' ? 'active' : '' ?>">NET</a>
                             <a href="pages/genel/slider-sorting?site=b2b-urun" class="btn btn-outline-primary <?= $siteType === 'b2b-urun' ? 'active' : '' ?>">B2B Ürün</a>
+                        </div>
+                        <div class="mb-3">
+                            <a href="pages/genel/slider" class="btn btn-primary">Slider</a>
                         </div>
                     </div>
                 </div>
