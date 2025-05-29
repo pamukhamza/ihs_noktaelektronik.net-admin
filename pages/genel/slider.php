@@ -21,6 +21,9 @@ $template->head();
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
+                    <div class="mb-3">
+                        <a href="pages/genel/slider-sorting" class="btn btn-primary">Sıralama</a>
+                    </div>
                     <div class="col">
                         <div class="card mb-6">
                             <div class="card-header px-0 pt-0">
