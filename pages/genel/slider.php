@@ -33,7 +33,7 @@ $template->head();
                                             <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2b" aria-controls="form-tabs-b2b" role="tab" aria-selected="false"><span class="d-sm-none">B2B</span><span class="d-none d-sm-block">B2B</span></button>
                                         </li>
                                         <li class="nav-item">
-                                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2c" aria-controls="form-tabs-b2c" role="tab" aria-selected="false"><span class="d-sm-none">B2C</span><span class="d-none d-sm-block">B2C</span></button>
+                                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2b-urun" aria-controls="form-tabs-b2b-urun" role="tab" aria-selected="false"><span class="d-sm-none">B2C</span><span class="d-none d-sm-block">B2C</span></button>
                                         </li>
                                     </ul>
                                 </div>
@@ -158,7 +158,7 @@ $template->head();
                                         </form>
                                     </div>
                                     <!-- B2C -->
-                                    <div class="tab-pane fade" id="form-tabs-b2c" role="tabpanel">
+                                    <div class="tab-pane fade" id="form-tabs-b2b-urun" role="tabpanel">
                                         <div class="mb-3">
                                             <button class="btn btn-primary add_slider" data-bs-toggle="modal" data-bs-target="#editSlider">Yeni Ekle</button>
                                         </div>
@@ -177,7 +177,7 @@ $template->head();
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
                                                     $database = new Database();
-                                                    $query = "SELECT * FROM slider WHERE site = 'b2c'";
+                                                    $query = "SELECT * FROM slider WHERE site = 'b2b-urun'";
                                                     $results = $database->fetchAll($query);
                                                     foreach ($results as $row) {
                                                     ?>
@@ -220,24 +220,14 @@ $template->head();
                         </div>
                     </div>
                 </div>
-                <!-- / Content -->
-
                 <div class="content-backdrop fade"></div>
-
             </div>
             <?php $template->footer(); ?>
-            <!-- Content wrapper -->
         </div>
-        <!-- / Layout page -->
     </div>
-    <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
-    <!-- Drag Target Area To SlideIn Menu On Small Screens -->
     <div class="drag-target"></div>
-
 </div>
-<!-- / Layout wrapper -->
-<!-- Edit Slider Modal -->
 <div class="modal fade" id="editSlider" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-simple modal-edit-cat">
         <div class="modal-content">
@@ -280,7 +270,6 @@ $template->head();
 <script src="assets/vendor/js/menu.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script src="assets/js/form-layouts.js"></script>
 
