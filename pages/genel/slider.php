@@ -129,7 +129,7 @@ $template->head();
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="assets/images/index/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
+                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
                                                                 </li>
                                                             </ul>
                                                         </td>
@@ -187,7 +187,7 @@ $template->head();
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top" class="avatar avatar-xs pull-up">
-                                                                    <img src="assets/images/index/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
+                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/slider/<?= $row["photo"] ?>" alt="photo" class="rounded-circle">
                                                                 </li>
                                                             </ul>
                                                         </td>
