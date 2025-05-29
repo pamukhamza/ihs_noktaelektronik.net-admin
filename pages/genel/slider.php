@@ -33,7 +33,7 @@ $template->head();
                                             <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2b" aria-controls="form-tabs-b2b" role="tab" aria-selected="false"><span class="d-sm-none">B2B</span><span class="d-none d-sm-block">B2B</span></button>
                                         </li>
                                         <li class="nav-item">
-                                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2b-urun" aria-controls="form-tabs-b2b-urun" role="tab" aria-selected="false"><span class="d-sm-none">B2C</span><span class="d-none d-sm-block">B2C</span></button>
+                                            <button type="button" class="nav-link" data-bs-toggle="tab" data-bs-target="#form-tabs-b2b-urun" aria-controls="form-tabs-b2b-urun" role="tab" aria-selected="false"><span class="d-sm-none">B2B Ürünler Sayfası</span><span class="d-none d-sm-block">B2C</span></button>
                                         </li>
                                     </ul>
                                 </div>
