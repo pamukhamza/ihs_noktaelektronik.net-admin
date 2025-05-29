@@ -100,8 +100,8 @@ $categories = getCategories();
                                                         <input type="text" required class="form-control" id="urun_kodu" placeholder="Urun Kodu" name="urun_kodu" value="<?= $product['UrunKodu']; ?>">
                                                     </div>
                                                     <div class="col">
-                                                        <label class="form-label" for="barkod">Barkod</label>
-                                                        <input type="text" class="form-control" id="barkod" placeholder="barkod" name="barkod" value="<?= $product['barkod']; ?>">
+                                                        <label class="form-label" for="miktar_seciniz">Miktar Seçiniz</label>
+                                                        <input type="text" class="form-control" id="miktar_seciniz" placeholder="miktar_seciniz" name="miktar_seciniz" value="<?= $product['miktar_seciniz']; ?>">
                                                     </div>
                                                 </div>
                                                 <!-- Kategori Seçimi -->
@@ -116,6 +116,10 @@ $categories = getCategories();
                                                                 </option>
                                                             <?php endforeach; ?>
                                                         </select>
+                                                    </div>
+                                                    <div class="col">
+                                                        <label class="form-label" for="barkod">Barkod</label>
+                                                        <input type="text" class="form-control" id="barkod" placeholder="barkod" name="barkod" value="<?= $product['barkod']; ?>">
                                                     </div>
                                                 </div>
                                                 <div class="mb-6 row">
