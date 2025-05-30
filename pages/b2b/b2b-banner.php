@@ -45,7 +45,7 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td style="max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["banner_link"] ?></td>
+                                                        <td style="max-width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["banner_link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
