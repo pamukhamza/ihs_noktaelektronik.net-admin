@@ -20,6 +20,7 @@ $template->head();
                 <div class="row">
                     <div class="col">
                         <div class="card mb-6">
+                            <div class="card-header">B2B Bannerlar</div>
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <div class="tab-pane fade active show" id="form-tabs-net" role="tabpanel">
