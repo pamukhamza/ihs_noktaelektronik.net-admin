@@ -9,6 +9,7 @@ $template = new Template('B2B Banner - Nokta Admin', $currentPage);
 
 $template->head();
 ?>
+<link rel="stylesheet" href="../../assets/css/switch.css">
 <body>
 
 <div class="layout-wrapper layout-content-navbar  ">
@@ -44,7 +45,7 @@ $template->head();
                                                     ?>
                                                     <tr>
                                                         <td><?= $row["id"] ?></td>
-                                                        <td><?= $row["banner_link"] ?></td>
+                                                        <td style="width=250px"><?= $row["banner_link"] ?></td>
                                                         <td>
                                                             <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                 <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">

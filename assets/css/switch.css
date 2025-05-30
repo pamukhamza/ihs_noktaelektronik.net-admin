@@ -1,0 +1,86 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-toggle-banner,
+.switch-toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 24px;
+}
+
+.switch-toggle-banner:before,
+.switch-toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.switch-input:checked + .switch-toggle-banner,
+.switch-input:checked + .switch-toggle-slider {
+    background-color: #71dd37;
+}
+
+.switch-input:checked + .switch-toggle-banner:before,
+.switch-input:checked + .switch-toggle-slider:before {
+    transform: translateX(26px);
+}
+
+.switch-on,
+.switch-off {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-size: 12px;
+}
+
+.switch-on {
+    left: 8px;
+    display: none;
+}
+
+.switch-off {
+    right: 8px;
+}
+
+.switch-input:checked + .switch-toggle-banner .switch-on,
+.switch-input:checked + .switch-toggle-slider .switch-on {
+    display: block;
+}
+
+.switch-input:checked + .switch-toggle-banner .switch-off,
+.switch-input:checked + .switch-toggle-slider .switch-off {
+    display: none;
+}
+
+.switch-input:not(:checked) + .switch-toggle-banner .switch-on,
+.switch-input:not(:checked) + .switch-toggle-slider .switch-on {
+    display: none;
+}
+
+.switch-input:not(:checked) + .switch-toggle-banner .switch-off,
+.switch-input:not(:checked) + .switch-toggle-slider .switch-off {
+    display: block;
+} 
