@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $params['banner_photo3'] = $img;
         }
 
-        $database->query($query, $params);
+        $database->update($query, $params);
         echo "Banner modal başarıyla güncellendi!";
     }
 }
