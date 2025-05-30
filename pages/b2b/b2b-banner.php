@@ -109,7 +109,7 @@ $template->head();
                                                     ?>
                                                         <tr>
                                                             <td><?= $row["id"] ?></td>
-                                                            <td style="max-width: 650px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link1"] ?></td>
+                                                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link1"] ?></td>
                                                             <td>
                                                                 <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
@@ -117,7 +117,7 @@ $template->head();
                                                                     </li>
                                                                 </ul>
                                                             </td>
-                                                            <td style="max-width: 650px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link2"] ?></td>
+                                                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link2"] ?></td>
                                                             <td>
                                                                 <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
@@ -125,7 +125,7 @@ $template->head();
                                                                     </li>
                                                                 </ul>
                                                             </td>
-                                                            <td style="max-width: 650px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link3"] ?></td>
+                                                            <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["link3"] ?></td>
                                                             <td>
                                                                 <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
                                                                     <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
