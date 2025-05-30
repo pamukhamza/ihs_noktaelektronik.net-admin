@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'update') {
         // Build the update query
         $query = "UPDATE banner_modal SET link1 = :link1 , link2 = :link2, link3 = :link3";
-        $params = [':link1' => $banner_link1, ':link2' => $banner_link2, ':link3' => $banner_link3];
+        $params = ['link1' => $banner_link1, 'link2' => $banner_link2, 'link3' => $banner_link3];
 
         // Add photo updates if new photos were uploaded
         if ($banner_photo1 !== "") {
@@ -84,7 +84,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $query .= " WHERE id = :id";
-        $params[id] = $id;
+        $params['id'] = $id;
 
         $database->query($query, $params);
         echo "Banner modal başarıyla güncellendi!";
