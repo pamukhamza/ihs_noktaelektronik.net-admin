@@ -24,20 +24,19 @@ $template->head();
                             <div class="card-body">
                                 <div class="tab-content p-0">
                                     <div class="tab-pane fade active show" id="form-tabs-net" role="tabpanel">
-                                        <form>
-                                            <div class="table-responsive text-nowrap">
-                                                <table class="table table-hover">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Link</th>
-                                                            <th>Photo</th>
-                                                            <th>Ölçüler</th>
-                                                            <th>Status</th>
-                                                            <th>Actions</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody class="table-border-bottom-0">
+                                        <div class="table-responsive text-nowrap">
+                                            <table class="table table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Link</th>
+                                                        <th>Photo</th>
+                                                        <th>Ölçüler</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="table-border-bottom-0">
                                                     <?php
                                                         $database = new Database();
                                                         $query = "SELECT * FROM b2b_banner ";
@@ -73,10 +72,9 @@ $template->head();
                                                             </td>
                                                         </tr>
                                                     <?php } ?>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </form>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
