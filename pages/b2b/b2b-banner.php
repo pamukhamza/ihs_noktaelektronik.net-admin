@@ -331,22 +331,14 @@ $template->head();
             let id = $(this).data("id");
 
             let formData = new FormData();
-            formData.append("action", action);
-            formData.append("id", id);
             formData.append("banner_link1", $("#banner_link1").val());
             formData.append("banner_link2", $("#banner_link2").val());
             formData.append("banner_link3", $("#banner_link3").val());
-
-            // Only append files if they are selected
-            if ($("#banner_img1")[0].files.length > 0) {
-                formData.append("banner_img1", $("#banner_img1")[0].files[0]);
-            }
-            if ($("#banner_img2")[0].files.length > 0) {
-                formData.append("banner_img2", $("#banner_img2")[0].files[0]);
-            }
-            if ($("#banner_img3")[0].files.length > 0) {
-                formData.append("banner_img3", $("#banner_img3")[0].files[0]);
-            }
+            formData.append("banner_photo1", $("#banner_img1")[0].files[0]);
+            formData.append("banner_photo2", $("#banner_img2")[0].files[0]);
+            formData.append("banner_photo3", $("#banner_img3")[0].files[0]);
+            formData.append("action", action);
+            formData.append("id", id);
 
             $.ajax({
                 url: 'functions/banner/process_banner_modal.php',
