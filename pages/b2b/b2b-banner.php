@@ -9,7 +9,7 @@ $template = new Template('B2B Banner - Nokta Admin', $currentPage);
 
 $template->head();
 ?>
-<link rel="stylesheet" href="../../assets/css/switch.css">
+<link rel="stylesheet" href="assets/css/switch.css">
 <body>
 
 <div class="layout-wrapper layout-content-navbar  ">
@@ -38,39 +38,39 @@ $template->head();
                                                     </thead>
                                                     <tbody class="table-border-bottom-0">
                                                     <?php
-                                                    $database = new Database();
-                                                    $query = "SELECT * FROM b2b_banner ";
-                                                    $results = $database->fetchAll($query);
-                                                    foreach ($results as $row) {
+                                                        $database = new Database();
+                                                        $query = "SELECT * FROM b2b_banner ";
+                                                        $results = $database->fetchAll($query);
+                                                        foreach ($results as $row) {
                                                     ?>
-                                                    <tr>
-                                                        <td><?= $row["id"] ?></td>
-                                                        <td style="max-width: 500px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["banner_link"] ?></td>
-                                                        <td>
-                                                            <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
-                                                                <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
-                                                                    <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?= $row["banner_foto"] ?>" alt="photo" width="150px" class="">
-                                                                </li>
-                                                            </ul>
-                                                        </td>
-                                                        <td><?= $row["lang"] ?></td>
-                                                        <td>
-                                                            <label class="switch switch-success">
-                                                                <input type="checkbox" class="switch-input active-checkbox-banner" data-id="<?= $row['id']; ?>" <?= $row['aktif'] == 1 ? 'checked' : ''; ?> />
-                                                                <span class="switch-toggle-banner">
-                                                                    <span class="switch-on"><i class="ti ti-check"></i></span>
-                                                                    <span class="switch-off"><i class="ti ti-x"></i></span>
-                                                                </span>
-                                                                <span class="switch-label"></span>
-                                                            </label>
-                                                        </td>
-                                                        <td>
-                                                            <a class="cursor-pointer me-2 edit-banner"
-                                                               data-id="<?= $row["id"] ?>"
-                                                               data-banner_link="<?= $row['banner_link']; ?>"
-                                                               data-banner_photo="<?= $row['banner_foto']; ?>"><i class="ti ti-pencil me-1"></i></a>
-                                                        </td>
-                                                    </tr>
+                                                        <tr>
+                                                            <td><?= $row["id"] ?></td>
+                                                            <td style="max-width: 650px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"><?= $row["banner_link"] ?></td>
+                                                            <td>
+                                                                <ul class="list-unstyled m-0 avatar-group d-flex align-items-center">
+                                                                    <li data-bs-toggle="tooltip" data-popup="tooltip-custom" data-bs-placement="top">
+                                                                        <img src="https://noktanet.s3.eu-central-1.amazonaws.com/uploads/images/banner/<?= $row["banner_foto"] ?>" alt="photo" width="150px" class="">
+                                                                    </li>
+                                                                </ul>
+                                                            </td>
+                                                            <td><?= $row["lang"] ?></td>
+                                                            <td>
+                                                                <label class="switch switch-success">
+                                                                    <input type="checkbox" class="switch-input active-checkbox-banner" data-id="<?= $row['id']; ?>" <?= $row['aktif'] == 1 ? 'checked' : ''; ?> />
+                                                                    <span class="switch-toggle-banner">
+                                                                        <span class="switch-on"><i class="ti ti-check"></i></span>
+                                                                        <span class="switch-off"><i class="ti ti-x"></i></span>
+                                                                    </span>
+                                                                    <span class="switch-label"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <a class="cursor-pointer me-2 edit-banner"
+                                                                data-id="<?= $row["id"] ?>"
+                                                                data-banner_link="<?= $row['banner_link']; ?>"
+                                                                data-banner_photo="<?= $row['banner_foto']; ?>"><i class="ti ti-pencil me-1"></i></a>
+                                                            </td>
+                                                        </tr>
                                                     <?php } ?>
                                                     </tbody>
                                                 </table>
