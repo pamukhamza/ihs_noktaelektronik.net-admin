@@ -156,7 +156,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                 </a>
             </li>
             <li class="menu-item <?= $currentPage === 'b2b-banner' ? 'active' : '' ?>">
-                <a href="pages/b2b/b2b_banner" class="menu-link">
+                <a href="pages/b2b/b2b-banner" class="menu-link">
                     <i class="menu-icon tf-icons ti ti-arrows-horizontal"></i>
                     <div data-i18n="B2B Banner">B2B Banner</div>
                 </a>
