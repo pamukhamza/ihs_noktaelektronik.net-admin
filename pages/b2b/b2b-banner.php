@@ -52,6 +52,7 @@ $template->head();
                                                                 </li>
                                                             </ul>
                                                         </td>
+                                                        <td><?= $row["lang"] ?></td>
                                                         <td>
                                                             <label class="switch switch-success">
                                                                 <input type="checkbox" class="switch-input active-checkbox-banner" data-id="<?= $row['id']; ?>" <?= $row['aktif'] == 1 ? 'checked' : ''; ?> />
