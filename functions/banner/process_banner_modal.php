@@ -72,15 +72,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Add photo updates if new photos were uploaded
         if ($banner_photo1 !== "") {
             $query .= ", foto1 = :foto1";
-            $params[foto1] = $banner_photo1;
+            $params['foto1'] = $banner_photo1;
         }
         if ($banner_photo2 !== "") {
             $query .= ", foto2 = :foto2";
-            $params[foto2] = $banner_photo2;
+            $params['foto2'] = $banner_photo2;
         }
         if ($banner_photo3 !== "") {
             $query .= ", foto3 = :foto3";
-            $params[foto3] = $banner_photo3;
+            $params['foto3'] = $banner_photo3;
         }
 
         $query .= " WHERE id = :id";
