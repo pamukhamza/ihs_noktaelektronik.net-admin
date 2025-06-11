@@ -109,16 +109,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
-                    <div class="col-12 mt-2">
-                        <div class="card">
-                            <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
-                            <div class="card-body">
-
-                                <?php if (!empty($mesaj)) : ?>
-                                    <div class="alert alert-success"><?php echo $mesaj; ?></div>
-                                <?php endif; ?>
-
-                                <!-- Temizleme ve Yükleme Formları -->
+                    <div class="col-12 mt-2"><!-- Temizleme ve Yükleme Formları -->
                                 <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                                     <div>
                                         <button type="submit" name="temizle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
@@ -133,6 +124,16 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                         <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
                                     </div>
                                 </form>
+                        <div class="card">
+                            <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
+                            
+                            <div class="card-body">
+
+                                <?php if (!empty($mesaj)) : ?>
+                                    <div class="alert alert-success"><?php echo $mesaj; ?></div>
+                                <?php endif; ?>
+
+
 
                                 <!-- Tablo -->
                                 <div class="table-responsive">
