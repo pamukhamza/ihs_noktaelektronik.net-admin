@@ -125,7 +125,9 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                             Veritabanını Temizle
                                         </button>
                                     </div>
+                                </form>
 
+                                <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                                     <div class="input-group w-50">
                                         <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
                                         <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
