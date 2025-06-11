@@ -32,13 +32,13 @@ if (isset($_POST['yukle'])) {
             $plasiyer = trim($row[1]);
             $ticari_unvani = trim($row[2]);
             $yetkilisi = trim($row[3]);
-            $borc_bakiye = floatval(str_replace(',', '.', $row[4]));
+            $borc_bakiye = trim($row[4]);//floatval(str_replace(',', '.', $row[4]));
             $hesap_turu = trim($row[5]);
-            $geciken_tutar = floatval(str_replace(',', '.', $row[6]));
+            $geciken_tutar = trim($row[6]);//floatval(str_replace(',', '.', $row[6]));
             $acik_hesap_gunu = intval($row[7]);
-            $gerc_vade = !empty($row[8]) ? date('Y-m-d', strtotime($row[8])) : null;
-            $valoru = !empty($row[9]) ? date('Y-m-d', strtotime($row[9])) : null;
-            $bakiye_odeme_tarihi = !empty($row[10]) ? date('Y-m-d', strtotime($row[10])) : null;
+            $gerc_vade = trim($row[8]);//!empty($row[8]) ? date('Y-m-d', strtotime($row[8])) : null;
+            $valoru = trim($row[9]);//!empty($row[9]) ? date('Y-m-d', strtotime($row[9])) : null;
+            $bakiye_odeme_tarihi = trim($row[10]);//!empty($row[10]) ? date('Y-m-d', strtotime($row[10])) : null;
             $bilgi_kodu = trim($row[11]);
             $sube_kodu = trim($row[12]);
 
