@@ -12,7 +12,7 @@ $template->head();
 $database = new Database();
 
 if (isset($_POST['temizle'])) {
-    $database->delete("DELETE FROM vadesi_gecmis_borclar");
+    $database->delete("DELETE FROM vadesi_gecmis_borc");
     echo "<div class='alert alert-success'>Tablo başarıyla temizlendi.</div>";
 }
 
@@ -61,7 +61,7 @@ if (isset($_POST['yukle'])) {
     }
 }
 
-$veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borclar ");
+$veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 
 ?>
 <body>
