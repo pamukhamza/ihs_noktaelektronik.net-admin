@@ -49,22 +49,37 @@ if (isset($_POST['yukle'])) {
                 $sube_kodu = trim($row[12]);
 
                 if ($cari_kodu && floatval(str_replace(',', '.', $geciken_tutar)) > 0) {
-                    $stmt = $db->prepare("INSERT INTO vadesi_gecmis_borc (
+                    $sql = "INSERT INTO vadesi_gecmis_borc (
                         cari_kodu, plasiyer, ticari_unvani, yetkilisi, borc_bakiye,
                         hesap_turu, geciken_tutar, acik_hesap_gunu, gerc_vade, valoru,
                         bakiye_odeme_tarihi, bilgi_kodu, sube_kodu
-                    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                    ) VALUES (
+                        :cari_kodu, :plasiyer, :ticari_unvani, :yetkilisi, :borc_bakiye,
+                        :hesap_turu, :geciken_tutar, :acik_hesap_gunu, :gerc_vade, :valoru,
+                        :bakiye_odeme_tarihi, :bilgi_kodu, :sube_kodu
+                    )";
+                    
+                    $params = [
+                        'cari_kodu' => $cari_kodu,
+                        'plasiyer' => $plasiyer,
+                        'ticari_unvani' => $ticari_unvani,
+                        'yetkilisi' => $yetkilisi,
+                        'borc_bakiye' => $borc_bakiye,
+                        'hesap_turu' => $hesap_turu,
+                        'geciken_tutar' => $geciken_tutar,
+                        'acik_hesap_gunu' => $acik_hesap_gunu,
+                        'gerc_vade' => $gerc_vade,
+                        'valoru' => $valoru,
+                        'bakiye_odeme_tarihi' => $bakiye_odeme_tarihi,
+                        'bilgi_kodu' => $bilgi_kodu,
+                        'sube_kodu' => $sube_kodu
+                    ];
+                    
+                    $insertResult = $database->insert($sql, $params);
 
-                    $basarili = $stmt->execute([
-                        $cari_kodu, $plasiyer, $ticari_unvani, $yetkilisi, $borc_bakiye,
-                        $hesap_turu, $geciken_tutar, $acik_hesap_gunu, $gerc_vade, $valoru,
-                        $bakiye_odeme_tarihi, $bilgi_kodu, $sube_kodu
-                    ]);
-
-                    if ($basarili) {
+                    if ($insertResult) {
                         $sayac++;
                     } else {
-                        $hata = $stmt->errorInfo();
                         echo "<div style='color:red;'>Satır $index eklenemedi: {$hata[2]}</div>";
                     }
                 }
