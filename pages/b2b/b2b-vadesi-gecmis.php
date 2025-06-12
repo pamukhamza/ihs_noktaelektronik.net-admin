@@ -160,7 +160,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                             <button type="button" class="btn btn-primary update-email" 
                                                                     data-id="<?= $veri['id'] ?>"
                                                                     onclick="updateEmail(this)">
-                                                                <i class="fas fa-save"></i> Kaydet
+                                                                <i class="fas fa-save"></i>
                                                             </button>
                                                         </div>
                                                     </td>
