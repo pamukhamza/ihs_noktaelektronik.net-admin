@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // 📝 odeme_link alanını güncelle
         $updateSql = "UPDATE vadesi_gecmis_borc SET odeme_link = :odeme_link WHERE id = :id";
-        $updateResult = $database->execute($updateSql, ['odeme_link' => $sifreli, 'id' => $id]);
+        $updateResult = $database->insert($updateSql, ['odeme_link' => $sifreli, 'id' => $id]);
 
         if (!$updateResult) {
             throw new Exception('Ödeme linki güncellenirken hata oluştu');
