@@ -10,10 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($id && filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $sql = "UPDATE vadesi_gecmis_borc SET email = :email WHERE id = :id";
-        $result = $database->update($sql, [
-            'email' => $email,
-            'id' => $id
-        ]);
+        $result = $database->update($sql, ['email' => $email, 'id' => $id]);
 
         if ($result) {
             echo json_encode(['success' => true]);

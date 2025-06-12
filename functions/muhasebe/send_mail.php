@@ -1,5 +1,6 @@
 <?php
 include_once '../db.php';
+include_once 'mailGonder.php'; // mailGonder ve vadeGecikmeHatirlatma fonksiyonları burada tanımlı olmalı
 
 header('Content-Type: application/json');
 
@@ -7,35 +8,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $database = new Database();
     
     $id = $_POST['id'] ?? null;
-    $email = $_POST['email'] ?? null;
-    
-    if ($id && $email) {
-        // Borç bilgilerini al
+
+    if ($id) {
         $sql = "SELECT * FROM vadesi_gecmis_borc WHERE id = :id";
         $params = ['id' => $id];
         $borc = $database->fetch($sql, $params);
-        
+
         if ($borc) {
-            // Mail içeriğini hazırla
+            // 🔐 Şifrelenecek veriler
+            $veri = [
+                'cari_kodu'      => $borc['cari_kodu'],
+                'ticari_unvani'  => $borc['ticari_unvani'],
+                'geciken_tutar'  => $borc['geciken_tutar'],
+                'borc_bakiye'    => $borc['borc_bakiye'],
+                'bilgi_kodu'     => $borc['bilgi_kodu']
+            ];
+
+            // 🔁 JSON + base64 encode
+            $sifreli = base64_encode(json_encode($veri));
+
+            // 📝 odeme_link alanını güncelle
+            $updateSql = "UPDATE vadesi_gecmis_borc SET odeme_link = :odeme_link WHERE id = :id";
+            $database->execute($updateSql, ['odeme_link' => $sifreli, 'id' => $id]);
+
+            // 🔗 Link adresi
+            $odemeUrl = "https://www.siteniz.com/odeme.php?data=" . urlencode($sifreli);
+
+            // 📧 Mail içeriği
             $subject = "Vadesi Geçmiş Borç Hatırlatması";
-            $message = "Sayın {$borc['ticari_unvani']},\n\n";
-            $message .= "Vadesi geçmiş borcunuz bulunmaktadır.\n";
-            $message .= "Borç Tutarı: " . number_format($borc['geciken_tutar'], 2, ',', '.') . " ₺\n";
-            $message .= "Gerçek Vade: {$borc['gerc_vade']}\n\n";
-            $message .= "Lütfen en kısa sürede ödeme yapmanızı rica ederiz.\n\n";
-            $message .= "Saygılarımızla,\nNokta Net";
-            
-            $headers = "From: noreply@noktanet.com\r\n";
-            $headers .= "Reply-To: info@noktanet.com\r\n";
-            $headers .= "X-Mailer: PHP/" . phpversion();
-            
-            // Maili gönder
-            if (mail($email, $subject, $message, $headers)) {
-                echo json_encode(['success' => true]);
-                exit;
-            }
+            $mailContent = vadeGecikmeHatirlatma($borc, $odemeUrl);
+            $mailBaslik = "Nokta Net Tahsilat";
+            $aliciMail = $borc['email'];
+
+            // ✉️ Mail gönder
+            mailGonder($aliciMail, $subject, $mailContent, $mailBaslik);
+
+            echo json_encode(['success' => true]);
+            exit;
         }
     }
 }
 
-echo json_encode(['success' => false]); 
+echo json_encode(['success' => false]);

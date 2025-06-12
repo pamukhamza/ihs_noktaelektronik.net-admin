@@ -224,7 +224,6 @@ $(document).ready(function() {
         lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Tümü"]]
     });
 
-    // Event delegation for email update button
     $(document).on('click', '.update-email', function() {
         var id = $(this).data('id');
         var email = $(this).closest('.input-group').find('.email-input').val();
@@ -256,27 +255,13 @@ $(document).ready(function() {
         });
     });
 
-    // Event delegation for send mail button
     $(document).on('click', '.send-mail', function() {
         var id = $(this).data('id');
-        var email = $(this).data('email');
-        
-        if(!email) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Uyarı!',
-                text: 'Lütfen önce e-posta adresi ekleyin.'
-            });
-            return;
-        }
         
         $.ajax({
             url: 'functions/muhasebe/send_mail.php',
             type: 'POST',
-            data: {
-                id: id,
-                email: email
-            },
+            data: {id: id},
             success: function(response) {
                 if(response.success) {
                     Swal.fire({
