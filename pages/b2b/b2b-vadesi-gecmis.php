@@ -201,144 +201,156 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/main.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#vadesiGecmisTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
-            },
-            pageLength: 25,
-            order: [[3, 'desc']], // Sort by Geciken Tutar by default
-            responsive: true,
-            dom: 'Bfrtip'
-        });
+// jQuery kontrolü
+if (typeof jQuery === 'undefined') {
+    console.error('jQuery yüklenemedi!');
+} else {
+    console.log('jQuery versiyonu:', jQuery.fn.jquery);
+}
+
+$(document).ready(function() {
+    console.log('Document ready çalıştı'); // Test için console.log
+    
+    // Test için basit bir click eventi
+    $('.update-email').on('click', function() {
+        alert('Butona tıklandı!');
     });
-</script>
-<script>
-    $(document).ready(function() {
-        // Email güncelleme butonu
-        $(document).on('click', '.update-email', function() {
-            const id = $(this).data('id');
-            const email = $(this).closest('.input-group').find('.email-input').val();
-            
-            console.log('Gönderilecek veriler:', { id, email }); // Debug için
 
-            if (!email) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Uyarı!',
-                    text: 'Lütfen bir email adresi giriniz!'
-                });
-                return;
-            }
+    $('#vadesiGecmisTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+        },
+        pageLength: 25,
+        order: [[3, 'desc']], // Sort by Geciken Tutar by default
+        responsive: true,
+        dom: 'Bfrtip'
+    });
 
-            // AJAX isteği öncesi loading göster
+    // Email güncelleme butonu
+    $(document).on('click', '.update-email', function() {
+        alert('Butona tıklandı - Event delegation çalışıyor');
+        const id = $(this).data('id');
+        const email = $(this).closest('.input-group').find('.email-input').val();
+        
+        console.log('Gönderilecek veriler:', { id, email }); // Debug için
+
+        if (!email) {
             Swal.fire({
-                title: 'Güncelleniyor...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
+                icon: 'warning',
+                title: 'Uyarı!',
+                text: 'Lütfen bir email adresi giriniz!'
             });
+            return;
+        }
 
-            $.ajax({
-                url: 'functions/muhasebe/update_email.php',
-                method: 'POST',
-                data: {id: id, email: email},
-                dataType: 'json',
-                success: function(response) {
-                    console.log('Server yanıtı:', response); // Debug için
-                    
-                    if(response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Başarılı!',
-                            text: 'E-posta adresi güncellendi.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata!',
-                            text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Hatası:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
+        // AJAX isteği öncesi loading göster
+        Swal.fire({
+            title: 'Güncelleniyor...',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+
+        $.ajax({
+            url: 'functions/muhasebe/update_email.php',
+            method: 'POST',
+            data: {id: id, email: email},
+            dataType: 'json',
+            success: function(response) {
+                console.log('Server yanıtı:', response); // Debug için
+                
+                if(response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: 'E-posta adresi güncellendi.',
+                        timer: 2000,
+                        showConfirmButton: false
                     });
-                    
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
+                        text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
                     });
                 }
-            });
-        });
-
-        // Mail gönderme butonu
-        $('.send-mail').on('click', function() {
-            const id = $(this).data('id');
-            const email = $(this).data('email');
-            if(!email) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Uyarı!',
-                    text: 'Lütfen önce e-posta adresi giriniz.'
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Hatası:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
                 });
-                return;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
+                });
             }
+        });
+    });
 
+    // Mail gönderme butonu
+    $('.send-mail').on('click', function() {
+        const id = $(this).data('id');
+        const email = $(this).data('email');
+        if(!email) {
             Swal.fire({
-                title: 'Mail Gönder',
-                text: 'Mail göndermek istediğinize emin misiniz?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Evet, Gönder',
-                cancelButtonText: 'İptal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: 'functions/muhasebe/send_mail.php',
-                        method: 'POST',
-                        data: {
-                            id: id,
-                            email: email
-                        },
-                        success: function(response) {
-                            const data = JSON.parse(response);
-                            if(data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Başarılı!',
-                                    text: 'Mail başarıyla gönderildi.',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Hata!',
-                                    text: 'Mail gönderilirken bir hata oluştu.'
-                                });
-                            }
-                        },
-                        error: function() {
+                icon: 'warning',
+                title: 'Uyarı!',
+                text: 'Lütfen önce e-posta adresi giriniz.'
+            });
+            return;
+        }
+
+        Swal.fire({
+            title: 'Mail Gönder',
+            text: 'Mail göndermek istediğinize emin misiniz?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Evet, Gönder',
+            cancelButtonText: 'İptal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: 'functions/muhasebe/send_mail.php',
+                    method: 'POST',
+                    data: {
+                        id: id,
+                        email: email
+                    },
+                    success: function(response) {
+                        const data = JSON.parse(response);
+                        if(data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                text: 'Mail başarıyla gönderildi.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Hata!',
-                                text: 'Bir hata oluştu.'
+                                text: 'Mail gönderilirken bir hata oluştu.'
                             });
                         }
-                    });
-                }
-            });
+                    },
+                    error: function() {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'Bir hata oluştu.'
+                        });
+                    }
+                });
+            }
         });
     });
+});
 </script>
 </body>
 </html>
