@@ -1,8 +1,47 @@
 <?php
+// Hata raporlamayı aktifleştir
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 include_once '../db.php';
 include_once '../../mail/tahsilat_mail_gonder.php'; // mailGonder ve vadeGecikmeHatirlatma fonksiyonları burada tanımlı olmalı
 
 header('Content-Type: application/json');
+
+// Hata yakalama fonksiyonu
+function handleError($errno, $errstr, $errfile, $errline) {
+    error_log("PHP Error [$errno] $errstr on line $errline in file $errfile");
+    echo json_encode([
+        'success' => false,
+        'message' => "PHP Error: $errstr",
+        'debug' => [
+            'file' => $errfile,
+            'line' => $errline
+        ]
+    ]);
+    exit;
+}
+
+// Fatal error yakalama
+function handleFatalError() {
+    $error = error_get_last();
+    if ($error !== null && in_array($error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_COMPILE_ERROR])) {
+        error_log("Fatal Error: " . $error['message']);
+        echo json_encode([
+            'success' => false,
+            'message' => "Fatal Error: " . $error['message'],
+            'debug' => [
+                'file' => $error['file'],
+                'line' => $error['line']
+            ]
+        ]);
+        exit;
+    }
+}
+
+set_error_handler('handleError');
+register_shutdown_function('handleFatalError');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {

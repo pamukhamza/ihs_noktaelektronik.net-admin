@@ -272,19 +272,37 @@ $(document).ready(function() {
                         showConfirmButton: false
                     });
                 } else {
+                    console.error('Server Error:', response);
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: response.message || 'E-posta gönderilirken bir hata oluştu.'
+                        text: response.message || 'E-posta gönderilirken bir hata oluştu.',
+                        footer: response.debug ? `Hata Detayı: ${response.debug.file}:${response.debug.line}` : ''
                     });
                 }
             },
             error: function(xhr, status, error) {
-                console.error('Ajax Error:', error);
+                console.error('Ajax Error:', {
+                    status: status,
+                    error: error,
+                    response: xhr.responseText
+                });
+                
+                let errorMessage = 'Sunucu ile iletişim kurulurken bir hata oluştu.';
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.message) {
+                        errorMessage = response.message;
+                    }
+                } catch (e) {
+                    console.error('Error parsing response:', e);
+                }
+
                 Swal.fire({
                     icon: 'error',
                     title: 'Hata!',
-                    text: 'Sunucu ile iletişim kurulurken bir hata oluştu.'
+                    text: errorMessage,
+                    footer: 'Lütfen konsolu kontrol edin (F12)'
                 });
             }
         });
