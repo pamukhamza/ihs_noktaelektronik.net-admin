@@ -96,12 +96,26 @@ try {
         );
     }
 
+    // Clear any previous output
+    if (ob_get_length()) ob_clean();
+    
+    // Set headers
     header('Content-Type: application/json');
+    header('Cache-Control: no-cache, must-revalidate');
+    
+    // Send response
     echo json_encode($response);
+    exit;
 
 } catch (Exception $e) {
-    error_log("DataTables Error: " . $e->getMessage());
+    // Clear any previous output
+    if (ob_get_length()) ob_clean();
+    
+    // Set headers
     header('Content-Type: application/json');
+    header('Cache-Control: no-cache, must-revalidate');
+    
+    // Send error response
     echo json_encode(array(
         "error" => true,
         "message" => $e->getMessage(),
@@ -110,4 +124,5 @@ try {
         "recordsFiltered" => 0,
         "data" => array()
     ));
+    exit;
 } 

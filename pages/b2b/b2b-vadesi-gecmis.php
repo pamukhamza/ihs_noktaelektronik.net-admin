@@ -176,6 +176,18 @@ $(document).ready(function() {
         ajax: {
             url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
             type: 'POST',
+            dataSrc: function(json) {
+                if (json.error) {
+                    console.error('Server Error:', json.message);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Veri Yükleme Hatası',
+                        text: json.message || 'Veriler yüklenirken bir hata oluştu.'
+                    });
+                    return [];
+                }
+                return json.data;
+            },
             error: function (xhr, error, thrown) {
                 console.error('DataTables Ajax Error:', error, thrown);
                 console.log('Response:', xhr.responseText);
