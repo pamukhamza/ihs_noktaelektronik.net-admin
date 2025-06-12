@@ -177,7 +177,6 @@ $(document).ready(function() {
             url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
             type: 'POST',
             dataSrc: function(json) {
-                console.log('Server Response:', json); // Debug log
                 if (json.error) {
                     console.error('Server Error:', json.message);
                     Swal.fire({
@@ -250,7 +249,7 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'E-posta adresi güncellenirken bir hata oluştu.'
+                        text: 'E-posta adresi güncellenirken bir hata oluştu. :' + response.message 
                     });
                 }
             }
