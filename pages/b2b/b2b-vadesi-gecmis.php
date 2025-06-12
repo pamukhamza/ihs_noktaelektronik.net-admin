@@ -93,9 +93,7 @@ if (isset($_POST['yukle'])) {
     }
 }
 
-
 $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
-
 ?>
 <body>
 <!-- Layout wrapper -->
@@ -108,20 +106,20 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
                     <div class="col-12 mt-2"><!-- Temizleme ve Yükleme Formları -->
-                                <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-                                    <div>
-                                        <button type="submit" name="temizle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
-                                            Veritabanını Temizle
-                                        </button>
-                                    </div>
-                                </form>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div>
+                                <button type="submit" name="temizle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
+                                    Veritabanını Temizle
+                                </button>
+                            </div>
+                        </form>
 
-                                <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-                                    <div class="input-group w-50">
-                                        <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
-                                        <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
-                                    </div>
-                                </form>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div class="input-group w-50">
+                                <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
+                            </div>
+                        </form>
                         <div class="card">
                             <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
                             <div class="card-body">
@@ -130,7 +128,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 <?php endif; ?>
                                 <!-- Tablo -->
                                 <div class="table-responsive">
-                                    <table class="table table-bordered table-striped" id="vadesiGecmisTable">
+                                    <table id="vadesiGecmisTable" class="table table-bordered table-striped">
                                         <thead class="bg-light">
                                             <tr>
                                                 <th>Cari Kodu</th>
@@ -143,36 +141,6 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                 <th>İşlem</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <?php foreach ($veriler as $veri): ?>
-                                                <tr>
-                                                    <td><?= htmlspecialchars($veri['cari_kodu']) ?></td>
-                                                    <td><?= htmlspecialchars($veri['ticari_unvani']) ?></td>
-                                                    <td><?= htmlspecialchars($veri['yetkilisi']) ?></td>
-                                                    <td class="text-danger fw-bold"><?= number_format($veri['geciken_tutar'], 2, ',', '.') ?> ₺</td>
-                                                    <td><?= $veri['gerc_vade'] ?></td>
-                                                    <td><?= $veri['valoru'] ?></td>
-                                                    <td>
-                                                        <div class="input-group">
-                                                            <input type="email" class="form-control email-input" 
-                                                                   value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
-                                                                   data-id="<?= $veri['id'] ?>">
-                                                            <button class="btn btn-primary update-email" 
-                                                                    data-id="<?= $veri['id'] ?>">
-                                                                <i class="fas fa-save"></i>
-                                                            </button>
-                                                        </div>
-                                                    </td>
-                                                    <td>
-                                                        <button class="btn btn-primary btn-sm send-mail" 
-                                                                data-id="<?= $veri['id'] ?>"
-                                                                data-email="<?= htmlspecialchars($veri['email'] ?? '') ?>">
-                                                            <i class="fas fa-envelope"></i> Mail Gönder
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            <?php endforeach; ?>
-                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -201,144 +169,113 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="assets/js/main.js"></script>
 <script>
-    $(document).ready(function() {
-        $('#vadesiGecmisTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+$(document).ready(function() {
+    var table = $('#vadesiGecmisTable').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
+            type: 'POST'
+        },
+        columns: [
+            { data: 0 }, // Cari Kodu
+            { data: 1 }, // Ticari Ünvanı
+            { data: 2 }, // Yetkili
+            { 
+                data: 3, // Geciken Tutar
+                className: 'text-danger fw-bold'
             },
-            pageLength: 25,
-            order: [[3, 'desc']], // Sort by Geciken Tutar by default
-            responsive: true,
-            dom: 'Bfrtip'
-        });
-    });
-</script>
-<script>
-    $(document).ready(function() {
-        // Email güncelleme butonu
-        $(document).on('click', '.update-email', function() {
-            const id = $(this).data('id');
-            const email = $(this).closest('.input-group').find('.email-input').val();
-            
-            console.log('Gönderilecek veriler:', { id, email }); // Debug için
-
-            if (!email) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Uyarı!',
-                    text: 'Lütfen bir email adresi giriniz!'
-                });
-                return;
+            { data: 4 }, // Gerçek Vade
+            { data: 5 }, // Valör
+            { 
+                data: 6, // E-posta
+                orderable: false
+            },
+            { 
+                data: 7, // İşlem
+                orderable: false
             }
+        ],
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+        },
+        pageLength: 25,
+        lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "Tümü"]]
+    });
 
-            // AJAX isteği öncesi loading göster
-            Swal.fire({
-                title: 'Güncelleniyor...',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            $.ajax({
-                url: 'functions/muhasebe/update_email.php',
-                method: 'POST',
-                data: {id: id, email: email},
-                dataType: 'json',
-                success: function(response) {
-                    console.log('Server yanıtı:', response); // Debug için
-                    
-                    if(response.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Başarılı!',
-                            text: 'E-posta adresi güncellendi.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    } else {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Hata!',
-                            text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error('AJAX Hatası:', {
-                        status: status,
-                        error: error,
-                        response: xhr.responseText
+    // Event delegation for email update button
+    $(document).on('click', '.update-email', function() {
+        var id = $(this).data('id');
+        var email = $(this).closest('.input-group').find('.email-input').val();
+        
+        $.ajax({
+            url: 'functions/muhasebe/update_email.php',
+            type: 'POST',
+            data: {
+                id: id,
+                email: email
+            },
+            success: function(response) {
+                if(response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: 'E-posta adresi güncellendi.',
+                        timer: 2000,
+                        showConfirmButton: false
                     });
-                    
+                } else {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
+                        text: 'E-posta adresi güncellenirken bir hata oluştu.'
                     });
                 }
-            });
-        });
-
-        // Mail gönderme butonu
-        $('.send-mail').on('click', function() {
-            const id = $(this).data('id');
-            const email = $(this).data('email');
-            if(!email) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Uyarı!',
-                    text: 'Lütfen önce e-posta adresi giriniz.'
-                });
-                return;
             }
-
-            Swal.fire({
-                title: 'Mail Gönder',
-                text: 'Mail göndermek istediğinize emin misiniz?',
-                icon: 'question',
-                showCancelButton: true,
-                confirmButtonText: 'Evet, Gönder',
-                cancelButtonText: 'İptal'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: 'functions/muhasebe/send_mail.php',
-                        method: 'POST',
-                        data: {
-                            id: id,
-                            email: email
-                        },
-                        success: function(response) {
-                            const data = JSON.parse(response);
-                            if(data.success) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Başarılı!',
-                                    text: 'Mail başarıyla gönderildi.',
-                                    timer: 2000,
-                                    showConfirmButton: false
-                                });
-                            } else {
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Hata!',
-                                    text: 'Mail gönderilirken bir hata oluştu.'
-                                });
-                            }
-                        },
-                        error: function() {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Hata!',
-                                text: 'Bir hata oluştu.'
-                            });
-                        }
-                    });
-                }
-            });
         });
     });
+
+    // Event delegation for send mail button
+    $(document).on('click', '.send-mail', function() {
+        var id = $(this).data('id');
+        var email = $(this).data('email');
+        
+        if(!email) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Uyarı!',
+                text: 'Lütfen önce e-posta adresi ekleyin.'
+            });
+            return;
+        }
+        
+        $.ajax({
+            url: 'functions/muhasebe/send_mail.php',
+            type: 'POST',
+            data: {
+                id: id,
+                email: email
+            },
+            success: function(response) {
+                if(response.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı!',
+                        text: 'E-posta gönderildi.',
+                        timer: 2000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: 'E-posta gönderilirken bir hata oluştu.'
+                    });
+                }
+            }
+        });
+    });
+});
 </script>
 </body>
 </html>
