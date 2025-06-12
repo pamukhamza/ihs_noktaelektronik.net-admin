@@ -184,24 +184,17 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
 </div>
-<!-- Core JS -->
-<script src="assets/vendor/libs/jquery/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="assets/vendor/js/menu.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script>
-
-
-
-$(document).ready(function() {
-    console.log('Document ready çalıştı');
-    
-
-
-});
+    $(document).ready(function() {
+        console.log('Document ready çalıştı');
+        
+    });
 </script>
 </body>
 </html>
