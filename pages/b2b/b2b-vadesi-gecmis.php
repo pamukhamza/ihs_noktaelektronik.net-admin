@@ -157,9 +157,9 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                             <input type="email" class="form-control email-input" 
                                                                    value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
                                                                    data-id="<?= $veri['id'] ?>">
-                                                            <button class="btn btn-primary update-email" 
+                                                            <button type="button" class="btn btn-primary update-email" 
                                                                     data-id="<?= $veri['id'] ?>">
-                                                                <i class="fas fa-save"></i>
+                                                                <i class="fas fa-save"></i> Kaydet
                                                             </button>
                                                         </div>
                                                     </td>
@@ -205,24 +205,30 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 
 <!-- Custom Scripts -->
 <script>
-
-
 $(document).ready(function() {
     console.log('Document ready çalıştı'); // Test için console.log
     
-    // Test için basit bir click eventi
-    $('.update-email').on('click', function() {
-        alert('Butona tıklandı!');
+
+    $('#vadesiGecmisTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+        },
+        pageLength: 25,
+        order: [[3, 'desc']], // Sort by Geciken Tutar by default
+        responsive: true,
+        dom: 'Bfrtip'
     });
 
-
-    // Email güncelleme butonu
-    $(document).on('click', '.update-email', function() {
-        alert('Butona tıklandı - Event delegation çalışıyor');
+    // Email güncelleme butonu - doğrudan buton seçicisi kullan
+    $('.update-email').click(function(e) {
+        e.preventDefault();
+        console.log('Butona tıklandı');
+        
         const id = $(this).data('id');
         const email = $(this).closest('.input-group').find('.email-input').val();
         
-        console.log('Gönderilecek veriler:', { id, email }); // Debug için
+        console.log('ID:', id);
+        console.log('Email:', email);
 
         if (!email) {
             Swal.fire({
@@ -248,7 +254,7 @@ $(document).ready(function() {
             data: {id: id, email: email},
             dataType: 'json',
             success: function(response) {
-                console.log('Server yanıtı:', response); // Debug için
+                console.log('Server yanıtı:', response);
                 
                 if(response.success) {
                     Swal.fire({
