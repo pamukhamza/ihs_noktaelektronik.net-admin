@@ -93,35 +93,31 @@ if (isset($_POST['yukle'])) {
     }
 }
 
-
 $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
-
 ?>
 <body>
-<!-- Layout wrapper -->
 <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
         <?php $template->header(); ?>
-        <!-- Content wrapper -->
         <div class="content-wrapper">
-            <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
-                    <div class="col-12 mt-2"><!-- Temizleme ve Yükleme Formları -->
-                                <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-                                    <div>
-                                        <button type="submit" name="temizle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
-                                            Veritabanını Temizle
-                                        </button>
-                                    </div>
-                                </form>
+                    <div class="col-12 mt-2">
+                        <!-- Temizleme ve Yükleme Formları -->
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div>
+                                <button type="submit" name="temizle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
+                                    Veritabanını Temizle
+                                </button>
+                            </div>
+                        </form>
 
-                                <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-                                    <div class="input-group w-50">
-                                        <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
-                                        <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
-                                    </div>
-                                </form>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div class="input-group w-50">
+                                <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
+                            </div>
+                        </form>
                         <div class="card">
                             <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
                             <div class="card-body">
@@ -193,13 +189,6 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="assets/vendor/js/menu.js"></script>
-<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
