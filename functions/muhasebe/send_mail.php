@@ -86,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         // 🔗 Link adresi
-        $odemeUrl = "https://www.siteniz.com/odeme.php?data=" . urlencode($sifreli);
+        $odemeUrl = "https://www.noktaelektronik.com.tr/tr/tahsilat.php?l=" . urlencode($sifreli);
 
         // 📧 Mail içeriği
         $subject = "Vadesi Geçmiş Borç Hatırlatması";

@@ -76,7 +76,7 @@ function getMailFooter() {
         <tr>
             <td align="center" style="background-color: rgb(70, 70, 70); padding: 20px;">
                 <span style="color: #f1f1f1; font-size: 17px;">
-                    <a href="mailto:b2b@noktaelektronik.net" style="color: #f1f1f1; text-decoration: none;">b2b@noktaelektronik.net</a> |
+                    <a href="mailto:muhasebe@noktaelektronik.net" style="color: #f1f1f1; text-decoration: none;">muhasebe@noktaelektronik.net</a> |
                     <a href="tel:08503330208" style="color: #f1f1f1; text-decoration: none;">0850 333 02 08</a> |
                     <a href="https://noktaelektronik.com.tr/" style="color: #f1f1f1; text-decoration: none;">www.noktaelektronik.com.tr</a>
                 </span>
@@ -86,8 +86,9 @@ function getMailFooter() {
     </table>';
 }
 function vadeGecikmeHatirlatma($borc, $odemeUrl) {
+
     $content = "
-    <table style='margin-top: 10px; width: 100%; max-width: 750px;'>
+    <table style='margin-top: 10px; width: 100%; max-width: 750px; font-family: Arial, sans-serif;'>
         <tr>
             <td align='center' style='font-size: 20px;'>Sayın <strong>{$borc['ticari_unvani']}</strong>,</td>
         </tr>
@@ -97,10 +98,14 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
             </td>
         </tr>
         <tr>
-            <td align='center' style='font-size: 16px;'>Borç Tutarı: <strong>" . number_format($borc['geciken_tutar'], 2, ',', '.') . " ₺</strong></td>
+            <td align='center' style='font-size: 16px; color: red;'>
+                Vadesi Geçmiş Borç: <strong>" . number_format($borc['geciken_tutar'], 2, ',', '.') . " ₺</strong>
+            </td>
         </tr>
         <tr>
-            <td align='center' style='font-size: 16px;'>Gerçek Vade: <strong>{$borc['gerc_vade']}</strong></td>
+            <td align='center' style='font-size: 16px; color: #000;'>
+                Tüm Borcunuz: <strong>" . number_format($borc['borc_bakiye'], 2, ',', '.') . " ₺</strong>
+            </td>
         </tr>
         <tr>
             <td align='center' style='padding: 20px;'>
@@ -111,10 +116,27 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
                     text-decoration: none;
                     border-radius: 5px;
                     font-size: 16px;
-                '>Kart ile Ödeme Yapmak için Tıklayın</a>
+                    margin-right: 10px;
+                    display: inline-block;
+                '>
+                    💳 Kart ile Ödeme Yapmak için Tıklayın
+                </a>
+                <a href='https://noktanet.s3.eu-central-1.amazonaws.com/uploads/muhasebe/ibanbilgilerimiz.pdf' style='
+                    background-color: #2196F3;
+                    color: white;
+                    padding: 10px 20px;
+                    text-decoration: none;
+                    border-radius: 5px;
+                    font-size: 16px;
+                    display: inline-block;
+                    margin-top: 10px;
+                '>
+                    🏦 Havale / EFT ile Ödeme için Tıklayın
+                </a>
             </td>
         </tr>
     </table>
     ";
     return getMailTemplate($content, 'Vadesi Geçmiş Borç Hatırlatması');
 }
+
