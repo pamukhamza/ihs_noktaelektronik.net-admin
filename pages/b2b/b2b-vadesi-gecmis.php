@@ -212,7 +212,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             const email = $(this).val();
             
             $.ajax({
-                url: 'ajax/update_email.php',
+                url: 'functions/muhasebe/update_email.php',
                 method: 'POST',
                 data: {
                     id: id,
@@ -270,7 +270,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: 'ajax/send_mail.php',
+                        url: 'functions/muhasebe/send_mail.php',
                         method: 'POST',
                         data: {
                             id: id,
