@@ -275,9 +275,17 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'E-posta gönderilirken bir hata oluştu.'
+                        text: response.message || 'E-posta gönderilirken bir hata oluştu.'
                     });
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error('Ajax Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: 'Sunucu ile iletişim kurulurken bir hata oluştu.'
+                });
             }
         });
     });
