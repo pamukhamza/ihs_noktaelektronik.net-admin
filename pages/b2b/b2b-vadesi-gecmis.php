@@ -214,10 +214,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
                 method: 'POST',
-                data: {
-                    id: id,
-                    email: email
-                },
+                data: {id: id,email: email},
                 success: function(response) {
                     const data = JSON.parse(response);
                     if(data.success) {
