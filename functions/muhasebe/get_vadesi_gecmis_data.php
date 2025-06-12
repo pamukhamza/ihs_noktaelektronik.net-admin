@@ -88,5 +88,5 @@ foreach ($data as $row) {
         </button>'
     );
 }
-
+header('Content-Type: application/json');
 echo json_encode($response); 
