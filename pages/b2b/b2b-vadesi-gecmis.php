@@ -211,7 +211,10 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             responsive: true,
             dom: 'Bfrtip'
         });
-
+    });
+</script>
+<script>
+    $(document).ready(function() {
         // Email güncelleme butonu
         $(document).on('click', '.update-email', function() {
             const id = $(this).data('id');
