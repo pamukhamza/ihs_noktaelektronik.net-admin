@@ -96,14 +96,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // ✉️ Mail gönder
         $mailResult = mailGonder($aliciMail, $subject, $mailContent, $mailBaslik);
-
-        if (!$mailResult) {
-            throw new Exception('E-posta gönderilemedi');
-        }
-
         echo json_encode(['success' => true]);
         exit;
-
     } catch (Exception $e) {
         error_log("Send Mail Error: " . $e->getMessage());
         echo json_encode([
