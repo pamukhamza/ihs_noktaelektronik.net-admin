@@ -204,8 +204,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <!-- Main JS -->
 <script src="assets/js/main.js"></script>
-
-<!-- Custom Scripts -->
+</body>
+</html>
 <script>
 $(document).ready(function() {
     console.log('Document ready çalıştı');
@@ -289,5 +289,3 @@ $(document).ready(function() {
     });
 });
 </script>
-</body>
-</html>
