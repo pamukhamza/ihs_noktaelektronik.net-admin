@@ -120,7 +120,7 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
                     display: inline-block;
                 '>
                     💳 Kart ile Ödeme Yapmak için Tıklayın
-                </a>
+                </a></br>
                 <a href='https://noktanet.s3.eu-central-1.amazonaws.com/uploads/muhasebe/ibanbilgilerimiz.pdf' style='
                     background-color: #2196F3;
                     color: white;
