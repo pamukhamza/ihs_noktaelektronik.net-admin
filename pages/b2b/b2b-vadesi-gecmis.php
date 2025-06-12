@@ -4,8 +4,6 @@ require '../../functions/admin_template.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 require '../../vendor/autoload.php';
 
-
-
 $currentPage = 'b2b-vadesi-gecmis';
 $template = new Template('Vadesi Geçmiş Borçlar - Nokta Admin',  $currentPage);
 // head'i çağırıyoruz
@@ -141,6 +139,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                 <th>Geciken Tutar</th>
                                                 <th>Gerçek Vade</th>
                                                 <th>Valör</th>
+                                                <th>E-posta</th>
+                                                <th>İşlem</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -149,9 +149,21 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                     <td><?= htmlspecialchars($veri['cari_kodu']) ?></td>
                                                     <td><?= htmlspecialchars($veri['ticari_unvani']) ?></td>
                                                     <td><?= htmlspecialchars($veri['yetkilisi']) ?></td>
-                                                    <td><?= number_format($veri['geciken_tutar'], 2, ',', '.') ?> ₺</td>
+                                                    <td class="text-danger fw-bold"><?= number_format($veri['geciken_tutar'], 2, ',', '.') ?> ₺</td>
                                                     <td><?= $veri['gerc_vade'] ?></td>
                                                     <td><?= $veri['valoru'] ?></td>
+                                                    <td>
+                                                        <input type="email" class="form-control email-input" 
+                                                               value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
+                                                               data-id="<?= $veri['id'] ?>">
+                                                    </td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-sm send-mail" 
+                                                                data-id="<?= $veri['id'] ?>"
+                                                                data-email="<?= htmlspecialchars($veri['email'] ?? '') ?>">
+                                                            <i class="fas fa-envelope"></i> Mail Gönder
+                                                        </button>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
@@ -162,18 +174,13 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                     </div>
                 </div>
             </div>
-            <!-- Content backdrop -->
             <div class="content-backdrop fade"></div>
         </div>
-        <!-- Content wrapper -->
         <?php $template->footer(); ?>
     </div>
-    <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
 </div>
-<!-- / Layout wrapper -->
-<!-- Core JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -186,23 +193,119 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Main JS -->
 <script src="assets/js/main.js"></script>
 <script>
-$(document).ready(function() {
-    $('#vadesiGecmisTable').DataTable({
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
-        },
-        pageLength: 25,
-        order: [[3, 'desc']], // Sort by Geciken Tutar by default
-        responsive: true,
-        dom: 'Bfrtip',
-        buttons: [
-            'copy', 'excel', 'pdf', 'print'
-        ]
+    $(document).ready(function() {
+        $('#vadesiGecmisTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+            },
+            pageLength: 25,
+            order: [[3, 'desc']], // Sort by Geciken Tutar by default
+            responsive: true,
+            dom: 'Bfrtip'
+        });
+
+        // Email input değişikliğini kaydet
+        $('.email-input').on('change', function() {
+            const id = $(this).data('id');
+            const email = $(this).val();
+            
+            $.ajax({
+                url: 'ajax/update_email.php',
+                method: 'POST',
+                data: {
+                    id: id,
+                    email: email
+                },
+                success: function(response) {
+                    const data = JSON.parse(response);
+                    if(data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            text: 'E-posta adresi güncellendi.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: 'E-posta adresi güncellenirken bir hata oluştu.'
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: 'Bir hata oluştu.'
+                    });
+                }
+            });
+        });
+
+        // Mail gönderme butonu
+        $('.send-mail').on('click', function() {
+            const id = $(this).data('id');
+            const email = $(this).data('email');
+            
+            if(!email) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı!',
+                    text: 'Lütfen önce e-posta adresi giriniz.'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Mail Gönder',
+                text: 'Mail göndermek istediğinize emin misiniz?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Evet, Gönder',
+                cancelButtonText: 'İptal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: 'ajax/send_mail.php',
+                        method: 'POST',
+                        data: {
+                            id: id,
+                            email: email
+                        },
+                        success: function(response) {
+                            const data = JSON.parse(response);
+                            if(data.success) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Başarılı!',
+                                    text: 'Mail başarıyla gönderildi.',
+                                    timer: 2000,
+                                    showConfirmButton: false
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Hata!',
+                                    text: 'Mail gönderilirken bir hata oluştu.'
+                                });
+                            }
+                        },
+                        error: function() {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata!',
+                                text: 'Bir hata oluştu.'
+                            });
+                        }
+                    });
+                }
+            });
+        });
     });
-});
 </script>
 </body>
 </html>
