@@ -174,7 +174,7 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: '../functions/muhasebe/get_vadesi_gecmis_data.php',
+            url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
             type: 'POST',
             error: function (xhr, error, thrown) {
                 console.error('DataTables Ajax Error:', error, thrown);
