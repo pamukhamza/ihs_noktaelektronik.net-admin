@@ -153,9 +153,15 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                     <td><?= $veri['gerc_vade'] ?></td>
                                                     <td><?= $veri['valoru'] ?></td>
                                                     <td>
-                                                        <input type="email" class="form-control email-input" 
-                                                               value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
-                                                               data-id="<?= $veri['id'] ?>">
+                                                        <div class="input-group">
+                                                            <input type="email" class="form-control email-input" 
+                                                                   value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
+                                                                   data-id="<?= $veri['id'] ?>">
+                                                            <button class="btn btn-primary update-email" 
+                                                                    data-id="<?= $veri['id'] ?>">
+                                                                <i class="fas fa-save"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                     <td>
                                                         <button class="btn btn-primary btn-sm send-mail" 
@@ -196,21 +202,35 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="assets/js/main.js"></script>
 <script>
     $(document).ready(function() {
+        $('#vadesiGecmisTable').DataTable({
+            language: {
+                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
+            },
+            pageLength: 25,
+            order: [[3, 'desc']], // Sort by Geciken Tutar by default
+            responsive: true,
+            dom: 'Bfrtip'
+        });
 
-
-        // Email input değişikliğini kaydet
-        $('.email-input').on('change', function() {
-            console.log('Email değişikliği:'); // Debug log
+        // Email güncelleme butonu
+        $(document).on('click', '.update-email', function() {
             const id = $(this).data('id');
-            const email = $(this).val();
+            const email = $(this).closest('.input-group').find('.email-input').val();
             
-            
+            if (!email) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Uyarı!',
+                    text: 'Lütfen bir email adresi giriniz!'
+                });
+                return;
+            }
+
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
                 method: 'POST',
                 data: {id: id, email: email},
                 success: function(response) {
-                    console.log('Server response:', response); // Debug log
                     try {
                         const data = JSON.parse(response);
                         if(data.success) {
@@ -225,11 +245,10 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                             Swal.fire({
                                 icon: 'error',
                                 title: 'Hata!',
-                                text: 'E-posta adresi güncellenirken bir hata oluştu.'
+                                text: data.message || 'E-posta adresi güncellenirken bir hata oluştu.'
                             });
                         }
                     } catch (e) {
-                        console.error('JSON parse error:', e); // Debug log
                         Swal.fire({
                             icon: 'error',
                             title: 'Hata!',
@@ -237,12 +256,11 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                         });
                     }
                 },
-                error: function(xhr, status, error) {
-                    console.error('AJAX error:', { xhr, status, error }); // Debug log
+                error: function() {
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'Bir hata oluştu: ' + error
+                        text: 'Bir hata oluştu.'
                     });
                 }
             });
