@@ -158,7 +158,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                                                    value="<?= htmlspecialchars($veri['email'] ?? '') ?>" 
                                                                    data-id="<?= $veri['id'] ?>">
                                                             <button type="button" class="btn btn-primary update-email" 
-                                                                    data-id="<?= $veri['id'] ?>">
+                                                                    data-id="<?= $veri['id'] ?>"
+                                                                    onclick="updateEmail(this)">
                                                                 <i class="fas fa-save"></i> Kaydet
                                                             </button>
                                                         </div>
@@ -205,10 +206,77 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 
 <!-- Custom Scripts -->
 <script>
-$(document).ready(function() {
-    console.log('Document ready çalıştı'); // Test için console.log
+// Global fonksiyon olarak tanımla
+function updateEmail(button) {
+    console.log('updateEmail fonksiyonu çağrıldı');
     
+    const id = $(button).data('id');
+    const email = $(button).closest('.input-group').find('.email-input').val();
+    
+    console.log('ID:', id);
+    console.log('Email:', email);
 
+    if (!email) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Uyarı!',
+            text: 'Lütfen bir email adresi giriniz!'
+        });
+        return;
+    }
+
+    // AJAX isteği öncesi loading göster
+    Swal.fire({
+        title: 'Güncelleniyor...',
+        allowOutsideClick: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    $.ajax({
+        url: 'functions/muhasebe/update_email.php',
+        method: 'POST',
+        data: {id: id, email: email},
+        dataType: 'json',
+        success: function(response) {
+            console.log('Server yanıtı:', response);
+            
+            if(response.success) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Başarılı!',
+                    text: 'E-posta adresi güncellendi.',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            } else {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata!',
+                    text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
+                });
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Hatası:', {
+                status: status,
+                error: error,
+                response: xhr.responseText
+            });
+            
+            Swal.fire({
+                icon: 'error',
+                title: 'Hata!',
+                text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
+            });
+        }
+    });
+}
+
+$(document).ready(function() {
+    console.log('Document ready çalıştı');
+    
     $('#vadesiGecmisTable').DataTable({
         language: {
             url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
@@ -217,75 +285,6 @@ $(document).ready(function() {
         order: [[3, 'desc']], // Sort by Geciken Tutar by default
         responsive: true,
         dom: 'Bfrtip'
-    });
-
-    // Email güncelleme butonu - doğrudan buton seçicisi kullan
-    $('.update-email').click(function(e) {
-        e.preventDefault();
-        console.log('Butona tıklandı');
-        
-        const id = $(this).data('id');
-        const email = $(this).closest('.input-group').find('.email-input').val();
-        
-        console.log('ID:', id);
-        console.log('Email:', email);
-
-        if (!email) {
-            Swal.fire({
-                icon: 'warning',
-                title: 'Uyarı!',
-                text: 'Lütfen bir email adresi giriniz!'
-            });
-            return;
-        }
-
-        // AJAX isteği öncesi loading göster
-        Swal.fire({
-            title: 'Güncelleniyor...',
-            allowOutsideClick: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-
-        $.ajax({
-            url: 'functions/muhasebe/update_email.php',
-            method: 'POST',
-            data: {id: id, email: email},
-            dataType: 'json',
-            success: function(response) {
-                console.log('Server yanıtı:', response);
-                
-                if(response.success) {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Başarılı!',
-                        text: 'E-posta adresi güncellendi.',
-                        timer: 2000,
-                        showConfirmButton: false
-                    });
-                } else {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Hata!',
-                        text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                console.error('AJAX Hatası:', {
-                    status: status,
-                    error: error,
-                    response: xhr.responseText
-                });
-                
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Hata!',
-                    text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
-                });
-            }
-        });
     });
 
     // Mail gönderme butonu
