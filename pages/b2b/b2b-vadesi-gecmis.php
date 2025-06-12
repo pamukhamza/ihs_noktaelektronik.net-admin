@@ -208,10 +208,10 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 
         // Email input değişikliğini kaydet
         $('.email-input').on('change', function() {
+            console.log('Email değişikliği:'); // Debug log
             const id = $(this).data('id');
             const email = $(this).val();
             
-            console.log('Email değişikliği:', { id, email }); // Debug log
             
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
