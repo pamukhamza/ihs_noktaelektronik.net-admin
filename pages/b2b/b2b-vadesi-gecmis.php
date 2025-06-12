@@ -196,15 +196,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="assets/js/main.js"></script>
 <script>
     $(document).ready(function() {
-        $('#vadesiGecmisTable').DataTable({
-            language: {
-                url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
-            },
-            pageLength: 25,
-            order: [[3, 'desc']], // Sort by Geciken Tutar by default
-            responsive: true,
-            dom: 'Bfrtip'
-        });
+
 
         // Email input değişikliğini kaydet
         $('.email-input').on('change', function() {
