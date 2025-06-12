@@ -177,6 +177,7 @@ $(document).ready(function() {
             url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
             type: 'POST',
             dataSrc: function(json) {
+                console.log('Server Response:', json); // Debug log
                 if (json.error) {
                     console.error('Server Error:', json.message);
                     Swal.fire({
@@ -186,7 +187,7 @@ $(document).ready(function() {
                     });
                     return [];
                 }
-                return json.data;
+                return json.data || [];
             },
             error: function (xhr, error, thrown) {
                 console.error('DataTables Ajax Error:', error, thrown);

@@ -2,16 +2,24 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
+// Start output buffering
+ob_start();
+
 try {
     include_once '../db.php';
     
     $database = new Database();
 
-    // Log incoming request
-    error_log("DataTables request received: " . print_r($_POST, true));
+    // Log the incoming request
+    error_log("DataTables Request: " . print_r($_POST, true));
+
+    // Validate required parameters
+    if (!isset($_POST['draw'])) {
+        throw new Exception('Required parameter "draw" is missing');
+    }
 
     // DataTables server-side parameters
-    $draw = isset($_POST['draw']) ? intval($_POST['draw']) : 1;
+    $draw = intval($_POST['draw']);
     $start = isset($_POST['start']) ? intval($_POST['start']) : 0;
     $length = isset($_POST['length']) ? intval($_POST['length']) : 10;
     $search = isset($_POST['search']['value']) ? $_POST['search']['value'] : '';
@@ -65,7 +73,7 @@ try {
 
     // Prepare response
     $response = array(
-        "draw" => intval($draw),
+        "draw" => $draw,
         "recordsTotal" => intval($total_records),
         "recordsFiltered" => intval($filtered_records),
         "data" => array()
@@ -97,19 +105,25 @@ try {
     }
 
     // Clear any previous output
-    if (ob_get_length()) ob_clean();
+    ob_clean();
     
     // Set headers
     header('Content-Type: application/json');
     header('Cache-Control: no-cache, must-revalidate');
+    
+    // Log the response
+    error_log("DataTables Response: " . json_encode($response));
     
     // Send response
     echo json_encode($response);
     exit;
 
 } catch (Exception $e) {
+    // Log the error
+    error_log("DataTables Error: " . $e->getMessage());
+    
     // Clear any previous output
-    if (ob_get_length()) ob_clean();
+    ob_clean();
     
     // Set headers
     header('Content-Type: application/json');
@@ -119,7 +133,7 @@ try {
     echo json_encode(array(
         "error" => true,
         "message" => $e->getMessage(),
-        "draw" => 1,
+        "draw" => isset($_POST['draw']) ? intval($_POST['draw']) : 1,
         "recordsTotal" => 0,
         "recordsFiltered" => 0,
         "data" => array()
