@@ -4,9 +4,6 @@ require '../../functions/admin_template.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 require '../../vendor/autoload.php';
 
-// JavaScript test
-echo "<script>console.log('PHP test mesajı');</script>";
-
 $currentPage = 'b2b-vadesi-gecmis';
 $template = new Template('Vadesi Geçmiş Borçlar - Nokta Admin',  $currentPage);
 // head'i çağırıyoruz
@@ -208,15 +205,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 
 <!-- Custom Scripts -->
 <script>
-// jQuery kontrolü
-if (typeof jQuery === 'undefined') {
-    console.error('jQuery yüklenemedi!');
-} else {
-    console.log('jQuery versiyonu:', jQuery.fn.jquery);
-}
 
-// Basit bir test
-console.log('Test mesajı');
 
 $(document).ready(function() {
     console.log('Document ready çalıştı'); // Test için console.log
@@ -226,15 +215,6 @@ $(document).ready(function() {
         alert('Butona tıklandı!');
     });
 
-    $('#vadesiGecmisTable').DataTable({
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/tr.json'
-        },
-        pageLength: 25,
-        order: [[3, 'desc']], // Sort by Geciken Tutar by default
-        responsive: true,
-        dom: 'Bfrtip'
-    });
 
     // Email güncelleme butonu
     $(document).on('click', '.update-email', function() {
