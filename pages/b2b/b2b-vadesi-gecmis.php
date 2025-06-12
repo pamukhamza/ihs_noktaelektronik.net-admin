@@ -210,35 +210,47 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
         $('.email-input').on('change', function() {
             const id = $(this).data('id');
             const email = $(this).val();
-            alert(email);
+            
+            console.log('Email değişikliği:', { id, email }); // Debug log
             
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
                 method: 'POST',
-                data: {id: id,email: email},
+                data: {id: id, email: email},
                 success: function(response) {
-                    const data = JSON.parse(response);
-                    if(data.success) {
-                        Swal.fire({
-                            icon: 'success',
-                            title: 'Başarılı!',
-                            text: 'E-posta adresi güncellendi.',
-                            timer: 2000,
-                            showConfirmButton: false
-                        });
-                    } else {
+                    console.log('Server response:', response); // Debug log
+                    try {
+                        const data = JSON.parse(response);
+                        if(data.success) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Başarılı!',
+                                text: 'E-posta adresi güncellendi.',
+                                timer: 2000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Hata!',
+                                text: 'E-posta adresi güncellenirken bir hata oluştu.'
+                            });
+                        }
+                    } catch (e) {
+                        console.error('JSON parse error:', e); // Debug log
                         Swal.fire({
                             icon: 'error',
                             title: 'Hata!',
-                            text: 'E-posta adresi güncellenirken bir hata oluştu.'
+                            text: 'Sunucu yanıtı işlenirken bir hata oluştu.'
                         });
                     }
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                    console.error('AJAX error:', { xhr, status, error }); // Debug log
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'Bir hata oluştu.'
+                        text: 'Bir hata oluştu: ' + error
                     });
                 }
             });

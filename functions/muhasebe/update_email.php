@@ -1,5 +1,5 @@
 <?php
-include_once '../../../functions/db.php';
+include_once '../../functions/db.php';
 
 header('Content-Type: application/json');
 
