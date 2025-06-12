@@ -59,15 +59,15 @@ try {
     $filtered_query = "SELECT COUNT(*) as count " . $base_query;
     $params = array();
     if (!empty($search)) {
-        $params[':search'] = '%' . $search . '%';
+        $params['search'] = '%' . $search . '%';
     }
     $filtered_records = $database->fetch($filtered_query, $params);
     $filtered_records = $filtered_records['count'];
 
     // Get data
     $query = "SELECT * " . $base_query . $order_by . " LIMIT :start, :length";
-    $params[':start'] = (int)$start;
-    $params[':length'] = (int)$length;
+    $params['start'] = (int)$start;
+    $params['length'] = (int)$length;
 
     $data = $database->fetchAll($query, $params);
 
