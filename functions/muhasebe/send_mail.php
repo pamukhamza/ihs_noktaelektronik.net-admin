@@ -1,6 +1,6 @@
 <?php
 include_once '../db.php';
-include_once 'mailGonder.php'; // mailGonder ve vadeGecikmeHatirlatma fonksiyonları burada tanımlı olmalı
+include_once '../../mail/tahsilat_mail_gonder.php'; // mailGonder ve vadeGecikmeHatirlatma fonksiyonları burada tanımlı olmalı
 
 header('Content-Type: application/json');
 
