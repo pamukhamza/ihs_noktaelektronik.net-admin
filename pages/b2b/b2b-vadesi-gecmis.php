@@ -174,8 +174,17 @@ $(document).ready(function() {
         processing: true,
         serverSide: true,
         ajax: {
-            url: 'functions/muhasebe/get_vadesi_gecmis_data.php',
-            type: 'POST'
+            url: '../functions/muhasebe/get_vadesi_gecmis_data.php',
+            type: 'POST',
+            error: function (xhr, error, thrown) {
+                console.error('DataTables Ajax Error:', error, thrown);
+                console.log('Response:', xhr.responseText);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Veri Yükleme Hatası',
+                    text: 'Veriler yüklenirken bir hata oluştu. Lütfen sayfayı yenileyin.'
+                });
+            }
         },
         columns: [
             { data: 0 }, // Cari Kodu
