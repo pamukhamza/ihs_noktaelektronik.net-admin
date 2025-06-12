@@ -187,6 +187,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
 </div>
+<!-- Core JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -199,7 +200,10 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- Main JS -->
 <script src="assets/js/main.js"></script>
+
+<!-- Custom Scripts -->
 <script>
 // jQuery kontrolü
 if (typeof jQuery === 'undefined') {
