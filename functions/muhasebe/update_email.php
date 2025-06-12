@@ -1,21 +1,35 @@
 <?php
 include_once '../../functions/db.php';
 
-header('Content-Type: application/json');
-
 // Hata raporlamayı aktif et
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// CORS ayarları
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type');
+header('Content-Type: application/json; charset=utf-8');
+
+// OPTIONS isteğini yanıtla
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+    http_response_code(200);
+    exit();
+}
 
 try {
     if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
         throw new Exception('Sadece POST istekleri kabul edilir.');
     }
 
+    // POST verilerini al
+    $postData = file_get_contents('php://input');
+    $data = json_decode($postData, true) ?? $_POST;
+
     $database = new Database();
     
-    $id = $_POST['id'] ?? null;
-    $email = $_POST['email'] ?? null;
+    $id = $data['id'] ?? null;
+    $email = $data['email'] ?? null;
     
     if (!$id) {
         throw new Exception('ID parametresi eksik.');
@@ -69,6 +83,7 @@ try {
     
 } catch (Exception $e) {
     error_log('Email güncelleme hatası: ' . $e->getMessage());
+    http_response_code(400);
     echo json_encode([
         'success' => false,
         'message' => $e->getMessage()

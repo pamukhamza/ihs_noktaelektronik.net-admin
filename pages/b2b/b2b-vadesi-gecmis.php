@@ -220,6 +220,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             const id = $(this).data('id');
             const email = $(this).closest('.input-group').find('.email-input').val();
             
+            console.log('Gönderilecek veriler:', { id, email }); // Debug için
+
             if (!email) {
                 Swal.fire({
                     icon: 'warning',
@@ -229,41 +231,50 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                 return;
             }
 
+            // AJAX isteği öncesi loading göster
+            Swal.fire({
+                title: 'Güncelleniyor...',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
                 method: 'POST',
                 data: {id: id, email: email},
+                dataType: 'json',
                 success: function(response) {
-                    try {
-                        const data = JSON.parse(response);
-                        if(data.success) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Başarılı!',
-                                text: 'E-posta adresi güncellendi.',
-                                timer: 2000,
-                                showConfirmButton: false
-                            });
-                        } else {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Hata!',
-                                text: data.message || 'E-posta adresi güncellenirken bir hata oluştu.'
-                            });
-                        }
-                    } catch (e) {
+                    console.log('Server yanıtı:', response); // Debug için
+                    
+                    if(response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            text: 'E-posta adresi güncellendi.',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Hata!',
-                            text: 'Sunucu yanıtı işlenirken bir hata oluştu.'
+                            text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
                         });
                     }
                 },
-                error: function() {
+                error: function(xhr, status, error) {
+                    console.error('AJAX Hatası:', {
+                        status: status,
+                        error: error,
+                        response: xhr.responseText
+                    });
+                    
                     Swal.fire({
                         icon: 'error',
                         title: 'Hata!',
-                        text: 'Bir hata oluştu.'
+                        text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
                     });
                 }
             });
