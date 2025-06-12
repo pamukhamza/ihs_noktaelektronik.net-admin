@@ -4,6 +4,9 @@ require '../../functions/admin_template.php';
 use PhpOffice\PhpSpreadsheet\IOFactory;
 require '../../vendor/autoload.php';
 
+// JavaScript test
+echo "<script>console.log('PHP test mesajı');</script>";
+
 $currentPage = 'b2b-vadesi-gecmis';
 $template = new Template('Vadesi Geçmiş Borçlar - Nokta Admin',  $currentPage);
 // head'i çağırıyoruz
@@ -188,7 +191,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
     <div class="drag-target"></div>
 </div>
 <!-- Core JS -->
-<script src="assets/vendor/libs/jquery/jquery.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="assets/vendor/js/menu.js"></script>
@@ -211,6 +214,9 @@ if (typeof jQuery === 'undefined') {
 } else {
     console.log('jQuery versiyonu:', jQuery.fn.jquery);
 }
+
+// Basit bir test
+console.log('Test mesajı');
 
 $(document).ready(function() {
     console.log('Document ready çalıştı'); // Test için console.log
