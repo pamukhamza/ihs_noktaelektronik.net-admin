@@ -210,6 +210,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
         $('.email-input').on('change', function() {
             const id = $(this).data('id');
             const email = $(this).val();
+            alert(email);
             
             $.ajax({
                 url: 'functions/muhasebe/update_email.php',
@@ -247,7 +248,6 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
         $('.send-mail').on('click', function() {
             const id = $(this).data('id');
             const email = $(this).data('email');
-            alert(email);
             if(!email) {
                 Swal.fire({
                     icon: 'warning',
