@@ -235,42 +235,47 @@ function updateEmail(button) {
     $.ajax({
         url: 'functions/muhasebe/update_email.php',
         method: 'POST',
-        data: {id: id, email: email},
-        dataType: 'json',
+        data: {
+            id: id,
+            email: email
+        },
         success: function(response) {
-            console.log('Server yanıtı:', response);
-            
-            if(response.success) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Başarılı!',
-                    text: 'E-posta adresi güncellendi.',
-                    timer: 2000,
-                    showConfirmButton: false
-                });
-            } else {
+            Swal.close();
+            try {
+                const result = JSON.parse(response);
+                if (result.success) {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Başarılı',
+                        text: 'Email adresi güncellendi!'
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Hata!',
+                        text: result.message || 'Güncelleme sırasında hata oluştu.'
+                    });
+                }
+            } catch (e) {
+                console.error('Yanıt ayrıştırılamadı:', e);
                 Swal.fire({
                     icon: 'error',
                     title: 'Hata!',
-                    text: response.message || 'E-posta adresi güncellenirken bir hata oluştu.'
+                    text: 'Sunucudan geçersiz yanıt alındı.'
                 });
             }
         },
         error: function(xhr, status, error) {
-            console.error('AJAX Hatası:', {
-                status: status,
-                error: error,
-                response: xhr.responseText
-            });
-            
+            Swal.close();
             Swal.fire({
                 icon: 'error',
                 title: 'Hata!',
-                text: 'Sunucu ile iletişim kurulamadı. Lütfen daha sonra tekrar deneyin.'
+                text: 'İstek gönderilirken bir hata oluştu: ' + error
             });
         }
     });
 }
+
 
 $(document).ready(function() {
     console.log('Document ready çalıştı');
