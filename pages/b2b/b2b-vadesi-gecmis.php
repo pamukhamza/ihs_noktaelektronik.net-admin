@@ -32,19 +32,19 @@ if (isset($_POST['yukle'])) {
             foreach ($rows as $index => $row) {
                 if ($index === 0) continue;
 
-                $cari_kodu = trim($row[0]);
-                $plasiyer = trim($row[1]);
-                $ticari_unvani = trim($row[2]);
-                $yetkilisi = trim($row[3]);
-                $borc_bakiye = trim($row[4]);
-                $hesap_turu = trim($row[5]);
-                $geciken_tutar = trim($row[6]);
+                $cari_kodu = trim($row[0] ?? '');
+                $plasiyer = trim($row[1] ?? '');
+                $ticari_unvani = trim($row[2] ?? '');
+                $yetkilisi = trim($row[3] ?? '');
+                $borc_bakiye = trim($row[4] ?? '');
+                $hesap_turu = trim($row[5] ?? '');
+                $geciken_tutar = trim($row[6] ?? '');
                 $acik_hesap_gunu = intval($row[7]);
-                $gerc_vade = trim($row[8]);
-                $valoru = trim($row[9]);
-                $bakiye_odeme_tarihi = trim($row[10]);
-                $bilgi_kodu = trim($row[11]);
-                $sube_kodu = trim($row[12]);
+                $gerc_vade = trim($row[8] ?? '');
+                $valoru = trim($row[9] ?? '');
+                $bakiye_odeme_tarihi = trim($row[10] ?? '');
+                $bilgi_kodu = trim($row[11] ?? '');
+                $sube_kodu = trim($row[12] ?? '');
 
                 if ($cari_kodu && floatval(str_replace(',', '.', $geciken_tutar)) > 0) {
                     $sql = "INSERT INTO vadesi_gecmis_borc (
