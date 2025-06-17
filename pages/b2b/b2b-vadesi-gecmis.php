@@ -120,6 +120,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
                             </div>
                         </form>
+                        <small style="color:red">yeni liste yüklenecekse ilk önce veritabanı temizlenmeli,<br> Sonrada yapıya uygun excel yüklenmeli!</small>
+                        <small style="color:red">İlk önce mail adresi alanını doldurup kaydetmeli.<br>Kaydetme işlemi bittikten sonra mail gönder butonuna YALNIZCA 1 DEFA tıklanıp mail gönderilir!</small>
                         <div class="card">
                             <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
                             <div class="card-body">
