@@ -71,28 +71,20 @@ $template->head();
                         </div>
                     </div>
                 </div>
-                <!--/ Edit Category Modal -->
             </div>
-            <!-- Content backdrop -->
             <div class="content-backdrop fade"></div>
         </div>
-        <!-- Content wrapper -->
         <?php $template->footer(); ?>
     </div>
-    <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
     <div class="drag-target"></div>
 </div>
-<!-- / Layout wrapper -->
-
-<!-- Core JS -->
 <script src="assets/vendor/libs/jquery/jquery.js"></script>
 <script src="assets/vendor/js/bootstrap.js"></script>
 <script src="assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 <script src="assets/vendor/js/menu.js"></script>
 <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<!-- Main JS -->
 <script src="assets/js/main.js"></script>
 
 <script>
@@ -216,39 +208,38 @@ $template->head();
     });
 </script>
 <script>
-  $(document).ready(function () {
-    $(document).on('change', '.wnet-checkbox, .wcomtr-checkbox, .wcn-checkbox', function () {
-        const id = $(this).data('id');
-        const field = $(this).hasClass('wnet-checkbox') ? 'web_net' :
-                      $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
-        const value = $(this).is(':checked') ? 1 : 0;
+    $(document).ready(function () {
+        $(document).on('change', '.wnet-checkbox, .wcomtr-checkbox, .wcn-checkbox', function () {
+            const id = $(this).data('id');
+            const field = $(this).hasClass('wnet-checkbox') ? 'web_net' :
+                        $(this).hasClass('wcomtr-checkbox') ? 'web_comtr' : 'web_cn';
+            const value = $(this).is(':checked') ? 1 : 0;
 
-        // AJAX isteği
-        fetch('functions/brands/update_field.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                id: id,
-                field: field,
-                value: value
-            }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                console.log('Güncelleme başarılı:', data.message);
-            } else {
-                console.error('Güncelleme başarısız:', data.message);
-            }
-        })
-        .catch(error => {
-            console.error('Bir hata oluştu:', error);
+            // AJAX isteği
+            fetch('functions/brands/update_field.php', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    id: id,
+                    field: field,
+                    value: value
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Güncelleme başarılı:', data.message);
+                } else {
+                    console.error('Güncelleme başarısız:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Bir hata oluştu:', error);
+            });
         });
     });
-});
-
 </script>
 </body>
 </html>

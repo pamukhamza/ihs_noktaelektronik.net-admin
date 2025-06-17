@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'Key'    => $targetFilePath,
                     'SourceFile' => $_FILES['cat_img']['tmp_name'],
                 ]);
-                $imgUrl = $result['ObjectURL'];
+                $imgUrl = $fileName;
             } catch (AwsException $e) {
                 die('Error uploading file: ' . $e->getMessage());
             }
