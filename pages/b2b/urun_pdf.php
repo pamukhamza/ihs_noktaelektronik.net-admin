@@ -1,4 +1,5 @@
 <?php
+echo "sayfaya girdi";
 require_once('../../vendor/autoload.php'); // veya tcpdf klasörünüzün yolunu verin
 require_once '../../functions/db.php'; // PDO bağlantınız bu dosyada olmalı
 
