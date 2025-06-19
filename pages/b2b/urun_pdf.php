@@ -23,7 +23,7 @@ $pdf->Cell(40, 10, 'Fiyat', 1, 1, 'L');
 
 // Veritabanı sorgusu
 $db = new Database();
-$products = $db->query("SELECT UrunKodu, UrunAdiTR, KSF4, DSF4, DOVIZ_BIRIMI FROM nokta_urunler");
+$products = $db->fetchAll("SELECT UrunKodu, UrunAdiTR, KSF4, DSF4, DOVIZ_BIRIMI FROM nokta_urunler");
 
 $pdf->SetFont('dejavusans', '', 9);
 
