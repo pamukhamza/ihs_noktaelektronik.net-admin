@@ -32,12 +32,13 @@ try {
     $pdf->SetFont('dejavusans', '', 9);
 
     // Satırları yaz
+    // Satırları yaz
     foreach ($products as $product) {
-        $urunKodu = $product['UrunKodu'];
-        $urunAdi  = $product['UrunAdiTR'];
+        $urunKodu = $product['UrunKodu'] ?? '';
+        $urunAdi  = $product['UrunAdiTR'] ?? '';
         $ksf4     = $product['KSF4'];
         $dsf4     = $product['DSF4'];
-        $doviz    = $product['DOVIZ_BIRIMI'];
+        $doviz    = $product['DOVIZ_BIRIMI'] ?? '';
 
         if (!empty($ksf4)) {
             $fiyat = number_format((float)$ksf4, 2, ',', '.') . ' ₺';
@@ -46,12 +47,15 @@ try {
         } else {
             $fiyat = '-';
         }
-        
 
-        $pdf->Cell(40, 8, $urunKodu, 1, 0, 'L');
-        $pdf->Cell(100, 8, $urunAdi, 1, 0, 'L', false, '', 0, false, 'T', 'M');
-        $pdf->Cell(40, 8, $fiyat, 1, 1, 'L');
+        // Yükseklik hesaplamak için en yüksek satır yüksekliği bulmak gerekir, ama sabit 8 yerine dinamik çözüm için maxHeight yapılabilir.
+        $height = 8;
+
+        $pdf->MultiCell(40, $height, $urunKodu, 1, 'L', false, 0);
+        $pdf->MultiCell(100, $height, $urunAdi, 1, 'L', false, 0);
+        $pdf->MultiCell(40, $height, $fiyat, 1, 'L', false, 1);
     }
+
 
     // PDF çıktısı
     $pdf->Output('urun_listesi.pdf', 'I'); // veya 'D' ile indir
