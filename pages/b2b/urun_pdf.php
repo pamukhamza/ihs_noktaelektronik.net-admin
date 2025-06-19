@@ -40,10 +40,13 @@ try {
         $doviz    = $product['DOVIZ_BIRIMI'];
 
         if (!empty($ksf4)) {
-            $fiyat = number_format($ksf4, 2, ',', '.') . ' ₺';
+            $fiyat = number_format((float)$ksf4, 2, ',', '.') . ' ₺';
+        } else if (!empty($dsf4)) {
+            $fiyat = number_format((float)$dsf4, 2, ',', '.') . ' ' . $doviz;
         } else {
-            $fiyat = number_format($dsf4, 2, ',', '.') . ' ' . $doviz;
+            $fiyat = '-';
         }
+        
 
         $pdf->Cell(60, 8, $urunKodu, 1, 0, 'L');
         $pdf->Cell(80, 8, $urunAdi, 1, 0, 'L');
