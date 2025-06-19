@@ -218,7 +218,7 @@ $selectedSite = $_GET['w'] ?? 'net';
                             <?php if ($user->hasPermission(53)): ?>
                                 <li class="menu-item <?= $currentPage === 'b2b-vadesi-gecmis' ? 'active' : '' ?>">
                                     <a href="pages/b2b/b2b-vadesi-gecmis?w=noktab2b" class="menu-link">
-                                        <div data-i18n="Sanal Pos Ödeme">Vadesi Geçmiş Borç</div>
+                                        <div data-i18n="Vadesi Geçmiş Borç">Vadesi Geçmiş Borç</div>
                                     </a>
                                 </li>
                             <?php endif; ?>
