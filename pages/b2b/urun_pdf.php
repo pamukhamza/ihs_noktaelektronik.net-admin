@@ -3,6 +3,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 try {
     require_once('../../vendor/autoload.php'); // veya tcpdf klasörünüzün yolunu verin
+    require_once '../../vendor/tcpdf/tcpdf.php';
     require_once '../../functions/db.php'; // PDO bağlantınız bu dosyada olmalı
 
     // TCPDF başlat
