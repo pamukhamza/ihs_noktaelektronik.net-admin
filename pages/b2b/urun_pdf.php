@@ -21,8 +21,8 @@ try {
 
     // Tablo başlıkları
     $pdf->SetFont('dejavusans', 'B', 10);
-    $pdf->Cell(60, 10, 'Stok Kodu', 1, 0, 'L');
-    $pdf->Cell(80, 10, 'Ürün Adı', 1, 0, 'L');
+    $pdf->Cell(40, 10, 'Stok Kodu', 1, 0, 'L');
+    $pdf->Cell(100, 10, 'Ürün Adı', 1, 0, 'L');
     $pdf->Cell(40, 10, 'Fiyat', 1, 1, 'L');
 
     // Veritabanı sorgusu
@@ -48,8 +48,8 @@ try {
         }
         
 
-        $pdf->Cell(60, 8, $urunKodu, 1, 0, 'L');
-        $pdf->Cell(80, 8, $urunAdi, 1, 0, 'L');
+        $pdf->Cell(40, 8, $urunKodu, 1, 0, 'L');
+        $pdf->Cell(100, 8, $urunAdi, 1, 0, 'L', false, '', 0, false, 'T', 'M');
         $pdf->Cell(40, 8, $fiyat, 1, 1, 'L');
     }
 
