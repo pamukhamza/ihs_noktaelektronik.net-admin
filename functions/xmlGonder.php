@@ -665,11 +665,9 @@ function getTahsilatEmail($xmlData) {
         $stmt->bind_param("iss", $BLKODU, $CARIKODU, $E_MAIL);
         $stmt->execute();
         $stmt->close();
-    
-        echo "$newDate: Eklenen Email Cari Kodu: $CARIKODU <br>";
     }
     $mysqli->close();
-    echo "$newDate: Email Tarama Tamamlandı. <br>";
+    echo "$newDate: Email Tarama Yükleme Tamamlandı. <br>";
 }
 $xml_data_stock_inventory = isset($_POST['xml_data_stok_envanter']) ? $_POST['xml_data_stok_envanter'] : '';
 $xml_data_stock = isset($_POST['xml_data_stok_adet']) ? $_POST['xml_data_stok_adet'] : '';
