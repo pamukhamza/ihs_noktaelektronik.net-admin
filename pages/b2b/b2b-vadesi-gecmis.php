@@ -106,71 +106,71 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
                     <div class="col-12 mt-3">
+                        <!-- Aşama 1: Veritabanını Temizle -->
+                        <div class="alert alert-warning d-flex align-items-center" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <div>
+                                <strong>1. Adım:</strong> Yeni liste yüklenecekse önce veritabanı temizlenmelidir.
+                            </div>
+                        </div>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <button type="submit" name="temizle" class="btn btn-danger"
+                                onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
+                                <i class="fas fa-trash-alt me-1"></i> Veritabanını Temizle
+                            </button>
+                        </form>
 
-    <!-- Aşama 1: Veritabanını Temizle -->
-    <div class="alert alert-warning d-flex align-items-center" role="alert">
-        <i class="fas fa-exclamation-triangle me-2"></i>
-        <div>
-            <strong>1. Adım:</strong> Yeni liste yüklenecekse önce veritabanı temizlenmelidir.
-        </div>
-    </div>
-    <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-        <button type="submit" name="temizle" class="btn btn-danger"
-            onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
-            <i class="fas fa-trash-alt me-1"></i> Veritabanını Temizle
-        </button>
-    </form>
+                        <!-- Aşama 2: Excel Yükle -->
+                        <div class="alert alert-primary d-flex align-items-center" role="alert">
+                            <i class="fas fa-file-excel me-2"></i>
+                            <div>
+                                <strong>2. Adım:</strong> Yapıya uygun Excel dosyasını yükleyin.
+                            </div>
+                        </div>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div class="input-group w-50">
+                                <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" name="yukle" class="btn btn-primary">
+                                    <i class="fas fa-upload me-1"></i> Yükle
+                                </button>
+                            </div>
+                        </form>
 
-    <!-- Aşama 2: Excel Yükle -->
-    <div class="alert alert-primary d-flex align-items-center" role="alert">
-        <i class="fas fa-file-excel me-2"></i>
-        <div>
-            <strong>2. Adım:</strong> Yapıya uygun Excel dosyasını yükleyin.
-        </div>
-    </div>
-    <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-        <div class="input-group w-50">
-            <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
-            <button type="submit" name="yukle" class="btn btn-primary">
-                <i class="fas fa-upload me-1"></i> Yükle
-            </button>
-        </div>
-    </form>
+                        <!-- Aşama 3: Email Eşitle -->
+                        <div class="alert alert-info d-flex align-items-center" role="alert">
+                            <i class="fas fa-envelope-open-text me-2"></i>
+                            <div>
+                                <strong>3. Adım:</strong> E-mail alanlarını eşitleyin (varsa güncelleyin).
+                            </div>
+                        </div>
+                        <form method="post" action="functions/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between"
+                            enctype="multipart/form-data">
+                            <button type="submit" name="emailesitle" class="btn btn-info text-white"
+                                onclick="return confirm('Tüm kayıtların Email Adresleri güncellenecek. Emin misiniz?')">
+                                <i class="fas fa-sync-alt me-1"></i> E-mail Eşitle
+                            </button>
+                        </form>
 
-    <!-- Aşama 3: Email Eşitle -->
-    <div class="alert alert-info d-flex align-items-center" role="alert">
-        <i class="fas fa-envelope-open-text me-2"></i>
-        <div>
-            <strong>3. Adım:</strong> E-mail alanlarını eşitleyin (varsa güncelleyin).
-        </div>
-    </div>
-    <form method="post" action="functions/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between"
-        enctype="multipart/form-data">
-        <button type="submit" name="emailesitle" class="btn btn-info text-white"
-            onclick="return confirm('Tüm kayıtların Email Adresleri güncellenecek. Emin misiniz?')">
-            <i class="fas fa-sync-alt me-1"></i> E-mail Eşitle
-        </button>
-    </form>
+                        <!-- Aşama 4: Toplu Mail Gönder -->
+                        <div class="alert alert-success d-flex align-items-center" role="alert">
+                            <i class="fas fa-paper-plane me-2"></i>
+                            <div>
+                                <strong>4. Adım:</strong> Mail adresleri eklendiyse toplu e-posta gönderebilirsiniz.
+                            </div>
+                        </div>
+                        <button class="btn btn-success btn-sm mb-3" id="send-all-mails">
+                            <i class="fas fa-paper-plane"></i> Tüm Mailleri Gönder
+                        </button>
 
-    <!-- Aşama 4: Toplu Mail Gönder -->
-    <div class="alert alert-success d-flex align-items-center" role="alert">
-        <i class="fas fa-paper-plane me-2"></i>
-        <div>
-            <strong>4. Adım:</strong> Mail adresleri eklendiyse toplu e-posta gönderebilirsiniz.
-        </div>
-    </div>
-    <button class="btn btn-success btn-sm mb-3" id="send-all-mails">
-        <i class="fas fa-paper-plane"></i> Tüm Mailleri Gönder
-    </button>
-
-    <!-- Genel Notlar -->
-    <div class="alert alert-danger mt-2" role="alert">
-        <ul class="mb-0">
-            <li>Her işlem sırasına göre yapılmalıdır: <strong>temizle → yükle → eşitle → gönder</strong>.</li>
-            <li><strong>Mail gönderme işlemi sadece 1 kez</strong> yapılmalıdır.</li>
-            <li>Dilerseniz tekli olarak da <strong>mail gönder</strong> butonlarını kullanabilirsiniz.</li>
-        </ul>
-    </div> <div class="card">
+                        <!-- Genel Notlar -->
+                        <div class="alert alert-danger mt-2" role="alert">
+                            <ul class="mb-0">
+                                <li>Her işlem sırasına göre yapılmalıdır: <strong>temizle → yükle → eşitle → gönder</strong>.</li>
+                                <li><strong>Mail gönderme işlemi sadece 1 kez</strong> yapılmalıdır.</li>
+                                <li>Dilerseniz tekli olarak da <strong>mail gönder</strong> butonlarını kullanabilirsiniz.</li>
+                            </ul>
+                        </div> 
+                        <div class="card">
                             <h5 class="card-header p-2" style="background-color: #0a78f1; color:white;">Vadesi Geçmiş Borçlar</h5>
                             <div class="card-body">
                                 <?php if (!empty($mesaj)) : ?>
