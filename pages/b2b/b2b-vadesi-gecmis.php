@@ -166,7 +166,8 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                         <div class="alert alert-danger mt-2" role="alert">
                             <ul class="mb-0">
                                 <li>Her işlem sırasına göre yapılmalıdır: <strong>temizle → yükle → eşitle → gönder</strong>.</li>
-                                <li><strong>Mail gönderme işlemi sadece 1 kez</strong> yapılmalıdır.</li>
+                                <li><strong>Email eşitleme işlemi yapılmadan önce hamzadan tüm emailleri çekmesini isteyiniz.</strong>.</li>
+                                <li><strong>Mail gönderme işlemi sadece 1 kez</strong> yapılmalıdır.<strong>2. kez tıklamayınız!</strong></li>
                                 <li>Dilerseniz tekli olarak da <strong>mail gönder</strong> butonlarını kullanabilirsiniz.</li>
                             </ul>
                         </div> 
