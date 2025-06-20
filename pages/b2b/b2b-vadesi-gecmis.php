@@ -119,7 +119,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
                             </div>
                         </form>
-                        <form method="post" action="functions/b2b/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                        <form method="post" action="functions/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                             <div>
                                 <button type="submit" name="emailesitle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
                                     E-mail Eşitleme
