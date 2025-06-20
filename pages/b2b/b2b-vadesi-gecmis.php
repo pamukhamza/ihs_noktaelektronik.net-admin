@@ -121,7 +121,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                         </form>
                         <form method="post" action="functions/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                             <div>
-                                <button type="submit" name="emailesitle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
+                                <button type="submit" name="emailesitle" class="btn btn-danger" onclick="return confirm('Tüm kayıtların Email Adresleri güncellenecek. Emin misiniz?')">
                                     E-mail Eşitleme
                                 </button>
                             </div>
