@@ -2,8 +2,6 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-set_time_limit(0); // işlem süresini sınırsız yap
-ignore_user_abort(true); // kullanıcı sayfayı kapatsa bile devam et
 
 include_once '../db.php';
 include_once '../../mail/tahsilat_mail_gonder.php';

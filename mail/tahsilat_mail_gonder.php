@@ -1,51 +1,44 @@
 <?php
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
-set_time_limit(0); // işlem süresini sınırsız yap
-ignore_user_abort(true); // kullanıcı sayfayı kapatsa bile devam et
-
 function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     include 'Exception.php';
     include 'PHPMailer.php';
     include 'SMTP.php';
     $mail = new PHPMailer(true);
+    //Server settings
+    $mail->SMTPDebug = 0; // Enable verbose debug output (set to 2 for maximum detail)
+    $mail->isSMTP(); // Set mailer to use SMTP
+    $mail->Host = 'mail.noktaelektronik.net';
+    $mail->SMTPAuth = true;
+    $mail->Username = 'nokta\tahsilat';
+    $mail->Password = 'Nktths2025!?!*';
+    $mail->SMTPSecure = 'tls'; // veya 'tls'
+    $mail->Port = 587; // TLS için 587, SSL için 465
+    $mail->SMTPOptions = array(
+        'ssl' => array(
+            'verify_peer' => false,
+            'verify_peer_name' => false,
+            'allow_self_signed' => true
+        )
+    );
+    $mail->CharSet = 'UTF-8';
+    $mail->Encoding = 'base64';
+    //Recipients
+    $mail->setFrom('tahsilat@noktaelektronik.net', $mailbaslik);
+    $mail->addAddress($alici); // Add a recipient
+    $mail->addBCC("muhasebe@noktaelektronik.net");
+    //Content
+    $mail->Subject = $konu;
+    $mail->Body = "$mesaj_icerik";
+    // Set email format to HTML
+    $mail->isHTML(true);
+    // Try to send the email
     try {
-        // Ayarlar
-        $mail->isSMTP();
-        $mail->Host = 'mail.noktaelektronik.net';
-        $mail->SMTPAuth = true;
-        $mail->Username = 'nokta\\tahsilat';
-        $mail->Password = 'Nktths2025!?!*';
-        $mail->SMTPSecure = 'tls';
-        $mail->Port = 587;
-        $mail->SMTPOptions = [
-            'ssl' => [
-                'verify_peer' => false,
-                'verify_peer_name' => false,
-                'allow_self_signed' => true
-            ]
-        ];
-        $mail->CharSet = 'UTF-8';
-        $mail->Encoding = 'base64';
-
-        // Gönderici ve Alıcı
-        $mail->setFrom('tahsilat@noktaelektronik.net', $mailbaslik);
-        $mail->addAddress($alici);
-        $mail->addBCC("muhasebe@noktaelektronik.net");
-
-        // İçerik
-        $mail->Subject = $konu;
-        $mail->Body = $mesaj_icerik;
-        $mail->isHTML(true);
-
         $mail->send();
-        return true;
     } catch (Exception $e) {
-        error_log("Mail gönderimi başarısız: {$e->getMessage()}");
-        return false;
     }
 }
-
 function getMailTemplate($content, $title = '') {
     ob_start();
     ?>
