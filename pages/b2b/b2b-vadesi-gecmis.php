@@ -113,11 +113,17 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 </button>
                             </div>
                         </form>
-
                         <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                             <div class="input-group w-50">
                                 <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
                                 <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
+                            </div>
+                        </form>
+                        <form method="post" action="functions/b2b/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div>
+                                <button type="submit" name="emailesitle" class="btn btn-danger" onclick="return confirm('Tüm kayıtlar silinecek. Emin misiniz?')">
+                                    E-mail Eşitleme
+                                </button>
                             </div>
                         </form>
                         <small style="color:red">yeni liste yüklenecekse ilk önce veritabanı temizlenmeli,<br> Sonrada yapıya uygun excel yüklenmeli!</small><br>
