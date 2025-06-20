@@ -105,7 +105,7 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
             <!-- Content -->
             <div class="container-xxl flex-grow-1 container-p-y">
                 <div class="row">
-                    <div class="col-12 mt-3">
+                    <div class="col-12 mt-1">
                         <!-- Aşama 1: Veritabanını Temizle -->
                         <div class="alert alert-warning d-flex align-items-center" role="alert">
                             <i class="fas fa-exclamation-triangle me-2"></i>
