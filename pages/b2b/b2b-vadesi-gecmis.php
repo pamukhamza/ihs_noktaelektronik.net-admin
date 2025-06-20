@@ -113,6 +113,12 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 </button>
                             </div>
                         </form>
+                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
+                            <div class="input-group w-50">
+                                <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
+                                <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
+                            </div>
+                        </form>
                         <form method="post" action="functions/muhasebe/tahsilatemailesitle.php" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
                             <div>
                                 <button type="submit" name="emailesitle" class="btn btn-danger" onclick="return confirm('Tüm kayıtların Email Adresleri güncellenecek. Emin misiniz?')">
@@ -120,12 +126,9 @@ $veriler = $database->fetchAll("SELECT * FROM vadesi_gecmis_borc ");
                                 </button>
                             </div>
                         </form>
-                        <form method="post" class="mb-3 d-flex justify-content-between" enctype="multipart/form-data">
-                            <div class="input-group w-50">
-                                <input type="file" name="excel" accept=".xlsx, .xls" required class="form-control">
-                                <button type="submit" name="yukle" class="btn btn-primary">Yükle</button>
-                            </div>
-                        </form>
+                        <button class="btn btn-danger btn-sm" id="send-all-mails">
+                            <i class="fas fa-paper-plane"></i> Tüm Mailleri Gönder
+                        </button>
                         <small style="color:red">yeni liste yüklenecekse ilk önce veritabanı temizlenmeli,<br> Sonrada yapıya uygun excel yüklenmeli!</small><br>
                         <small style="color:red">İlk önce mail adresi alanını doldurup kaydetmeli.<br>Kaydetme işlemi bittikten sonra mail gönder butonuna YALNIZCA 1 DEFA tıklanıp mail gönderilir!</small>
                         <div class="card">
@@ -315,6 +318,60 @@ $(document).ready(function() {
             }
         });
     });
+    $(document).on('click', '#send-all-mails', function () {
+    Swal.fire({
+        title: 'Emin misiniz?',
+        text: "Tüm borç kayıtlarına e-posta gönderilecek!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Evet, gönder!',
+        cancelButtonText: 'İptal'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            Swal.fire({
+                title: 'Gönderiliyor...',
+                text: 'Lütfen bekleyin.',
+                allowOutsideClick: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            $.ajax({
+                url: 'functions/muhasebe/send_all_mails.php',
+                type: 'POST',
+                success: function (response) {
+                    if (response.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Başarılı!',
+                            html: response.message +
+                                (response.failures.length
+                                    ? `<br>Başarısız olan ID'ler: ${response.failures.join(', ')}`
+                                    : ''),
+                            timer: 5000
+                        });
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Hata!',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function (xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Sunucu hatası!',
+                        text: 'Mail gönderme sırasında hata oluştu.'
+                    });
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    });
+});
+
 });
 </script>
 </body>
