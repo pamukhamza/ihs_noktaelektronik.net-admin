@@ -36,7 +36,11 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     // Try to send the email
     try {
         $mail->send();
+        return true;
     } catch (Exception $e) {
+        // Hata mesajını loglamak için:
+        error_log('Mail gönderilemedi: ' . $mail->ErrorInfo);
+        return false;
     }
 }
 function getMailTemplate($content, $title = '') {
