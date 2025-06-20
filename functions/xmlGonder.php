@@ -634,7 +634,43 @@ function getStockList($xmlData) {
     $mysqli->close();
     echo "$newDate: Fiyat Tarama Tamamlandı. <br>";
 }
+function getTahsilatEmail($xmlData) {
+    $mysqli = connectToDatabase();
+    $xml = simplexml_load_string($xmlData);
+    global $newDate;
+    echo "$newDate: Email Tarama Başladı. <br>";
+    if ($xml === false) {
+        echo "Failed to parse XML Email Liste.";
+        return;
+    }
 
+    if (!isset($xml->table->row)) {
+        echo "$newDate: Email Tarama Tamamlandı. <br>";
+        return;
+    }
+
+    $truncateQuery = "TRUNCATE TABLE tahsilat_email";
+    $stmt = $mysqli->prepare($truncateQuery);
+        if ($stmt->execute()) { echo "tahsilat_email tablosu başarıyla temizlendi.";}
+        else {echo "Hata oluştu: " . $stmt->error;}
+    $stmt->close();
+
+    foreach ($xml->table->row as $row) {
+        $BLKODU = (int)$row->BLKODU;
+        $CARIKODU = $mysqli->real_escape_string((string)$row-> CARIKODU);
+        $E_MAIL = $mysqli->real_escape_string((string)$row-> E_MAIL);
+    
+        $insertAddressQuery = "INSERT INTO tahsilat_email (BLKODU, MUHASEBE_KODU, email) VALUES (?, ?, ?)";
+        $stmt = $mysqli->prepare($insertAddressQuery);
+        $stmt->bind_param("iss", $BLKODU, $CARIKODU, $E_MAIL);
+        $stmt->execute();
+        $stmt->close();
+    
+        echo "$newDate: Eklenen Email Cari Kodu: $CARIKODU <br>";
+    }
+    $mysqli->close();
+    echo "$newDate: Email Tarama Tamamlandı. <br>";
+}
 $xml_data_stock_inventory = isset($_POST['xml_data_stok_envanter']) ? $_POST['xml_data_stok_envanter'] : '';
 $xml_data_stock = isset($_POST['xml_data_stok_adet']) ? $_POST['xml_data_stok_adet'] : '';
 $xml_data_stock_list = isset($_POST['xml_data_stok_liste']) ? $_POST['xml_data_stok_liste'] : '';
@@ -647,6 +683,7 @@ $xml_cari_gonder = isset($_POST['xml_cari_gonder']) ? $_POST['xml_cari_gonder'] 
 $xml_cari_blkodu = isset($_POST['xml_cari_blkodu']) ? $_POST['xml_cari_blkodu'] : '';
 $xml_cari_kodu   = isset($_POST['xml_cari_kodu']) ? $_POST['xml_cari_kodu'] : '';
 $xml_data_stok_BLKODU   = isset($_POST['xml_data_stok_BLKODU']) ? $_POST['xml_data_stok_BLKODU'] : '';
+$xml_data_tahsilat_email_liste = isset($_POST['xml_data_tahsilat_email_liste']) ? $_POST['xml_data_tahsilat_email_liste'] : '';
 
 
 if (!empty($xml_odeme_sorgula)) { odemeGonder(); }
@@ -657,4 +694,5 @@ elseif (!empty($xml_data_account_transaction_list)) { getAccountTransactionList(
 elseif (!empty($xml_data_account_transaction_sil)) { getAccountTransactionSil($xml_data_account_transaction_sil); }
 elseif (!empty($xml_data_stock)) { stokMiktar($xml_data_stock); }
 elseif (!empty($xml_data_stock_list)) { getStockList($xml_data_stock_list);}
+elseif (!empty($xml_data_tahsilat_email_liste)) { getTahsilatEmail($xml_data_tahsilat_email_liste); }
 ?>
