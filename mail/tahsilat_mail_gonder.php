@@ -36,10 +36,12 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     // Try to send the email
     try {
         $mail->send();
+        $mail->clearAddresses();
+$mail->clearBCCs();
         return true;
     } catch (Exception $e) {
         // Hata mesajını loglamak için:
-        error_log('Mail gönderilemedi: ' . $mail->ErrorInfo);
+        error_log("Mail gönderilemedi - Alıcı: $alici - Hata: " . $mail->ErrorInfo);
         return false;
     }
 }
