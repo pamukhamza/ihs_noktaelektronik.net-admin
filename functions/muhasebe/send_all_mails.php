@@ -113,7 +113,7 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
 try {
     $database = new Database();
 
-    $sql = "SELECT * FROM vadesi_gecmis_borc WHERE email IS NOT NULL AND email != ''";
+    $sql = "SELECT * FROM vadesi_gecmis_borc WHERE email IS NOT NULL AND email != '' AND id = '11331";
     $borclar = $database->fetchAll($sql);
 
     if (!$borclar) {
@@ -182,9 +182,10 @@ try {
     } else {
         echo json_encode([
             'success' => false,
-            'message' => 'MailJet API Hatası: ' . $response->getStatus(),
+            'message' => 'MailJet API Hatası',
+            'status' => $response->getStatus(),
             'failures' => $basarisiz,
-            'response' => $response->getBody()
+            'response' => $response->getBody() // Burayı ekledik
         ]);
     }
 } catch (Exception $e) {
