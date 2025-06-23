@@ -180,14 +180,15 @@ try {
             'failures' => $basarisiz
         ]);
     } else {
-        echo json_encode([
-            'success' => false,
-            'message' => 'MailJet API Hatası',
-            'status' => $response->getStatus(),
-            'failures' => $basarisiz,
-            'response' => $response->getBody() // Burayı ekledik
-        ]);
+        echo "<pre>";
+        echo "MailJet API Hatası\n";
+        echo "HTTP Kod: " . $response->getStatus() . "\n";
+        echo "Yanıt Gövdesi:\n";
+        print_r($response->getBody());
+        echo "</pre>";
+        exit; // JSON yerine direkt çıktı ver, hatayı yakalayalım
     }
+    
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
