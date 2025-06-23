@@ -2,7 +2,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 require_once '../../vendor/autoload.php'; // Composer autoload
+use \Mailjet\Resources;
 require_once '../db.php';
 $mj = new \Mailjet\Client('71eeafe78bebd4ef41bdb89de81e2652', '06960d03ac03eb978282ea0777326a26', true, ['version' => 'v3.1']);
 
