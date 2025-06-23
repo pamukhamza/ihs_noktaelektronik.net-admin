@@ -2,14 +2,9 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\Exception;
-
-require_once '../../mail/PHPMailer.php';
-require_once '../../mail/SMTP.php';
-require_once '../../mail/Exception.php';
+require_once '../vendor/autoload.php'; // Composer autoload
 require_once '../db.php';
+$mj = new \Mailjet\Client('71eeafe78bebd4ef41bdb89de81e2652', '06960d03ac03eb978282ea0777326a26', true, ['version' => 'v3.1']);
 
 header('Content-Type: application/json');
 
@@ -118,7 +113,6 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
 try {
     $database = new Database();
 
-    // Emaili dolu olan tüm kayıtları çek
     $sql = "SELECT * FROM vadesi_gecmis_borc WHERE email IS NOT NULL AND email != ''";
     $borclar = $database->fetchAll($sql);
 
@@ -126,81 +120,73 @@ try {
         throw new Exception('Mail gönderilecek borç kaydı bulunamadı.');
     }
 
-    // PHPMailer nesnesini başlat
-    $mail = new PHPMailer(true);
-    $mail->SMTPDebug = 0;
-    $mail->isSMTP();
-    $mail->Host = 'mail.noktaelektronik.net';
-    $mail->SMTPAuth = true;
-    $mail->Username = 'nokta\tahsilat';
-    $mail->Password = 'Nktths2025!?!*';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
-    $mail->SMTPKeepAlive = true;
-    $mail->SMTPOptions = [
-        'ssl' => [
-            'verify_peer' => false,
-            'verify_peer_name' => false,
-            'allow_self_signed' => true
-        ]
-    ];
-    $mail->CharSet = 'UTF-8';
-    $mail->Encoding = 'base64';
-    $mail->setFrom('tahsilat@noktaelektronik.net', 'Nokta Net Tahsilat');
-    $mail->addBCC('muhasebe@noktaelektronik.net');
-    $mail->isHTML(true);
-
+    $messages = [];
     $basarili = 0;
     $basarisiz = [];
 
     foreach ($borclar as $borc) {
-        try {
-            $veri = [
-                'cari_kodu'     => $borc['cari_kodu'],
-                'ticari_unvani' => $borc['ticari_unvani'],
-                'geciken_tutar' => $borc['geciken_tutar'],
-                'borc_bakiye'   => $borc['borc_bakiye'],
-                'bilgi_kodu'    => $borc['bilgi_kodu']
-            ];
+        $veri = [
+            'cari_kodu'     => $borc['cari_kodu'],
+            'ticari_unvani' => $borc['ticari_unvani'],
+            'geciken_tutar' => $borc['geciken_tutar'],
+            'borc_bakiye'   => $borc['borc_bakiye'],
+            'bilgi_kodu'    => $borc['bilgi_kodu']
+        ];
 
-            $sifreli = base64_encode(json_encode($veri));
+        $sifreli = base64_encode(json_encode($veri));
 
-            // Linki güncelle
-            $updateSql = "UPDATE vadesi_gecmis_borc SET odeme_link = :odeme_link WHERE id = :id";
-            $update = $database->insert($updateSql, [
-                'odeme_link' => $sifreli,
-                'id' => $borc['id']
-            ]);
+        // Linki güncelle
+        $updateSql = "UPDATE vadesi_gecmis_borc SET odeme_link = :odeme_link WHERE id = :id";
+        $update = $database->insert($updateSql, [
+            'odeme_link' => $sifreli,
+            'id' => $borc['id']
+        ]);
 
-            if (!$update) {
-                $basarisiz[] = $borc['id'];
-                continue;
-            }
-
-            $odemeUrl = "https://www.noktaelektronik.com.tr/tr/tahsilat.php?l=" . urlencode($sifreli);
-            $mailContent = vadeGecikmeHatirlatma($borc, $odemeUrl);
-
-            // Alıcıları sıfırla ve yeni alıcıyı ekle
-            $mail->clearAddresses();
-            $mail->addAddress($borc['email']);
-
-            $mail->Subject = "Vadesi Geçmiş Borç Hatırlatması";
-            $mail->Body = $mailContent;
-
-            $mail->send();
-            $basarili++;
-        } catch (Exception $e) {
+        if (!$update) {
             $basarisiz[] = $borc['id'];
-            error_log("Mail gönderilemedi - ID: {$borc['id']} - Hata: " . $mail->ErrorInfo);
             continue;
         }
+
+        $odemeUrl = "https://www.noktaelektronik.com.tr/tr/tahsilat.php?l=" . urlencode($sifreli);
+        $content = vadeGecikmeHatirlatma($borc, $odemeUrl);
+
+        $messages[] = [
+            'From' => [
+                'Email' => "tahsilat@noktaelektronik.net",
+                'Name'  => "Nokta Net Tahsilat"
+            ],
+            'To' => [
+                [
+                    'Email' => $borc['email'],
+                    'Name'  => $borc['ticari_unvani']
+                ]
+            ],
+            'Subject' => "Vadesi Geçmiş Borç Hatırlatması",
+            'HTMLPart' => $content,
+            'CustomID' => "borc_" . $borc['id']
+        ];
+
+        $basarili++;
     }
 
-    echo json_encode([
-        'success' => true,
-        'message' => "$basarili mail başarıyla gönderildi.",
-        'failures' => $basarisiz
-    ]);
+    // Tüm mailleri tek seferde gönder
+    $body = ['Messages' => $messages];
+    $response = $mj->post(Resources::$Email, ['body' => $body]);
+
+    if ($response->success()) {
+        echo json_encode([
+            'success' => true,
+            'message' => "$basarili mail başarıyla gönderildi.",
+            'failures' => $basarisiz
+        ]);
+    } else {
+        echo json_encode([
+            'success' => false,
+            'message' => 'MailJet API Hatası: ' . $response->getStatus(),
+            'failures' => $basarisiz,
+            'response' => $response->getBody()
+        ]);
+    }
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
