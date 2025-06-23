@@ -113,7 +113,7 @@ function vadeGecikmeHatirlatma($borc, $odemeUrl) {
 try {
     $database = new Database();
 
-    $sql = "SELECT * FROM vadesi_gecmis_borc WHERE email IS NOT NULL AND email != '' AND id = '11331";
+    $sql = "SELECT * FROM vadesi_gecmis_borc WHERE email IS NOT NULL AND email != ''";
     $borclar = $database->fetchAll($sql);
 
     if (!$borclar) {
