@@ -15,6 +15,7 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     $mail->Password = 'Nktths2025!?!*';
     $mail->SMTPSecure = 'tls'; // veya 'tls'
     $mail->Port = 587; // TLS için 587, SSL için 465
+    $mail->SMTPKeepAlive = true;
     $mail->SMTPOptions = array(
         'ssl' => array(
             'verify_peer' => false,
@@ -36,8 +37,6 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     // Try to send the email
     try {
         $mail->send();
-        $mail->clearAddresses();
-$mail->clearBCCs();
         return true;
     } catch (Exception $e) {
         // Hata mesajını loglamak için:
