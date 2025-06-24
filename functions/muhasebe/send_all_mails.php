@@ -154,8 +154,8 @@ try {
 
         $messages[] = [
             'From' => [
-                'Email' => "tahsilat@noktaelektronik.net",
-                'Name'  => "Nokta Net Tahsilat"
+                'Email' => "tahsilat@noktaelektronik.com.tr",
+                'Name'  => "Nokta Tahsilat"
             ],
             'To' => [
                 [
