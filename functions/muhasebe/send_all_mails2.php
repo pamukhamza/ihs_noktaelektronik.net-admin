@@ -29,12 +29,12 @@ try {
     $mail = new PHPMailer(true);
     $mail->SMTPDebug = 0;
     $mail->isSMTP();
-    $mail->Host = 'mail.noktaelektronik.net';
+    $mail->Host = 'cp05.ihscp.com';
     $mail->SMTPAuth = true;
-    $mail->Username = 'nokta\tahsilat';
-    $mail->Password = 'Nktths2025!?!*';
-    $mail->SMTPSecure = 'tls';
-    $mail->Port = 587;
+    $mail->Username = 'tahsilat@noktaelektronik.com.tr';
+    $mail->Password = 'EPOSTA_SIFRESI'; // <<< E-posta şifresini buraya girin
+    $mail->SMTPSecure = 'ssl'; // SSL bağlantı için
+    $mail->Port = 465;
     $mail->SMTPKeepAlive = true;
     $mail->SMTPOptions = [
         'ssl' => [
@@ -45,7 +45,7 @@ try {
     ];
     $mail->CharSet = 'UTF-8';
     $mail->Encoding = 'base64';
-    $mail->setFrom('tahsilat@noktaelektronik.net', 'Nokta Net Tahsilat');
+    $mail->setFrom('tahsilat@noktaelektronik.com.tr', 'Nokta Net Tahsilat');
     $mail->addBCC('muhasebe@noktaelektronik.net');
     $mail->isHTML(true);
 
