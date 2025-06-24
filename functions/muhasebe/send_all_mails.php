@@ -168,11 +168,11 @@ try {
         ];
 
         $basarili++;
+        $body = ['Messages' => $messages];
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
     }
 
     // Tüm mailleri tek seferde gönder
-    $body = ['Messages' => $messages];
-    $response = $mj->post(Resources::$Email, ['body' => $body]);
 
     if ($response->success()) {
         echo json_encode([
