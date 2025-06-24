@@ -152,28 +152,29 @@ try {
         $odemeUrl = "https://www.noktaelektronik.com.tr/tr/tahsilat.php?l=" . urlencode($sifreli);
         $content = vadeGecikmeHatirlatma($borc, $odemeUrl);
 
-        $messages[] = [
-            'From' => [
-                'Email' => "b2b@noktaelektronik.com.tr",
-                'Name'  => "Nokta Tahsilat"
-            ],
-            'To' => [
-                [
-                    'Email' => $borc['email'],
-                    'Name'  => $borc['ticari_unvani']
-                ]
-            ],
-            'Subject' => "Vadesi Geçmiş Borç Hatırlatması",
-            'HTMLPart' => $content,
-            'CustomID' => "borc_" . $borc['id']
+        $body = ['Messages' => [
+                        'From' => [
+                            'Email' => "b2b@noktaelektronik.com.tr",
+                            'Name'  => "Nokta Tahsilat"
+                        ],
+                        'To' => [
+                            [
+                                'Email' => $borc['email'],
+                                'Name'  => $borc['ticari_unvani']
+                            ]
+                        ],
+                        'Subject' => "Vadesi Geçmiş Borç Hatırlatması",
+                        'HTMLPart' => $content
+                    
+                    ]
         ];
 
+        $body = ['Messages' => $messages];
+        $response = $mj->post(Resources::$Email, ['body' => $body]);
         $basarili++;
     }
 
     // Tüm mailleri tek seferde gönder
-    $body = ['Messages' => $messages];
-    $response = $mj->post(Resources::$Email, ['body' => $body]);
 
     if ($response->success()) {
         echo json_encode([
