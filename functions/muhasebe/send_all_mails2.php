@@ -32,7 +32,7 @@ try {
     $mail->Host = 'cp05.ihscp.com';
     $mail->SMTPAuth = true;
     $mail->Username = 'tahsilat@noktaelektronik.com.tr';
-    $mail->Password = 'EPOSTA_SIFRESI'; // <<< E-posta şifresini buraya girin
+    $mail->Password = 'Dell28736.!'; // <<< E-posta şifresini buraya girin
     $mail->SMTPSecure = 'ssl'; // SSL bağlantı için
     $mail->Port = 465;
     $mail->SMTPKeepAlive = true;
