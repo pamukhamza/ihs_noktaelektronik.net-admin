@@ -73,6 +73,7 @@ $db->delete($deleteQuery);
         const table = $('#lang_table').DataTable({
             processing: true,
             serverSide: true,
+            order: [[0, 'desc']],
             ajax: {
                 url: 'functions/products/get_products.php',
                 type: 'POST'
