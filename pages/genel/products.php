@@ -28,6 +28,7 @@ $db->delete($deleteQuery);
                                 <table id="lang_table" class="table table-striped">
                                     <thead>
                                     <tr>
+                                        <th>id</th>
                                         <th>Ürün Kodu</th>
                                         <th>Ürün Adı</th>
                                         <th>Marka</th>
@@ -77,6 +78,7 @@ $db->delete($deleteQuery);
                 type: 'POST'
             },
             columns: [
+                { data: 'id' },
                 { data: 'UrunKodu' },
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
