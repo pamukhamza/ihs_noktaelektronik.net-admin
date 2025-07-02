@@ -396,7 +396,7 @@ $(document).ready(function() {
         const requests = selectedIds.map(id => {
             const requestData = { type: targetStatus, sip_id: id };
             const requestUrl = `${baseUrl}${action}`;
-
+            alert('İstek URL: ' + requestUrl + '\nVeri: ' + JSON.stringify(requestData));
             // Konsola yazdır
             console.log('İstek URL:', requestUrl);
             console.log('Veri:', requestData);
