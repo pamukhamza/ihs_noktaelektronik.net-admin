@@ -393,13 +393,21 @@ $(document).ready(function() {
             return;
         }
 
-        const requests = selectedIds.map(id => {
-            return $.ajax({
-                url: `${baseUrl}${action}`,
-                method: 'POST',
-                data: { type: targetStatus, sip_id: id }
-            });
-        });
+const requests = selectedIds.map(id => {
+    const requestData = { type: targetStatus, sip_id: id };
+    const requestUrl = `${baseUrl}${action}`;
+
+    // Konsola yazdır
+    console.log('İstek URL:', requestUrl);
+    console.log('Veri:', requestData);
+
+    return $.ajax({
+        url: requestUrl,
+        method: 'POST',
+        data: requestData
+    });
+});
+
 
         Promise.all(requests)
             .then(() => {
