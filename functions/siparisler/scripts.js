@@ -393,20 +393,20 @@ $(document).ready(function() {
             return;
         }
 
-const requests = selectedIds.map(id => {
-    const requestData = { type: targetStatus, sip_id: id };
-    const requestUrl = `${baseUrl}${action}`;
+        const requests = selectedIds.map(id => {
+            const requestData = { type: targetStatus, sip_id: id };
+            const requestUrl = `${baseUrl}${action}`;
 
-    // Konsola yazdır
-    console.log('İstek URL:', requestUrl);
-    console.log('Veri:', requestData);
+            // Konsola yazdır
+            console.log('İstek URL:', requestUrl);
+            console.log('Veri:', requestData);
 
-    return $.ajax({
-        url: requestUrl,
-        method: 'POST',
-        data: requestData
-    });
-});
+            return $.ajax({
+                url: requestUrl,
+                method: 'POST',
+                data: requestData
+            });
+        });
 
 
         Promise.all(requests)
@@ -426,7 +426,7 @@ const requests = selectedIds.map(id => {
     // Button click handlers
     $('.onayla-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'siparis_onay'));
     $('.kargo-numara-ver-btn').click(() => handleOrderStatusChange('kargo_gonder.php', '3'));
-    $('.teslim-edildi-btn').click(() => handleOrderStatusChange('fonksiyonlar.php', 'teslim_edildi'));
+    $('.teslim-edildi-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'teslim_edildi'));
 
     // Print cargo labels
     $('.yazdir-btn').click(function() {
