@@ -434,7 +434,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Uyarı',
-                text: 'Lütfen en az bir sipariş seçin.'
+                text: 'Lütfen en az bir sipariş seçiniz.'
             });
             return;
         }
