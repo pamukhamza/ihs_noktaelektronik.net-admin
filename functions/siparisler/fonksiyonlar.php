@@ -8,7 +8,7 @@ function siparisOnay(){
     $sip_id = $_POST["sip_id"];
     $durum = 2;
 
-    $updateQuery = "UPDATE siparisler SET durum = :durum WHERE id = :id";
+    $updateQuery = "UPDATE b2b_siparisler SET durum = :durum WHERE id = :id";
     $params = [
         'durum' => $durum,
         'id' => $sip_id
