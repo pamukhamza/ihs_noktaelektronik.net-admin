@@ -392,7 +392,7 @@ $(document).ready(function() {
             });
             return;
         }
-
+            alert('Seçilen Sipariş ID\'leri: ' + selectedIds.join(', '));
         const requests = selectedIds.map(id => {
             const requestData = { type: targetStatus, sip_id: id };
             const requestUrl = `${baseUrl}${action}`;
