@@ -424,7 +424,7 @@ const requests = selectedIds.map(id => {
     }
 
     // Button click handlers
-    $('.onayla-btn').click(() => handleOrderStatusChange('fonksiyonlar.php', 'siparis_onay'));
+    $('.onayla-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'siparis_onay'));
     $('.kargo-numara-ver-btn').click(() => handleOrderStatusChange('kargo_gonder.php', '3'));
     $('.teslim-edildi-btn').click(() => handleOrderStatusChange('fonksiyonlar.php', 'teslim_edildi'));
 
