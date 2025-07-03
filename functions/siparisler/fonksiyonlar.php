@@ -22,7 +22,7 @@ function teslimEdildi() {
     $sip_id = $_POST["sip_id"];
     $durum = 5;
 
-    $q = "SELECT * FROM siparisler WHERE id = :id";
+    $q = "SELECT * FROM b2b_siparisler WHERE id = :id";
     $params = [
         'id' => $sip_id
     ];
@@ -43,7 +43,7 @@ function teslimEdildi() {
     $uye_email = $uye["email"];
     $siparis_tarih = $sip["tarih"];
 
-    $updateQuery = "UPDATE siparisler SET durum = :durum WHERE id = :id";
+    $updateQuery = "UPDATE b2b_siparisler SET durum = :durum WHERE id = :id";
     $params = [
         'durum' => $durum,
         'id' => $sip_id

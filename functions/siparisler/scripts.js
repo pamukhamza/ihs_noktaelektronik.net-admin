@@ -389,7 +389,7 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Uyarı',
-                text: 'Lütfen en az bir sipariş seçin123.'
+                text: 'Lütfen en az bir sipariş seçin.'
             });
             return;
         }
