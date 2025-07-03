@@ -384,6 +384,7 @@ $(document).ready(function() {
 
     // Handle order status changes
     function handleOrderStatusChange(action, targetStatus) {
+        console.log('Handling order status change:', action, targetStatus);
         if (selectedIds.length === 0) {
             Swal.fire({
                 icon: 'warning',
@@ -396,10 +397,6 @@ $(document).ready(function() {
         const requests = selectedIds.map(id => {
             const requestData = { type: targetStatus, sip_id: id };
             const requestUrl = `${baseUrl}${action}`;
-            alert('İstek URL: ' + requestUrl + '\nVeri: ' + JSON.stringify(requestData));
-            // Konsola yazdır
-            console.log('İstek URL:', requestUrl);
-            console.log('Veri:', requestData);
 
             return $.ajax({
                 url: requestUrl,
