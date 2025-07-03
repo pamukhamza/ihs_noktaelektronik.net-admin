@@ -1,6 +1,6 @@
 <?php
 require '../../mail/mail_gonder.php'; // mailGonder ve diğer fonksiyonlar burada tanımlıysa
-
+echo "geldi";
 $alici = $_POST['alici'];
 $konu = $_POST['konu'];
 $icerik = $_POST['icerik'];

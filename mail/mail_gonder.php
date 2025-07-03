@@ -43,7 +43,6 @@ function mailGonder($alici, $konu, $mesaj_icerik, $mailbaslik){
     try {
         $mail->send();
     } catch (Exception $e) {
-        file_put_contents('mail_error.log', $mail->ErrorInfo, FILE_APPEND);
     }
 }
 function getMailTemplate($content, $title = '') {
