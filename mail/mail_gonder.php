@@ -139,7 +139,7 @@ function siparisKargolandi($uye, $siparis_no, $siparis_tarihi, $kargo_no, $kargo
     
     return getMailTemplate($content);
 }
-function siparisTeslimEdildi($uye, $siparis_no, $sip_id, $siparis_tarihi){
+function siparisTeslimEdildi($uye, $siparis_no, $siparis_tarihi){
     $content = "
     <div style='font-size: 20px; line-height: 30px;'>
         <p>Sayın $uye;</p>

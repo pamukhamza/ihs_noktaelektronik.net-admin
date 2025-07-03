@@ -51,7 +51,7 @@ function teslimEdildi() {
     $updateStmt = $database->update($updateQuery, $params);
 
 
-    $mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $sip_id, $siparis_tarih);
+    $mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $siparis_tarih);
     mailGonder($uye_email, 'Siparişiniz Teslim Edilmiştir!', $mail_icerik, 'Nokta Elektronik');
 }
 
