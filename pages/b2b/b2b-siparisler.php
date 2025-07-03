@@ -145,3 +145,54 @@ $sDurum = filter_var($_GET['sDurum'] ?? 0, FILTER_VALIDATE_INT);
 <script src="functions/siparisler/scripts.js"></script>
 </body>
 </html>
+<script>
+    $(document).ready(function() {
+    // Initialize variables
+    const selectedIds = [];
+    const baseUrl = window.location.origin + '/admin/';
+     
+     // Handle order status changes
+    function handleOrderStatusChange(action, targetStatus) {
+        console.log('Handling order status change:', action, targetStatus);
+        if (selectedIds.length === 0) {
+            Swal.fire({
+                icon: 'warning',
+                title: 'Uyarı',
+                text: 'Lütfen en az bir sipariş seçin.'
+            });
+            return;
+        }
+            console.log('Seçilen Sipariş ID\'leri: ' + selectedIds.join(', '));
+            const requests = selectedIds.map(id => {
+            const requestData = { type: targetStatus, sip_id: id };
+            const requestUrl = `${baseUrl}${action}`;
+
+            return $.ajax({
+                url: requestUrl,
+                method: 'POST',
+                data: requestData
+            });
+        });
+
+
+        Promise.all(requests)
+            .then(() => {
+                window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
+            })
+            .catch(error => {
+                console.error('Status change failed:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Hata',
+                    text: 'İşlem sırasında bir hata oluştu.'
+                });
+            });
+    }
+
+    // Button click handlers
+    $('.onayla-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'siparis_onay'));
+    $('.kargo-numara-ver-btn').click(() => handleOrderStatusChange('kargo_gonder.php', '3'));
+    $('.teslim-edildi-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'teslim_edildi'));
+
+    });
+</script>
