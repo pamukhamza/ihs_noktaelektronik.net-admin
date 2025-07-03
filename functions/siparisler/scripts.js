@@ -2,7 +2,7 @@
 $(document).ready(function() {
     // Initialize variables
     const selectedIds = [];
-    const baseUrl = 'https://www.noktaelektronik.net/admin/';
+    const baseUrl = window.location.origin + '/admin/';
     
     // Initialize DataTable
     function initializeDataTable() {
@@ -389,12 +389,12 @@ $(document).ready(function() {
             Swal.fire({
                 icon: 'warning',
                 title: 'Uyarı',
-                text: 'Lütfen en az bir sipariş seçin.'
+                text: 'Lütfen en az bir sipariş seçin123.'
             });
             return;
         }
             console.log('Seçilen Sipariş ID\'leri: ' + selectedIds.join(', '));
-            const requests = selectedIds.map(id => {
+        const requests = selectedIds.map(id => {
             const requestData = { type: targetStatus, sip_id: id };
             const requestUrl = `${baseUrl}${action}`;
 
