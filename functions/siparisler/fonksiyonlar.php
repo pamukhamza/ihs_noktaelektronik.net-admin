@@ -64,7 +64,7 @@ function teslimEdildi() {
     file_put_contents($tmpFile, $data);
 
     // Komutu arka planda çalıştır (Linux için)
-    exec("php backmailsend.php < $tmpFile > /dev/null 2>&1 &");
+    exec("php functions/siparisler/backmailsend.php < $tmpFile > /dev/null 2>&1 &");
 }
 
 function getKargo($vId){
