@@ -67,7 +67,7 @@ function teslimEdildi() {
     $phpPath = trim(shell_exec("which php"));
 
     // backmailsend.php dosyasının mutlak yolu (__DIR__ kullanılarak)
-    $scriptPath = __DIR__ . 'backmailsend.php';
+    $scriptPath = __DIR__ . '/backmailsend.php';
 
     // Komutu arka planda çalıştır (Linux için)
     exec("$phpPath $scriptPath < $tmpFile > /dev/null 2>&1 &");
