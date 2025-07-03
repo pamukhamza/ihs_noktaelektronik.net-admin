@@ -51,8 +51,20 @@ function teslimEdildi() {
     $updateStmt = $database->update($updateQuery, $params);
 
 
-    //$mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $siparis_tarih);
-    //mailGonder($uye_email, 'Siparişiniz Teslim Edilmiştir!', $mail_icerik, 'Nokta Elektronik');
+    $mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $siparis_tarih);
+    // JSON verisiyle dosyaya POST gönderimi için tmp dosyası oluştur
+    $data = http_build_query([
+        'alici' => $uye_email,
+        'konu' => 'Siparişiniz Teslim Edilmiştir!',
+        'icerik' => $mail_icerik,
+        'baslik' => 'Nokta Elektronik'
+    ]);
+
+    $tmpFile = tempnam(sys_get_temp_dir(), 'mail_');
+    file_put_contents($tmpFile, $data);
+
+    // Komutu arka planda çalıştır (Linux için)
+    exec("php mail_gonder.php < $tmpFile > /dev/null 2>&1 &");
 }
 
 function getKargo($vId){
