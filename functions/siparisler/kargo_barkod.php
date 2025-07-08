@@ -132,13 +132,13 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $temp_file_path = sys_get_temp_dir() . '/' . uniqid('kargo_') . '.pdf';
     file_put_contents($temp_file_path, $pdf_content);
 
-    /*$file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/kargo/', $s3Client, $config['s3']['bucket']);
+    $file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/kargo/', $s3Client, $config['s3']['bucket']);
     if ($file_url) {
         $kargo_adi = basename($temp_file_path);
-    }*/
+    }
     $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $kargo_adi]);
 
-    //unlink($temp_file_path);
+    unlink($temp_file_path);
 }
 kargopdf('1860', '358', '123456');
 ?>
