@@ -140,5 +140,4 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
 
     unlink($temp_file_path);
 }
-kargopdf('1860', '358', '123456');
 ?>
