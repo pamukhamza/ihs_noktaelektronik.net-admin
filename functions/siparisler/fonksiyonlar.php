@@ -22,42 +22,22 @@ function teslimEdildi() {
     $sip_id = $_POST["sip_id"];
     $durum = 5;
 
-    $q = "SELECT * FROM b2b_siparisler WHERE id = :id";
-    $params = [
-        'id' => $sip_id
-    ];
-    $sip = $database->fetch($q, $params);
-
-
+    $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :id", ['id' => $sip_id]);
     $uye_id = $sip["uye_id"];
     $siparisNumarasi = $sip["siparis_no"];
-
-    $q = "SELECT * FROM uyeler WHERE id = :id";
-    $params = [
-        'id' => $uye_id
-    ];
-    $uye = $database->fetch($q, $params);
-
-
-    $uyeAdSoyad = $uye["ad"] . ' ' . $uye["soyad"];
-    $uye_email = $uye["email"];
     $siparis_tarih = $sip["tarih"];
 
-    $updateQuery = "UPDATE b2b_siparisler SET durum = :durum WHERE id = :id";
-    $params = [
-        'durum' => $durum,
-        'id' => $sip_id
-    ];
-    $updateStmt = $database->update($updateQuery, $params);
+    $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id", ['id' => $uye_id]);
+    $uyeAdSoyad = $uye["ad"] . ' ' . $uye["soyad"];
+    $uye_email = $uye["email"];
 
+    $updateStmt = $database->update("UPDATE b2b_siparisler SET durum = :durum WHERE id = :id", ['durum' => $durum,'id' => $sip_id]);
 
     $mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $siparis_tarih);
     // JSON verisiyle dosyaya POST gönderimi için tmp dosyası oluştur
     $data = http_build_query([
-    'alici' => $uye_email,
-    'konu' => 'Siparişiniz Teslim Edilmiştir!',
-    'icerik' => $mail_icerik,
-    'baslik' => 'Nokta Elektronik'
+        'alici' => $uye_email, 'konu' => 'Siparişiniz Teslim Edilmiştir!',
+        'icerik' => $mail_icerik, 'baslik' => 'Nokta Elektronik'
     ]);
 
     $tmpFile = tempnam(sys_get_temp_dir(), 'mail_');
@@ -71,7 +51,6 @@ function teslimEdildi() {
 
     // Komutu arka planda çalıştır (Linux için)
     exec("$phpPath $scriptPath < $tmpFile > /dev/null 2>&1 &");
-
 }
 
 function getKargo($vId){
