@@ -1,60 +1,64 @@
 <?php
 include ('../db.php');
 require_once('../../vendor/tcpdf/tcpdf.php');
+require '../../vendor/autoload.php';
+use Aws\S3\S3Client;
+use Aws\Exception\AwsException;
+
+$config = require '../../aws-config.php';
+
+$s3Client = new S3Client([
+    'version' => 'latest',
+    'region'  => $config['s3']['region'],
+    'credentials' => [
+        'key'    => $config['s3']['key'],
+        'secret' => $config['s3']['secret'],
+    ]
+]);
+
+function uploadImageToS3Dekont($file_path, $upload_path, $s3Client, $bucket) {
+    try {
+        // S3 yükleme yolu
+        $s3_file_path = $upload_path . basename($file_path); // Dosyanın basename'ini S3'e koyuyoruz
+
+        // Dosyayı S3'e yükleyin
+        $result = $s3Client->putObject([
+            'Bucket' => $bucket,
+            'Key'    => $s3_file_path,
+            'SourceFile' => $file_path // SourceFile için dosya yolunu geçiyoruz
+        ]);
+
+        // Yükleme başarılı ise dosya adını veya URL'yi döndürüyoruz
+        return basename($file_path); // veya $result['ObjectURL'] dönebilirsiniz, S3 URL'si için
+    } catch (AwsException $e) {
+        error_log('S3 yükleme hatası: ' . $e->getMessage());
+        return false;
+    }
+}
 
 $database = new Database();
 
 function kargopdf($uye_id, $sip_id, $cargoKey)
 {
-    global $database;
-    // Retrieve order information
-    $q = "SELECT * FROM b2b_siparisler WHERE id = :sip_id";
-    $params = [
-        'sip_id' => $sip_id
-    ];
-    $sip = $database->fetch($q, $params);
+    global $database, $s3Client, $config;
 
-    // Retrieve user information
-    $q = "SELECT * FROM uyeler WHERE id = :uye_id";
-    $params = [
-        'id' => $uye_id
-    ];
-    $uye = $database->fetch($q, $params);
-
+    $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :sip_id", ['sip_id' => $sip_id]);
     $il_id = $sip["teslimat_il"];
     $ilce_id = $sip["teslimat_ilce"];
-
-    // Retrieve address information
-    $q = "SELECT * FROM adresler WHERE uye_id = :uye_id AND aktif = :aktif";
-    $params = [
-        'uye_id' => $uye_id,
-        'aktif' => '1'
-    ];
-    $adressorgu = $database->fetch($q, $params);
-
-
-    $q = "SELECT * FROM iller WHERE il_id = :il_id";
-    $params = [
-        'il_id' => $il_id
-    ];
-    $iller = $database->fetch($q, $params);
-
-
-    $il = $iller["il_adi"];
-
-    $q = "SELECT * FROM ilceler WHERE ilce_id = :ilce_id";
-    $params = [
-        'ilce_id' => $ilce_id
-    ];
-    $ilceler = $database->fetch($q, $params);
-
-
-    $ilce = $ilceler["ilce_adi"];
-
     $uyeAdSoyad = $sip["teslimat_ad"] . ' ' . $sip["teslimat_soyad"];
     $tel = $sip["teslimat_telefon"];
     $adres = $sip["teslimat_adres"];
     $firmaUnvani = $sip["teslimat_firmaadi"];
+
+    $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :uye_id", ['id' => $uye_id]);
+
+    $adressorgu = $database->fetch("SELECT * FROM b2b_adresler WHERE uye_id = :uye_id AND aktif = :aktif", ['uye_id' => $uye_id,'aktif' => '1']);
+
+    $iller = $database->fetch("SELECT * FROM iller WHERE il_id = :il_id", ['il_id' => $il_id]);
+    $il = $iller["il_adi"];
+
+    $ilceler = $database->fetch("SELECT * FROM ilceler WHERE ilce_id = :ilce_id", ['ilce_id' => $ilce_id]);
+    $ilce = $ilceler["ilce_adi"];
 
     // Create new PDF instance
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
@@ -65,32 +69,24 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $pdf->SetTitle('Kargo');
     $pdf->SetSubject('Kargo');
     $pdf->SetKeywords('Kargo');
-
     // Set margins
     $pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
     $pdf->SetHeaderMargin(PDF_MARGIN_HEADER);
     $pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
-
     // Set auto page breaks
     $pdf->SetAutoPageBreak(TRUE, PDF_MARGIN_BOTTOM);
-
     // Add a page
     $pdf->AddPage();
-
     // Set font
     $pdf->SetFont('dejavusans', '', 12);
-
     // Add company logo and name
     $pdf->Image('../../assets/images/logo_new.png', 10, 20, 40, '', 'PNG');
     $pdf->SetXY(10, 32); // Move to the right of the logo
-
     // Add title
     $pdf->SetFont('dejavusans', 'B', 16);
-
     // Draw a horizontal line
     $pdf->SetLineWidth(0.1);
     $pdf->Line(10, 50, $pdf->getPageWidth() - 10, 50);
-
     // Payer information and cargo details
     $pdf->SetFont('dejavusans', '', 12);
     $pdf->SetXY(10, 50); // Move down below the line
@@ -107,11 +103,9 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $pdf->Cell(20, 10, '', 0, 0, 'L');
     $pdf->Cell(0, 10, '  ' . $il . '/' . $ilce, 0, 1, 'L');
     $pdf->SetX(10);
-
     // Draw a horizontal line
     $pdf->SetLineWidth(0.1);
     $pdf->Line(10, 100, $pdf->getPageWidth() - 10, 100);
-
     // Add barcode
     $pdf->SetXY(10, 140); // Move down to a new section
     $style = array(
@@ -129,15 +123,13 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $pdf->Text(55, 115, 'Barkod No: ' . $cargoKey);
     $pdf->Text(55, 110, 'Web servis bilgi: 187205434');
 
-    $pdfDosyaAdi = 'kargo_' . uniqid() . '.pdf';
-    $pdfDosyaYolu = realpath("../../assets/uploads/kargo/") . "/" . $pdfDosyaAdi;
-    $pdf->Output($pdfDosyaYolu, 'F');
+    $temp_file_path = sys_get_temp_dir() . '/' . uniqid('kargo_') . '.pdf';
+    file_put_contents($temp_file_path, $pdf->Output('', 'S'));
 
-    $query = "INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)";
-    $params = [
-        'id' => $sip_id,
-        'dosya' => $pdfDosyaAdi
-    ];
-    $database->insert($query, $params);
+    $file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/kargo/', $s3Client, $config['s3']['bucket']);
+    if ($file_url) {
+        $file_name = basename($file_url);
+        $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $file_name]);
+    }
 }
 ?>

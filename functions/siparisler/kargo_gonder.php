@@ -1,7 +1,6 @@
 <?php
 include ('../db.php');
 include ('kargo_barkod.php');
-
 $database = new Database();
 
 $sip_id = $_POST["sip_id"];
@@ -9,58 +8,29 @@ $durum = 3;
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-$q = $db->prepare("SELECT * FROM b2b_siparisler WHERE id = :id ");
-$params = [
-    'id' => $sip_id
-];
-$sip = $database->fetch($q, $params);
-
-
+$sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :id ", ['id' => $sip_id]);
 $uye_id = $sip["uye_id"];
 $siparisNumarasi = $sip["siparis_no"];
+$siparis_tarih = $sip["tarih"];
+$count = $sip['koli'];
+$desi = $sip['desi'];
 
-$q = $db->prepare("SELECT * FROM uyeler WHERE id = :id ");
-$params = [
-    'id' => $uye_id
-];
-$uye = $q->fetch($q, $params);
-
-$q = $db->prepare("SELECT * FROM adresler WHERE uye_id = :id AND aktif = :aktif");
-$params = [
-    'id' => $uye_id,
-    'aktif' => '1'
-];
-$adressorgu = $database->fetch($q, $params);
-
-
+$uye = $q->fetch("SELECT * FROM uyeler WHERE id = :id ", ['id' => $uye_id]);
+$firmaUnvani = $uye["firmaUnvani"];
+$uye_email = $uye["email"];
 $uyeAdSoyad = $uye["ad"] . ' ' . $uye["soyad"];
+
+$adressorgu = $database->fetch("SELECT * FROM b2b_adresler WHERE uye_id = :id AND aktif = :aktif", ['id' => $uye_id,'aktif' => '1']);
 $il_id = $adressorgu["il"];
 $ilce_id = $adressorgu["ilce"];
 $tel = $adressorgu["telefon"];
 $adres = $adressorgu["adres"];
-$firmaUnvani = $uye["firmaUnvani"];
-$uye_email = $uye["email"];
-$siparis_tarih = $sip["tarih"];
 
-$q = $db->prepare("SELECT * FROM iller WHERE il_id = :id");
-$params = [
-    'id' => $il_id,
-];
-$iller = $database->fetch($q, $params);
-
+$iller = $database->fetch("SELECT * FROM iller WHERE il_id = :id", ['id' => $il_id]);
 $il = $iller["il_adi"];
 
-$q = $db->prepare("SELECT * FROM ilceler WHERE ilce_id = :id ");
-$params = [
-    'id' => $ilce_id,
-];
-$ilceler = $database->fetch($q, $params);
-
+$ilceler = $database->fetch("SELECT * FROM ilceler WHERE ilce_id = :id ", ['id' => $ilce_id]);
 $ilce = $ilceler["ilce_adi"];
-
-//----------------------------------//
-$count = $sip['koli'];
-$desi = $sip['desi'];
 
 // Bugünün tarihini al
 $currentDate = date("Ymd");
@@ -73,13 +43,8 @@ $invoiceKey = "FTR" . $currentDate . $randomChars;
 $irsaliyeno = "NEBSIS" . $cargoKey;
 
 $updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE id = :id";
-$params = [
-    'durum' => $durum,
-    'barkod' => $cargoKey,
-    'id' => $sip_id
-];
+$params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
 $updateStmt = $database->update($updateQuery, $params);
-
 
 $requestXml = '
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ship="http://yurticikargo.com.tr/ShippingOrderDispatcherServices">
@@ -134,7 +99,6 @@ header('Content-Type: text/xml');
 echo $response; */
 
 curl_close($ch);
-
 kargopdf($uye_id, $sip_id, $cargoKey);
 
 ?>

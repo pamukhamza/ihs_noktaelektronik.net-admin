@@ -39,14 +39,9 @@ function teslimEdildi() {
 
 function getKargo($vId){
     global $database;
-    $query = "SELECT dosya FROM kargo_pdf WHERE sip_id = :id";
-    $params = [
-        'id' => $vId
-    ];
-    $var = $database->fetch($query, $params);
+    $var = $database->fetch("SELECT dosya FROM kargo_pdf WHERE sip_id = :id", ['id' => $vId]);
     $var1 = $var['dosya'];
     return $var1;
-
 }
 
 function getiadeDuzenle($vId) {
