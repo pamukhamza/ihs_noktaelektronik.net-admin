@@ -2,9 +2,10 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once ('../db.php');
-include_once ('kargo_barkod.php');
+//include_once ('kargo_barkod.php');
 $database = new Database();
-
+echo "Kargo gönderme işlemi başlatıldı...<br>";
+exit;
 $sip_id = '358';
 $durum = 3;
 
@@ -100,6 +101,6 @@ curl_close($ch);
 $updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE id = :id";
 $params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
 $updateStmt = $database->update($updateQuery, $params);
-kargopdf($uye_id, $sip_id, $cargoKey);
+//kargopdf($uye_id, $sip_id, $cargoKey);
 
 ?>
