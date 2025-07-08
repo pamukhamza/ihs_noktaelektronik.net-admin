@@ -1,6 +1,6 @@
 <?php
 include ('../db.php');
-include ('kargo_barkod.php');
+//include ('kargo_barkod.php');
 $database = new Database();
 
 $sip_id = $_POST["sip_id"];
@@ -37,14 +37,12 @@ $currentDate = date("Ymd");
 // Rastgele 6 karakter oluştur
 $randomChars = substr(str_shuffle("0123456789"), 0, 6);
 // $cargoKey oluştur
-$cargoKey = $currentDate . "4228" . $randomChars;
+$cargoKey = $currentDate . "5459" . $randomChars;
 $invoiceKey = "FTR" . $currentDate . $randomChars;
 
 $irsaliyeno = "NEBSIS" . $cargoKey;
 
-$updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE id = :id";
-$params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
-$updateStmt = $database->update($updateQuery, $params);
+
 
 $requestXml = '
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ship="http://yurticikargo.com.tr/ShippingOrderDispatcherServices">
@@ -99,6 +97,9 @@ header('Content-Type: text/xml');
 echo $response; */
 
 curl_close($ch);
+$updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE id = :id";
+$params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
+$updateStmt = $database->update($updateQuery, $params);
 kargopdf($uye_id, $sip_id, $cargoKey);
 
 ?>
