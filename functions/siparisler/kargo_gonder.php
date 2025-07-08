@@ -4,7 +4,8 @@ ini_set('display_errors', 1);
 include_once ('../db.php');
 include_once ('kargo_barkod.php');
 $database = new Database();
-$sip_id = '358';
+
+$sip_id = $_POST["sip_id"];
 $durum = 3;
 
 $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :id ", ['id' => $sip_id]);
@@ -99,6 +100,6 @@ curl_close($ch);
 $updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE id = :id";
 $params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
 $updateStmt = $database->update($updateQuery, $params);
-//kargopdf($uye_id, $sip_id, $cargoKey);
+kargopdf($uye_id, $sip_id, $cargoKey);
 
 ?>
