@@ -34,23 +34,7 @@ function teslimEdildi() {
     $updateStmt = $database->update("UPDATE b2b_siparisler SET durum = :durum WHERE id = :id", ['durum' => $durum,'id' => $sip_id]);
 
     $mail_icerik = siparisTeslimEdildi($uyeAdSoyad, $siparisNumarasi, $siparis_tarih);
-    // JSON verisiyle dosyaya POST gönderimi için tmp dosyası oluştur
-    $data = http_build_query([
-        'alici' => $uye_email, 'konu' => 'Siparişiniz Teslim Edilmiştir!',
-        'icerik' => $mail_icerik, 'baslik' => 'Nokta Elektronik'
-    ]);
-
-    $tmpFile = tempnam(sys_get_temp_dir(), 'mail_');
-    file_put_contents($tmpFile, $data);
-
-    // php'nin sistemdeki tam yolu (güvenli yöntem)
-    $phpPath = trim(shell_exec("which php"));
-
-    // backmailsend.php dosyasının mutlak yolu (__DIR__ kullanılarak)
-    $scriptPath = __DIR__ . '/backmailsend.php';
-
-    // Komutu arka planda çalıştır (Linux için)
-    exec("$phpPath $scriptPath < $tmpFile > /dev/null 2>&1 &");
+    mailGonder($uye_email, 'Siparişiniz Teslim Edilmiştir!', $mail_icerik, 'Siparişiniz Teslim Edilmiştir!');
 }
 
 function getKargo($vId){
