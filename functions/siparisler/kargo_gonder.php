@@ -1,12 +1,12 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 include ('../db.php');
-//include ('kargo_barkod.php');
+include ('kargo_barkod.php');
 $database = new Database();
 
 $sip_id = $_POST["sip_id"];
 $durum = 3;
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :id ", ['id' => $sip_id]);
 $uye_id = $sip["uye_id"];

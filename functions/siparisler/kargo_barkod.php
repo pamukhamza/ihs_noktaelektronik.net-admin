@@ -62,7 +62,6 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
 
     // Create new PDF instance
     $pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
-
     // Set document information
     $pdf->SetCreator('Nokta Elektronik ve Bilişim Sistemleri San. Tic. A.Ş.');
     $pdf->SetAuthor('');
