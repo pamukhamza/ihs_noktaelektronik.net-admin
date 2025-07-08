@@ -416,7 +416,7 @@ $(document).ready(function() {
                 });
 
                 // Başarılı mesaj gösterme veya yönlendirme
-                // window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
+                window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
             })
             .catch(error => {
                 console.error('Status change failed:', error);
@@ -448,7 +448,7 @@ $(document).ready(function() {
         selectedIds.forEach(function(sip_id) {
             $.ajax({
                 type: 'POST',
-                url: `${baseUrl}fonksiyonlar.php`,
+                url: `${baseUrl}functions/siparisler/fonksiyonlar.php`,
                 data: { id: sip_id, tur: 'kargo_barkod' }
             })
             .done(function(response) {

@@ -39,7 +39,7 @@ function teslimEdildi() {
 
 function getKargo($vId){
     global $database;
-    $var = $database->fetch("SELECT dosya FROM kargo_pdf WHERE sip_id = :id", ['id' => $vId]);
+    $var = $database->fetch("SELECT dosya FROM b2b_kargo_pdf WHERE sip_id = :id", ['id' => $vId]);
     $var1 = $var['dosya'];
     return $var1;
 }
@@ -110,14 +110,11 @@ if(isset($_POST["kargoKoliKaydet"])){
     $koli = $_POST["koli"];
     $sip_id = $_POST["sip_id"];
 
-    $query = "UPDATE siparisler SET koli = :koli WHERE id = :id";
-    $params = [
-        'koli' => $koli,
-        'id' => $sip_id
-    ];
+    $query = "UPDATE b2b_siparisler SET koli = :koli WHERE id = :id";
+    $params = ['koli' => $koli,'id' => $sip_id];
     $database->update($query, $params);
 
-    header("Location:../noktanet_admin/pages/b2b/b2b-siparisdetay.php?id=" . $sip_id) . "&w=noktab2b";
+    header("Location:../../pages/b2b/b2b-siparisdetay.php?id=" . $sip_id) . "&w=noktab2b";
 }
 
 

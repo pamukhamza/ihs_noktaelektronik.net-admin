@@ -124,13 +124,20 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $pdf->Text(55, 115, 'Barkod No: ' . $cargoKey);
     $pdf->Text(55, 110, 'Web servis bilgi: 187205434');
 
+
+
+
+    $kargo_adi = "kargo_" . uniqid() . ".pdf";
+    $pdf_content = $pdf->Output('', 'S');
     $temp_file_path = sys_get_temp_dir() . '/' . uniqid('kargo_') . '.pdf';
-    file_put_contents($temp_file_path, $pdf->Output('', 'S'));
+    file_put_contents($temp_file_path, $pdf_content);
 
     $file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/kargo/', $s3Client, $config['s3']['bucket']);
     if ($file_url) {
-        $file_name = basename($file_url);
-        $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $file_name]);
+        $kargo_adi = basename($temp_file_path);
     }
+    $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $kargo_adi]);
+
+    unlink($temp_file_path);
 }
 ?>
