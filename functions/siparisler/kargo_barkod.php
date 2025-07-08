@@ -135,8 +135,8 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $file_url = uploadImageToS3Dekont($temp_file_path, 'uploads/kargo/', $s3Client, $config['s3']['bucket']);
     if ($file_url) {
     }
-    $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $kargo_adi]);
+    $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $temp_file_path]);
 
-    //unlink($temp_file_path);
+    unlink($temp_file_path);
 }
 ?>
