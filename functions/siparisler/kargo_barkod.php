@@ -3,11 +3,11 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once ('../db.php');
 require_once('../../vendor/tcpdf/tcpdf.php');
-require '../../vendor/autoload.php';
+require_once '../../vendor/autoload.php';
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-$config = require '../../aws-config.php';
+$config = require_once '../../aws-config.php';
 
 $s3Client = new S3Client([
     'version' => 'latest',

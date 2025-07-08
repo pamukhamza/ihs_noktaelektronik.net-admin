@@ -5,7 +5,7 @@ include_once ('../db.php');
 include_once ('kargo_barkod.php');
 $database = new Database();
 
-$sip_id = $_POST["sip_id"];
+$sip_id = '358';
 $durum = 3;
 
 $sip = $database->fetch("SELECT * FROM b2b_siparisler WHERE id = :id ", ['id' => $sip_id]);
