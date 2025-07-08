@@ -101,5 +101,5 @@ $updateQuery = "UPDATE b2b_siparisler SET durum = :durum, barkod = :barkod WHERE
 $params = ['durum' => $durum,'barkod' => $cargoKey,'id' => $sip_id];
 $updateStmt = $database->update($updateQuery, $params);
 kargopdf($uye_id, $sip_id, $cargoKey);
-
+exit;
 ?>
