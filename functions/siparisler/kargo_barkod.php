@@ -52,7 +52,7 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     $adres = $sip["teslimat_adres"];
     $firmaUnvani = $sip["teslimat_firmaadi"];
 
-    $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :uye_id", ['id' => $uye_id]);
+    $uye = $database->fetch("SELECT * FROM uyeler WHERE id = :uye_id", ['uye_id' => $uye_id]);
 
     $adressorgu = $database->fetch("SELECT * FROM b2b_adresler WHERE uye_id = :uye_id AND aktif = :aktif", ['uye_id' => $uye_id,'aktif' => '1']);
 
