@@ -453,7 +453,7 @@ $(document).ready(function() {
             })
             .done(function(response) {
                 const cleanedResponse = response.replace(/"/g, '');
-                window.open(`${baseUrl}assets/uploads/kargo/${cleanedResponse}`, '_blank');
+                window.open(`https://noktanet.s3.eu-central-1.amazonaws.com/uploads/kargo/${cleanedResponse}`, '_blank');
             })
             .fail(function(xhr, status, error) {
                 console.error('Error:', error);

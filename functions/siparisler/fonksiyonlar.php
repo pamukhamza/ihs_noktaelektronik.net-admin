@@ -117,7 +117,6 @@ if(isset($_POST["kargoKoliKaydet"])){
     header("Location:../../pages/b2b/b2b-siparisdetay.php?id=" . $sip_id) . "&w=noktab2b";
 }
 
-
 if (isset($_POST['type'])) {
     $type = $_POST['type'];
     if ($type === 'siparis_onay') {
@@ -131,7 +130,6 @@ if (isset($_POST['type'])) {
         exit;
     }
 }
- 
 
 if(isset($_POST['tur'])){
     $id = $_POST['id'];
