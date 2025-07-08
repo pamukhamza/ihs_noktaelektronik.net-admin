@@ -15,7 +15,7 @@ $siparis_tarih = $sip["tarih"];
 $count = $sip['koli'];
 $desi = $sip['desi'];
 
-$uye = $q->fetch("SELECT * FROM uyeler WHERE id = :id ", ['id' => $uye_id]);
+$uye = $database->fetch("SELECT * FROM uyeler WHERE id = :id ", ['id' => $uye_id]);
 $firmaUnvani = $uye["firmaUnvani"];
 $uye_email = $uye["email"];
 $uyeAdSoyad = $uye["ad"] . ' ' . $uye["soyad"];
