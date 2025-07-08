@@ -2,7 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 include_once ('../db.php');
-//include_once ('kargo_barkod.php');
+include_once ('kargo_barkod.php');
 $database = new Database();
 echo "Kargo gönderme işlemi başlatıldı...<br>";
 exit;
