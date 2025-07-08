@@ -393,7 +393,7 @@ $(document).ready(function() {
             });
             return;
         }
-            console.log('Seçilen Sipariş ID\'leri: ' + selectedIds.join(', '));
+        console.log('Seçilen Sipariş ID\'leri: ' + selectedIds.join(', '));
         const requests = selectedIds.map(id => {
             const requestData = { type: targetStatus, sip_id: id };
             const requestUrl = `${baseUrl}${action}`;
@@ -408,7 +408,8 @@ $(document).ready(function() {
 
         Promise.all(requests)
             .then(() => {
-                window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
+                //window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
+                console.log('All requests completed successfully' + requests);
             })
             .catch(error => {
                 console.error('Status change failed:', error);
