@@ -422,7 +422,7 @@ $(document).ready(function() {
 
     // Button click handlers
     $('.onayla-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'siparis_onay'));
-    $('.kargo-numara-ver-btn').click(() => handleOrderStatusChange('kargo_gonder.php', '3'));
+    $('.kargo-numara-ver-btn').click(() => handleOrderStatusChange('functions/siparisler/kargo_gonder.php', '3'));
     $('.teslim-edildi-btn').click(() => handleOrderStatusChange('functions/siparisler/fonksiyonlar.php', 'teslim_edildi'));
 
     // Print cargo labels
