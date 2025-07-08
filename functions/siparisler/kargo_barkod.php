@@ -138,6 +138,6 @@ function kargopdf($uye_id, $sip_id, $cargoKey)
     }
     $database->insert("INSERT INTO b2b_kargo_pdf (sip_id, dosya) VALUES (:id, :dosya)", ['id' => $sip_id, 'dosya' => $kargo_adi]);
 
-    unlink($temp_file_path);
+    //unlink($temp_file_path);
 }
 ?>
