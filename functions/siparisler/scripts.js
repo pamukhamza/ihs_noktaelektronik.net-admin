@@ -407,9 +407,16 @@ $(document).ready(function() {
 
 
         Promise.all(requests)
-            .then(() => {
-                //window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
-                console.log('All requests completed successfully' + requests);
+            .then(responses => {
+                console.log('All requests completed successfully');
+                console.log('Response list:', responses); // Burada her bir response objesini tek tek göreceksin
+
+                responses.forEach((response, index) => {
+                    console.log(`Response for sip_id ${selectedIds[index]}:`, response);
+                });
+
+                // Başarılı mesaj gösterme veya yönlendirme
+                // window.location.href = `${baseUrl}pages/b2b/b2b-siparisler.php?sDurum=${targetStatus}&w=noktab2b`;
             })
             .catch(error => {
                 console.error('Status change failed:', error);
@@ -418,7 +425,8 @@ $(document).ready(function() {
                     title: 'Hata',
                     text: 'İşlem sırasında bir hata oluştu.'
                 });
-            });
+            }
+        );
     }
 
     // Button click handlers
