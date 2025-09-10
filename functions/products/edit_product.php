@@ -18,6 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $BLKODU = $_POST['BLKODU'];
+    $desi = $_POST['desi'];
     $name_cn = $_POST['name_en'];
     $urun_kodu = $_POST['urun_kodu'];
     $barcode = $_POST['barkod'];
@@ -45,7 +46,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Ürün Güncelleme Sorgusu
         $updateQuery = "UPDATE nokta_urunler SET UrunAdiTR = :name ,UrunAdiEN = :name_en , UrunKodu = :UrunKodu ,
                 barkod = :barkod , KategoriID = :category ,MarkaID = :brand ,OzelliklerTR = :OzelliklerTR , miktar_seciniz = :miktar_seciniz ,
-                OzelliklerEN = :OzelliklerEN ,BilgiTR = :BilgiTR , BilgiEN = :BilgiEN, seo_link = :seolink, birlikte_al = :birlikte_al, ikon = :ikon, BLKODU = :BLKODU 
+                OzelliklerEN = :OzelliklerEN ,BilgiTR = :BilgiTR , BilgiEN = :BilgiEN, seo_link = :seolink, birlikte_al = :birlikte_al, ikon = :ikon
+                , BLKODU = :BLKODU, desi = :desi 
                 WHERE id = :id";
 
         $params = [
@@ -64,6 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'birlikte_al' => $birliktealStr,
             'ikon' => $ikonStr,
             'BLKODU' => $BLKODU,
+            'desi' => $desi,
             'id' => $id
         ];
 
