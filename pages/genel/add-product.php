@@ -140,8 +140,9 @@ $categories = getCategories();
                                                     </div>
                                                     <div class="col">
                                                         <label class="form-label" for="desi">Desi</label>
-                                                        <input type="text" class="form-control" id="desi" placeholder="desi" name="desi" value="<?= $product['desi']; ?>">
+                                                        <input type="number" class="form-control" id="desi" name="desi" step="0.1" min="0" placeholder="desi" value="<?= $product['desi']; ?>" >
                                                     </div>
+
                                                 </div>
                                                 <div class="row mb-6">
                                                     <div class="col">
