@@ -18,7 +18,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $id = $_POST['id'];
     $name = $_POST['name'];
     $BLKODU = $_POST['BLKODU'];
-    $desi = $_POST['desi'];
+    $desi = $_POST['desi'] ?? 0;
+    if ($desi === '' || $desi === null) {
+        $desi = 0;
+    }
     $name_cn = $_POST['name_en'];
     $urun_kodu = $_POST['urun_kodu'];
     $barcode = $_POST['barkod'];

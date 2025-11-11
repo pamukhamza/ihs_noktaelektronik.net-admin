@@ -1,8 +1,8 @@
 <?php
 class Database {
-    private $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com';
+    private $host = 'localhost';
     private $db_name = 'noktanetdb';
-    private $username = 'nokta';
+    private $username = 'nokt_admin';
     private $password = 'Dell28736.!';
     private $conn;
 
@@ -14,8 +14,9 @@ class Database {
     // Veritabanına bağlan
     private function connect() {
         try {
-            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8", $this->username, $this->password);
+            $this->conn = new PDO("mysql:host=" . $this->host . ";dbname=" . $this->db_name . ";charset=utf8mb4", $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn->exec("SET NAMES utf8mb4 COLLATE utf8mb4_general_ci");
              $this->conn->exec("SET time_zone = '+03:00'");
         } catch(PDOException $e) {
             echo "Connection error: " . $e->getMessage();

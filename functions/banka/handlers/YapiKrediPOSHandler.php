@@ -24,7 +24,7 @@ class YapiKrediPOSHandler extends POSHandler
         }
         $firstHash = hashString($encKey . ";" . $terminalId);
         $mac = hashString($xid . ";" . $amount . ";" . $currency . ";" . $merchantId . ";" . $firstHash);
-        // 3. Finansallaştırma XML'i hazırla
+        // 3. Finansallaştırma XML'i hazrla
         $xml = "<?xml version=\"1.0\" encoding=\"ISO-8859-9\"?>
         <posnetRequest>
             <mid>{$merchantId}</mid>
@@ -49,13 +49,13 @@ class YapiKrediPOSHandler extends POSHandler
 
         $response = curl_exec($ch);
         curl_close($ch);
-        
+        $response = mb_convert_encoding($response, 'UTF-8', 'ISO-8859-9');
         // 5. Cevabı kontrol et
         if (strpos($response, '<approved>1</approved>') !== false) {
             // Finansallaştırma başarılı
             $inserted_id = $this->saveTransaction(
                 5, // Yapı Kredi POS ID
-                "Ödeme işlemi başarılı",
+                "Ödeme işlemi başarlı",
                 $this->paymentData['yantoplam'],
                 1
             );
@@ -71,7 +71,7 @@ class YapiKrediPOSHandler extends POSHandler
 
             $this->saveTransaction(
                 5, // Yapı Kredi POS ID
-                "Ödeme işlemi başarısız: " . $respText . ' Kod= ' . $respCode,
+                "Odeme işlemi başarısız: " . $respText . ' Kod= ' . $respCode,
                 $this->paymentData['yantoplam'],
                 0
             );

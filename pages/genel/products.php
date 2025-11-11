@@ -80,7 +80,12 @@ $db->delete($deleteQuery);
             },
             columns: [
                 { data: 'id' },
-                { data: 'UrunKodu' },
+                {   data: 'UrunKodu',
+                    render: function(data, type, row) {
+                        // row.seo_link ürünün seo_link alanını içermeli
+                        return `<a href="https://noktaelektronik.net/tr/urun/${row.seo_link}" target="_blank">${data}</a>`;
+                    }
+                },
                 { data: 'UrunAdiTR' },
                 { data: 'title' },
                 { data: 'category_name', defaultContent: 'Kategori Yok' },

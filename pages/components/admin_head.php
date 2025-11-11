@@ -9,7 +9,7 @@ session_start();
 function checkSession() {
     if (!isset($_SESSION['user_session'])) {
         // Redirect to the login page if not logged in
-        header("Location: https://www.noktaelektronik.net/admin/index");
+        header("Location: https://www.noktaelektronik.net/admin/index.php");
         exit();
     }
 }

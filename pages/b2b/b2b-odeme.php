@@ -3,7 +3,7 @@ include_once '../../functions/db.php';
 require '../../functions/admin_template.php';
 
 $currentPage = 'b2b-odemeler';
-$template = new Template('Döviz Ayarları - NEBSİS',  $currentPage);
+$template = new Template('Ödemeler - NEBSİS',  $currentPage);
 // head'i çağırıyoruz
 $template->head();
 $database = new Database();

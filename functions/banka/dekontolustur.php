@@ -1,13 +1,14 @@
 <?php
 // Include the TCPDF library
-require_once '../../vendor/tcpdf/tcpdf.php';
-include_once '../db.php';
-include_once '../functions.php';
-require '../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/tcpdf/tcpdf.php';
+include_once __DIR__ . '/../db.php';
+include_once __DIR__ . '/../functions.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 use Aws\S3\S3Client;
 use Aws\Exception\AwsException;
 
-$config = require '../../aws-config.php';
+$config = require __DIR__ . '/../../aws-config.php';
 
 if (!isset($config['s3']['region']) || !isset($config['s3']['key']) || !isset($config['s3']['secret']) || !isset($config['s3']['bucket'])) {
     die('Missing required S3 configuration values.');
@@ -109,7 +110,7 @@ function dekontOlustur($uye_id, $odeme_id, $ad_soyad, $cardNo, $cardHolder, $tak
         unlink($temp_file_path);
         return true;
     } catch (Exception $e) {
-        error_log('Dekont oluşturma veya S3 yükleme hatası: ' . $e->getMessage());
+        error_log('Dekont oluşturma veya S3 yükleme hatas: ' . $e->getMessage());
         throw new Exception('Dekont oluşturulurken bir hata oluştu: ' . $e->getMessage());
     }
 }

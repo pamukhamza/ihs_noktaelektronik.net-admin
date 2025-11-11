@@ -8,6 +8,7 @@ require_once 'handlers/POSHandler.php';
 require_once 'handlers/FinansPOSHandler.php';
 require_once 'handlers/KuveytPOSHandler.php';
 require_once 'handlers/YapiKrediPOSHandler.php';
+require_once 'handlers/GarantiPOSHandler.php';
 
 $database = new Database();
 

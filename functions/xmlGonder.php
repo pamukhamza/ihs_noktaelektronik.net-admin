@@ -1,6 +1,6 @@
 <?php
-define("DB_SERVER", "noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com");
-define("DB_USERNAME", "nokta");
+define("DB_SERVER", "localhost");
+define("DB_USERNAME", "nokt_admin");
 define("DB_PASSWORD", "Dell28736.!");
 define("DB_NAME", "noktanetdb");
 $newDate = date('Y-m-d H:i:s', strtotime('+3 hours'));
@@ -8,9 +8,9 @@ $newDate = date('Y-m-d H:i:s', strtotime('+3 hours'));
 function duzenleString($str) {
     // Diğer işlemleri uygula
     $replaceChars = array(
-        'ç' => 'c', 'ğ' => 'g', 'ı' => 'i', 'i' => 'i',
+        'ç' => 'c', '' => 'g', 'ı' => 'i', 'i' => 'i',
         'ö' => 'o', 'ş' => 's', 'ü' => 'u', 'Ç' => 'C',
-        'Ğ' => 'G', 'I' => 'I', 'İ' => 'I', 'Ö' => 'O',
+        '' => 'G', 'I' => 'I', 'İ' => 'I', 'Ö' => 'O',
         'Ş' => 'S', 'Ü' => 'U', ' ' => '-', '"' => '',
         "'" => '', '`' => '', '.' => '', ',' => '',
         ':' => '', ';' => '', '(' => '', ')' => '',
@@ -19,7 +19,7 @@ function duzenleString($str) {
     );
     $str = strtr($str, $replaceChars);
     $str = strtolower($str);// Büyük harfleri küçük harfe çevir
-    $str = trim($str);// Başındaki ve sonundaki boşlukları sil
+    $str = trim($str);// Başındaki ve sonundaki boşluklar sil
     $str = preg_replace('/\s+/', '-', $str); // Ortadaki boşlukları - ile değiştir
     $str = str_replace( ['---','--'], ['-','-'], $str );
     return $str;
@@ -47,9 +47,9 @@ function connectToDatabase() {
     return $mysqli;
 }
 function connectToDatabasePDO() {
-    $host = 'noktanetdb.cbuq6a2265j6.eu-central-1.rds.amazonaws.com'; // Veritabanı sunucusu
+    $host = 'localhost'; // Veritabanı sunucusu
     $dbname = 'noktanetdb'; // Veritabanı adı
-    $username = 'nokta'; // Veritabanı kullanıcı adı
+    $username = 'nokt_admin'; // Veritabanı kullanıcı adı
     $password = 'Dell28736.!'; // Veritabanı şifresi
     try {
         $pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8", $username, $password);
@@ -67,7 +67,7 @@ function odemeGonder() {
     $files = scandir($folderPath);
 
     if ($files === false) {
-        echo json_encode(["hata" => "$newDate: XML dosyaları bulunamadı"]);
+        echo json_encode(["hata" => "$newDate: XML dosyalar bulunamad"]);
         return;
     }
 
@@ -147,7 +147,7 @@ function getAccountList($xmlData) {
     $mysqli = connectToDatabase();
     $xml = simplexml_load_string($xmlData);
     global $newDate;
-    echo "$newDate: Cari Tarama Başladı. <br>";
+    echo "$newDate: Cari Tarama Baladı. <br>";
     if ($xml === false) {
         echo "Failed to parse XML Cari Liste.";
         return;
@@ -346,7 +346,7 @@ function getAccountList($xmlData) {
         }
     }
     $mysqli->close();
-    echo "$newDate: Cari Tarama Tamamlandı. <br>";
+    echo "$newDate: Cari Tarama Tamamland. <br>";
 }
 function getAccountBalanceList($xmlData) {
     $mysqli = connectToDatabase();
@@ -553,7 +553,7 @@ function stokMiktar($xmlData) {
             $current = $selectStmt->fetch(PDO::FETCH_ASSOC);
 
             if ($current && $current['stok'] != $toplamMiktar) {
-                echo "BLKODU $BLKODU stok güncellendi: {$current['stok']} → $toplamMiktar<br>";
+                echo "BLKODU $BLKODU stok gncellendi: {$current['stok']}  $toplamMiktar<br>";
             }
 
             $valueSets[] = "WHEN $BLKODU THEN '$toplamMiktar'";
